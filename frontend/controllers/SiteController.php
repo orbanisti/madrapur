@@ -1,215 +1,131 @@
 <?php
 namespace frontend\controllers;
 
+use cheatsheet\Time;
+use common\sitemap\UrlsIterator;
+use frontend\models\ContactForm;
+use Sitemaped\Element\Urlset\Urlset;
+use Sitemaped\Sitemap;
 use Yii;
-use yii\base\InvalidParamException;
+use yii\filters\PageCache;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use common\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
-use frontend\models\ContactForm;
+use yii\web\Response;
 
 /**
  * Site controller
  */
-class SiteController extends Controller
-{
+class SiteController extends Controller {
+
     /**
-     * {@inheritdoc}
+     *
+     * @return array
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
-                'rules' => [
-                    [
-                        'actions' => ['signup'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
+            [
+                'class' => PageCache::class,
+                'only' => [
+                    'sitemap'
                 ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
+                'duration' => Time::SECONDS_IN_AN_HOUR,
+            ]
         ];
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @inheritdoc
      */
-    public function actions()
-    {
+    public function actions() {
         return [
             'error' => [
-                'class' => 'yii\web\ErrorAction',
+                'class' => 'yii\web\ErrorAction'
             ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null
             ],
+            'set-locale' => [
+                'class' => 'common\actions\SetLocaleAction',
+                'locales' => array_keys(Yii::$app->params['availableLocales'])
+            ]
         ];
     }
 
     /**
-     * Displays homepage.
      *
-     * @return mixed
+     * @return string
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         return $this->render('index');
     }
 
     /**
-     * Logs in a user.
      *
-     * @return mixed
+     * @return string|Response
      */
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            $model->password = '';
-
-            return $this->render('login', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Logs out the current user.
-     *
-     * @return mixed
-     */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
-
-    /**
-     * Displays contact page.
-     *
-     * @return mixed
-     */
-    public function actionContact()
-    {
+    public function actionContact() {
         $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending your message.');
-            }
-
-            return $this->refresh();
-        } else {
-            return $this->render('contact', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return mixed
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
-
-    /**
-     * Signs user up.
-     *
-     * @return mixed
-     */
-    public function actionSignup()
-    {
-        $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signup()) {
-                if (Yii::$app->getUser()->login($user)) {
-                    return $this->goHome();
-                }
+            if ($model->contact(Yii::$app->params['adminEmail'])) {
+                Yii::$app->getSession()->setFlash('alert',
+                        [
+                            'body' => Yii::t('frontend',
+                                    'Thank you for contacting us. We will respond to you as soon as possible.'),
+                            'options' => [
+                                'class' => 'alert-success'
+                            ]
+                        ]);
+                return $this->refresh();
             }
+
+            Yii::$app->getSession()->setFlash('alert',
+                    [
+                        'body' => \Yii::t('frontend', 'There was an error sending email.'),
+                        'options' => [
+                            'class' => 'alert-danger'
+                        ]
+                    ]);
         }
 
-        return $this->render('signup', [
-            'model' => $model,
+        return $this->render('contact', [
+            'model' => $model
         ]);
     }
 
     /**
-     * Requests password reset.
      *
-     * @return mixed
-     */
-    public function actionRequestPasswordReset()
-    {
-        $model = new PasswordResetRequestForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
-
-                return $this->goHome();
-            } else {
-                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
-            }
-        }
-
-        return $this->render('requestPasswordResetToken', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Resets password.
-     *
-     * @param string $token
-     * @return mixed
+     * @param string $format
+     * @param bool $gzip
+     * @return string
      * @throws BadRequestHttpException
      */
-    public function actionResetPassword($token)
-    {
-        try {
-            $model = new ResetPasswordForm($token);
-        } catch (InvalidParamException $e) {
-            throw new BadRequestHttpException($e->getMessage());
+    public function actionSitemap($format = Sitemap::FORMAT_XML, $gzip = false) {
+        $links = new UrlsIterator();
+        $sitemap = new Sitemap(new Urlset($links));
+
+        Yii::$app->response->format = Response::FORMAT_RAW;
+
+        if ($gzip === true) {
+            Yii::$app->response->headers->add('Content-Encoding', 'gzip');
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'New password saved.');
-
-            return $this->goHome();
+        if ($format === Sitemap::FORMAT_XML) {
+            Yii::$app->response->headers->add('Content-Type', 'application/xml');
+            $content = $sitemap->toXmlString($gzip);
+        } else if ($format === Sitemap::FORMAT_TXT) {
+            Yii::$app->response->headers->add('Content-Type', 'text/plain');
+            $content = $sitemap->toTxtString($gzip);
+        } else {
+            throw new BadRequestHttpException('Unknown format');
         }
 
-        return $this->render('resetPassword', [
-            'model' => $model,
-        ]);
+        $linksCount = $sitemap->getCount();
+        if ($linksCount > 50000) {
+            Yii::warning(\sprintf('Sitemap links count is %d'), $linksCount);
+        }
+
+        return $content;
     }
 }

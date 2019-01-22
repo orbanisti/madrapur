@@ -1,27 +1,31 @@
 <?php
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $name string */
 /* @var $message string */
 /* @var $exception Exception */
 
-use yii\helpers\Html;
-
 $this->title = $name;
 ?>
-<div class="site-error">
+<div class="error">
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="error-content text-center">
+				<h3 class="headline">
+					<i class="fa fa-warning text-yellow"></i>
+                    <?php
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <div class="alert alert-danger">
-        <?= nl2br(Html::encode($message)) ?>
-    </div>
-
-    <p>
-        The above error occurred while the Web server was processing your request.
-    </p>
-    <p>
-        Please contact us if you think this is a server error. Thank you.
-    </p>
-
+echo Yii::t('backend', 'Error {code}',
+                            [
+                                'code' => property_exists($exception, 'statusCode') ? $exception->statusCode : 500
+                            ])?>
+                </h3>
+				<p>
+                    <?php echo nl2br(Html::encode($message)) ?>
+                </p>
+			</div>
+		</div>
+	</div>
 </div>
+<!-- /.error-page -->
