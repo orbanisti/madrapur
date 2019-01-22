@@ -77,8 +77,8 @@ if [ ! -f /var/www/.env ]; then
 fi
 
 # create nginx config
-if [ ! -f /etc/nginx/sites-enabled/yii2-starter-kit.localhost ]; then
-    sudo ln -s /var/www/vagrant/vhost.conf /etc/nginx/sites-enabled/yii2-starter-kit.localhost
+if [ ! -f /etc/nginx/sites-enabled/madrapur.lh ]; then
+    sudo ln -s /var/www/vagrant/vhost.conf /etc/nginx/sites-enabled/madrapur.lh
 fi
 
 # Configuring application

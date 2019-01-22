@@ -1,26 +1,26 @@
 {
-	"name": "yii2-starter-kit/yii2-starter-kit",
-	"description": "Yii2 Starter Kit Application Template",
+	"name": "Aekan/madrapur",
+	"description": "madrapur",
 	"keywords": [
 		"yii2",
 		"framework",
 		"start",
 		"cms",
-		"application template",
+		"dxp",
 		"yii2 advanced"
 	],
 	"authors": [
 		{
-			"name": "Eugene Terentev",
-			"email": "eugene@terentev.net",
-			"homepage": "http://terentev.net"
+			"name": "Péter Alius",
+			"email": "peter.alius92@gmail.com",
+			"homepage": "http://github.com/aekan"
 		}
 	],
 	"type": "project",
 	"license": "BSD-3-Clause",
 	"support": {
-		"issues": "https://github.com/yii2-starter-kit/yii2-starter-kit/issues?state=open",
-		"source": "https://github.com/yii2-starter-kit/yii2-starter-kit"
+		"issues": "https://github.com/Aekan/madrapur/issues?state=open",
+		"source": "https://github.com/Aekan/madrapur"
 	},
 	"require": {
 		"php": ">=7.1.0",
@@ -51,11 +51,11 @@
 		"trntv/sitemaped": "^0.1"
 	},
 	"require-dev": {
-		"yiisoft/yii2-debug": "^2.0.0",
-		"yiisoft/yii2-gii": "^2.0.0",
-		"yiisoft/yii2-faker": "^2.0.0",
-		"codeception/codeception": "^2.3.0",
-		"codeception/verify": "^0.3.1"
+		"yiisoft/yii2-debug": "~2.0.0",
+		"yiisoft/yii2-gii": "~2.0.0",
+		"yiisoft/yii2-faker": "~2.0.0",
+		"codeception/codeception": "~2.5.0",
+		"codeception/verify": "~1.0.0"
 	},
 	"autoload-dev": {
 		"psr-4": {

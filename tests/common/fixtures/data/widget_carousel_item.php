@@ -3,7 +3,7 @@ return [
     [
         "id" => "1",
         "carousel_id" => "1",
-        "base_url" => "http://yii2-starter-kit.localhost",
+        "base_url" => "http://madrapur.lh",
         "path" => "img/yii2-starter-kit.gif",
         "type" => "image/gif",
         "url" => "/",
