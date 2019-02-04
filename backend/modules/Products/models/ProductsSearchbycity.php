@@ -1,20 +1,19 @@
-<?phpnamespace backend\modules\Products
-
-namespace app\modules\Products\models;
+<?php
+namespace backend\modules\Products\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\Products\models\Products;
-use app\models\Shopcurrency;
-use app\components\Controller;
+use backend\modules\Products\models\Products;
+use backend\models\Shopcurrency;
+use backend\components\Controller;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
-use app\modules\Citydescription\models\Citydescription;
-use app\modules\Citydescription\models\CitydescriptionTranslate;
-use app\modules\Citydescription\models\Countries;
-use app\modules\Citydescription\models\Countriestranslate;
-use app\components\extra;
+use backend\modules\Citydescription\models\Citydescription;
+use backend\modules\Citydescription\models\CitydescriptionTranslate;
+use backend\modules\Citydescription\models\Countries;
+use backend\modules\Citydescription\models\Countriestranslate;
+use backend\components\extra;
 
 class ProductsSearchbycity extends Products
 {

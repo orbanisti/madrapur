@@ -1,10 +1,9 @@
-<?phpnamespace backend\modules\Products
-
-namespace app\modules\Products\models;
+<?php
+namespace backend\modules\Products\models;
 
 use Yii;
 use lajax\translatemanager\helpers\Language;
-use app\modules\Products\models\Citiestranslate;
+use backend\modules\Products\models\Citiestranslate;
 use yii\helpers\ArrayHelper;
 
 /**

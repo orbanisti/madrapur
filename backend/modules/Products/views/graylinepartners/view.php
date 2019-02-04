@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\Products\models\Graylinepartners */
+/* @var $model backend\modules\Products\models\Graylinepartners */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Graylinepartners'), 'url' => ['index']];

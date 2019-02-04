@@ -2,14 +2,14 @@
 
 
 use yii\helpers\Html;
-use app\modules\Products\models\Services;
-use app\assets\BootstrapstarratingAsset;
+use backend\modules\Products\models\Services;
+use backend\assets\BootstrapstarratingAsset;
 use yii\helpers\Url;
-use app\modules\Products\models\Products;
+use backend\modules\Products\models\Products;
 use yii\helpers\ArrayHelper;
 use Requests as Req;
 use yii\helpers\Json;
-use app\components\extra;
+use backend\components\extra;
 
 BootstrapstarratingAsset::register($this);
 

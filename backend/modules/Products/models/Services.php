@@ -1,8 +1,5 @@
-<?phpnamespace backend\modules\Products
-
-
-
-namespace app\modules\Products\models;
+<?php
+namespace backend\modules\Products\models;
 
 
 
@@ -10,7 +7,7 @@ use Yii;
 
 use lajax\translatemanager\helpers\Language;
 
-use app\modules\Products\models\Servicestranslate;
+use backend\modules\Products\models\Servicestranslate;
 
 use yii\helpers\ArrayHelper;
 

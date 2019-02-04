@@ -1,9 +1,8 @@
-<?phpnamespace backend\modules\Products
-
-namespace app\modules\Products\models;
+<?php
+namespace backend\modules\Products\models;
 
 use Yii;
-use app\models\Shopcurrency;
+use backend\models\Shopcurrency;
 
 class Productsprice extends \yii\db\ActiveRecord
 {

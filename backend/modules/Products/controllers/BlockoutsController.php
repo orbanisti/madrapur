@@ -1,20 +1,17 @@
-<?phpnamespace backend\modules\Products
-
-
-
-namespace app\modules\Products\controllers;
+<?php
+namespace backend\modules\Products\controllers;
 
 
 
 use Yii;
 
-use app\modules\Products\models\Blockouts;
+use backend\modules\Products\models\Blockouts;
 
-use app\modules\Products\models\BlockoutsSearch;
+use backend\modules\Products\models\BlockoutsSearch;
 
 //use yii\web\Controller;
 
-use app\components\Controller;
+use backend\components\Controller;
 
 use yii\web\NotFoundHttpException;
 
@@ -24,7 +21,7 @@ use yii\filters\AccessControl;
 
 use yii\helpers\ArrayHelper;
 
-use app\modules\Products\models\Products;
+use backend\modules\Products\models\Products;
 
 
 

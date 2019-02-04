@@ -1,10 +1,6 @@
 <?php
 
-namespace backend\modules\Products
-
-
-
-namespace app\modules\Products\models;
+namespace backend\modules\Products\models;
 
 
 
@@ -19,7 +15,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 
-use app\modules\Products\models\Services;
+use backend\modules\Products\models\Services;
 
 
 
@@ -28,7 +24,7 @@ use app\modules\Products\models\Services;
 /**
 
 
- * ServicesSearch represents the model behind the search form about `app\modules\Products\models\Services`.
+ * ServicesSearch represents the model behind the search form about `backend\modules\Products\models\Services`.
 
 
  */

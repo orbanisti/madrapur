@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\Products\models\Graylinepartners */
+/* @var $model backend\modules\Products\models\Graylinepartners */
 
 $this->title = Yii::t('app', 'Módosítás') . ' ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Grayline partnerek'), 'url' => ['index']];

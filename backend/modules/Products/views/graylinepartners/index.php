@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use app\modules\Products\models\Graylinepartners;
+use backend\modules\Products\models\Graylinepartners;
 
 $this->title = Yii::t('app', 'Grayline partnerek');
 $this->params['breadcrumbs'][] = $this->title;

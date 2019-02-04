@@ -13,16 +13,16 @@ namespace backend\modules\Products\controllers;
 use Yii;
 
 
-use app\modules\Products\models\Productsopinion;
+use backend\modules\Products\models\Productsopinion;
 
 
-use app\modules\Products\models\ProductsopinionSearch;
+use backend\modules\Products\models\ProductsopinionSearch;
 
 
 //use yii\web\Controller;
 
 
-use app\components\Controller;
+use backend\components\Controller;
 
 
 use yii\web\NotFoundHttpException;
@@ -31,13 +31,13 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 
-use \app\modules\Products\models\Products;
+use \backend\modules\Products\models\Products;
 
 
 use yii\filters\AccessControl;
 
 
-use app\modules\Users\Module as Usermodule;
+use backend\modules\Users\Module as Usermodule;
 
 
 use yii\helpers\ArrayHelper;

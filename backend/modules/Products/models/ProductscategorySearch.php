@@ -1,10 +1,5 @@
-<?phpnamespace backend\modules\Products
-
-
-
-
-
-namespace app\modules\Products\models;
+<?php
+namespace backend\modules\Products\models;
 
 
 
@@ -19,7 +14,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 
-use app\modules\Products\models\Productscategory;
+use backend\modules\Products\models\Productscategory;
 
 
 
@@ -28,7 +23,7 @@ use app\modules\Products\models\Productscategory;
 /**
 
 
- * ProductscategorySearch represents the model behind the search form about `app\modules\Products\models\Productscategory`.
+ * ProductscategorySearch represents the model behind the search form about `backend\modules\Products\models\Productscategory`.
 
 
  */

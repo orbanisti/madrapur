@@ -1,10 +1,6 @@
 <?php
 
-namespace backend\modules\Products
-
-
-
-namespace app\modules\Products\controllers;
+namespace backend\modules\Products\controllers;
 
 
 
@@ -13,16 +9,16 @@ namespace app\modules\Products\controllers;
 use Yii;
 
 
-use app\modules\Products\models\Services;
+use backend\modules\Products\models\Services;
 
 
-use app\modules\Products\models\ServicesSearch;
+use backend\modules\Products\models\ServicesSearch;
 
 
 //use yii\web\Controller;
 
 
-use app\components\Controller;
+use backend\components\Controller;
 
 
 use yii\web\NotFoundHttpException;
@@ -37,10 +33,10 @@ use yii\filters\AccessControl;
 use lajax\translatemanager\models\Language;
 
 
-use app\modules\Products\models\Servicestranslate;
+use backend\modules\Products\models\Servicestranslate;
 
 
-use app\base\Model;
+use backend\base\Model;
 
 
 use yii\helpers\ArrayHelper;

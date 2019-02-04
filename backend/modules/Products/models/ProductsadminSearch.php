@@ -1,14 +1,13 @@
-<?phpnamespace backend\modules\Products
-
-namespace app\modules\Products\models;
+<?php
+namespace backend\modules\Products\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\Products\models\Products;
-use app\modules\Products\models\Productscities;
-use app\modules\Products\models\Productscountires;
+use backend\modules\Products\models\Products;
+use backend\modules\Products\models\Productscities;
+use backend\modules\Products\models\Productscountires;
 use yii\helpers\ArrayHelper;
-use app\modules\Products\models\Graylinepartners;
+use backend\modules\Products\models\Graylinepartners;
 
 class ProductsadminSearch extends Products
 {

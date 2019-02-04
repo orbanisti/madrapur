@@ -1,14 +1,12 @@
 <?php
 
-namespace backend\modules\Products
-
-namespace app\modules\Products\controllers;
+namespace backend\modules\Products\controllers;
 
 
 
-//use yii\web\Controller;
+use yii\web\Controller;
 
-use app\components\Controller;
+//use backend\components\Controller;
 
 
 

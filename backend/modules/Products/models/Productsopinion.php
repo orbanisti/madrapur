@@ -1,12 +1,6 @@
 <?php
 
-namespace backend\modules\Products
-
-
-
-
-
-namespace app\modules\Products\models;
+namespace backend\modules\Products\models;
 
 
 
@@ -18,7 +12,7 @@ use Yii;
 
 
 
-use app\modules\Users\models\Users;
+use backend\modules\Users\models\Users;
 
 
 

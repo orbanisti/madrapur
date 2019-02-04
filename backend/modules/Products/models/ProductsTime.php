@@ -1,9 +1,8 @@
-<?phpnamespace backend\modules\Products
-
-namespace app\modules\Products\models;
+<?php
+namespace backend\modules\Products\models;
 
 use Yii;
-use app\modules\Products\models\Products;
+use backend\modules\Products\models\Products;
 
 class ProductsTime extends \yii\db\ActiveRecord
 {
@@ -40,7 +39,7 @@ class ProductsTime extends \yii\db\ActiveRecord
 
         if($this->start_date=='' || is_null($this->start_date) || $this->start_date=='0000-00-00'){
             $this->start_date=date('Y-m-d');
-            //\app\components\extra::e($this);
+            //\backend\components\extra::e($this);
         }
 
         return true;

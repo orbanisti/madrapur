@@ -1,14 +1,13 @@
 <?php
-namespace backend\modules\Products
-namespace app\modules\Products\models;
+namespace backend\modules\Products\models;
 
 
 
 use Yii;
 
-use app\modules\Products\models\Products;
+use backend\modules\Products\models\Products;
 
-use app\modules\Citydescription\models\Countries;
+use backend\modules\Citydescription\models\Countries;
 
 
 

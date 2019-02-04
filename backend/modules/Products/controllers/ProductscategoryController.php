@@ -1,20 +1,18 @@
 <?php
 
-namespace backend\modules\Products
-
-namespace app\modules\Products\controllers;
+namespace backend\modules\Products\controllers;
 
 
 
 use Yii;
 
-use app\modules\Products\models\Productscategory;
+use backend\modules\Products\models\Productscategory;
 
-use app\modules\Products\models\ProductscategorySearch;
+use backend\modules\Products\models\ProductscategorySearch;
 
 //use yii\web\Controller;
 
-use app\components\Controller;
+use backend\components\Controller;
 
 use yii\web\NotFoundHttpException;
 
@@ -24,11 +22,11 @@ use yii\filters\AccessControl;
 
 use lajax\translatemanager\models\Language;
 
-use app\base\Model;
+use backend\base\Model;
 
 use yii\helpers\ArrayHelper;
 
-use \app\modules\Products\models\Productscategorytranslate;
+use \backend\modules\Products\models\Productscategorytranslate;
 
 
 

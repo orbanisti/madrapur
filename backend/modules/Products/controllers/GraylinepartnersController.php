@@ -3,9 +3,9 @@
 namespace backend\modules\Products\controllers;
 
 use Yii;
-use app\modules\Products\models\Graylinepartners;
-use app\modules\Products\models\GraylinepartnersSearch;
-use app\components\Controller;
+use backend\modules\Products\models\Graylinepartners;
+use backend\modules\Products\models\GraylinepartnersSearch;
+use backend\components\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;

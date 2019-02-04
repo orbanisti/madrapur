@@ -2,22 +2,22 @@
 namespace backend\modules\Products\models;
 
 use Yii;
-use app\modules\Products\models\Productstranslate;
-use app\modules\Products\models\Productscategory;
+use backend\modules\Products\models\Productstranslate;
+use backend\modules\Products\models\Productscategory;
 use yii\helpers\ArrayHelper;
-use app\modules\Users\models\Users;
-use app\components\extra;
+use backend\modules\Users\models\Users;
+use backend\components\extra;
 use zxbodya\yii2\galleryManager\GalleryBehavior;
 use yii\helpers\Json;
-use app\models\Shopcurrency;
-use app\modules\Users\models\Userpartners;
-use app\modules\Products\models\Blockouts;
-use app\modules\Products\models\ProductsTime;
+use backend\models\Shopcurrency;
+use backend\modules\Users\models\Userpartners;
+use backend\modules\Products\models\Blockouts;
+use backend\modules\Products\models\ProductsTime;
 use yii\helpers\Html;
-use app\modules\Mailtemplates\models\MailTemplates;
-use app\modules\Citydescription\models\Countries;
-use app\modules\Citydescription\models\Citydescription;
-use app\modules\Citydescription\models\CitydescriptionTranslate;
+use backend\modules\Mailtemplates\models\MailTemplates;
+use backend\modules\Citydescription\models\Countries;
+use backend\modules\Citydescription\models\Citydescription;
+use backend\modules\Citydescription\models\CitydescriptionTranslate;
 
 class Products extends \yii\db\ActiveRecord
 {

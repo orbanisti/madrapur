@@ -1,41 +1,41 @@
-<?phpnamespace backend\modules\Products
-
-namespace app\modules\Products\controllers;
+<?php
+namespace backend\modules\Products\controllers;
 
 use Yii;
-use app\modules\Products\models\Products;
-use app\modules\Products\models\Productstranslate;
-use app\modules\Products\models\ProductsSearch;
-use app\components\Controller;
+use backend\modules\Products\models\Products;
+use backend\modules\Products\models\Productstranslate;
+use backend\modules\Products\models\ProductsSearch;
+
+use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use zxbodya\yii2\galleryManager\GalleryManagerAction;
 use lajax\translatemanager\models\Language;
-use app\base\Model;
+use backend\base\Model;
 use yii\helpers\ArrayHelper;
 use yii\web\UploadedFile;
-use app\components\extra;
-use app\modules\Products\models\Productsprice;
-use app\modules\Products\models\Productspricetranslate;
-use app\modules\Users\models\Userpartners;
+use backend\components\extra;
+use backend\modules\Products\models\Productsprice;
+use backend\modules\Products\models\Productspricetranslate;
+use backend\modules\Users\models\Userpartners;
 use yii\helpers\Html;
-use app\modules\Products\models\Services;
-use app\modules\Products\models\ProductsadminSearch;
-use app\modules\Products\models\ProductsTime;
+use backend\modules\Products\models\Services;
+use backend\modules\Products\models\ProductsadminSearch;
+use backend\modules\Products\models\ProductsTime;
 use yii\helpers\Json;
-use app\modules\Citydescription\models\CitydescriptionSearch;
-use app\modules\Products\models\Productscities;
-use app\modules\Products\models\Productscountires;
-use app\modules\Citydescription\models\Countries;
-use app\modules\Citydescription\models\Countriestranslate;
-use app\modules\Mailtemplates\models\MailTemplates;
-use app\modules\Users\Module as Usermodule;
-use app\modules\Citydescription\models\CitydescriptionTranslate;
-use app\modules\Citydescription\models\Citydescription;
-use app\modules\Meta\models\Meta;
-use app\modules\Products\models\EnquireForm;
-use app\modules\Users\models\Users;
+use backend\modules\Citydescription\models\CitydescriptionSearch;
+use backend\modules\Products\models\Productscities;
+use backend\modules\Products\models\Productscountires;
+use backend\modules\Citydescription\models\Countries;
+use backend\modules\Citydescription\models\Countriestranslate;
+use backend\modules\Mailtemplates\models\MailTemplates;
+use backend\modules\Users\Module as Usermodule;
+use backend\modules\Citydescription\models\CitydescriptionTranslate;
+use backend\modules\Citydescription\models\Citydescription;
+use backend\modules\Meta\models\Meta;
+use backend\modules\Products\models\EnquireForm;
+use backend\modules\Users\models\Users;
 
 /**
  * ProductsController implements the CRUD actions for Products model.

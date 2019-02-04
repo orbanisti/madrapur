@@ -6,7 +6,7 @@ use yii\helpers\Html;
 
 use yii\widgets\ActiveForm;
 
-use app\modules\Products\models\Products;
+use backend\modules\Products\models\Products;
 
 use lajax\translatemanager\models\Language;
 
@@ -18,9 +18,9 @@ use zxbodya\yii2\galleryManager\GalleryManager;
 
 use wbraganca\dynamicform\DynamicFormWidget;
 
-use app\modules\Products\models\Services;
+use backend\modules\Products\models\Services;
 
-use app\models\Shopcurrency;
+use backend\models\Shopcurrency;
 
 use yii\helpers\Json;
 

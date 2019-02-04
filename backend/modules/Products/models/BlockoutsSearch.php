@@ -1,8 +1,6 @@
 <?php
 
-namespace backend\modules\Products
-
-namespace app\modules\Products\models;
+namespace backend\modules\Products\models;
 
 
 
@@ -12,15 +10,15 @@ use yii\base\Model;
 
 use yii\data\ActiveDataProvider;
 
-use app\modules\Products\models\Blockouts;
+use backend\modules\Products\models\Blockouts;
 
-use app\modules\Order\models\Orderedproducts;
+use backend\modules\Order\models\Orderedproducts;
 
 
 
 /**
 
- * BlockoutsSearch represents the model behind the search form about `app\modules\Products\models\Blockouts`.
+ * BlockoutsSearch represents the model behind the search form about `backend\modules\Products\models\Blockouts`.
 
  */
 

@@ -1,11 +1,10 @@
-<?phpnamespace backend\modules\Products
-
-namespace app\modules\Products\models;
+<?php
+namespace backend\modules\Products\models;
 
 use Yii;
-use app\modules\Products\models\Productscategorytranslate;
+use backend\modules\Products\models\Productscategorytranslate;
 use yii\helpers\ArrayHelper;
-use app\components\extra;
+use backend\components\extra;
 
 class Productscategory extends \yii\db\ActiveRecord
 {
