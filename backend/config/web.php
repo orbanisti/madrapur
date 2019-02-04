@@ -31,6 +31,9 @@ $config = [
         'file' => [
             'class' => backend\modules\file\Module::class,
         ],
+        'Products' => [
+            'class' => backend\modules\Products\Module::class,
+        ],
         'system' => [
             'class' => backend\modules\system\Module::class,
         ],

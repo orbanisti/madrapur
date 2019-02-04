@@ -335,6 +335,14 @@ echo Menu::widget(
                                 ],
                             ],
                             [
+                                'label' => Yii::t('backend', 'Products'),
+                                'url' => [
+                                    '/Products/products/index'
+                                ],
+                                'icon' => '<i class="fa fa-product-hunt"></i>',
+                                'active' => (Yii::$app->controller->id == 'products'),
+                            ],
+                            [
                                 'label' => Yii::t('backend', 'Key-Value Storage'),
                                 'url' => [
                                     '/system/key-storage/index'
