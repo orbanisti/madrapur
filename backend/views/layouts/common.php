@@ -337,7 +337,7 @@ echo Menu::widget(
                             [
                                 'label' => Yii::t('backend', 'Products'),
                                 'url' => [
-                                    '/Products/products/index'
+                                    '/Products/products/admin'
                                 ],
                                 'icon' => '<i class="fa fa-product-hunt"></i>',
                                 'active' => (Yii::$app->controller->id == 'products'),
