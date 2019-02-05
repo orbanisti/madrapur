@@ -165,6 +165,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
     ];
 
+    /* TODO EXPORT START
     $fullExportMenu = ExportMenu::widget([
         'dataProvider' => $dataProvider,
         'columns' => $gridColumns,
@@ -205,20 +206,22 @@ $this->params['breadcrumbs'][] = $this->title;
             '{toggleData}',
             '{export}',
             $fullExportMenu,
-            /*['content'=>
-                Html::button('<i class="glyphicon glyphicon-plus"></i>', [
-                    'type'=>'button',
-                    'title'=>Yii::t('kvgrid', 'Add Book'),
-                    'class'=>'btn btn-success'
-                ]) . ' '.
-                Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], [
-                    'data-pjax'=>0,
-                    'class' => 'btn btn-default',
-                    'title'=>Yii::t('kvgrid', 'Reset Grid')
-                ])
-            ],*/
+            #['content'=>
+            #    Html::button('<i class="glyphicon glyphicon-plus"></i>', [
+            #        'type'=>'button',
+            #        'title'=>Yii::t('kvgrid', 'Add Book'),
+            #        'class'=>'btn btn-success'
+            #    ]) . ' '.
+            #    Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], [
+            #        'data-pjax'=>0,
+            #        'class' => 'btn btn-default',
+            #        'title'=>Yii::t('kvgrid', 'Reset Grid')
+            #    ])
+            #],
         ]
     ]);
+
+    TODO EXPORT END */
     ?>
 
 </div>
