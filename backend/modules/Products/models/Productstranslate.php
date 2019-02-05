@@ -1,6 +1,10 @@
 <?php
 
-namespace backend\modules\Products\models;
+namespace backend\modules\Products
+
+
+
+namespace app\modules\Products\models;
 
 
 
