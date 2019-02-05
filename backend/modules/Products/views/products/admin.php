@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => Select2::widget([
                     'model' => $searchModel,
                     'attribute' => 'country_id',
-                    'data' => backend\modules\Citydescription\models\Countries::getList(),
+                    //'data' => backend\modules\Citydescription\models\Countries::getList(),
                     'language' => 'hu',
                     'options' => ['placeholder' => 'Ország...'],
                     'pluginOptions' => [
@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => Select2::widget([
                     'model' => $searchModel,
                     'attribute' => 'city_id',
-                    'data' => \backend\modules\Citydescription\models\Citydescription::getList(),
+                    //'data' => \backend\modules\Citydescription\models\Citydescription::getList(),
                     'language' => 'hu',
                     'options' => ['placeholder' => 'Város...'],
                     'pluginOptions' => [
@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => Select2::widget([
                     'model' => $searchModel,
                     'attribute' => 'user',
-                    'data' => Users::getDropdownlist(),
+                    //'data' => Users::getDropdownlist(),
                     'language' => 'hu',
                     'options' => ['placeholder' => 'Felhasználó...'],
                     'pluginOptions' => [
@@ -101,7 +101,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => Select2::widget([
                     'model' => $searchModel,
                     'attribute' => 'channel_id',
-                    'data' => Graylinepartners::getDropdownlist(),
+                    //'data' => Graylinepartners::getDropdownlist(),
                     'language' => 'hu',
                     'options' => ['placeholder' => 'Grayline partner...'],
                     'pluginOptions' => [

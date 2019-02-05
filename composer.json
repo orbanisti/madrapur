@@ -50,7 +50,6 @@
 		"alexantr/yii2-elfinder": "^1.3",
 		"trntv/sitemaped": "^0.1",
 		"zxbodya/yii2-gallery-manager": "*@dev",
-		"kartik-v/yii2-helpers": "dev-master",
 		"kartik-v/yii2-datecontrol": "*",
 		"kartik-v/yii2-widget-datepicker": "*",
 		"kartik-v/yii2-widget-typeahead": "*",
