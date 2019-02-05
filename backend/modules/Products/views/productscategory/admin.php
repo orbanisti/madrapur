@@ -1,9 +1,9 @@
-<?phpbackend\backend\
+<?php
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use app\components\extra;
-use \app\modules\Products\models\Productscategory;
+use backend\components\extra;
+use \backend\modules\Products\models\Productscategory;
 
 $this->title = Yii::t('app', 'Kategóriák');
 

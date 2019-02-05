@@ -1,7 +1,7 @@
-<?phpbackend\
+<?php
     //use kartik\rating\StarRating;
     
-    /*use app\assets\BootstrapstarratingAsset;
+    /*use backend\assets\BootstrapstarratingAsset;
     BootstrapstarratingAsset::register($this);*/
     use yii\helpers\Html;
 ?>

@@ -4,7 +4,7 @@
 
 
 
-use yii\helpers\Html;backend\
+use yii\helpers\Html;
 
 
 use yii\grid\GridView;
@@ -16,7 +16,7 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 
 
-/* @var $searchModel app\modules\Products\models\CitiesSearch */
+/* @var $searchModel backend\modules\Products\models\CitiesSearch */
 
 
 /* @var $dataProvider yii\data\ActiveDataProvider */

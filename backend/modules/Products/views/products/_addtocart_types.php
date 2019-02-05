@@ -1,5 +1,6 @@
- <?phpbackend\
- use app\modules\Products\models\Products;
+ <?php
+ 
+ use backend\modules\Products\models\Products;
 
  if(/*!$model->expired && */$model->source==Products::SOURCE_MANDELAN && $model->enquire_only==0) { ?>
     <div class="product-arrow-row">

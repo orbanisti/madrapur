@@ -16,7 +16,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 
 
-/* @var $model app\modules\Products\models\Cities */
+/* @var $model backend\modules\Products\models\Cities */
 
 
 

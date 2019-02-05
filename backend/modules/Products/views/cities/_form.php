@@ -5,7 +5,6 @@
 
 
 use yii\helpers\Html;
-backend\
 
 use yii\widgets\ActiveForm;
 
@@ -19,7 +18,7 @@ use lajax\translatemanager\models\Language;
 /* @var $this yii\web\View */
 
 
-/* @var $model app\modules\Products\models\Cities */
+/* @var $model backend\modules\Products\models\Cities */
 
 
 /* @var $form yii\widgets\ActiveForm */

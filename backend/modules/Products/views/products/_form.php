@@ -1,23 +1,23 @@
-<?phpbackend\backend\backend\backend\backend\backend\
+<?php
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use app\modules\Products\models\Products;
+use backend\modules\Products\models\Products;
 use lajax\translatemanager\models\Language;
 use kartik\datecontrol\DateControl;
 use kartik\date\DatePicker;
 use kartik\file\FileInput;
 use zxbodya\yii2\galleryManager\GalleryManager;
 use wbraganca\dynamicform\DynamicFormWidget;
-use app\modules\Products\models\Services;
-use app\models\Shopcurrency;
+use backend\modules\Products\models\Services;
+use backend\models\Shopcurrency;
 use yii\helpers\Json;
-use app\modules\Citydescription\models\Countries;
+use backend\modules\Citydescription\models\Countries;
 use kartik\select2\Select2;
 use yii\helpers\Url;
 use yii\web\JsExpression;
-use app\modules\Citydescription\models\Citydescription;
-app\assets\DatetimepickerAsset::register($this);
+use backend\modules\Citydescription\models\Citydescription;
+backend\assets\DatetimepickerAsset::register($this);
 ?>
 
 <?php

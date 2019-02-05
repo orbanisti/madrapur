@@ -4,13 +4,13 @@
 
 use yii\helpers\Html;
 
-use yii\widgetsbackend\iveForm;
+use yii\widgets\ActiveForm;
 
 
 
 /* @var $this yii\web\View */
 
-/* @var $model app\modules\Products\models\BlockoutsSearch */
+/* @var $model backend\modules\Products\models\BlockoutsSearch */
 
 /* @var $form yii\widgets\ActiveForm */
 

@@ -4,13 +4,13 @@
 
 use yii\helpers\Html;
 
-use yii\grid\GridViewbackend\
+use yii\grid\GridView;
 
 
 
 /* @var $this yii\web\View */
 
-/* @var $searchModel app\modules\Products\models\ProductsopinionSearch */
+/* @var $searchModel backend\modules\Products\models\ProductsopinionSearch */
 
 /* @var $dataProvider yii\data\ActiveDataProvider */
 

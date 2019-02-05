@@ -1,14 +1,14 @@
-<?phpbackend\backend\
+<?php
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use app\modules\Products\models\Products;
+use backend\modules\Products\models\Products;
 use lajax\translatemanager\models\Language;
 use kartik\datecontrol\DateControl;
 use kartik\file\FileInput;
 use zxbodya\yii2\galleryManager\GalleryManager;
 use wbraganca\dynamicform\DynamicFormWidget;
-use app\modules\Products\models\Productsprice;
+use backend\modules\Products\models\Productsprice;
 ?>
 
 <?php

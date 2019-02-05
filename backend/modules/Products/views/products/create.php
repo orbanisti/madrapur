@@ -1,9 +1,9 @@
-<?phpbackend\
+<?php
 
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\Products\models\Products */
+/* @var $model backend\modules\Products\models\Products */
 
 $this->title = Yii::t('app', 'Termék létrehozása');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Termékek'), 'url' => ['admin']];

@@ -1,4 +1,4 @@
-<?phpbackend\backend\
+<?php
 
 
 
@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 
 use kartik\datecontrol\DateControl;
 
-use app\modules\Products\models\Products;
+use backend\modules\Products\models\Products;
 
 use kartik\select2\Select2;
 
@@ -16,7 +16,7 @@ use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 
-/* @var $model app\modules\Products\models\Blockouts */
+/* @var $model backend\modules\Products\models\Blockouts */
 
 /* @var $form yii\widgets\ActiveForm */
 

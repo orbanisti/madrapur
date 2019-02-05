@@ -1,9 +1,9 @@
-<?phpbackend\backend\
+<?php
 
 use yii\helpers\Html;
-use app\components\extra;
+use backend\components\extra;
 
-use app\assets\BootstrapstarratingAsset;
+use backend\assets\BootstrapstarratingAsset;
     BootstrapstarratingAsset::register($this);
 
 ?>

@@ -1,4 +1,4 @@
-<?phpbackend\
+<?php
 
 
 
@@ -8,7 +8,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 
-/* @var $model app\modules\Products\models\Products */
+/* @var $model backend\modules\Products\models\Products */
 
 
 

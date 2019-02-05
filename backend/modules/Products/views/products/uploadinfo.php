@@ -1,12 +1,12 @@
-<?php backend\backend\backend\backend\backend\
+<?php
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
-use app\modules\Users\Module as Usermodule;
-use app\modules\Products\models\Products;
-use app\modules\Products\models\Productsprice;
-use app\modules\Products\models\ProductsTime;
+use backend\modules\Users\Module as Usermodule;
+use backend\modules\Products\models\Products;
+use backend\modules\Products\models\Productsprice;
+use backend\modules\Products\models\ProductsTime;
 use lajax\translatemanager\models\Language;
-use app\modules\Products\models\Productstranslate;
+use backend\modules\Products\models\Productstranslate;
 
 $model = new Products();
 $modelTranslations = [];

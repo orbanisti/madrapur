@@ -1,4 +1,4 @@
-<?phpbackend\backend\backend\backend\backend\
+<?php
 
 
 
@@ -16,13 +16,13 @@ use kartik\rating\StarRating;
 use yii\helpers\ArrayHelper;
 
 
-use app\modules\Order\models\Order;
+use backend\modules\Order\models\Order;
 
 
-use app\modules\Order\models\Orderedproducts;
+use backend\modules\Order\models\Orderedproducts;
 
 
-use app\modules\Products\models\Productsopinion;
+use backend\modules\Products\models\Productsopinion;
 
 
 
@@ -31,7 +31,7 @@ use app\modules\Products\models\Productsopinion;
 /* @var $this yii\web\View */
 
 
-/* @var $model app\modules\Products\models\Productsopinion */
+/* @var $model backend\modules\Products\models\Productsopinion */
 
 
 /* @var $form yii\widgets\ActiveForm */
@@ -70,7 +70,7 @@ use app\modules\Products\models\Productsopinion;
 
 
 
-    $product=\app\modules\Products\models\Products::findOne($model->product_id);
+    $product=\backend\modules\Products\models\Products::findOne($model->product_id);
 
 
 

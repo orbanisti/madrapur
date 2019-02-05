@@ -3,7 +3,6 @@
 
 
 
-backend\
 use yii\helpers\Html;
 
 
@@ -13,7 +12,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 
 
-/* @var $model app\modules\Products\models\Cities */
+/* @var $model backend\modules\Products\models\Cities */
 
 
 

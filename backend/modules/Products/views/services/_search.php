@@ -10,7 +10,7 @@ use yii\widgetsbackend\iveForm;
 
 /* @var $this yii\web\View */
 
-/* @var $model app\modules\Products\models\ServicesSearch */
+/* @var $model backend\modules\Products\models\ServicesSearch */
 
 /* @var $form yii\widgets\ActiveForm */
 

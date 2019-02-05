@@ -1,6 +1,7 @@
-<?phpbackend\
+<?php
+
 use yii\helpers\Html;
-use app\models\Shopcurrency;
+use backend\models\Shopcurrency;
 ?>
 
 <div class="col-sm-4">

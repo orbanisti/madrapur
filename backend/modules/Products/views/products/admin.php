@@ -1,17 +1,17 @@
-<?phpbackend\backend\backend\backend\backend\backend\backend\backend\
+<?php
 
 use kartik\export\ExportMenu;
 use kartik\grid\GridView;
 use kartik\helpers\Html;
 use yii\helpers\Url;
-use app\components\extra;
-use \app\modules\Products\models\Products;
-use app\modules\Products\models\Productscategory;
-use app\modules\Users\models\Users;
+use backend\components\extra;
+use \backend\modules\Products\models\Products;
+use backend\modules\Products\models\Productscategory;
+use backend\modules\Users\models\Users;
 use kartik\select2\Select2;
 use kartik\editable\Editable;
-use app\modules\Products\models\Graylinepartners;
-use app\modules\Users\Module as Usermodule;
+use backend\modules\Products\models\Graylinepartners;
+use backend\modules\Users\Module as Usermodule;
 
 $this->title = Yii::t('app', 'Termékek');
 $this->params['breadcrumbs'][] = $this->title;
@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => Select2::widget([
                     'model' => $searchModel,
                     'attribute' => 'country_id',
-                    'data' => app\modules\Citydescription\models\Countries::getList(),
+                    'data' => backend\modules\Citydescription\models\Countries::getList(),
                     'language' => 'hu',
                     'options' => ['placeholder' => 'Ország...'],
                     'pluginOptions' => [
@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => Select2::widget([
                     'model' => $searchModel,
                     'attribute' => 'city_id',
-                    'data' => \app\modules\Citydescription\models\Citydescription::getList(),
+                    'data' => \backend\modules\Citydescription\models\Citydescription::getList(),
                     'language' => 'hu',
                     'options' => ['placeholder' => 'Város...'],
                     'pluginOptions' => [

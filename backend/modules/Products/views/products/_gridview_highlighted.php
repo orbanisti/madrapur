@@ -1,12 +1,12 @@
-<?phpbackend\backend\backend\backend\
+<?php
 
 use yii\helpers\Html;
-use app\modules\Products\models\Products;
-use app\components\extra;
-use app\models\Shopcurrency;
+use backend\modules\Products\models\Products;
+use backend\components\extra;
+use backend\models\Shopcurrency;
 use yii\helpers\Url;
 
-use app\assets\BootstrapstarratingAsset;
+use backend\assets\BootstrapstarratingAsset;
     BootstrapstarratingAsset::register($this);
 
 ?>

@@ -16,9 +16,9 @@ $(document).ready(function () {
 <?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-app\assets\DatetimepickerAsset::register($this);
-use app\modules\Products\models\Products;
-use app\models\Shopcurrency;
+backend\assets\DatetimepickerAsset::register($this);
+use backend\modules\Products\models\Products;
+use backend\models\Shopcurrency;
 
 $addtocart = new \yii\base\DynamicModel([
             'product_id', 'amount', 'date', 'time'

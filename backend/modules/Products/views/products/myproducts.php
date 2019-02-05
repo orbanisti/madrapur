@@ -1,16 +1,15 @@
-<?phpbackend\backend\backend\backend\
-
+<?php
 
 
 use yii\helpers\Html;
 
 use yii\grid\GridView;
 
-use app\components\extra;
+use backend\components\extra;
 
-use \app\modules\Products\models\Products;
+use \backend\modules\Products\models\Products;
 
-use app\modules\Products\models\Productscategory;
+use backend\modules\Products\models\Productscategory;
 
 use yii\widgets\Pjax;
 
@@ -18,7 +17,7 @@ use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 
-/* @var $searchModel app\modules\Products\models\ProductsSearch */
+/* @var $searchModel backend\modules\Products\models\ProductsSearch */
 
 /* @var $dataProvider yii\data\ActiveDataProvider */
 

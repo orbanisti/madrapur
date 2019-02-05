@@ -2,15 +2,13 @@
 
 
 
-backend\
-
 use yii\helpers\Html;
 
 
 use yii\widgetsbackend\iveForm;
 
 
-use \app\modules\Products\models\Productscategory;
+use \backend\modules\Products\models\Productscategory;
 
 
 use lajax\translatemanager\models\Language;
@@ -25,7 +23,7 @@ use kartik\select2\Select2;
 /* @var $this yii\web\View */
 
 
-/* @var $model app\modules\Products\models\Productscategory */
+/* @var $model backend\modules\Products\models\Productscategory */
 
 
 /* @var $form yii\widgets\ActiveForm */

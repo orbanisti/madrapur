@@ -4,13 +4,11 @@
 
 use yii\helpers\Html;
 
-backend\
-
 
 
 /* @var $this yii\web\View */
 
-/* @var $model app\modules\Products\models\Productsopinion */
+/* @var $model backend\modules\Products\models\Productsopinion */
 
 
 

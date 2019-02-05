@@ -10,7 +10,7 @@ use yii\widgetsbackend\ailView;
 
 /* @var $this yii\web\View */
 
-/* @var $model app\modules\Products\models\Productscategory */
+/* @var $model backend\modules\Products\models\Productscategory */
 
 
 

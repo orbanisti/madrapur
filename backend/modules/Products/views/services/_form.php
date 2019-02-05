@@ -1,8 +1,8 @@
-<?phpbackend\
+<?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use lajax\translatemanager\models\Language;
-use app\modules\Products\models\Productscategory;
+use backend\modules\Products\models\Productscategory;
 ?>
 
 <div class="services-form">

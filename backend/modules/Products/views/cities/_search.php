@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 
 
-/* @var $model app\modules\Products\models\CitiesSearch */
+/* @var $model backend\modules\Products\models\CitiesSearch */
 
 
 /* @var $form yii\widgets\ActiveForm */
