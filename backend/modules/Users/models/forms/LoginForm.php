@@ -1,11 +1,9 @@
 <?php
 
-backend\
 
 
+namespace backend\modules\Users\models\forms;
 
-namebackend\e app\modules\Users\models\forms;
-backend\
 
 
 
@@ -16,10 +14,10 @@ use Yii;
 use yii\base\Model;
 
 
-use app\modules\Users\models\Users;
+use backend\modules\Users\models\Users;
 
 
-use app\modules\Users\Module as Usermodule;
+use backend\modules\Users\Module as Usermodule;
 
 
 

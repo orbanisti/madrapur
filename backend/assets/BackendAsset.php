@@ -46,6 +46,14 @@ class BackendAsset extends AssetBundle {
      *
      * @var array
      */
+    public $jsOptions = [
+        'position' => \yii\web\View::POS_HEAD
+    ];
+
+    /**
+     *
+     * @var array
+     */
     public $depends = [
         YiiAsset::class,
         AdminLte::class,

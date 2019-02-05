@@ -2,7 +2,7 @@
 use kartik\helpers\Html;
 use Cmfcmf\OpenWeatherMap;
 use Cmfcmf\OpenWeatherMap\Exception as OWMException;
-app\assets\MomenttimezoneAsset::register($this);
+backend\assets\MomenttimezoneAsset::register($this);
 
 $lang=substr(Yii::$app->language, 0, 2);
 if($lang!='en' && $lang!='ru' && $lang!='it' && $lang!='es' && $lang!='sp' && $lang!='uk' && $lang!='ua' &&

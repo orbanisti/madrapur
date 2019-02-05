@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\Citydescription\models\Countries */
+/* @var $model backend\modules\Citydescription\models\Countries */
 
 $this->title = $model->country_name;
 

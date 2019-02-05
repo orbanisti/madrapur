@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\Citydescription\models\Countries */
+/* @var $model backend\modules\Citydescription\models\Countries */
 
 $this->title = Yii::t('app', 'Új ország');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Országok'), 'url' => ['admin']];

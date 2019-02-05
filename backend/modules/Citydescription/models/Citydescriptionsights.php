@@ -1,9 +1,9 @@
 <?php
 
-namespace app\modules\Citydescription\models;
+namespace backend\modules\Citydescription\models;
 
 use Yii;
-use app\modules\Citydescription\models\CitydescriptionsightsTranslate;
+use backend\modules\Citydescription\models\CitydescriptionsightsTranslate;
 
 /**
  * This is the model class for table "citydescription_sights".

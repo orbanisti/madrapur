@@ -165,7 +165,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
     ];
 
-    /* TODO EXPORT START
+    /* TODO EXPORT START*/
     $fullExportMenu = ExportMenu::widget([
         'dataProvider' => $dataProvider,
         'columns' => $gridColumns,
@@ -220,7 +220,7 @@ $this->params['breadcrumbs'][] = $this->title;
             #],
         ]
     ]);
-
+/*
     TODO EXPORT END */
     ?>
 

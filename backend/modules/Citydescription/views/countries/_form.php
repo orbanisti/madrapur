@@ -6,7 +6,7 @@ use lajax\translatemanager\models\Language;
 use kartik\file\FileInput;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\Citydescription\models\Countries */
+/* @var $model backend\modules\Citydescription\models\Countries */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

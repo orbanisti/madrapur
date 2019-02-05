@@ -1,14 +1,14 @@
 <?php
 
-namespace app\modules\Citydescription\models;
+namespace backend\modules\Citydescription\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\Citydescription\models\Countries;
+use backend\modules\Citydescription\models\Countries;
 
 /**
- * CountriesSearch represents the model behind the search form about `app\modules\Citydescription\models\Countries`.
+ * CountriesSearch represents the model behind the search form about `backend\modules\Citydescription\models\Countries`.
  */
 class CountriesSearch extends Countries
 {

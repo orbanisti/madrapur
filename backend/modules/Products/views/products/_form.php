@@ -17,7 +17,8 @@ use kartik\select2\Select2;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 use backend\modules\Citydescription\models\Citydescription;
-backend\assets\DatetimepickerAsset::register($this);
+\kartik\datetime\DateTimePickerAsset::register($this);
+//backend\assets\DatetimepickerAsset::register($this);
 ?>
 
 <?php
@@ -45,7 +46,7 @@ backend\assets\DatetimepickerAsset::register($this);
 
     <?= (!$model->isNewRecord && Yii::$app->getModule('users')->isAdmin() && $model->changed!='[]' && $model->changed!='')?'<b>Változások: </b><br/>'.implode(',', Json::decode($model->changed)).'<br/><br/>':''; ?>
 
-    <?php (!(Yii::$app->getModule('users')->isAdmin() || $model->isNewRecord))?Yii::t('app', 'Jutalék').': '.$model->commission.' '.Products::commissiontypes($model->commission_type).'<br/><br/>':'' ?>
+    <?php (!(true/*Yii::$app->getModule('users')->isAdmin()*/ || $model->isNewRecord))?Yii::t('app', 'Jutalék').': '.$model->commission.' '.Products::commissiontypes($model->commission_type).'<br/><br/>':'' ?>
 
     <ul class="nav nav-tabs">
         <li class="active"><a href="#content" data-toggle="tab"><?= Yii::t('app','Tartalom') ?></a></li>
@@ -72,7 +73,7 @@ backend\assets\DatetimepickerAsset::register($this);
             <?= $form->field($model, 'currency')->dropDownList(Shopcurrency::getAvaibleTodropdown()); ?>
 
             <?php
-                if(Yii::$app->getModule('users')->isAdmin() || $model->isNewRecord) {
+                if(true || $model->isNewRecord) {//Yii::$app->getModule('users')->isAdmin() || $model->isNewRecord) {
                     echo '<div class="col-md-12 nopadding"><div class="col-md-6">';
                     echo $form->field($model, 'commission', ['template' => '<div class="row"><div class="col-md-2 nopadding" style="line-height: 38px;">{label}</div><div class="col-md-10">{input}{error}{hint}</div></div>'])->textInput();
                     echo '</div><div class="col-md-6 nopadding">';
@@ -86,7 +87,7 @@ backend\assets\DatetimepickerAsset::register($this);
             <?php //$form->field($model, "net_prices")->checkbox(); ?>
 
             <?php
-                if(Yii::$app->getModule('users')->isAdmin()) {
+                if(true) {//Yii::$app->getModule('users')->isAdmin()) {
                     echo $form->field($model, 'status')->dropDownList(Products::status());
                 } else {
                     echo $form->field($model, 'status')->hiddenInput()->label(false);
@@ -155,11 +156,11 @@ backend\assets\DatetimepickerAsset::register($this);
 
             <?php //$form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-            <?= $form->field($model, 'description')->widget(\yii\redactor\widgets\Redactor::className(),[ 'clientOptions' => [ 'lang' => Yii::$app->language, 'minHeight' => 300, 'imageManagerJson' => Yii::$app->extra->getMainhost().'/redactor/upload/image-json', 'imageUpload' => WEB_ROOT.'/upload/image', 'fileUpload' => WEB_ROOT.'/upload/file', 'imageUpload' => Yii::$app->extra->getMainhost().'/redactor/upload/image', 'plugins' => ['clips', 'fontcolor','table','fullscreen'] ] ]) ?>
+            <?= ""//$form->field($model, 'description')->widget(\yii\redactor\widgets\Redactor::className(),[ 'clientOptions' => [ 'lang' => Yii::$app->language, 'minHeight' => 300, 'imageManagerJson' => Yii::$app->extra->getMainhost().'/redactor/upload/image-json', 'imageUpload' => WEB_ROOT.'/upload/image', 'fileUpload' => WEB_ROOT.'/upload/file', 'imageUpload' => Yii::$app->extra->getMainhost().'/redactor/upload/image', 'plugins' => ['clips', 'fontcolor','table','fullscreen'] ] ]) ?>
 
             <?php //$form->field($model, 'other_info')->textarea(['rows' => 6]) ?>
 
-            <?= $form->field($model, 'other_info')->widget(\yii\redactor\widgets\Redactor::className(),[ 'clientOptions' => [ 'lang' => Yii::$app->language, 'minHeight' => 300, 'imageManagerJson' => Yii::$app->extra->getMainhost().'/redactor/upload/image-json', 'imageUpload' => WEB_ROOT.'/upload/image', 'fileUpload' => WEB_ROOT.'/upload/file', 'imageUpload' => Yii::$app->extra->getMainhost().'/redactor/upload/image', 'plugins' => ['clips', 'fontcolor','table','fullscreen'] ] ]) ?>
+            <?= ""//$form->field($model, 'other_info')->widget(\yii\redactor\widgets\Redactor::className(),[ 'clientOptions' => [ 'lang' => Yii::$app->language, 'minHeight' => 300, 'imageManagerJson' => Yii::$app->extra->getMainhost().'/redactor/upload/image-json', 'imageUpload' => WEB_ROOT.'/upload/image', 'fileUpload' => WEB_ROOT.'/upload/file', 'imageUpload' => Yii::$app->extra->getMainhost().'/redactor/upload/image', 'plugins' => ['clips', 'fontcolor','table','fullscreen'] ] ]) ?>
 
             <?= $form->field($model, 'image')->widget(FileInput::classname(), [
                 'options'=>['accept'=>'image/*'],
@@ -779,6 +780,6 @@ backend\assets\DatetimepickerAsset::register($this);
 
     </script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=<?= Yii::$app->params['googleMapsApiKey'] ?>&callback=initMap&language=<?= substr(Yii::$app->language, 0, 2) ?>&libraries=places" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=<?= 1//Yii::$app->params['googleMapsApiKey'] ?>&callback=initMap&language=<?= substr(Yii::$app->language, 0, 2) ?>&libraries=places" async defer></script>
 
 

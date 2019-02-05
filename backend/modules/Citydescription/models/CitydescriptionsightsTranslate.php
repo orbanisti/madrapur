@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\Citydescription\models;
+namespace backend\modules\Citydescription\models;
 
 use Yii;
 

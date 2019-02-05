@@ -40,7 +40,7 @@ use backend\modules\Users\models\Users;
 /**
  * ProductsController implements the CRUD actions for Products model.
  */
-class ProductsController extends Controller
+class ProductsController extends \backend\controllers\Controller
 {
     public function behaviors()
     {
@@ -537,10 +537,10 @@ class ProductsController extends Controller
 
     public function actionCreate()
     {
-        if(Yii::$app->getModule('users')->isAdmin())
+        if(true)//Yii::$app->getModule('users')->isAdmin())
             $this->redirectToAdmin();
 
-        if(!extra::isAdminpage()) $this->layout = "@app/themes/mandelan/layouts/profile";
+        if(!true) $this->layout = "@app/themes/mandelan/layouts/profile";
 
         /*$loguser=Usermodule::getLogineduser();
         if($loguser->agree_upload_info==0 && !Yii::$app->getModule('users')->isAdmin()) {
@@ -550,7 +550,7 @@ class ProductsController extends Controller
         $model = new Products();
         $model->start_date=date('Y-m-d',time());
         $user_id=Yii::$app->user->id;
-        if(Yii::$app->getModule('users')->isPartners())
+        if(false)//Yii::$app->getModule('users')->isPartners())
         {
             $partner=Userpartners::findOne(['partner_id' => Yii::$app->user->id]);
             $user_id=$partner->user_id;
@@ -664,7 +664,9 @@ class ProductsController extends Controller
 
         } else {
 
-            if(!Yii::$app->getModule('users')->isAdmin()) $model->status=Products::STATUS_INACTIVE;
+            if(!false)//Yii::$app->getModule('users')->isAdmin())
+                $model->status=Products::STATUS_INACTIVE;
+
 
             $model->lang_code=Yii::$app->language;
 

@@ -1,4 +1,4 @@
-<?phpbackend\backend\
+<?php
 
 
 
@@ -6,7 +6,7 @@
 
 /* @var $form yii\bootstrap\ActiveForm */
 
-/* @var $model app\models\LoginForm */
+/* @var $model backend\models\LoginForm */
 
 
 
@@ -16,7 +16,7 @@ use yii\bootstrap\ActiveForm;
 
 use yii\helpers\Url;
 
-use app\modules\Users\Module as Usermodule;
+use backend\modules\Users\Module as Usermodule;
 use kartik\social\Module;
 
 
