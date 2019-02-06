@@ -40,6 +40,9 @@ $config = [
         'Reservations' => [
             'class' => backend\modules\Reservations\Module::class,
         ],
+        'QRBase' => [
+            'class' => backend\modules\QRBase\Module::class,
+        ],
         'system' => [
             'class' => backend\modules\system\Module::class,
         ],
