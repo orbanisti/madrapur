@@ -37,6 +37,9 @@ $config = [
         'Products' => [
             'class' => backend\modules\Products\Module::class,
         ],
+        'Reservations' => [
+            'class' => backend\modules\Reservations\Module::class,
+        ],
         'system' => [
             'class' => backend\modules\system\Module::class,
         ],

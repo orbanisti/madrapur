@@ -343,6 +343,14 @@ echo Menu::widget(
                                 'active' => (Yii::$app->controller->id == 'products'),
                             ],
                             [
+                                'label' => Yii::t('backend', 'Reservations'),
+                                'url' => [
+                                    '/Reservations/reservations/admin'
+                                ],
+                                'icon' => '<i class="fa fa-ticket"></i>',
+                                'active' => (Yii::$app->controller->id == 'reservations'),
+                            ],
+                            [
                                 'label' => Yii::t('backend', 'Key-Value Storage'),
                                 'url' => [
                                     '/system/key-storage/index'
