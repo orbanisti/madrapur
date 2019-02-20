@@ -26,7 +26,7 @@ class m190206_155109_qrbase extends Migration {
                 'sku' => $this->string(255),
                 'claimed_on' => $this->date(),
                 'hash' => $this->string(150),
-                'views' => $this->number(),
+                'views' => $this->integer(),
                 'until' => $this->date()
             ], $tableOptions);
     }
