@@ -21,5 +21,11 @@ return [
             'migrationTable' => '{{%system_rbac_migration}}',
             'templateFile' => '@common/rbac/views/migration.php'
         ],
+        'mad-migrate' => [
+            'class' => console\controllers\MadrapurMigrateController::class,
+            'migrationPath' => '@common/migrations/madrapur/',
+            'migrationTable' => '{{%system_mad_migrate}}',
+            'templateFile' => '@common/mad-migrate/views/migration.php'
+        ],
     ],
 ];
