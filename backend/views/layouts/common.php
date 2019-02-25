@@ -351,14 +351,6 @@ echo Menu::widget(
                                 'active' => (Yii::$app->controller->id == 'reservations'),
                             ],
                             [
-                                'label' => Yii::t('backend', 'QR Base'),
-                                'url' => [
-                                    '/QRBase/qrbase/admin'
-                                ],
-                                'icon' => '<i class="fa fa-qrcode"></i>',
-                                'active' => (Yii::$app->controller->id == 'qrbase'),
-                            ],
-                            [
                                 'label' => Yii::t('backend', 'Key-Value Storage'),
                                 'url' => [
                                     '/system/key-storage/index'
