@@ -34,6 +34,9 @@ $config = [
         'file' => [
             'class' => backend\modules\file\Module::class,
         ],
+        'madActiveRecord' => [
+            'class' => backend\modules\MadActiveRecord\Module::class,
+        ],
         'Products' => [
             'class' => backend\modules\Products\Module::class,
         ],
