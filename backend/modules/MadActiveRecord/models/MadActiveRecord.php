@@ -14,6 +14,7 @@ use yii\db\Query;
 class MadActiveRecord extends ActiveRecord {
     /**
      * @param $what
+     * @param $from
      * @param $where
      * @return Query
      */
@@ -26,6 +27,31 @@ class MadActiveRecord extends ActiveRecord {
             ->where($where);
 
         return $query;
+    }
+
+    /**
+     * @param MadActiveRecord $model
+     * @param $values
+     * @return bool
+     */
+    public static function insertOne(MadActiveRecord $model, $values) {
+        $model->setAttributes($values);
+
+        return $model->save(false);
+    }
+
+
+
+    public static function insertAll(string $model, $values) {
+        foreach ($values as $value) {
+            $newModel = new $model;
+
+            if (!MadActiveRecord::insertOne($newModel, $value)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
