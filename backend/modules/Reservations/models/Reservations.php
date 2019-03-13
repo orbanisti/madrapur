@@ -1,46 +1,54 @@
 <?php
+
 namespace backend\modules\Reservations\models;
 
+use backend\modules\MadActiveRecord\models\MadActiveRecord;
 use Yii;
 use yii\db\ActiveRecord;
 
-class Reservations extends ActiveRecord {
+class Reservations extends MadActiveRecord
+{
 
-    public static function tableName() {
-        return 'mres_1802'; //TODO: dynamic table name
+    public static function tableName()
+    {
+        return 'modulusBookings'; //TODO: dynamic table name
     }
 
-    public function rules() {
+    public function rules()
+    {
         return [
-            [['id'], 'integer'],
-            [['uuid'], 'string', 'max' => 32],
+            [['bookingId'], 'integer'],
             [['source'], 'string', 'max' => 255],
             [['data'], 'string', 'max' => 1000],
-            [['invoice_date'], 'date', 'format' => 'yyyy-MM-dd'],
-            [['reservation_date'], 'date', 'format' => 'yyyy-MM-dd'],
+            [['productId'], 'string', 'max' => 32],
+            [['invoiceDate'], 'date', 'format' => 'yyyy-MM-dd'],
+            [['bookingDate'], 'date', 'format' => 'yyyy-MM-dd'],
         ];
     }
 
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'uuid' => Yii::t('app', 'UUID'),
-            'source' => Yii::t('app', 'Forrás'),
+            'bookingId' => Yii::t('app', 'BookingID'),
+            'source' => Yii::t('app', 'Source'),
             'data' => Yii::t('app', 'JSON adat'),
-            'invoice_date' => Yii::t('app', 'Számla kelte'),
-            'reservation_date' => Yii::t('app', 'Foglalás dátuma'),
+            'productId' => Yii::t('app', 'Product Id'),
+            'invoiceDate' => Yii::t('app', 'Invoice  date'),
+            'bookingDate' => Yii::t('app', 'Booking date'),
         ];
     }
 
-    public function afterFind() {
+    public function afterFind()
+    {
         parent::afterFind();
 
-        if(Yii::$app->language != Yii::$app->sourceLanguage && !empty($this->translation))
+        if (Yii::$app->language != Yii::$app->sourceLanguage && !empty($this->translation))
             $this->attributes = $this->translation->attributes;
     }
 
-    public static function getList() {
-        return ArrayHelper::map(self::find()->all(), 'id', 'invoice_date');
+    public static function getList()
+    {
+        return ArrayHelper::map(self::find()->all(), 'bookingId', 'bookingDate');
     }
 
 }

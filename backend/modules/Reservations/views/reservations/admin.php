@@ -8,69 +8,126 @@
 
 use kartik\helpers\Html;
 use backend\components\extra;
+use yii\widgets\ActiveForm;
 
 $this->title = Yii::t('app', 'Foglalások');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
+<!--suppress ALL -->
 <div class="products-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?php
-        $gridColumns = [
-            ['class' => 'yii\grid\SerialColumn'],
-            'uuid',
-            'source',
-            'data',
-            'invoice_date',
-            'reservation_date'
-        ];
+    $gridColumns = [
+        ['class' => 'yii\grid\SerialColumn'],
+        'bookingId',
+        'productId',
+        'source',
+        'invoiceDate',
+        'bookingDate'
+    ];
 
-        echo \yii\grid\GridView::widget([
-            'pager' => [
-                'firstPageLabel' => Yii::t('app','Első oldal'),
-                'lastPageLabel'  => Yii::t('app','Utolsó oldal'),
-            ],
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'columns' => $gridColumns,
-        ]);
+    echo \yii\grid\GridView::widget([
+        'pager' => [
+            'firstPageLabel' => Yii::t('app', 'Első oldal'),
+            'lastPageLabel' => Yii::t('app', 'Utolsó oldal'),
+        ],
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => $gridColumns,
+    ]);
+
+
+
+
+
     ?>
 
     <div id="jsonPre">
 
+
     </div>
 
-    <script>
-        $().ready(
-            function() {
-                $.ajax({
-                    type: 'GET',
-                    url: 'https://budapestrivercruise.eu/wp-json/bookings/v1/start/2019-02-01/end/2019-02-28',
-                    success: function (data) {
-                        let innerHTML = "";
-                        let bookingKeys = [];
+    <?php
 
-                        Object.keys(data).forEach(
-                            (bookingId) => {
-                                innerHTML += "<p>BookingId: " + bookingId + "</p>";
 
-                                if (!bookingKeys.length) bookingKeys = Object.keys(data[bookingId]);
 
-                                bookingKeys.forEach(
-                                    function (key) {
-                                        innerHTML += "<p>" + key + " => " + data[bookingId][key] +  "</p>";
-                                    }
-                                );
-                            }
-                        );
+    $form = ActiveForm::begin([
+        'id' => 'date-import',
+        'action' => 'admin',
+        'options' => ['class' => 'modImp'],
+    ]) ?>
 
-                        $("#jsonPre").html(innerHTML);
-                    }
-                });
+    <style>
+        .dateImportWidget {
+            background-color: #eee;
+            padding: 10px;
+        }
+
+        .dateImportWidget input {
+            width: 20%;
+
+        }
+
+
+    </style>
+
+    <div class="box">
+        <div class="box-title"><h2>Importálás</h2></div>
+
+        <?php
+
+
+        # foreach ($response as $booking){
+        if (isset($importResponse)) {
+            // echo 'Import Státusza: ' . $importResponse . '<br/>';
+            if (YII_ENV_DEV) {
+                echo($importResponse);
             }
-        );
+        }
+
+
+        #}
+
+
+        ?>
+
+
+        <div class="dateImportWidget">
+            <?php
+
+
+            ?>
+            <?= $form->field($dateImportModel, 'dateFrom')->widget(\yii\jui\DatePicker::class, [         //'language' => 'ru',
+                //'dateFormat' => 'yyyy-MM-dd',
+            ]) ?>
+            <?= $form->field($dateImportModel, 'dateTo')->widget(\yii\jui\DatePicker::class, [         //'language' => 'ru',
+                //'dateFormat' => 'yyyy-MM-dd',
+            ]) ?>
+            <?= $form->field($dateImportModel, 'source')->dropDownList(array('https://budapestrivercruise.eu' => 'https://budapestrivercruise.eu', 'https://silver-line.hu' => 'https://silver-line.hu'), array('options' => array('https://budapestrivercruise.eu' => array('selected' => true)))); ?>
+
+
+
+            <?= Html::submitButton('Import', ['class' => 'btn btn-primary']) ?>
+
+            <?php ActiveForm::end() ?>
+        </div>
+        <div class="dateImportStatus">
+            <strong>Log</strong>
+            <span id="currLog">
+
+            </span>
+        </div>
+
+
+    </div>
+
+
+    <script>
+
+
     </script>
 
 </div>

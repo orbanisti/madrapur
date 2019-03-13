@@ -17,6 +17,7 @@ class m190305_102344_modbook extends Migration {
             $this->tableName, [
             'id' => $this->primaryKey(),
             'bookingId' => $this->string(32),
+            'productId' => $this->string(32),
             'source' => $this->string(255)
                 ->notNull(),
             'data' => $this->string(3000),
@@ -24,11 +25,13 @@ class m190305_102344_modbook extends Migration {
                 ->notNull(),
             'bookingDate' => $this->date()
                 ->notNull(),
+
             ], $this->tableOptions
         );
         $this->insert($this->tableName, [
             'id' => "1",
             'bookingId'=>"15",
+            'productId'=>"3",
             'source' => "budapestrivercruise.eu",
             'data' => "{none}",
             'invoiceDate' => "2018-02-05",
