@@ -12,12 +12,6 @@ use backend\modules\Products\models\Graylinepartners;
 
 class ReservationsAdminSearchModel extends Reservations
 {
-    public $bookingId;
-
-    public $source;
-    public $data;
-    public $invoiceDate;
-    public $bookingDate;
 
     public function rules()
     {
@@ -43,7 +37,7 @@ class ReservationsAdminSearchModel extends Reservations
             # ['source', 'LIKE', 'utca']
         ]);
 
-        $rows = self::select($what, $from, $where);
+        $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $rows,
@@ -55,6 +49,11 @@ class ReservationsAdminSearchModel extends Reservations
         $this->load($params);
 
         return $dataProvider;
+    }
+
+    public function pista() {
+
+        return "pista".$this['bookingId'];
     }
 }
 

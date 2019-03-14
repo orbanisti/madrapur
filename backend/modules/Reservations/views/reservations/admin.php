@@ -26,7 +26,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'productId',
         'source',
         'invoiceDate',
-        'bookingDate'
+        'bookingDate',
+        [
+            'label' => 'Edit Booking',
+            'format'=>'html',
+            'value' => function ($model) {
+                return '<a href="/Reservations/reservations/booking>">'.$model->pista().'</a>';
+            }
+        ],
+
     ];
 
     echo \yii\grid\GridView::widget([
@@ -40,9 +48,6 @@ $this->params['breadcrumbs'][] = $this->title;
     ]);
 
 
-
-
-
     ?>
 
     <div id="jsonPre">
@@ -51,7 +56,6 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <?php
-
 
 
     $form = ActiveForm::begin([
