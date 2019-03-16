@@ -66,7 +66,7 @@ $form = ActiveForm::begin([
     'options' => [
         'pluginOptions' => [
             'autoclose' => true
-        ]
+        ] 
     ]
 ]); ?>
 
