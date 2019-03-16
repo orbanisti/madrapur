@@ -25,6 +25,32 @@ class ReservationsAdminSearchModel extends Reservations
     }
 
     public function search($params)
+{
+    $invoiceDate = '2016-02-05';
+    $bookingDate = '2020-08-20';
+
+    $what = ['*'];
+    $from = self::tableName();
+    $where = self::andWhereFilter([
+        ['invoiceDate', '>=', $invoiceDate],
+        ['bookingDate', '<=', $bookingDate],
+        # ['source', 'LIKE', 'utca']
+    ]);
+
+    $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where);
+
+    $dataProvider = new ActiveDataProvider([
+        'query' => $rows,
+        'pagination' => [
+            'pageSize' => 15,
+        ],
+    ]);
+
+    $this->load($params);
+
+    return $dataProvider;
+}
+    public function searchChart($params)
     {
         $invoiceDate = '2016-02-05';
         $bookingDate = '2020-08-20';
@@ -33,7 +59,7 @@ class ReservationsAdminSearchModel extends Reservations
         $from = self::tableName();
         $where = self::andWhereFilter([
             ['invoiceDate', '>=', $invoiceDate],
-            ['bookingDate', '<=', $bookingDate],
+            ['bookingDate', '<=', $bookingDate]
             # ['source', 'LIKE', 'utca']
         ]);
 
@@ -41,9 +67,6 @@ class ReservationsAdminSearchModel extends Reservations
 
         $dataProvider = new ActiveDataProvider([
             'query' => $rows,
-            'pagination' => [
-                'pageSize' => 15,
-            ],
         ]);
 
         $this->load($params);

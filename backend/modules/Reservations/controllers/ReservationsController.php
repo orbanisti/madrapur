@@ -66,6 +66,7 @@ class ReservationsController extends Controller {
     public function actionAdmin() {
         $searchModel = new ReservationsAdminSearchModel();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $chartDataProvider = $searchModel->searchChart(Yii::$app->request->queryParams);
         $connection=YII::$app->db;
         $dateImportModel= new DateImport();
         $request=Yii::$app->request;
@@ -135,6 +136,7 @@ class ReservationsController extends Controller {
         return $this->render('admin', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'chartDataProvider' => $chartDataProvider,
             'connection'=>$connection,
             'dateImportModel'=>$dateImportModel,
             'response'=>$response,

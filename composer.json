@@ -68,7 +68,8 @@
 		"lajax/yii2-translate-manager": "1.*",
 		"yiidoc/yii2-redactor": "*",
 		"wbraganca/yii2-dynamicform": "dev-master",
-		"lajax/yii2-language-picker": "1.*"
+		"lajax/yii2-language-picker": "1.*",
+		"onmotion/yii2-widget-apexcharts": "^1.0"
 	},
 	"require-dev": {
 		"yiisoft/yii2-debug": "~2.0.0",

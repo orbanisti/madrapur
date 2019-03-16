@@ -9,24 +9,34 @@ use yii\db\ActiveRecord;
 /**
  * Default model for the `Product` module
  */
-class Product extends MadActiveRecordActiveRecord {
+class Product extends MadActiveRecord{
  
     public static function tableName() {
-        return 'YOUR-TABLE-NAME';
+        return 'modulusproducts';
     }
-
+//TODO
     public function rules() {
         return [
             [['id'], 'integer'],
-            [['source'], 'string', 'max' => 255],
-            [['randomDate'], 'date', 'format' => 'yyyy-MM-dd'],
+            [['currency'], 'string', 'max' => 255],
+            [['status'], 'string', 'max' => 255],
+            [['title'], 'string', 'max' => 255],
+            [['description'], 'string', 'max' => 255],
+            [['short_description'], 'string', 'max' => 255],
+            [['thumbnail'], 'string', 'max' => 255],
+            [['images'], 'string', 'max' => 255],
+            [['category'], 'string', 'max' => 255],
+            [['start_date'], 'string', 'max' => 255],
+            [['end_date'], 'string', 'max' => 255],
+            [['capacity'], 'string', 'max' => 255],
+            [['duration'], 'string', 'max' => 255]
         ];
     }
-
+//TODO
     public function attributeLabels() {
         return [
             'id' => Yii::t('app', 'ID'),
-            'source' => Yii::t('app', 'Forrás'),
+            'currency' => Yii::t('app', 'currency'),
             'randomDate' => Yii::t('app', 'Véletlenszerű dátum'),
         ];
     }

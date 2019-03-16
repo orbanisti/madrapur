@@ -15,19 +15,19 @@ use yii\widgets\ActiveForm;
     <p>
         You may customize this page by editing the following file:<br>
         <code><?= __FILE__ ?></code>
-      <?php
-        /*$gridColumns = [
+        <?php
+        $gridColumns = [
             ['class' => 'yii\grid\SerialColumn'],
-            'bookingId',
-            'productId',
-            'source',
-            'invoiceDate',
-            'bookingDate',
+            'id',
+
+            'title',
+            'capacity',
+            'currency',
             [
-                'label' => 'Edit Booking',
+                'label' => 'Edit Product',
                 'format'=>'html',
                 'value' => function ($model) {
-                    return '<a href="/Reservations/reservations/bookingedit?bookingId='.$model->returnBookingId().'">Edit'.'</a>';
+                    return '<a href="/Reservations/reservations/bookingedit?bookingId='.''/*$model->returnBookingId()*/.'">Edit'.'</a>';
                 }
             ],
 
@@ -41,9 +41,9 @@ use yii\widgets\ActiveForm;
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'columns' => $gridColumns,
-        ]);*/
+        ]);
 
 
-     ?>
+        ?>
     </p>
 </div>
