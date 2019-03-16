@@ -132,14 +132,6 @@ class ReservationsController extends Controller {
 
         }
 
-
-
-
-
-
-
-
-
         return $this->render('admin', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -159,5 +151,22 @@ class ReservationsController extends Controller {
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+    public function actionBookingedit(){
+
+        $model = new DateImport();
+        $request=Yii::$app->request;
+        $bookingId=$request->get('bookingId');
+        $query = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'bookingId=' . $bookingId);
+
+        try {
+            $bookingInfo = $query->one();
+        } catch (Exception $e) {
+        }
+
+        $backendData=$bookingInfo;
+        return $this->render('bookingedit',['model'=>$model,'backenddata'=>$backendData]);
+
+
     }
 }

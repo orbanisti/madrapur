@@ -343,7 +343,24 @@ echo Menu::widget(
                                 'active' => (Yii::$app->controller->id == 'products'),
                             ],
                             [
-                                'label' => Yii::t('backend', 'Reservations'),
+                                'label' => Yii::t('backend', 'Mad-Product'),
+                                'url' => [
+                                    '/Product/product/admin'
+                                ],
+                                'icon' => '<i class="fa fa-ticket"></i>',
+                                'active' => (Yii::$app->controller->id == 'product'),
+                                'items' => [
+                                    [
+                                        'label' => Yii::t('backend', 'Create'),
+                                        'url' => [
+                                            '/Product/product/create'
+                                        ],
+                                        'icon' => '<i class="fa fa-database"></i>',
+                                        'active' => (Yii::$app->controller->id == 'create'),
+                                    ],],
+                            ],
+                            [
+                                'label' => Yii::t('backend', 'Mad-Reservations'),
                                 'url' => [
                                     '/Reservations/reservations/admin'
                                 ],

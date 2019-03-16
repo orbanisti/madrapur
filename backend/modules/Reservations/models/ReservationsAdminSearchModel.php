@@ -51,9 +51,8 @@ class ReservationsAdminSearchModel extends Reservations
         return $dataProvider;
     }
 
-    public function pista() {
-
-        return "pista".$this['bookingId'];
+    public function returnBookingId() {
+        return $this['bookingId'];
     }
 }
 

@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'label' => 'Edit Booking',
             'format'=>'html',
             'value' => function ($model) {
-                return '<a href="/Reservations/reservations/booking>">'.$model->pista().'</a>';
+                return '<a href="/Reservations/reservations/bookingedit?bookingId='.$model->returnBookingId().'">Edit'.'</a>';
             }
         ],
 
@@ -114,7 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
-            <?= Html::submitButton('Import', ['class' => 'btn btn-primary']) ?>
+
 
             <?php ActiveForm::end() ?>
         </div>

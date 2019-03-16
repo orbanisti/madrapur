@@ -154,9 +154,9 @@ use backend\modules\Citydescription\models\Citydescription;
 
             <?= $form->field($model, 'intro')->textInput(['maxlength' => true]) ?>
 
-            <?php //$form->field($model, 'description')->textarea(['rows' => 6]) ?>
+            <?php $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-            <?= ""//$form->field($model, 'description')->widget(\yii\redactor\widgets\Redactor::className(),[ 'clientOptions' => [ 'lang' => Yii::$app->language, 'minHeight' => 300, 'imageManagerJson' => Yii::$app->extra->getMainhost().'/redactor/upload/image-json', 'imageUpload' => WEB_ROOT.'/upload/image', 'fileUpload' => WEB_ROOT.'/upload/file', 'imageUpload' => Yii::$app->extra->getMainhost().'/redactor/upload/image', 'plugins' => ['clips', 'fontcolor','table','fullscreen'] ] ]) ?>
+            <?= $form->field($model, 'description')->widget(\yii\redactor\widgets\Redactor::className(),[ 'clientOptions' => [ 'lang' => Yii::$app->language, 'minHeight' => 300, 'imageManagerJson' => Yii::$app->extra->getMainhost().'/redactor/upload/image-json', 'imageUpload' => WEB_ROOT.'/upload/image', 'fileUpload' => WEB_ROOT.'/upload/file', 'imageUpload' => Yii::$app->extra->getMainhost().'/redactor/upload/image', 'plugins' => ['clips', 'fontcolor','table','fullscreen'] ] ]) ?>
 
             <?php //$form->field($model, 'other_info')->textarea(['rows' => 6]) ?>
 
