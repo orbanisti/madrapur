@@ -16,7 +16,7 @@ class m190313_134411_modulusProducts extends Migration {
         $this->createTable(
             $this->tableName, [
                 'id' => $this->primaryKey(),
-                'currency'=> $this->string(12)->notNull()->unique(),
+                'currency'=> $this->string(12)->notNull(),
                 'status'=>$this->string(12)->notNull(),
                 'title' => $this->string(500)->notNull(),
                 'description' =>  $this->string(5000)->notNull(),
