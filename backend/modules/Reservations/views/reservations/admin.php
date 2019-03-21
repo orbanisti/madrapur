@@ -90,42 +90,44 @@ $this->params['breadcrumbs'][] = $this->title;
         $series2[]=$entity;
     }
 
+    if(Yii::$app->user->getIdentity()->username !== "manager") {
 
-    echo \onmotion\apexcharts\ApexchartsWidget::widget([
-        'type' => 'bar', // default area
-        'height' => '400', // default 350
-        //'width' => '500', // default 100%
-        'chartOptions' => [
-            'chart' => [
-                'toolbar' => [
+        echo \onmotion\apexcharts\ApexchartsWidget::widget([
+            'type' => 'bar', // default area
+            'height' => '400', // default 350
+            'width' => '500', // default 100%
+            'chartOptions' => [
+                'chart' => [
+                    'toolbar' => [
+                        'show' => true,
+                        'autoSelected' => 'zoom'
+                    ],
+                ],
+                'xaxis' => [
+                    'type' => 'datetime',
+                    // 'categories' => $categories,
+                ],
+                'plotOptions' => [
+                    'bar' => [
+                        'horizontal' => false,
+                        'endingShape' => 'rounded'
+                    ],
+                ],
+                'dataLabels' => [
+                    'enabled' => false
+                ],
+                'stroke' => [
                     'show' => true,
-                    'autoSelected' => 'zoom'
+                    'colors' => ['transparent']
+                ],
+                'legend' => [
+                    'verticalAlign' => 'bottom',
+                    'horizontalAlign' => 'left',
                 ],
             ],
-            'xaxis' => [
-                'type' => 'datetime',
-                // 'categories' => $categories,
-            ],
-            'plotOptions' => [
-                'bar' => [
-                    'horizontal' => false,
-                    'endingShape' => 'rounded'
-                ],
-            ],
-            'dataLabels' => [
-                'enabled' => false
-            ],
-            'stroke' => [
-                'show' => true,
-                'colors' => ['transparent']
-            ],
-            'legend' => [
-                'verticalAlign' => 'bottom',
-                'horizontalAlign' => 'left',
-            ],
-        ],
-        'series' => $series2
-    ]);
+            'series' => $series2
+        ]);
+    }
 
 
 
