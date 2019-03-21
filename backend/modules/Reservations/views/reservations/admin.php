@@ -40,19 +40,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
         $cBookingId=$data->bookingId;
+        if(isset($data->data->orderDetails)) {
+            $cBookingPaidDate = date('Y-m-d', strtotime($data->data->orderDetails->paid_date));
+            $cBookingCurrency = $data->data->orderDetails->order_currency;
+            $cBookingTotal = $data->data->boookingDetails->booking_cost;
+            if ($cBookingCurrency != 'EUR') {
+                $cBookingTotal = intval($cBookingTotal) / 300;
 
-        $cBookingPaidDate=date('Y-m-d', strtotime($data->data->orderDetails->paid_date));
-        $cBookingCurrency=$data->data->orderDetails->order_currency;
-        $cBookingTotal=$data->data->boookingDetails->booking_cost;
-        if($cBookingCurrency!='EUR'){
-            $cBookingTotal=intval($cBookingTotal)/300;
-
-        }
-        if(isset($price[$cBookingPaidDate][$data->source])){
-            $price[$cBookingPaidDate][$data->source]+=intval($cBookingTotal);
-        }
-        else{
-            $price[$cBookingPaidDate][$data->source]=intval($cBookingTotal);
+            }
+            if (isset($price[$cBookingPaidDate][$data->source])) {
+                $price[$cBookingPaidDate][$data->source] += intval($cBookingTotal);
+            } else {
+                $price[$cBookingPaidDate][$data->source] = intval($cBookingTotal);
+            }
         }
 
     }
