@@ -18,6 +18,102 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="products-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <?php
+    $chartProvider=$chartDataProvider->query->all();
+    $series2=array();
+    $price=array();
+    $sources=array();
+
+
+    /**
+     * Visualise Chart on Bookings data TODO: Sort, Import Refunded Bookings + Voucher Orders
+     */
+    foreach($chartProvider as $data){
+
+
+        if(!in_array($data->source,$sources)){
+            $sources[]=$data->source;
+
+        }
+        $data->data=json_decode($data->data);
+
+
+
+        $cBookingId=$data->bookingId;
+
+        $cBookingPaidDate=date('Y-m-d', strtotime($data->data->orderDetails->paid_date));
+        $cBookingCurrency=$data->data->orderDetails->order_currency;
+        $cBookingTotal=$data->data->boookingDetails->booking_cost;
+        if($cBookingCurrency!='EUR'){
+            $cBookingTotal=intval($cBookingTotal)/300;
+
+        }
+        if(isset($price[$cBookingPaidDate][$data->source])){
+            $price[$cBookingPaidDate][$data->source]+=intval($cBookingTotal);
+        }
+        else{
+            $price[$cBookingPaidDate][$data->source]=intval($cBookingTotal);
+        }
+
+    }
+
+    foreach($sources as $source){
+        $entity['name']=$source;
+        $entity['data']=array();
+        foreach ($price as $pDate=>$pValue){
+            if(isset($pValue[$source])) {
+                $oneDate = array(0 => $pDate, 1 => $pValue[$source]);
+                $entity['data'][] = $oneDate;
+            }
+
+        }
+
+        /**
+         * $array[] is 3x faster than array push
+         */
+        $series2[]=$entity;
+    }
+
+
+    echo \onmotion\apexcharts\ApexchartsWidget::widget([
+        'type' => 'bar', // default area
+        'height' => '400', // default 350
+        'width' => '500', // default 100%
+        'chartOptions' => [
+            'chart' => [
+                'toolbar' => [
+                    'show' => true,
+                    'autoSelected' => 'zoom'
+                ],
+            ],
+            'xaxis' => [
+                'type' => 'datetime',
+                // 'categories' => $categories,
+            ],
+            'plotOptions' => [
+                'bar' => [
+                    'horizontal' => false,
+                    'endingShape' => 'rounded'
+                ],
+            ],
+            'dataLabels' => [
+                'enabled' => false
+            ],
+            'stroke' => [
+                'show' => true,
+                'colors' => ['transparent']
+            ],
+            'legend' => [
+                'verticalAlign' => 'bottom',
+                'horizontalAlign' => 'left',
+            ],
+        ],
+        'series' => $series2
+    ]);
+
+
+
+    ?>
 
     <?php
     $gridColumns = [
@@ -49,80 +145,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     ?>
-    <?php
-
-   var_dump($dataProvider);
-    ?>
 
     <div id="jsonPre">
-        <?php
-        $series = [
-            [
-                'name' => 'Entity 1',
-                'data' => [
-                    ['2018-10-04', 4.66],
-                    ['2018-10-05', 5.0],
-                ],
-            ],
-            [
-                'name' => 'Entity 2',
-                'data' => [
-                    ['2018-10-04', 3.88],
-                    ['2018-10-05', 3.77],
-                ],
-            ],
-            [
-                'name' => 'Entity 3',
-                'data' => [
-                    ['2018-10-04', 4.40],
-                    ['2018-10-05', 5.0],
-                ],
-            ],
-            [
-                'name' => 'Entity 4',
-                'data' => [
-                    ['2018-10-04', 4.5],
-                    ['2018-10-05', 4.18],
-                ],
-            ],
-        ];
 
-        echo \onmotion\apexcharts\ApexchartsWidget::widget([
-            'type' => 'bar', // default area
-            'height' => '400', // default 350
-            'width' => '500', // default 100%
-            'chartOptions' => [
-                'chart' => [
-                    'toolbar' => [
-                        'show' => true,
-                        'autoSelected' => 'zoom'
-                    ],
-                ],
-                'xaxis' => [
-                    'type' => 'datetime',
-                    // 'categories' => $categories,
-                ],
-                'plotOptions' => [
-                    'bar' => [
-                        'horizontal' => false,
-                        'endingShape' => 'rounded'
-                    ],
-                ],
-                'dataLabels' => [
-                    'enabled' => false
-                ],
-                'stroke' => [
-                    'show' => true,
-                    'colors' => ['transparent']
-                ],
-                'legend' => [
-                    'verticalAlign' => 'bottom',
-                    'horizontalAlign' => 'left',
-                ],
-            ],
-            'series' => $series
-        ]);
-        ?>
 
     </div>
 
@@ -183,7 +208,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ]) ?>
             <?= $form->field($dateImportModel, 'source')->dropDownList(array('https://budapestrivercruise.eu' => 'https://budapestrivercruise.eu', 'https://silver-line.hu' => 'https://silver-line.hu'), array('options' => array('https://budapestrivercruise.eu' => array('selected' => true)))); ?>
 
+            <?php
+            echo Html::submitButton(Yii::t('backend', 'Importálás'),
+                [
+                    'class' => 'btn btn-primary btn-flat btn-block',
+                    'name' => 'import-button'
+                ])
 
+            ?>
 
 
 

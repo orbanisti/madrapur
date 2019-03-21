@@ -22,6 +22,7 @@ class ReservationsController extends Controller {
     public function actionAlius() {
         $searchModel = new ReservationsAdminSearchModel();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $chartData=$searchModel->searchChart(Yii::$app->request->queryParams);
         $connection=YII::$app->db;
         $dateImportModel= new DateImport();
 
