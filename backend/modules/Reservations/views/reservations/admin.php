@@ -46,11 +46,27 @@ $this->params['breadcrumbs'][] = $this->title;
             $cBookingTotal = $data->data->boookingDetails->booking_cost;
             if ($cBookingCurrency != 'EUR') {
                 $cBookingTotal = intval($cBookingTotal) / 300;
-
             }
+
+
+
+            /**
+             * A fenti if azt az esetet vizsgálja ha az order total mégse annyi mint a booking total pl kupon/teszt vásárlás
+             */
             if (isset($price[$cBookingPaidDate][$data->source])) {
+                if(isset($data->data->orderDetails->order_total)) {
+                    if ($data->data->orderDetails->order_total == '0') {
+                        $cBookingTotal = 0;
+                    }
+                }
+
                 $price[$cBookingPaidDate][$data->source] += intval($cBookingTotal);
             } else {
+                if(isset($data->data->orderDetails->order_total)) {
+                    if ($data->data->orderDetails->order_total == '0') {
+                        $cBookingTotal = 0;
+                    }
+                }
                 $price[$cBookingPaidDate][$data->source] = intval($cBookingTotal);
             }
         }
@@ -78,7 +94,7 @@ $this->params['breadcrumbs'][] = $this->title;
     echo \onmotion\apexcharts\ApexchartsWidget::widget([
         'type' => 'bar', // default area
         'height' => '400', // default 350
-        'width' => '500', // default 100%
+        //'width' => '500', // default 100%
         'chartOptions' => [
             'chart' => [
                 'toolbar' => [
