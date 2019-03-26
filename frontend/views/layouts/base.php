@@ -28,8 +28,8 @@ echo Nav::widget(
                     [
                         'label' => Yii::t('frontend', 'Home'),
                         'url' => [
-                            '/site/index'
-                        ]
+                            '/Page/page/index'
+                        ],
                     ],
                     [
                         'label' => Yii::t('frontend', 'About'),
