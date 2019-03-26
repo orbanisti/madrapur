@@ -7,15 +7,7 @@ use yii\widgets\ActiveForm;
 
 <div class="product-default-index">
     <h1><?= $this->context->action->uniqueId ?></h1>
-    <p>
-        This is the view content for action "<?= $this->context->action->id ?>".
-        The action belongs to the controller "<?= get_class($this->context) ?>"
-        in the "<?= $this->context->module->id ?>" module.
-    </p>
-    <p>
-        You may customize this page by editing the following file:<br>
-        <code><?= __FILE__ ?></code>
-        <?php
+           <?php
         $gridColumns = [
             ['class' => 'yii\grid\SerialColumn'],
             'id',
@@ -27,7 +19,7 @@ use yii\widgets\ActiveForm;
                 'label' => 'Edit Product',
                 'format'=>'html',
                 'value' => function ($model) {
-                    return '<a href="/Reservations/reservations/bookingedit?bookingId='.''/*$model->returnBookingId()*/.'">Edit'.'</a>';
+                    return '<a href="/Product/product/create">Edit'.'</a>';
                 }
             ],
 

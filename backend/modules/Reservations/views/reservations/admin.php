@@ -40,19 +40,35 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
         $cBookingId=$data->bookingId;
+        if(isset($data->data->orderDetails)) {
+            $cBookingPaidDate = date('Y-m-d', strtotime($data->data->orderDetails->paid_date));
+            $cBookingCurrency = $data->data->orderDetails->order_currency;
+            $cBookingTotal = $data->data->boookingDetails->booking_cost;
+            if ($cBookingCurrency != 'EUR') {
+                $cBookingTotal = intval($cBookingTotal) / 300;
+            }
 
-        $cBookingPaidDate=date('Y-m-d', strtotime($data->data->orderDetails->paid_date));
-        $cBookingCurrency=$data->data->orderDetails->order_currency;
-        $cBookingTotal=$data->data->boookingDetails->booking_cost;
-        if($cBookingCurrency!='EUR'){
-            $cBookingTotal=intval($cBookingTotal)/300;
 
-        }
-        if(isset($price[$cBookingPaidDate][$data->source])){
-            $price[$cBookingPaidDate][$data->source]+=intval($cBookingTotal);
-        }
-        else{
-            $price[$cBookingPaidDate][$data->source]=intval($cBookingTotal);
+
+            /**
+             * A fenti if azt az esetet vizsgálja ha az order total mégse annyi mint a booking total pl kupon/teszt vásárlás
+             */
+            if (isset($price[$cBookingPaidDate][$data->source])) {
+                if(isset($data->data->orderDetails->order_total)) {
+                    if ($data->data->orderDetails->order_total == '0') {
+                        $cBookingTotal = 0;
+                    }
+                }
+
+                $price[$cBookingPaidDate][$data->source] += intval($cBookingTotal);
+            } else {
+                if(isset($data->data->orderDetails->order_total)) {
+                    if ($data->data->orderDetails->order_total == '0') {
+                        $cBookingTotal = 0;
+                    }
+                }
+                $price[$cBookingPaidDate][$data->source] = intval($cBookingTotal);
+            }
         }
 
     }
@@ -74,42 +90,44 @@ $this->params['breadcrumbs'][] = $this->title;
         $series2[]=$entity;
     }
 
+    if(Yii::$app->user->getIdentity()->username !== "manager") {
 
-    echo \onmotion\apexcharts\ApexchartsWidget::widget([
-        'type' => 'bar', // default area
-        'height' => '400', // default 350
-        'width' => '500', // default 100%
-        'chartOptions' => [
-            'chart' => [
-                'toolbar' => [
+        echo \onmotion\apexcharts\ApexchartsWidget::widget([
+            'type' => 'bar', // default area
+            'height' => '400', // default 350
+            'width' => '500', // default 100%
+            'chartOptions' => [
+                'chart' => [
+                    'toolbar' => [
+                        'show' => true,
+                        'autoSelected' => 'zoom'
+                    ],
+                ],
+                'xaxis' => [
+                    'type' => 'datetime',
+                    // 'categories' => $categories,
+                ],
+                'plotOptions' => [
+                    'bar' => [
+                        'horizontal' => false,
+                        'endingShape' => 'rounded'
+                    ],
+                ],
+                'dataLabels' => [
+                    'enabled' => false
+                ],
+                'stroke' => [
                     'show' => true,
-                    'autoSelected' => 'zoom'
+                    'colors' => ['transparent']
+                ],
+                'legend' => [
+                    'verticalAlign' => 'bottom',
+                    'horizontalAlign' => 'left',
                 ],
             ],
-            'xaxis' => [
-                'type' => 'datetime',
-                // 'categories' => $categories,
-            ],
-            'plotOptions' => [
-                'bar' => [
-                    'horizontal' => false,
-                    'endingShape' => 'rounded'
-                ],
-            ],
-            'dataLabels' => [
-                'enabled' => false
-            ],
-            'stroke' => [
-                'show' => true,
-                'colors' => ['transparent']
-            ],
-            'legend' => [
-                'verticalAlign' => 'bottom',
-                'horizontalAlign' => 'left',
-            ],
-        ],
-        'series' => $series2
-    ]);
+            'series' => $series2
+        ]);
+    }
 
 
 

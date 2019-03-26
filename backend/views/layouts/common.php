@@ -178,7 +178,9 @@ echo Menu::widget(
                             ],
                             [
                                 'label' => Yii::t('backend', 'Articles'),
-                                'url' => '#',
+                                'url' => [
+                                    '/content/article/index'
+                                ],
                                 'icon' => '<i class="fa fa-files-o"></i>',
                                 'options' => [
                                     'class' => 'treeview'
@@ -206,7 +208,9 @@ echo Menu::widget(
                             ],
                             [
                                 'label' => Yii::t('backend', 'Widgets'),
-                                'url' => '#',
+                                'url' => [
+                                    '/content/page/index'
+                                ],
                                 'icon' => '<i class="fa fa-code"></i>',
                                 'options' => [
                                     'class' => 'treeview'
@@ -264,7 +268,9 @@ echo Menu::widget(
                             ],
                             [
                                 'label' => Yii::t('backend', 'RBAC Rules'),
-                                'url' => '#',
+                                'url' => [
+                                    '/rbac/rbac-auth-rule/index'
+                                ],
                                 'icon' => '<i class="fa fa-flag"></i>',
                                 'options' => [
                                     'class' => 'treeview'
