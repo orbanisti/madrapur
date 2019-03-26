@@ -21,7 +21,7 @@ class ProductController extends Controller {
     public function actionAdmin() {
         $searchModel = new ProductAdminSearchModel();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+               
         return $this->render('admin',['dataProvider'=>$dataProvider,'searchModel'=>$searchModel]);
     }
     public function actionCreate() {
