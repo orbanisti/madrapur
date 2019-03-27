@@ -12,7 +12,7 @@ use yii\db\ActiveRecord;
 class Product extends MadActiveRecord{
  
     public static function tableName() {
-        return 'modulusproducts';
+        return 'modulusProducts';
     }
 //TODO
     public function rules() {
