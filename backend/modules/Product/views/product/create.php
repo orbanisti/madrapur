@@ -7,7 +7,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Termékek'), 'url' =
 <div class="product-default-index">
     <h2><?= $this->title ?></h2>
 
-    <?= $this->render('_form');?>
+    <?= $this->render('createForm');?>
     <?php
     echo $updateResponse;
     ?>

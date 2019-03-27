@@ -40,4 +40,23 @@ class Product extends MadActiveRecord{
             'randomDate' => Yii::t('app', 'Véletlenszerű dátum'),
         ];
     }
+
+    public static function getProdById($id){
+
+//TODO get product from ID
+
+        $query = Product::aSelect(Product::class, '*', Product::tableName(), 'id=' . $id);
+        $prodInfo=0;
+        try {
+            $prodInfo = $query->one();
+
+
+        } catch (Exception $e) {
+        }
+
+        return $prodInfo;
+
+    }
+
+
 }
