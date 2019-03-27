@@ -28,6 +28,9 @@ class FrontendAsset extends AssetBundle {
      */
     public $css = [
         'style.css',
+        'app.css',
+        '2.css',
+        '3.css',
     ];
 
     /**
@@ -36,6 +39,9 @@ class FrontendAsset extends AssetBundle {
      */
     public $js = [
         'app.js',
+        '1.js',
+        '2.js',
+        '3.js',
     ];
 
     /**
