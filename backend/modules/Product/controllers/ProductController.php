@@ -4,6 +4,7 @@ namespace backend\modules\Product\controllers;
 
 use backend\modules\MadActiveRecord\models\MadActiveRecord;
 use backend\modules\Product\models\Product;
+use backend\modules\Product\models\ProductEdit;
 use backend\modules\Reservations\models\Reservations;
 use Yii;
 use backend\controllers\Controller;
@@ -32,9 +33,9 @@ class ProductController extends Controller {
         $values=[
             'currency'=>$productUpdate['currency'],
             'status'=>$productUpdate['status'],
-            'title'=>$productUpdate['name'],
+            'title'=>$productUpdate['title'],
 
-            'short_description'=>$productUpdate['shortdescription'],
+            'short_description'=>$productUpdate['short_description'],
             'desctiption'=>$productUpdate['description'],
             'category'=>$productUpdate['category'],
             'capacity'=>$productUpdate['capacity'],
@@ -59,6 +60,93 @@ class ProductController extends Controller {
         }
         return $this->render('create',['model'=>$model,'updateResponse'=>$updateResponse]);
     }
+
+    public function actionUpdate(){
+
+        $model=new ProductEdit();
+        $request=Yii::$app->request;
+        $prodId=$request->get('prodId');
+
+        $query = Product::aSelect(Product::class, '*', Product::tableName(), 'id=' . $prodId);
+
+        try {
+            $prodInfo = $query->one();
+        } catch (Exception $e) {
+        }
+        $backendData=$prodInfo;
+
+        $model=$backendData;//here I update my model to contain info from the DB to populate the FORM but it's important that you use a Model like Product at the selection so you don't redeclare stuff
+
+
+        $request=YII::$app->request;
+
+        $productEdit = $request->post('Product');
+
+        $updateResponse='Empty Response';
+
+        if($productEdit) {
+
+            $values=[
+                'currency'=>$productEdit['currency'],
+                'status'=>$productEdit['status'],
+                'title'=>$productEdit['title'],
+                'short_description'=>$productEdit['short_description'],
+                'description'=>$productEdit['description'],
+                'category'=>$productEdit['category'],
+                'capacity'=>$productEdit['capacity'],
+                'duration'=>$productEdit['duration'],
+                'images'=>$productEdit['images'],
+                'start_date'=>$productEdit['start_date'],
+                'end_date'=>$productEdit['end_date'],
+            ];
+
+
+
+            $query = Product::aSelect(Product::class, '*', Product::tableName(), 'id=' .$prodId);
+
+            try {
+                $rows = $query->one();
+            } catch (Exception $e) {
+            }
+            if (isset($rows)) {
+                $newProduct = $rows;
+                //letezao productot updatelunk
+            } else {
+                $newProduct=new Product();
+
+            }
+
+
+            if (Product::insertOne($newProduct, $values)) {
+                $updateResponse = 1;
+
+            } else {
+                $updateResponse = 0;
+
+                //show an error message
+            }
+        }
+        if($updateResponse==1){
+            $query = Product::aSelect(Product::class, '*', Product::tableName(), 'id=' . $prodId);
+            try {
+                $prodInfo = $query->one();
+
+                $model=$prodInfo;
+            } catch (Exception $e) {
+            }
+
+
+        }
+
+        return $this->render('update',['model'=>$model,'backendData'=>$backendData,'updateResponse'=>$updateResponse,'prodId'=>$prodId]);
+
+    }
+
+
+
+
+
+
     
     /**
      * Renders the index view for the module

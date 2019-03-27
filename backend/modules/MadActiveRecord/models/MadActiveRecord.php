@@ -112,4 +112,7 @@ class MadActiveRecord extends ActiveRecord
 
         return $conditions;
     }
+
+
+
 }
