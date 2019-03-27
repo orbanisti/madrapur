@@ -681,11 +681,7 @@ class ProductsController extends \backend\controllers\Controller
 
     public function actionUpdate($id)
     {
-        if(Yii::$app->getModule('users')->isAdmin())
-            $this->redirectToAdmin();
 
-        if(!extra::isAdminpage()) $this->layout = "@app/themes/mandelan/layouts/profile";
-        $model = $this->findModel($id);
 
         if($model->end_date=='0000-00-00') $model->end_date='';
 

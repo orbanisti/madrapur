@@ -2,6 +2,7 @@
 use kartik\helpers\Html;
 use backend\components\extra;
 use yii\widgets\ActiveForm;
+use backend\modules\Product\models\Product;
 
 ?>
 
@@ -19,7 +20,7 @@ use yii\widgets\ActiveForm;
                 'label' => 'Edit Product',
                 'format'=>'html',
                 'value' => function ($model) {
-                    return '<a href="/Product/product/create">Edit'.'</a>';
+                    return '<a href="/Product/product/update?prodId='.$model->id.'">Edit'.'</a>';
                 }
             ],
 
@@ -34,7 +35,8 @@ use yii\widgets\ActiveForm;
             'filterModel' => $searchModel,
             'columns' => $gridColumns,
         ]);
-
+        $prodInfo=Product::getProdById(43);
+        var_dump($prodInfo);
 
         ?>
     </p>

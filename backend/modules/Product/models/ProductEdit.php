@@ -7,7 +7,7 @@ use Yii;
 use yii\db\ActiveRecord;
 
 
-class ProductUpdate extends MadActiveRecord
+class ProductEdit extends MadActiveRecord
 {
     public $dateFrom;
     public $dateTo;
@@ -16,7 +16,7 @@ class ProductUpdate extends MadActiveRecord
     public $title;
     public $description;
     public $short_description;
-    public $image;
+    public $images;
     public $start_date;
     public $end_date;
     public $category;
@@ -31,10 +31,10 @@ class ProductUpdate extends MadActiveRecord
     }
 
 
+
     public function rules()
     {
         return [
-            // define validation rules here
         ];
     }
 }

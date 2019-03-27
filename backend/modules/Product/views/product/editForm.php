@@ -32,24 +32,24 @@ use backend\modules\Citydescription\models\Citydescription;
     }
 
 
-$model=new ProductUpdate();
 
 
 $form = ActiveForm::begin([
-    'id' => 'product-update',
-    'action' => 'create',
+    'id' => 'product-edit',
+    'action' => 'update?prodId='.$prodId,
     'options' => ['class' => 'prodUpdate'],
 ]);?>
+<?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary']) ?>
   <?=$form->field($model, 'currency')->dropDownList(array('HUF' => 'HUF', 'EUR' => 'EUR',), array('options' => array('HUF' => array('selected' => true))));?>
   <?=$form->field($model, 'status')->dropDownList(array('active' => 'active', 'inactive' => 'inactive',), array('options' => array('active' => array('selected' => true))));?>
-  <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+  <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
   <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
-  <?= $form->field($model, 'shortdescription')->textarea(['rows' => 3]) ?>
+  <?= $form->field($model, 'short_description')->textarea(['rows' => 3]) ?>
   <?= $form->field($model, 'category')->textInput(['maxlenght' => 60]) ?>
   <?= $form->field($model, 'capacity')->textInput(['maxlenght' => 60]) ?>
   <?= $form->field($model, 'duration')->textInput(['maxlenght' => 60]) ?><?='(in minutes)'?>
 
-<?= $form->field($model, 'image')->widget(FileInput::classname(), [
+<?= $form->field($model, 'images')->widget(FileInput::classname(), [
     'options'=>['accept'=>'image/*'],
     'pluginOptions'=>['allowedFileExtensions'=>['jpg','gif','png'],'showUpload' => false]
 ]) ?>
@@ -88,5 +88,5 @@ $form = ActiveForm::begin([
 
 
 
-<?= Html::submitButton('Termék Létrehozása', ['class' => 'btn btn-primary']) ?>
+<?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary']) ?>
 <?php ActiveForm::end(); ?>

@@ -9,6 +9,7 @@ use yii\widgets\ActiveForm;
 ?>
 <div class="bookingEdit">
     <?php
+
         $model->bookingId=$backenddata->bookingId;
         $model->source=$backenddata->source;
         $model->invoiceDate=$backenddata->invoiceDate;
