@@ -27,7 +27,7 @@ class ProductUpdate extends MadActiveRecord
 
 
     public static function tableName() {
-        return 'modulusproducts'; //TODO: dynamic table name
+        return 'modulusProducts'; //TODO: dynamic table name
     }
 
 
