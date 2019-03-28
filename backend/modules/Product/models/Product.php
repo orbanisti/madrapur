@@ -36,7 +36,7 @@ class Product extends MadActiveRecord{
     public function attributeLabels() {
         return [
             'id' => Yii::t('app', 'ID'),
-            'currency' => Yii::t('app', 'currency'),
+            'currency' => Yii::t('app', 'Currency'),
             'randomDate' => Yii::t('app', 'Véletlenszerű dátum'),
         ];
     }

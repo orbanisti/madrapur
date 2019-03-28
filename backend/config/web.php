@@ -25,6 +25,9 @@ $config = [
         'gridview' => [
             'class' => kartik\grid\Module::class,
         ],
+        'redactor' => [
+            'class' => yii\redactor\RedactorModule::class,
+        ],
         'content' => [
             'class' => backend\modules\content\Module::class,
         ],
