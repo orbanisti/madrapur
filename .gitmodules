@@ -1,0 +1,3 @@
+[submodule "frontend/madrapur-fe"]
+	path = frontend/madrapur-fe
+	url = https://github.com/Aekan/madrapur-fe.git
