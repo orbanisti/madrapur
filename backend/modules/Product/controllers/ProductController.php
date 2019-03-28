@@ -75,7 +75,8 @@ class ProductController extends Controller {
         }
         $backendData=$prodInfo;
 
-        $model=$backendData;//here I update my model to contain info from the DB to populate the FORM but it's important that you use a Model like Product at the selection so you don't redeclare stuff
+        //here I update my model to contain info from the DB to populate the FORM but it's important that you use a Model like Product at the selection so you don't redeclare stuff
+        $model=$backendData;
 
 
         $request=YII::$app->request;

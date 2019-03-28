@@ -35,8 +35,9 @@ use backend\modules\Product\models\Product;
             'filterModel' => $searchModel,
             'columns' => $gridColumns,
         ]);
-        $prodInfo=Product::getProdById(43);
-        var_dump($prodInfo);
+        // $prodInfo=Product::getProdById(43); //With this method you get every information about a product with $id
+
+
 
         ?>
     </p>

@@ -22,7 +22,21 @@ use backend\modules\Citydescription\models\Citydescription;
 //backend\assets\DatetimepickerAsset::register($this);
 ?>
 
-<?php
+
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#content" data-toggle="tab"><?= Yii::t('app','Tartalom') ?></a></li>
+    <li><a href="#prices" data-toggle="tab"><?= Yii::t('app','Árak') ?></a></li>
+    <li><a href="#times" data-toggle="tab"><?= Yii::t('app','Időpontok') ?></a></li>
+   </ul>
+
+
+
+<div class="tab-content">
+    <div class="tab-pane active" id="content">
+
+
+
+    <?php
     if(Yii::$app->session->hasFlash('error'))
     {
         echo '<p class="has-error flashes"><span class="help-block help-block-error">'.Yii::$app->session->getFlash('error').'</span></p>';
@@ -39,12 +53,31 @@ $form = ActiveForm::begin([
     'action' => 'update?prodId='.$prodId,
     'options' => ['class' => 'prodUpdate'],
 ]);?>
-<?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary']) ?>
+<?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
+<?='<br/>'?>
+
+
   <?=$form->field($model, 'currency')->dropDownList(array('HUF' => 'HUF', 'EUR' => 'EUR',), array('options' => array('HUF' => array('selected' => true))));?>
   <?=$form->field($model, 'status')->dropDownList(array('active' => 'active', 'inactive' => 'inactive',), array('options' => array('active' => array('selected' => true))));?>
   <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-  <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
-  <?= $form->field($model, 'short_description')->textarea(['rows' => 3]) ?>
+    <?= $form->field($model, 'description')->widget(\yii\redactor\widgets\Redactor::className(), [
+        'clientOptions' => [
+            'imageManagerJson' => ['/redactor/upload/image-json'],
+            'imageUpload' => ['/redactor/upload/image'],
+            'fileUpload' => ['/redactor/upload/file'],
+            'lang' => 'hu_HU',
+            'plugins' => ['clips', 'fontcolor','imagemanager']
+        ]
+    ])?>
+    <?= $form->field($model, 'short_description')->widget(\yii\redactor\widgets\Redactor::className(), [
+        'clientOptions' => [
+            'imageManagerJson' => ['/redactor/upload/image-json'],
+            'imageUpload' => ['/redactor/upload/image'],
+            'fileUpload' => ['/redactor/upload/file'],
+            'lang' => 'hu_HU',
+            'plugins' => ['clips', 'fontcolor','imagemanager']
+        ]
+    ])?>
   <?= $form->field($model, 'category')->textInput(['maxlenght' => 60]) ?>
   <?= $form->field($model, 'capacity')->textInput(['maxlenght' => 60]) ?>
   <?= $form->field($model, 'duration')->textInput(['maxlenght' => 60]) ?><?='(in minutes)'?>
@@ -83,8 +116,45 @@ $form = ActiveForm::begin([
         ]
     ]
 ]); ?>
+    </div>
 
 
+    <div class="tab-pane active" id="prices">prices</div>
+    <div class="tab-pane active" id="times">
+
+
+
+<?php
+///////TIMES PLACE HERE
+
+?>
+
+<?php /*DynamicFormWidget::begin([
+    'widgetContainer' => 'dynamicform_wrapper_times', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
+    'widgetBody' => '.container-items-times', // required: css class selector
+    'widgetItem' => '.item-times', // required: css class
+    'limit' => 999, // the maximum times, an element can be cloned (default 999)
+    'min' => 0, // 0 or 1 (default 1)
+    'insertButton' => '.add-item-times', // css class
+    'deleteButton' => '.remove-item-times', // css class
+    'model' => $modelTimes[0],
+    'formId' => 'dynamic-form',
+    'formFields' => [
+        'name',
+    ],
+]); */?>
+
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
 
 
 
