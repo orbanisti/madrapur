@@ -16,11 +16,9 @@ return [
         ],
         [
             'class' => 'yii\rest\UrlRule',
-            'controller' => 'api/Worker/worker',
+            'controller' => 'api/v1/worker',
             'only' => [
-                'index',
-                'view',
-                'options'
+                'index'
             ]
         ],
     ]
