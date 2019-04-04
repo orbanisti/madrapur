@@ -10,11 +10,11 @@ use backend\modules\Product\models\Product;
 <div class="product-default-index">
 
 <?php
+/*
+    $client = new \nizsheanez\jsonRpc\Client('http://localhost/Product/product/admin');
 
-    $client = new \nizsheanez\jsonRpc\Client('http://api.modulus.hu/Worker/index');
-
-    $response = $client->sum('hello');
-    echo $response;
+    $response = $client->sum(2, 3);
+    echo $response;*/
     ?>
     <h1><?= $this->context->action->uniqueId ?></h1>
            <?php
