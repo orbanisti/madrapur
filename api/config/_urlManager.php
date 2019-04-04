@@ -14,5 +14,14 @@ return [
                 'options'
             ]
         ],
+        [
+            'class' => 'yii\rest\UrlRule',
+            'controller' => 'api/Worker/worker',
+            'only' => [
+                'index',
+                'view',
+                'options'
+            ]
+        ],
     ]
 ];
