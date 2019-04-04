@@ -142,7 +142,18 @@ class ProductController extends Controller {
         return $this->render('update',['model'=>$model,'backendData'=>$backendData,'updateResponse'=>$updateResponse,'prodId'=>$prodId]);
 
     }
+    public function actions()
+    {
+        return array(
+            'index' => array(
+                'class' => \nizsheanez\jsonRpc\Action::class,
+            ),
+        );
+    }
 
+    public function sum($a, $b) {
+        return $a + $b;
+    }
 
 
 

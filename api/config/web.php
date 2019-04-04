@@ -7,8 +7,13 @@ $config = [
         'maintenance'
     ],
     'modules' => [
-        'v1' => \api\modules\v1\Module::class
+        'v1' => \api\modules\v1\Module::class,
+        'Worker' => [
+            'class' => api\modules\Worker\Module::class,
+                 ],
     ],
+
+
     'components' => [
         'errorHandler' => [
             'errorAction' => 'site/error'

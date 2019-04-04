@@ -1,12 +1,21 @@
 <?php
 use kartik\helpers\Html;
 use backend\components\extra;
+use nizsheanez\jsonRpc\Client;
 use yii\widgets\ActiveForm;
 use backend\modules\Product\models\Product;
 
 ?>
 
 <div class="product-default-index">
+
+<?php
+
+    $client = new \nizsheanez\jsonRpc\Client('http://api.modulus.hu/Worker/index');
+
+    $response = $client->sum('hello');
+    echo $response;
+    ?>
     <h1><?= $this->context->action->uniqueId ?></h1>
            <?php
         $gridColumns = [
