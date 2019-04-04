@@ -11,9 +11,9 @@ use backend\modules\Product\models\Product;
 
 <?php
 
-    $client = new \nizsheanez\jsonRpc\Client('http://api.modulus.hu/v1/worker/index');
+    $client = new \nizsheanez\jsonRpc\Client('http://api.localhost/v1/worker/index');
 
-    $response = $client->yell('hello');
+    $response = $client->sum(2,3);
     echo $response;
     ?>
     <h1><?= $this->context->action->uniqueId ?></h1>
