@@ -27,10 +27,11 @@ class FrontendAsset extends AssetBundle {
      * @var array
      */
     public $css = [
-        'style.css',
-        'app.css',
-        '2.css',
-        '3.css',
+        'app-style.css',
+        '1-style.css',
+        '2-style.css',
+        '3-style.css',
+        '4-style.css',
     ];
 
     /**
@@ -38,10 +39,11 @@ class FrontendAsset extends AssetBundle {
      * @var array
      */
     public $js = [
-        'app.js',
-        '1.js',
-        '2.js',
-        '3.js',
+        'app-script.js',
+        '1-script.js',
+        '2-script.js',
+        '3-script.js',
+        '4-script.js'
     ];
 
     /**
