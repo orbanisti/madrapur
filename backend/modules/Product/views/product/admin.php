@@ -1,4 +1,6 @@
 <?php
+
+
 use kartik\helpers\Html;
 use backend\components\extra;
 use nizsheanez\jsonRpc\Client;
@@ -11,10 +13,11 @@ use backend\modules\Product\models\Product;
 
 <?php
 
-    $client = new \nizsheanez\jsonRpc\Client('http://api.localhost/v1/worker/index');
+    $client = new \nizsheanez\jsonRpc\Client('http://api.modulus.hu/v1/worker/index');
 
     $response = $client->sum(2,3);
-    echo $response;
+
+    var_dump($response);
     ?>
     <h1><?= $this->context->action->uniqueId ?></h1>
            <?php
