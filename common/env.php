@@ -1,6 +1,13 @@
 
 <?php
 /**
+<<<<<<< HEAD
+=======
+<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+>>>>>>> d4e3346393d1f6ffde29537ecb0252f5c6708373
  * Require helpers
  */
 require_once (__DIR__ . '/helpers.php');
