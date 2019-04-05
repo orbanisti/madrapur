@@ -17,7 +17,7 @@ use backend\modules\Product\models\Product;
 
     $response = $client->sum(2,3);
 
-    var_dump($response);
+    echo $response;
     ?>
     <h1><?= $this->context->action->uniqueId ?></h1>
            <?php
