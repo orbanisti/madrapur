@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "850a6f62245dd0f36f3d4d2a1afd41d8",
+    "content-hash": "44c6fb48f7924161fb98ab3a72db8ecd",
     "packages": [
         {
             "name": "alexantr/yii2-elfinder",
@@ -421,6 +421,55 @@
                 "markdown-extra"
             ],
             "time": "2018-03-26T11:24:36+00:00"
+        },
+        {
+            "name": "cranetm/yii2-json-rpc-2.0",
+            "version": "1.2.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cranetm/yii2-json-rpc-2.0.git",
+                "reference": "2e3eeea361b2a6b31ceffaf1d61abf2ee764e3af"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cranetm/yii2-json-rpc-2.0/zipball/2e3eeea361b2a6b31ceffaf1d61abf2ee764e3af",
+                "reference": "2e3eeea361b2a6b31ceffaf1d61abf2ee764e3af",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "JsonRpc2": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "tmudriy",
+                    "email": "tmudriy@gmail.com"
+                }
+            ],
+            "description": "JSON RPC 2.0 for Yii2 strict type validation of request and response data",
+            "keywords": [
+                "json",
+                "json-rpc",
+                "json-rpc-2.0",
+                "json-rpc2",
+                "jsonrpc",
+                "jsonrpc2",
+                "rpc",
+                "rpc2",
+                "yii",
+                "yii2"
+            ],
+            "time": "2017-01-17T22:47:25+00:00"
         },
         {
             "name": "doctrine/lexer",

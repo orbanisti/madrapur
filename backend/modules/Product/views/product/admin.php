@@ -7,17 +7,18 @@ use nizsheanez\jsonRpc\Client;
 use yii\widgets\ActiveForm;
 use backend\modules\Product\models\Product;
 
+
 ?>
 
 <div class="product-default-index">
 
 <?php
 
-    $client = new \nizsheanez\jsonRpc\Client('http://api.modulus.hu/v1/worker/index');
+    $client = new \nizsheanez\jsonRpc\Client('http://www.api.localhost.com/v1/worker/');
 
-    $response = $client->sum(2,3);
+    $response = $client->product(43);
 
-    echo $response;
+    var_dump($response);
     ?>
     <h1><?= $this->context->action->uniqueId ?></h1>
            <?php
