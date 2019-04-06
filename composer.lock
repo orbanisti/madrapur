@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "850a6f62245dd0f36f3d4d2a1afd41d8",
+    "content-hash": "44c6fb48f7924161fb98ab3a72db8ecd",
     "packages": [
         {
             "name": "alexantr/yii2-elfinder",
@@ -421,6 +421,55 @@
                 "markdown-extra"
             ],
             "time": "2018-03-26T11:24:36+00:00"
+        },
+        {
+            "name": "cranetm/yii2-json-rpc-2.0",
+            "version": "1.2.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cranetm/yii2-json-rpc-2.0.git",
+                "reference": "2e3eeea361b2a6b31ceffaf1d61abf2ee764e3af"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cranetm/yii2-json-rpc-2.0/zipball/2e3eeea361b2a6b31ceffaf1d61abf2ee764e3af",
+                "reference": "2e3eeea361b2a6b31ceffaf1d61abf2ee764e3af",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "JsonRpc2": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "tmudriy",
+                    "email": "tmudriy@gmail.com"
+                }
+            ],
+            "description": "JSON RPC 2.0 for Yii2 strict type validation of request and response data",
+            "keywords": [
+                "json",
+                "json-rpc",
+                "json-rpc-2.0",
+                "json-rpc2",
+                "jsonrpc",
+                "jsonrpc2",
+                "rpc",
+                "rpc2",
+                "yii",
+                "yii2"
+            ],
+            "time": "2017-01-17T22:47:25+00:00"
         },
         {
             "name": "doctrine/lexer",
@@ -2443,22 +2492,22 @@
         },
         {
             "name": "league/glide",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/glide.git",
-                "reference": "72430fbdb446c754910f0bab97e1ef14baab1e80"
+                "reference": "a5477e9e822ed57b39861a17092b92553634932d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/glide/zipball/72430fbdb446c754910f0bab97e1ef14baab1e80",
-                "reference": "72430fbdb446c754910f0bab97e1ef14baab1e80",
+                "url": "https://api.github.com/repos/thephpleague/glide/zipball/a5477e9e822ed57b39861a17092b92553634932d",
+                "reference": "a5477e9e822ed57b39861a17092b92553634932d",
                 "shasum": ""
             },
             "require": {
                 "intervention/image": "^2.4",
                 "league/flysystem": "^1.0",
-                "php": "^5.4 | ^7.0",
+                "php": "^5.5 | ^7.0",
                 "psr/http-message": "^1.0"
             },
             "require-dev": {
@@ -2500,7 +2549,7 @@
                 "manipulation",
                 "processing"
             ],
-            "time": "2018-12-22T17:56:55+00:00"
+            "time": "2019-04-03T23:46:42+00:00"
         },
         {
             "name": "league/uri",
@@ -11019,16 +11068,16 @@
         },
         {
             "name": "theseer/tokenizer",
-            "version": "1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/theseer/tokenizer.git",
-                "reference": "06b6ce404ee574e9c1787fb67bb9980ca4387c34"
+                "reference": "1c42705be2b6c1de5904f8afacef5895cab44bf8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/theseer/tokenizer/zipball/06b6ce404ee574e9c1787fb67bb9980ca4387c34",
-                "reference": "06b6ce404ee574e9c1787fb67bb9980ca4387c34",
+                "url": "https://api.github.com/repos/theseer/tokenizer/zipball/1c42705be2b6c1de5904f8afacef5895cab44bf8",
+                "reference": "1c42705be2b6c1de5904f8afacef5895cab44bf8",
                 "shasum": ""
             },
             "require": {
@@ -11055,7 +11104,7 @@
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
-            "time": "2019-04-03T18:37:40+00:00"
+            "time": "2019-04-04T09:56:43+00:00"
         },
         {
             "name": "webmozart/assert",
