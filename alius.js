@@ -1,7 +1,4 @@
-const chDir = require('chdir');
-const colors = require('colors');
 const shell = require('shelljs');
-const spawn = require('child_process').spawn;
 
 const fePath = './frontend/madrapur-fe';
 
@@ -13,21 +10,19 @@ shell
 shell.cd('../..');
 
 shell
-    .ls(fePath + '/docroot/assets/134160ae/*-script.js*')
+    .ls(fePath + '/docroot/react-bundle/*-script.js*')
     .forEach(
         (file) => {
-            shell.cp('-R', file, './frontend/web/js');
+            shell.cp('-R', file, './frontend/web/react-bundle');
         }
     );
 
 shell
-    .ls(fePath + '/docroot/assets/134160ae/*-style.css*')
+    .ls(fePath + '/docroot/react-bundle/*-style.css*')
     .forEach(
         (file) => {
-            shell.cp('-R', file, './frontend/web/css');
+            shell.cp('-R', file, './frontend/web/react-bundle');
         }
     );
-
-//shell.cp('-R', fePath + '/docroot/assets', './frontend/web/bundle');
 
 shell.exec('webpack --progress');
