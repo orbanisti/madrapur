@@ -9,6 +9,8 @@ use backend\modules\Reservations\models\Reservations;
 use Yii;
 use backend\controllers\Controller;
 use backend\modules\Product\models\ProductUpdate;
+use backend\modules\Product\models\ProductTime;
+
 use backend\modules\Product\models\ProductAdminSearchModel;
 
 /**
@@ -24,6 +26,7 @@ class ProductController extends Controller {
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('admin',['dataProvider'=>$dataProvider,'searchModel'=>$searchModel]);
+
     }
     public function actionCreate() {
         $model= new ProductUpdate();
@@ -138,8 +141,18 @@ class ProductController extends Controller {
 
 
         }
+        $productModelTime=new ProductTime();
 
-        return $this->render('update',['model'=>$model,'backendData'=>$backendData,'updateResponse'=>$updateResponse,'prodId'=>$prodId]);
+        $modelTimes[]=new ProductTime();
+        $modelTimes = Product::createMultiple(ProductTime::className(),$modelTimes);
+        $modelTimes[0]=new ProductTime();
+        $modelTimes[0]->start_date='2019-04-10';
+
+
+
+
+
+        return $this->render('update',['model'=>$model,'backendData'=>$backendData,'updateResponse'=>$updateResponse,'prodId'=>$prodId,'modelTimes'=>$modelTimes]);
 
     }
 

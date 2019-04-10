@@ -46,6 +46,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Szerkesztés');
         'model' => $model,
         'backenddata'=>$backendData,
         'prodId'=>$prodId,
+        'modelTimes'=>$modelTimes,
+
 
 
 /*
