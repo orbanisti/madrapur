@@ -1,11 +1,7 @@
 <?php
 
 
-use kartik\helpers\Html;
-use backend\components\extra;
-use nizsheanez\jsonRpc\Client;
-use yii\widgets\ActiveForm;
-use backend\modules\Product\models\Product;
+
 
 
 ?>
@@ -14,7 +10,7 @@ use backend\modules\Product\models\Product;
 
 <?php
 
-    $client = new \nizsheanez\jsonRpc\Client('http://api.modulus.hu/v1/worker/');
+    $client = new \nizsheanez\jsonRpc\Client('http://www.api.localhost.com/v1/worker/');
 
     $response = $client->product(43);
 
