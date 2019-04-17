@@ -64,6 +64,9 @@ class ProductController extends Controller {
         return $this->render('create',['model'=>$model,'updateResponse'=>$updateResponse]);
     }
 
+    /**
+     * @return string
+     */
     public function actionUpdate(){
 
         $model=new ProductEdit();
@@ -141,12 +144,31 @@ class ProductController extends Controller {
 
 
         }
+
+
+
+        /*******************Times Rész /TODO bring this to manly form*********************/
+
+
+
+
+
+
+
+
+
+
+
         $productModelTime=new ProductTime();
 
         $modelTimes[]=new ProductTime();
         $modelTimes = Product::createMultiple(ProductTime::className(),$modelTimes);
         $modelTimes[0]=new ProductTime();
-        $modelTimes[0]->start_date='2019-04-10';
+        $modelTimes[0]->start_date='2019-08-08';
+        $modelTimes[0]->end_date='2019-08-08';
+        $modelTimes[0]->name='first';
+
+
 
 
 
