@@ -9,12 +9,14 @@
 <div class="product-default-index">
 
 <?php
-
+/**
+ * Json RPC Communication TODO Close this hole asap
+ *//*
     $client = new \nizsheanez\jsonRpc\Client('http://www.api.localhost.com/v1/worker/');
 
     $response = $client->product(43);
 
-    var_dump($response);
+*/
     ?>
     <h1><?= $this->context->action->uniqueId ?></h1>
            <?php
