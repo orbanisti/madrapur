@@ -37,19 +37,29 @@ $form = ActiveForm::begin([
 ]);?>
 
 <ul class="nav nav-tabs">
-    <li class="active"><a href="#content" data-toggle="tab"><?= Yii::t('app','Tartalom') ?></a></li>
-    <li><a href="#prices" data-toggle="tab"><?= Yii::t('app','Árak') ?></a></li>
-    <li><a href="#times" data-toggle="tab"><?= Yii::t('app','Időpontok') ?></a></li>
+    <li class="active"><a href="#content" data-toggle="tab"><?= Yii::t('app','Details') ?></a></li>
+    <li><a href="#prices" data-toggle="tab"><?= Yii::t('app','$Prices') ?></a></li>
+    <li><a href="#times" data-toggle="tab"><?= Yii::t('app','Times') ?></a></li>
    </ul>
 
 
 
 <div class="tab-content">
     <div class="tab-pane active" id="content">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4><i class="glyphicon glyphicon-time"></i> <?= Yii::t('app', 'Product Details') ?>
+                    <?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
+                </h4>
+            </div>
+            <div class="panel-body">
 
 
-<?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
-<?='<br/>'?>
+
+
+
+
+
 
 
   <?=$form->field($model, 'currency')->dropDownList(array('HUF' => 'HUF', 'EUR' => 'EUR',), array('options' => array('HUF' => array('selected' => true))));?>
@@ -115,11 +125,9 @@ $form = ActiveForm::begin([
 
     <?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary']) ?>
 
-    </div>
+            </div></div></div>
 
     <div class="tab-pane" id="prices">
-        <?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
-        <?='<br/>'?>
         <?php
 
         ?>
@@ -141,7 +149,7 @@ $form = ActiveForm::begin([
 
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4><i class="glyphicon glyphicon-euro"></i> <?= Yii::t('app', 'Árak') ?>
+                <h4><i class="glyphicon glyphicon-euro"></i> <?= Yii::t('app', 'Product $Prices') ?>    <?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
                     <button type="button" class="add-item btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-plus"></i> <?= Yii::t('app', 'Új') ?></button>
                 </h4>
             </div>
@@ -204,8 +212,8 @@ $form = ActiveForm::begin([
     </div>
 
     <div class="tab-pane" id="times">
-        <?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
-        <?='<br/>'?>
+
+
         <?php
 
 
@@ -229,8 +237,10 @@ $form = ActiveForm::begin([
         <div class="panel panel-default">
 
             <div class="panel-heading">
-                <h4><i class="glyphicon glyphicon-time"></i> <?= Yii::t('app', 'Időpontok') ?>
+                <h4><i class="glyphicon glyphicon-time"></i> <?= Yii::t('app', 'Product Times') ?>
+                    <?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
                     <button type="button" class="add-item-times btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-plus"></i> <?= Yii::t('app', 'Új') ?></button>
+
                 </h4>
             </div>
             <div class="panel-body">
