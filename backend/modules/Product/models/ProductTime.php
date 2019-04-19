@@ -41,12 +41,17 @@ class ProductTime extends MadActiveRecord{
     public function init() {
         parent::init();
 
+
+
+        return true;
+    }
+    public function initTime(){
         if($this->start_date=='' || is_null($this->start_date) || $this->start_date=='0000-00-00'){
             $this->start_date=date('Y-m-d');
             //\backend\components\extra::e($this);
         }
+        return $this;
 
-        return true;
     }
 
     public function getProduct()

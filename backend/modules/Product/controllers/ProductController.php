@@ -2,16 +2,18 @@
 
 namespace backend\modules\Product\controllers;
 
-use backend\modules\MadActiveRecord\models\MadActiveRecord;
+
 use backend\modules\Product\models\Product;
 use backend\modules\Product\models\ProductEdit;
-use backend\modules\Reservations\models\Reservations;
+
+use backend\modules\Product\models\ProductPrice;
 use Yii;
 use backend\controllers\Controller;
 use backend\modules\Product\models\ProductUpdate;
 use backend\modules\Product\models\ProductTime;
 
 use backend\modules\Product\models\ProductAdminSearchModel;
+use yii\helpers\ArrayHelper;
 
 /**
  * Controller for the `Product` module
@@ -52,7 +54,7 @@ class ProductController extends Controller {
             $newProduct=new Product();
 
             if (Product::insertOne($newProduct, $values)) {
-                var_dump($values);
+
                 $updateResponse = '<span style="color:green">Product Update Successful</span>';
 
             } else {
@@ -150,23 +152,230 @@ class ProductController extends Controller {
         /*******************Times Rész /TODO bring this to manly form*********************/
 
 
-
-
-
-
-
-
-
-
-
-        $productModelTime=new ProductTime();
-
+        $request=YII::$app->request;
+        $productPostedTimes = $request->post('ProductTime');
         $modelTimes[]=new ProductTime();
-        $modelTimes = Product::createMultiple(ProductTime::className(),$modelTimes);
-        $modelTimes[0]=new ProductTime();
-        $modelTimes[0]->start_date='2019-08-08';
-        $modelTimes[0]->end_date='2019-08-08';
-        $modelTimes[0]->name='first';
+
+
+
+
+
+
+        //$deletedtimesIDs = array_diff($rowsArray, ));
+      //  var_dump($deletedtimesIDs);
+
+
+
+
+        if($productPostedTimes) {
+            $queryGetTimes = ProductTime::aSelect(ProductTime::class, '*', ProductTime::tableName(), 'product_id=' .$prodId);
+            try {
+                $rowsAll = $queryGetTimes->all();
+            } catch (Exception $e) {
+            }
+
+            $rowsArray=ArrayHelper::toArray($rowsAll);
+            $a=array_filter(ArrayHelper::map($rowsArray, 'id', 'id'));
+            $b=array_filter(ArrayHelper::map($productPostedTimes, 'id', 'id'));
+
+
+            $deletedTimesIds=array_diff($a,$b);
+            if (! empty($deletedTimesIds)) {
+                ProductTime::deleteAll(['id' => $deletedTimesIds]);
+            }
+            foreach($productPostedTimes as $postedTime):
+
+
+            if($postedTime['start_date']=='NULL' ||$postedTime['start_date']=='' ){
+                $postedTime['start_date']=date("Y-m-d");
+            }
+                if($postedTime['end_date']=='NULL' ||$postedTime['end_date']=='' ){
+                    $postedTime['end_date']=date("Y-m-d");
+                }
+            $values=[
+                    'name'=>$postedTime['name'],
+                    'start_date'=>$postedTime['start_date'],
+                    'end_date'=>$postedTime['end_date'],
+                    'product_id'=>$prodId,
+                    'id'=>$postedTime['id']
+                ];
+
+
+            $query = ProductTime::aSelect(ProductTime::class, '*', ProductTime::tableName(), 'product_id=' .$prodId.' and id="'.$values['id'].'"');
+
+                try {
+                    $rows = $query->one();
+
+                } catch (Exception $e) {
+                }
+                if (isset($rows)) {
+                    $newTimes=$rows;
+                    //letezao productot updatelunk
+                } else {
+                    $newTimes=new ProductTime();
+
+
+                }
+
+
+                if (Product::insertOne($newTimes, $values)) {
+                    $updateResponse = 1;
+
+                } else {
+                    $updateResponse = 0;
+
+                    //show an error message
+                }
+
+
+            endforeach;
+
+
+
+        }
+
+        $queryGetTimes = ProductTime::aSelect(ProductTime::class, '*', ProductTime::tableName(), 'product_id=' .$prodId);
+        try {
+            $rowsAll = $queryGetTimes->all();
+        } catch (Exception $e) {
+        }
+
+        if (isset($rowsAll)) {
+
+            if(!$productPostedTimes && $productEdit){
+                if(isset($rowsAll[0])) {
+                    $deletedTimesIds[$rowsAll[0]['id']] = $rowsAll[0]['id'];
+                    var_dump($deletedTimesIds);
+                    $resultofdeletingTimes = ProductTime::deleteAll(['id' => $deletedTimesIds]);
+                    var_dump($resultofdeletingTimes);
+
+                    $rowsAll = $queryGetTimes->all();
+                }
+            }
+                    $modelTimes=$rowsAll;
+
+
+
+
+
+
+        }
+        else{
+            $modelTimes[]=new ProductTime();
+            $modelTimes = Product::createMultiple(ProductTime::className(),$modelTimes);
+            $modelTimes[0]=new ProductTime();
+            $modelTimes[0]->start_date=date("Y-m-d");
+        }
+
+        /*******************Prices Rész /TODO bring this to manly form*********************/
+
+
+        $request=YII::$app->request;
+        $productPostedPrices = $request->post('ProductPrice');
+        $modelPrices[]=new ProductPrice();
+
+
+
+        if($productPostedPrices) {
+            $queryGetPrices = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' .$prodId);
+            try {
+                $rowsAll = $queryGetPrices->all();
+            } catch (Exception $e) {
+            }
+
+            $rowsArray=ArrayHelper::toArray($rowsAll);
+            $a=array_filter(ArrayHelper::map($rowsArray, 'id', 'id'));
+            $b=array_filter(ArrayHelper::map($productPostedPrices, 'id', 'id'));
+
+
+            $deletedPricesIds=array_diff($a,$b);
+
+
+
+            $result=ProductPrice::deleteAll(['id' => $deletedPricesIds]);
+
+            foreach($productPostedPrices as $postedPrice):
+
+
+
+
+                $values=[
+                    'name'=>$postedPrice['name'],
+                    'description'=>$postedPrice['description'],
+                    'discount'=>$postedPrice['discount'],
+                    'price'=>$postedPrice['price'],
+                    'product_id'=>$prodId,
+                    'id'=>$postedPrice['id']
+                ];
+
+
+
+                $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' .$prodId.' and id="'.$values['id'].'"');
+
+                try {
+                    $rows = $query->one();
+
+                } catch (Exception $e) {
+                }
+                if (isset($rows)) {
+                    $newPrice=$rows;
+                    //letezao productot updatelunk
+                } else {
+                    $newPrice=new ProductPrice();
+
+
+                }
+
+
+                if (Product::insertOne($newPrice, $values)) {
+                    $updateResponse = 1;
+
+                } else {
+                    $updateResponse = 0;
+
+                    //show an error message
+                }
+
+
+            endforeach;
+
+
+
+        }
+
+        $queryGetPrices= ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' .$prodId);
+        try {
+            $rowsAll = $queryGetPrices->all();
+        } catch (Exception $e) {
+        }
+
+        if (isset($rowsAll)) {
+
+
+            if(!$productPostedPrices && $productEdit){
+                if(isset($rowsAll[0])) {
+                    $deletedPricesIds[$rowsAll[0]['id']] = $rowsAll[0]['id'];
+                    var_dump($deletedPricesIds);
+                    $resultofdeletingPrices = ProductPrice::deleteAll(['id' => $deletedPricesIds]);
+                    var_dump($resultofdeletingPrices);
+
+                    $rowsAll = $queryGetPrices->all();
+                }
+            }
+            $modelPrices=$rowsAll;
+        }
+
+        else{
+            $modelPrices[]=new ProductPrice();
+            $modelPrices = Product::createMultiple(ProductPrice::class,$modelTimes);
+            $modelPrices[0]=new ProductPrice();
+            $modelPrices[0]->name='asd';
+
+        }
+
+
+
+        
 
 
 
@@ -174,7 +383,12 @@ class ProductController extends Controller {
 
 
 
-        return $this->render('update',['model'=>$model,'backendData'=>$backendData,'updateResponse'=>$updateResponse,'prodId'=>$prodId,'modelTimes'=>$modelTimes]);
+
+
+
+
+
+        return $this->render('update',['model'=>$model,'backendData'=>$backendData,'updateResponse'=>$updateResponse,'prodId'=>$prodId,'modelTimes'=>((empty($modelTimes)) ? [new ProductTime()] : $modelTimes),'modelPrices'=>(empty($modelPrices)) ? [new ProductPrice()] : $modelPrices]);
 
     }
 
