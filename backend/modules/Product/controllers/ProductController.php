@@ -7,6 +7,7 @@ use backend\modules\Product\models\Product;
 use backend\modules\Product\models\ProductEdit;
 
 use backend\modules\Product\models\ProductPrice;
+use backend\modules\Reservations\models\Reservations;
 use Yii;
 use backend\controllers\Controller;
 use backend\modules\Product\models\ProductUpdate;
@@ -373,9 +374,21 @@ class ProductController extends Controller {
 
         }
 
+        /**
+         * This is for the booking Table
+         *  TODO Ajax this
+         *
+         *
+         */
 
+        $queryGetReservatios= Product::aSelect(Reservations::class, '*', Reservations::tableName(), 'product_id=' .$prodId);
+        try {
+            $rowsAll = $queryGetPrices->all();
+        } catch (Exception $e) {
+        }
 
-        
+        if (isset($rowsAll)) {
+
 
 
 

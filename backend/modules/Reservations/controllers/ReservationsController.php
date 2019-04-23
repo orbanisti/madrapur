@@ -46,15 +46,19 @@ class ReservationsController extends Controller {
         $dateFrom=date('Y-m-d',strtotime($dateFrom));
         $dateTo=date('Y-m-d',strtotime($dateTo));
         $url=$source.'/wp-json/bookings/v1/start/'.$dateFrom.'/end/'.$dateTo;
+
         $curl=curl_init($url);
         curl_setopt($curl, CURLOPT_HEADER, 0);
         curl_setopt($curl, CURLOPT_VERBOSE, 0);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
         $response=curl_exec($curl);
+
         curl_close($curl);
 
         $jsonResponse=json_decode(utf8_decode($response));
+
+
 
 
 
@@ -85,6 +89,7 @@ class ReservationsController extends Controller {
                 $data=['boookingDetails'=> $booking->bookingDetails,'orderDetails'=>$booking->orderDetails,'personInfo'=>$booking->personInfo,'updateDate'=>date("Y-m-d H:i:s")];
 
                 $data=json_encode($data);
+
 
                 $values = [
                     'bookingId' => $booking->bookingId,

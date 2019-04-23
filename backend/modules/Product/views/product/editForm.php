@@ -40,6 +40,7 @@ $form = ActiveForm::begin([
     <li class="active"><a href="#content" data-toggle="tab"><?= Yii::t('app','Details') ?></a></li>
     <li><a href="#prices" data-toggle="tab"><?= Yii::t('app','$Prices') ?></a></li>
     <li><a href="#times" data-toggle="tab"><?= Yii::t('app','Times') ?></a></li>
+    <li><a href="#timetable" data-toggle="tab"><?= Yii::t('app','TimeTable') ?></a></li>
    </ul>
 
 
@@ -376,6 +377,60 @@ $form = ActiveForm::begin([
     });
     ');
         ?>
+
+
+
+    </div>
+    <div class="tab-pane" id="timetable">
+        <?php
+
+        ?>
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4><i class="glyphicon glyphicon-euro"></i> <?= Yii::t('app', 'TimeTable') ?>    <?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
+                    <button type="button" class="add-item btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-plus"></i> <?= Yii::t('app', 'Új') ?></button>
+                </h4>
+            </div>
+            <div class="panel-body">
+                <?php
+                $events = array();
+                //Testing
+                $Event = new \yii2fullcalendar\models\Event();
+                $Event->id = 1;
+                $Event->title = 'Testing';
+                $Event->start = date('Y-m-d\TH:i:s\Z');
+                $Event->nonstandard = [
+                    'field1' => 'Something I want to be included in object #1',
+                    'field2' => 'Something I want to be included in object #2',
+                ];
+                $events[] = $Event;
+
+                $Event = new \yii2fullcalendar\models\Event();
+                $Event->id = 2;
+                $Event->title = 'Testing';
+                $Event->start = date('Y-m-d\TH:i:s\Z',strtotime('tomorrow 6am'));
+                $events[] = $Event;
+
+                ?>
+
+                <?= \yii2fullcalendar\yii2fullcalendar::widget(array(
+                    'events'=> $events,
+                ));
+                ?>
+            <script>
+
+
+            </script>
+            </div>
+
+
+
+
+
+        </div>
+
 
 
 

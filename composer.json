@@ -71,7 +71,8 @@
 		"lajax/yii2-language-picker": "1.*",
 		"onmotion/yii2-widget-apexcharts": "^1.0",
 		"nizsheanez/yii2-json-rpc": "^1.1",
-		"cranetm/yii2-json-rpc-2.0": "^1.2"
+		"cranetm/yii2-json-rpc-2.0": "^1.2",
+		"philippfrenzel/yii2fullcalendar": "*"
 	},
 	"require-dev": {
 		"yiisoft/yii2-debug": "~2.0.0",
