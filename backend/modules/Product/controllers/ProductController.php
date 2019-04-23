@@ -381,13 +381,27 @@ class ProductController extends Controller {
          *
          */
 
-        $queryGetReservatios= Product::aSelect(Reservations::class, '*', Reservations::tableName(), 'product_id=' .$prodId);
+        $queryGetReservatios= Product::aSelect(Reservations::class, '*', Reservations::tableName(), 'productId=250');
         try {
-            $rowsAll = $queryGetPrices->all();
+            $rowsAll = $queryGetReservatios->all();
         } catch (Exception $e) {
         }
 
+        $modelEvents=[];
+
         if (isset($rowsAll)) {
+            foreach($rowsAll as $reservation):
+                $event = new \yii2fullcalendar\models\Event();
+                $event->id = $reservation->id;
+                $reservationData=$reservation->data;
+                $reservationData=json_decode($reservationData);
+                $reservationName=$reservationData->orderDetails->billing_first_name.$reservationData->orderDetails->billing_last_name;
+                $event->title=$reservationName;
+                $event->start=$reservation->bookingDate;
+                $event->nonstandard = ['filed1'=>$reservation->source];
+                $modelEvents[]=$event;
+            endforeach;
+        }
 
 
 
@@ -400,8 +414,7 @@ class ProductController extends Controller {
 
 
 
-
-        return $this->render('update',['model'=>$model,'backendData'=>$backendData,'updateResponse'=>$updateResponse,'prodId'=>$prodId,'modelTimes'=>((empty($modelTimes)) ? [new ProductTime()] : $modelTimes),'modelPrices'=>(empty($modelPrices)) ? [new ProductPrice()] : $modelPrices]);
+        return $this->render('update',['model'=>$model,'backendData'=>$backendData,'updateResponse'=>$updateResponse,'prodId'=>$prodId,'modelEvents'=>$modelEvents,'modelTimes'=>((empty($modelTimes)) ? [new ProductTime()] : $modelTimes),'modelPrices'=>(empty($modelPrices)) ? [new ProductPrice()] : $modelPrices]);
 
     }
 
