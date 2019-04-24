@@ -1,6 +1,8 @@
 [submodule "frontend/madrapur-fe"]
 	path = frontend/madrapur-fe
 	url = https://github.com/Aekan/madrapur-fe.git
+	branch = master
 [submodule "api"]
 	path = api
 	url = https://github.com/Aekan/mad-api.git
+	branch = master
