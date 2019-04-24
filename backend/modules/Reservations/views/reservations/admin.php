@@ -95,7 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
         echo \onmotion\apexcharts\ApexchartsWidget::widget([
             'type' => 'bar', // default area
             'height' => '400', // default 350
-            'width' => '500', // default 100%
+
             'chartOptions' => [
                 'chart' => [
                     'toolbar' => [

@@ -7,6 +7,10 @@ use backend\modules\Product\models\Product;
 use backend\modules\Product\models\ProductEdit;
 
 use backend\modules\Product\models\ProductPrice;
+
+use backend\modules\Product\models\ProductSource;
+
+use backend\modules\Reservations\models\Reservations;
 use Yii;
 use backend\controllers\Controller;
 use backend\modules\Product\models\ProductUpdate;
@@ -69,11 +73,12 @@ class ProductController extends Controller {
     /**
      * @return string
      */
-    public function actionUpdate(){
+    public function actionUpdate()
+    {
 
-        $model=new ProductEdit();
-        $request=Yii::$app->request;
-        $prodId=$request->get('prodId');
+        $model = new ProductEdit();
+        $request = Yii::$app->request;
+        $prodId = $request->get('prodId');
 
         $query = Product::aSelect(Product::class, '*', Product::tableName(), 'id=' . $prodId);
 
@@ -81,37 +86,36 @@ class ProductController extends Controller {
             $prodInfo = $query->one();
         } catch (Exception $e) {
         }
-        $backendData=$prodInfo;
+        $backendData = $prodInfo;
 
         //here I update my model to contain info from the DB to populate the FORM but it's important that you use a Model like Product at the selection so you don't redeclare stuff
-        $model=$backendData;
+        $model = $backendData;
 
 
-        $request=YII::$app->request;
+        $request = YII::$app->request;
 
         $productEdit = $request->post('Product');
 
-        $updateResponse='Empty Response';
+        $updateResponse = 'Empty Response';
 
-        if($productEdit) {
+        if ($productEdit) {
 
-            $values=[
-                'currency'=>$productEdit['currency'],
-                'status'=>$productEdit['status'],
-                'title'=>$productEdit['title'],
-                'short_description'=>$productEdit['short_description'],
-                'description'=>$productEdit['description'],
-                'category'=>$productEdit['category'],
-                'capacity'=>$productEdit['capacity'],
-                'duration'=>$productEdit['duration'],
-                'images'=>$productEdit['images'],
-                'start_date'=>$productEdit['start_date'],
-                'end_date'=>$productEdit['end_date'],
+            $values = [
+                'currency' => $productEdit['currency'],
+                'status' => $productEdit['status'],
+                'title' => $productEdit['title'],
+                'short_description' => $productEdit['short_description'],
+                'description' => $productEdit['description'],
+                'category' => $productEdit['category'],
+                'capacity' => $productEdit['capacity'],
+                'duration' => $productEdit['duration'],
+                'images' => $productEdit['images'],
+                'start_date' => $productEdit['start_date'],
+                'end_date' => $productEdit['end_date'],
             ];
 
 
-
-            $query = Product::aSelect(Product::class, '*', Product::tableName(), 'id=' .$prodId);
+            $query = Product::aSelect(Product::class, '*', Product::tableName(), 'id=' . $prodId);
 
             try {
                 $rows = $query->one();
@@ -121,7 +125,7 @@ class ProductController extends Controller {
                 $newProduct = $rows;
                 //letezao productot updatelunk
             } else {
-                $newProduct=new Product();
+                $newProduct = new Product();
 
             }
 
@@ -135,12 +139,12 @@ class ProductController extends Controller {
                 //show an error message
             }
         }
-        if($updateResponse==1){
+        if ($updateResponse == 1) {
             $query = Product::aSelect(Product::class, '*', Product::tableName(), 'id=' . $prodId);
             try {
                 $prodInfo = $query->one();
 
-                $model=$prodInfo;
+                $model = $prodInfo;
             } catch (Exception $e) {
             }
 
@@ -148,60 +152,53 @@ class ProductController extends Controller {
         }
 
 
-
         /*******************Times Rész /TODO bring this to manly form*********************/
 
 
-        $request=YII::$app->request;
+        $request = YII::$app->request;
         $productPostedTimes = $request->post('ProductTime');
-        $modelTimes[]=new ProductTime();
-
-
-
-
+        $modelTimes[] = new ProductTime();
 
 
         //$deletedtimesIDs = array_diff($rowsArray, ));
-      //  var_dump($deletedtimesIDs);
+        //  var_dump($deletedtimesIDs);
 
 
-
-
-        if($productPostedTimes) {
-            $queryGetTimes = ProductTime::aSelect(ProductTime::class, '*', ProductTime::tableName(), 'product_id=' .$prodId);
+        if ($productPostedTimes) {
+            $queryGetTimes = ProductTime::aSelect(ProductTime::class, '*', ProductTime::tableName(), 'product_id=' . $prodId);
             try {
                 $rowsAll = $queryGetTimes->all();
             } catch (Exception $e) {
             }
 
-            $rowsArray=ArrayHelper::toArray($rowsAll);
-            $a=array_filter(ArrayHelper::map($rowsArray, 'id', 'id'));
-            $b=array_filter(ArrayHelper::map($productPostedTimes, 'id', 'id'));
+            $rowsArray = ArrayHelper::toArray($rowsAll);
+            $a = array_filter(ArrayHelper::map($rowsArray, 'id', 'id'));
+            $b = array_filter(ArrayHelper::map($productPostedTimes, 'id', 'id'));
 
 
-            $deletedTimesIds=array_diff($a,$b);
-            if (! empty($deletedTimesIds)) {
+            $deletedTimesIds = array_diff($a, $b);
+            if (!empty($deletedTimesIds)) {
                 ProductTime::deleteAll(['id' => $deletedTimesIds]);
             }
-            foreach($productPostedTimes as $postedTime):
+            foreach ($productPostedTimes as $postedTime):
 
 
-            if($postedTime['start_date']=='NULL' ||$postedTime['start_date']=='' ){
-                $postedTime['start_date']=date("Y-m-d");
-            }
-                if($postedTime['end_date']=='NULL' ||$postedTime['end_date']=='' ){
-                    $postedTime['end_date']=date("Y-m-d");
+                if ($postedTime['start_date'] == 'NULL' || $postedTime['start_date'] == '') {
+                    $postedTime['start_date'] = date("Y-m-d");
                 }
-            $values=[
-                    'name'=>$postedTime['name'],
-                    'start_date'=>$postedTime['start_date'],
-                    'end_date'=>$postedTime['end_date'],
-                    'product_id'=>$prodId,
-                    'id'=>$postedTime['id']
+                if ($postedTime['end_date'] == 'NULL' || $postedTime['end_date'] == '') {
+                    $postedTime['end_date'] = date("Y-m-d");
+                }
+                $values = [
+                    'name' => $postedTime['name'],
+                    'start_date' => $postedTime['start_date'],
+                    'end_date' => $postedTime['end_date'],
+                    'product_id' => $prodId,
+                    'id' => $postedTime['id']
                 ];
 
 
-            $query = ProductTime::aSelect(ProductTime::class, '*', ProductTime::tableName(), 'product_id=' .$prodId.' and id="'.$values['id'].'"');
+                $query = ProductTime::aSelect(ProductTime::class, '*', ProductTime::tableName(), 'product_id=' . $prodId . ' and id="' . $values['id'] . '"');
 
                 try {
                     $rows = $query->one();
@@ -209,10 +206,10 @@ class ProductController extends Controller {
                 } catch (Exception $e) {
                 }
                 if (isset($rows)) {
-                    $newTimes=$rows;
+                    $newTimes = $rows;
                     //letezao productot updatelunk
                 } else {
-                    $newTimes=new ProductTime();
+                    $newTimes = new ProductTime();
 
 
                 }
@@ -231,10 +228,9 @@ class ProductController extends Controller {
             endforeach;
 
 
-
         }
 
-        $queryGetTimes = ProductTime::aSelect(ProductTime::class, '*', ProductTime::tableName(), 'product_id=' .$prodId);
+        $queryGetTimes = ProductTime::aSelect(ProductTime::class, '*', ProductTime::tableName(), 'product_id=' . $prodId);
         try {
             $rowsAll = $queryGetTimes->all();
         } catch (Exception $e) {
@@ -242,8 +238,8 @@ class ProductController extends Controller {
 
         if (isset($rowsAll)) {
 
-            if(!$productPostedTimes && $productEdit){
-                if(isset($rowsAll[0])) {
+            if (!$productPostedTimes && $productEdit) {
+                if (isset($rowsAll[0])) {
                     $deletedTimesIds[$rowsAll[0]['id']] = $rowsAll[0]['id'];
                     var_dump($deletedTimesIds);
                     $resultofdeletingTimes = ProductTime::deleteAll(['id' => $deletedTimesIds]);
@@ -252,65 +248,55 @@ class ProductController extends Controller {
                     $rowsAll = $queryGetTimes->all();
                 }
             }
-                    $modelTimes=$rowsAll;
+            $modelTimes = $rowsAll;
 
 
-
-
-
-
-        }
-        else{
-            $modelTimes[]=new ProductTime();
-            $modelTimes = Product::createMultiple(ProductTime::className(),$modelTimes);
-            $modelTimes[0]=new ProductTime();
-            $modelTimes[0]->start_date=date("Y-m-d");
+        } else {
+            $modelTimes[] = new ProductTime();
+            $modelTimes = Product::createMultiple(ProductTime::className(), $modelTimes);
+            $modelTimes[0] = new ProductTime();
+            $modelTimes[0]->start_date = date("Y-m-d");
         }
 
         /*******************Prices Rész /TODO bring this to manly form*********************/
 
 
-        $request=YII::$app->request;
+        $request = YII::$app->request;
         $productPostedPrices = $request->post('ProductPrice');
-        $modelPrices[]=new ProductPrice();
+        $modelPrices[] = new ProductPrice();
 
 
-
-        if($productPostedPrices) {
-            $queryGetPrices = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' .$prodId);
+        if ($productPostedPrices) {
+            $queryGetPrices = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $prodId);
             try {
                 $rowsAll = $queryGetPrices->all();
             } catch (Exception $e) {
             }
 
-            $rowsArray=ArrayHelper::toArray($rowsAll);
-            $a=array_filter(ArrayHelper::map($rowsArray, 'id', 'id'));
-            $b=array_filter(ArrayHelper::map($productPostedPrices, 'id', 'id'));
+            $rowsArray = ArrayHelper::toArray($rowsAll);
+            $a = array_filter(ArrayHelper::map($rowsArray, 'id', 'id'));
+            $b = array_filter(ArrayHelper::map($productPostedPrices, 'id', 'id'));
 
 
-            $deletedPricesIds=array_diff($a,$b);
+            $deletedPricesIds = array_diff($a, $b);
 
 
+            $result = ProductPrice::deleteAll(['id' => $deletedPricesIds]);
 
-            $result=ProductPrice::deleteAll(['id' => $deletedPricesIds]);
-
-            foreach($productPostedPrices as $postedPrice):
-
+            foreach ($productPostedPrices as $postedPrice):
 
 
-
-                $values=[
-                    'name'=>$postedPrice['name'],
-                    'description'=>$postedPrice['description'],
-                    'discount'=>$postedPrice['discount'],
-                    'price'=>$postedPrice['price'],
-                    'product_id'=>$prodId,
-                    'id'=>$postedPrice['id']
+                $values = [
+                    'name' => $postedPrice['name'],
+                    'description' => $postedPrice['description'],
+                    'discount' => $postedPrice['discount'],
+                    'price' => $postedPrice['price'],
+                    'product_id' => $prodId,
+                    'id' => $postedPrice['id']
                 ];
 
 
-
-                $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' .$prodId.' and id="'.$values['id'].'"');
+                $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $prodId . ' and id="' . $values['id'] . '"');
 
                 try {
                     $rows = $query->one();
@@ -318,10 +304,10 @@ class ProductController extends Controller {
                 } catch (Exception $e) {
                 }
                 if (isset($rows)) {
-                    $newPrice=$rows;
+                    $newPrice = $rows;
                     //letezao productot updatelunk
                 } else {
-                    $newPrice=new ProductPrice();
+                    $newPrice = new ProductPrice();
 
 
                 }
@@ -340,10 +326,9 @@ class ProductController extends Controller {
             endforeach;
 
 
-
         }
 
-        $queryGetPrices= ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' .$prodId);
+        $queryGetPrices = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $prodId);
         try {
             $rowsAll = $queryGetPrices->all();
         } catch (Exception $e) {
@@ -352,8 +337,8 @@ class ProductController extends Controller {
         if (isset($rowsAll)) {
 
 
-            if(!$productPostedPrices && $productEdit){
-                if(isset($rowsAll[0])) {
+            if (!$productPostedPrices && $productEdit) {
+                if (isset($rowsAll[0])) {
                     $deletedPricesIds[$rowsAll[0]['id']] = $rowsAll[0]['id'];
                     var_dump($deletedPricesIds);
                     $resultofdeletingPrices = ProductPrice::deleteAll(['id' => $deletedPricesIds]);
@@ -362,37 +347,187 @@ class ProductController extends Controller {
                     $rowsAll = $queryGetPrices->all();
                 }
             }
-            $modelPrices=$rowsAll;
-        }
-
-        else{
-            $modelPrices[]=new ProductPrice();
-            $modelPrices = Product::createMultiple(ProductPrice::class,$modelTimes);
-            $modelPrices[0]=new ProductPrice();
-            $modelPrices[0]->name='asd';
+            $modelPrices = $rowsAll;
+        } else {
+            $modelPrices[] = new ProductPrice();
+            $modelPrices = Product::createMultiple(ProductPrice::class, $modelTimes);
+            $modelPrices[0] = new ProductPrice();
+            $modelPrices[0]->name = 'asd';
 
         }
 
 
-
-        
-
+        /*******************Source Rész /TODO bring this to manly form*********************/
 
 
+        $request = YII::$app->request;
+        $productPostedSources = $request->post('ProductSource');
+        $modelSources[] = new ProductSource();
 
 
+        if ($productPostedSources) {
+            $queryGetSources = ProductSource::aSelect(ProductSource::class, '*', ProductSource::tableName(), 'product_id=' . $prodId);
+            try {
+                $rowsAll = $queryGetSources->all();
+            } catch (Exception $e) {
+            }
+
+            $rowsArray = ArrayHelper::toArray($rowsAll);
+            $a = array_filter(ArrayHelper::map($rowsArray, 'id', 'id'));
+            $b = array_filter(ArrayHelper::map($productPostedSources, 'id', 'id'));
 
 
+            $deletedSourcesIds = array_diff($a, $b);
 
 
+            $result = ProductSource::deleteAll(['id' => $deletedSourcesIds]);
+
+            foreach ($productPostedSources as $postedSources):
 
 
+                $values = [
+                    'name' => $postedSources['name'],
+                    'url' => $postedSources['url'],
+                    'prodIds' => $postedSources['prodIds'],
+                    'product_id' => $prodId,
+                    'id' => $postedSources['id'],
+                    'color'=>$postedSources['color']
+                ];
 
-        return $this->render('update',['model'=>$model,'backendData'=>$backendData,'updateResponse'=>$updateResponse,'prodId'=>$prodId,'modelTimes'=>((empty($modelTimes)) ? [new ProductTime()] : $modelTimes),'modelPrices'=>(empty($modelPrices)) ? [new ProductPrice()] : $modelPrices]);
 
-    }
+                $query = ProductSource::aSelect(ProductSource::class, '*', ProductSource::tableName(), 'product_id=' . $prodId . ' and id="' . $values['id'] . '"');
+
+                try {
+                    $sourceRows = $query->one();
+
+                } catch (Exception $e) {
+                }
+                if (isset($sourceRows)) {
+                    $newSources = $sourceRows;
+                    //letezao productot updatelunk
+                } else {
+                    $newSources = new ProductSource();
 
 
+                }
+
+
+                if (Product::insertOne($newSources, $values)) {
+                    $updateResponse = 1;
+
+                } else {
+                    $updateResponse = 0;
+
+                    //show an error message
+                }
+
+
+            endforeach;
+
+
+        }
+
+
+        $queryGetSources = ProductSource::aSelect(ProductSource::class, '*', ProductSource::tableName(), 'product_id=' . $prodId);
+        try {
+            $sourceRows = $queryGetSources->all();
+        } catch (Exception $e) {
+        }
+
+        if (isset($sourceRows)) {
+
+
+            if (!$productPostedSources && $productEdit) {
+                if (isset($sourceRows[0])) {
+                    $deletedSourcesIds[$sourceRows[0]['id']] = $sourceRows[0]['id'];
+                    var_dump($deletedSourcesIds);
+                    $resultofdeletingSources = ProductSource::deleteAll(['id' => $deletedSourcesIds]);
+                    var_dump($resultofdeletingSources);
+
+                    $sourceRows = $queryGetSources->all();
+                }
+            }
+            $modelSources = $sourceRows;
+        } else {
+            $modelSources[] = new ProductSource();
+            $modelSources = Product::createMultiple(ProductSource::class, $modelSources);
+            $modelSources[0] = new ProductSource();
+            $modelSources[0]->name = 'asd';
+
+        }
+
+        /**
+         * This is for the booking Table
+         *  TODO Ajax this
+         *
+         *
+         */
+        $modelEvents2 = [];
+        foreach ($sourceRows as $source):
+            $queryGetReservatios = Product::aSelect(Reservations::class, '*', Reservations::tableName(), 'source="' . $source->url.'"');
+            try {
+                $rowsAll = $queryGetReservatios->all();
+            } catch (Exception $e) {
+            }
+
+            if (isset($rowsAll)) {
+                foreach ($rowsAll as $reservation) {
+                    $event = new \yii2fullcalendar\models\Event();
+                    $event->id = $reservation->id;
+                    $reservationData = $reservation->data;
+                    $reservationData = json_decode($reservationData);
+                    $reservationName = $reservationData->orderDetails->billing_first_name . ' ' . $reservationData->orderDetails->billing_last_name;
+                    $event->title = $reservationName;
+                    $event->start = $reservation->bookingDate;
+                    $event->nonstandard = ['field1' => $source->name,'field2'=>$source->color];
+                    $event->color = $source->color;
+                    $modelEvents2[] = $event;
+                }
+            }
+        endforeach;
+            /**
+             * This is for the booking Table
+             *  TODO Ajax this
+             *
+             *
+             */
+
+            $queryGetReservatios = Product::aSelect(Reservations::class, '*', Reservations::tableName(), 'productId=250');
+            try {
+                $rowsAll = $queryGetReservatios->all();
+            } catch (Exception $e) {
+            }
+
+            $modelEvents = [];
+
+            if (isset($rowsAll)) {
+                foreach ($rowsAll as $reservation) {
+                    $event = new \yii2fullcalendar\models\Event();
+                    $event->id = $reservation->id;
+                    $reservationData = $reservation->data;
+                    $reservationData = json_decode($reservationData);
+                    $reservationName = $reservationData->orderDetails->billing_first_name . ' ' . $reservationData->orderDetails->billing_last_name;
+                    $event->title = $reservationName;
+                    $event->start = $reservation->bookingDate;
+                    $event->nonstandard = ['field1' => $reservation->source];
+                    $event->color = "purple";
+                    $modelEvents[] = $event;
+                }
+            }
+
+
+            return $this->render(
+                'update', ['model' => $model, 'backendData' => $backendData,
+                    'updateResponse' => $updateResponse,
+                    'prodId' => $prodId,
+                    'modelSources' => ((empty($modelSources)) ? [new ProductSource()] : $modelSources),
+                    'modelEvents' => $modelEvents2,
+                    'modelTimes' => ((empty($modelTimes)) ? [new ProductTime()] : $modelTimes),
+                    'modelPrices' => ((empty($modelPrices)) ? [new ProductPrice()] : $modelPrices),
+                ]
+            );
+
+        }
 
 
 
@@ -404,5 +539,8 @@ class ProductController extends Controller {
      */
     public function actionIndex() {
         return $this->render('index');
+    }
+    public function actionTest(){
+        return $this->render('test');
     }
 }
