@@ -464,7 +464,7 @@ class ProductController extends Controller {
          */
         $modelEvents2 = [];
         foreach ($sourceRows as $source):
-            $queryGetReservatios = Product::aSelect(Reservations::class, '*', Reservations::tableName(), 'source="' . $source->url.'"');
+            $queryGetReservatios = Product::aSelect(Reservations::class, '*', Reservations::tableName(), 'source="' . $source->url.'"and productId="'.$source->prodIds.'"');
             try {
                 $rowsAll = $queryGetReservatios->all();
             } catch (Exception $e) {
@@ -479,10 +479,11 @@ class ProductController extends Controller {
                     $reservationName = $reservationData->orderDetails->billing_first_name . ' ' . $reservationData->orderDetails->billing_last_name;
                     $event->title = $reservationName;
                     $event->start = $reservation->bookingDate;
-                    $event->nonstandard = ['field1' => $source->name,'field2'=>$source->color];
+                    $event->nonstandard = ['field1' => $source->name,'field2'=>$reservation->id];
                     $event->color = $source->color;
                     $modelEvents2[] = $event;
                 }
+
             }
         endforeach;
             /**

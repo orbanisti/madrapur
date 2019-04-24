@@ -554,6 +554,7 @@ $form = ActiveForm::begin([
                 $JSEventClick = <<<EOF
 function(calEvent, jsEvent, view) {
     alert('Event: ' + calEvent.title);
+
     alert('Source: ' + calEvent.nonstandard['field1']);
     // change the border color just for fun
     $(this).css('border-color', 'red');
