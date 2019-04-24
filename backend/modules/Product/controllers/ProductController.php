@@ -11,12 +11,16 @@ use backend\modules\Product\models\ProductPrice;
 use backend\modules\Product\models\ProductSource;
 
 use backend\modules\Reservations\models\Reservations;
+use backend\modules\Reservations\models\ReservationsAdminSearchModel;
 use Yii;
 use backend\controllers\Controller;
 use backend\modules\Product\models\ProductUpdate;
 use backend\modules\Product\models\ProductTime;
 
 use backend\modules\Product\models\ProductAdminSearchModel;
+use himiklab\jqgrid\actions\JqGridActiveAction;
+
+
 use yii\helpers\ArrayHelper;
 
 /**
@@ -541,7 +545,20 @@ class ProductController extends Controller {
     public function actionIndex() {
         return $this->render('index');
     }
-    public function actionTest(){
-        return $this->render('test');
+    public function actionDaye(){
+        $searchModel = new ReservationsAdminSearchModel();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+
+
+
+        return $this->render('dayEdit', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel
+
+
+        ]);
     }
+
+
 }
