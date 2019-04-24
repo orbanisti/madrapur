@@ -48,8 +48,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Szerkesztés');
         'prodId'=>$prodId,
         'modelTimes'=>$modelTimes,
         'modelPrices'=>$modelPrices,
-        'modelEvents'=>$modelEvents
-
+        'modelEvents'=>$modelEvents,
+        'modelSources'=>$modelSources,
 
 
 /*
