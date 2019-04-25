@@ -38,6 +38,12 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
 
     ];
+    $gridColumns2=[
+
+
+
+
+    ]
 
     echo \yii\grid\GridView::widget([
         'pager' => [
