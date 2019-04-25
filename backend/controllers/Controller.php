@@ -40,7 +40,7 @@ class Controller extends \yii\web\Controller {
                     'Origin'                           => static::allowedDomains(),
                     'Access-Control-Request-Method'    => ['POST'],
                     'Access-Control-Allow-Credentials' => true,
-                    'Access-Control-Max-Age'           => 3600,                 // Cache (seconds)
+                    'Access-Control-Max-Age'           => 0,                 // Cache (seconds)
                 ],
             ],
 

@@ -76,6 +76,23 @@ class Product extends MadActiveRecord{
 
     }
 
+
+
+    public static function getAllProducts() {
+        $query = Product::aSelect(Product::class, '*', Product::tableName(), '1');
+
+        $prodInfo = 0;
+
+        try {
+            $prodInfo = $query->all();
+        } catch (Exception $e) {
+
+        }
+
+        return $prodInfo;
+
+    }
+
     public static function createMultiple($modelClass, $multipleModels = [])
     {
         $model    = new $modelClass;
