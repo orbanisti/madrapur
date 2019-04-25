@@ -59,8 +59,6 @@ class Product extends MadActiveRecord{
 
     }
 
-
-
     public static function getAllProducts() {
         $query = Product::aSelect(Product::class, '*', Product::tableName(), '1');
 
