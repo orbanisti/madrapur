@@ -5,8 +5,7 @@
  * @var $content string
  */
 use yii\helpers\Html;
-
-\yii\bootstrap\BootstrapAsset::register($this)?>
+?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?php echo \Yii::$app->language; ?>">
