@@ -11,12 +11,16 @@ use backend\modules\Product\models\ProductPrice;
 use backend\modules\Product\models\ProductSource;
 
 use backend\modules\Reservations\models\Reservations;
+use backend\modules\Reservations\models\ReservationsAdminSearchModel;
 use Yii;
 use backend\controllers\Controller;
 use backend\modules\Product\models\ProductUpdate;
 use backend\modules\Product\models\ProductTime;
 
 use backend\modules\Product\models\ProductAdminSearchModel;
+use himiklab\jqgrid\actions\JqGridActiveAction;
+
+
 use yii\helpers\ArrayHelper;
 
 /**
@@ -464,7 +468,7 @@ class ProductController extends Controller {
          */
         $modelEvents2 = [];
         foreach ($sourceRows as $source):
-            $queryGetReservatios = Product::aSelect(Reservations::class, '*', Reservations::tableName(), 'source="' . $source->url.'"');
+            $queryGetReservatios = Product::aSelect(Reservations::class, '*', Reservations::tableName(), 'source="' . $source->url.'"and productId="'.$source->prodIds.'"');
             try {
                 $rowsAll = $queryGetReservatios->all();
             } catch (Exception $e) {
@@ -479,10 +483,11 @@ class ProductController extends Controller {
                     $reservationName = $reservationData->orderDetails->billing_first_name . ' ' . $reservationData->orderDetails->billing_last_name;
                     $event->title = $reservationName;
                     $event->start = $reservation->bookingDate;
-                    $event->nonstandard = ['field1' => $source->name,'field2'=>$source->color];
+                    $event->nonstandard = ['field1' => $source->name,'field2'=>$reservation->id];
                     $event->color = $source->color;
                     $modelEvents2[] = $event;
                 }
+
             }
         endforeach;
             /**
@@ -540,7 +545,20 @@ class ProductController extends Controller {
     public function actionIndex() {
         return $this->render('index');
     }
-    public function actionTest(){
-        return $this->render('test');
+    public function actionDaye(){
+        $searchModel = new ReservationsAdminSearchModel();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+
+
+
+        return $this->render('dayEdit', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel
+
+
+        ]);
     }
+
+
 }
