@@ -3,6 +3,7 @@
 namespace backend\modules\Product\models;
 
 use backend\modules\MadActiveRecord\models\MadActiveRecord;
+use Psr\Log\NullLogger;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -11,10 +12,13 @@ use yii\helpers\ArrayHelper;
  * Default model for the `Product` module
  */
 class Product extends MadActiveRecord{
+
+
  
     public static function tableName() {
         return 'modulusProducts';
     }
+
 //TODO
     public function rules() {
         return [
@@ -41,23 +45,53 @@ class Product extends MadActiveRecord{
             'randomDate' => Yii::t('app', 'Véletlenszerű dátum'),
         ];
     }
+    public function attributes() {
+        $attributes = parent::attributes();
+        return array_merge($attributes, [
+            'times','prices'
+        ]);
+    }
+
+    public function getPricesDetails() {
+        return $this->prices;
+    }
+    public function setPricesDetails($orderDetails) {
+        $this->prices = $orderDetails;
+    }
+    public function getTimesDetails() {
+        return $this->times;
+    }
+    public function setTimesDetails($orderDetails) {
+        $this->times = $orderDetails;
+    }
 
     public static function getProdById($id){
 
 //TODO get product from ID
 
         $query = Product::aSelect(Product::class, '*', Product::tableName(), 'id=' . $id);
-        $query2 = Product::aSelect(ProductTime::class, '*', ProductTime::tableName(), '1');
-        $allTimes=$query2->all();
+        $queryTimes = Product::aSelect(ProductTime::class, '*', ProductTime::tableName(), '1');
+        $queryPrices = Product::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), '1');
+        $allTimes=$queryTimes->all();
+        $allPrices=$queryPrices->all();
+
 
         $prodInfo=0;
         try {
             $prodInfo = $query->one();
-            foreach ($allTimes as $time){
-             if($time->id==$id){
-                 $prodInfo->orderDetails[]=$time;
 
-             }
+
+            foreach ($allTimes as $time){
+                 if($time->product_id==$id){
+                     $prodInfo->setAttribute("times", $time);
+                 }
+
+            }
+            foreach ($allPrices as $price){
+                if($price->product_id==$id){
+                    $prodInfo->setAttribute("prices", $price);
+                }
+
             }
 
 
