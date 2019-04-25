@@ -47,9 +47,19 @@ class Product extends MadActiveRecord{
 //TODO get product from ID
 
         $query = Product::aSelect(Product::class, '*', Product::tableName(), 'id=' . $id);
+        $query2 = Product::aSelect(ProductTime::class, '*', ProductTime::tableName(), '1');
+        $allTimes=$query2->all();
+
         $prodInfo=0;
         try {
             $prodInfo = $query->one();
+            foreach ($allTimes as $time){
+             if($time->id==$id){
+                 $prodInfo->orderDetails[]=$time;
+
+             }
+            }
+
 
 
         } catch (Exception $e) {
@@ -62,10 +72,16 @@ class Product extends MadActiveRecord{
     public static function getAllProducts() {
         $query = Product::aSelect(Product::class, '*', Product::tableName(), '1');
 
+
         $prodInfo = 0;
 
         try {
             $prodInfo = $query->all();
+            foreach ($prodInfo as $prod){
+                $prodInfo[]=Product::getProdById($prod->id);
+
+            }
+
         } catch (Exception $e) {
 
         }
