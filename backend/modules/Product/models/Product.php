@@ -110,7 +110,7 @@ class Product extends MadActiveRecord{
         $prodInfo = 0;
 
         try {
-            $prodInfo = $query->all();
+
             foreach ($prodInfo as $prod){
                 $prodInfo[]=Product::getProdById($prod->id);
 
