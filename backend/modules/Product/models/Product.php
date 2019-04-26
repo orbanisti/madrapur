@@ -34,7 +34,8 @@ class Product extends MadActiveRecord{
             [['start_date'], 'string', 'max' => 255],
             [['end_date'], 'string', 'max' => 255],
             [['capacity'], 'string', 'max' => 255],
-            [['duration'], 'string', 'max' => 255]
+            [['duration'], 'string', 'max' => 255],
+            [['slug'], 'string', 'max' => 255],
         ];
     }
 //TODO
