@@ -6,6 +6,7 @@ namespace backend\modules\Product\controllers;
 use backend\modules\Product\models\Product;
 use backend\modules\Product\models\ProductEdit;
 
+use backend\modules\Product\models\ProductOverview;
 use backend\modules\Product\models\ProductPrice;
 
 use backend\modules\Product\models\ProductSource;
@@ -580,7 +581,9 @@ class ProductController extends Controller {
     public function actionIndex() {
         return $this->render('index');
     }
+
     public function actionDaye(){
+
         $searchModel = new ReservationsAdminSearchModel();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

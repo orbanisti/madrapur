@@ -23,8 +23,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="panel-body">
     <?php
     $gridColumns = [
+        'bookingId',
         ['class' => 'kartik\grid\EditableColumn',
-        'attribute'=>'bookingId'],
+        'attribute'=>'fname'],
+        ['class' => 'kartik\grid\EditableColumn',
+            'attribute'=>'lname'],
+
         'productId',
         'source',
         'invoiceDate',

@@ -61,5 +61,12 @@ class ProductAdminSearchModel extends Product
     public function returnProductId() {
         return $this['id'];
     }
+
+    public function attributes() {
+        $attributes = parent::attributes();
+        return array_merge($attributes, [
+            'fname'
+        ]);
+    }
 }
 
