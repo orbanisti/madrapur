@@ -12,5 +12,5 @@ namespace common\base;
 use yii\web\AssetManager;
 
 class MadAssetManager extends AssetManager {
- 
+
 }
