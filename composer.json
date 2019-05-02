@@ -72,7 +72,7 @@
 		"onmotion/yii2-widget-apexcharts": "^1.0",
 		"nizsheanez/yii2-json-rpc": "^1.1",
 		"cranetm/yii2-json-rpc-2.0": "^1.2",
-		"philippfrenzel/yii2fullcalendar": "*",
+		"philippfrenzel/yii2fullcalendar": "3.9.0",
 		"kartik-v/yii2-widget-colorinput": "^1.0",
 		"himiklab/yii2-jqgrid-widget": "^1.2"
 	},

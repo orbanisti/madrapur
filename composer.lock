@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5c90fbbad30fe542aef68ec1985e02f0",
+    "content-hash": "4fbd7e479735cefad95ac87e0121b0b8",
     "packages": [
         {
             "name": "alexantr/yii2-elfinder",
@@ -107,16 +107,16 @@
         },
         {
             "name": "bower-asset/ace-builds",
-            "version": "v1.4.3",
+            "version": "v1.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ajaxorg/ace-builds.git",
-                "reference": "32e27226d66b2f3a63d4e393853f84ef3e17a003"
+                "reference": "5fe4368221f48b114387c2e7d67c9cd904ec30a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ajaxorg/ace-builds/zipball/32e27226d66b2f3a63d4e393853f84ef3e17a003",
-                "reference": "32e27226d66b2f3a63d4e393853f84ef3e17a003",
+                "url": "https://api.github.com/repos/ajaxorg/ace-builds/zipball/5fe4368221f48b114387c2e7d67c9cd904ec30a2",
+                "reference": "5fe4368221f48b114387c2e7d67c9cd904ec30a2",
                 "shasum": null
             },
             "type": "bower-asset",
@@ -142,16 +142,16 @@
         },
         {
             "name": "bower-asset/blueimp-file-upload",
-            "version": "v9.29.0",
+            "version": "v9.30.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/blueimp/jQuery-File-Upload.git",
-                "reference": "818f9762b955278ddb6dc2e007ef4322175a3b1b"
+                "reference": "4586771d65482dc9678c7e48d245a1501bf96ff5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/blueimp/jQuery-File-Upload/zipball/818f9762b955278ddb6dc2e007ef4322175a3b1b",
-                "reference": "818f9762b955278ddb6dc2e007ef4322175a3b1b",
+                "url": "https://api.github.com/repos/blueimp/jQuery-File-Upload/zipball/4586771d65482dc9678c7e48d245a1501bf96ff5",
+                "reference": "4586771d65482dc9678c7e48d245a1501bf96ff5",
                 "shasum": null
             },
             "require": {
@@ -267,35 +267,50 @@
         },
         {
             "name": "bower-asset/fullcalendar",
-            "version": "v4.0.2",
+            "version": "v3.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fullcalendar/fullcalendar.git",
-                "reference": "2c3fc89f3a4fa1a0a129a9203d0da5ea48b9ad2d"
+                "reference": "3ddb3c8d1461c6b841aed3487ba07d8ba338adb6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fullcalendar/fullcalendar/zipball/2c3fc89f3a4fa1a0a129a9203d0da5ea48b9ad2d",
-                "reference": "2c3fc89f3a4fa1a0a129a9203d0da5ea48b9ad2d",
+                "url": "https://api.github.com/repos/fullcalendar/fullcalendar/zipball/3ddb3c8d1461c6b841aed3487ba07d8ba338adb6",
+                "reference": "3ddb3c8d1461c6b841aed3487ba07d8ba338adb6",
                 "shasum": null
             },
-            "type": "bower-asset"
+            "require": {
+                "bower-asset/jquery": ">=2,<4.0",
+                "bower-asset/moment": ">=2.20.1,<3.0.0"
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "bower-asset/fullcalendar-scheduler",
-            "version": "v4.0.2",
+            "version": "v1.9.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fullcalendar/fullcalendar-scheduler.git",
-                "reference": "6e6096d31148a1d2fde8a0dd4b17e60d7f0892e8"
+                "reference": "6ebc6d1ec1d4cc82481e0c57272b70df80330494"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fullcalendar/fullcalendar-scheduler/zipball/6e6096d31148a1d2fde8a0dd4b17e60d7f0892e8",
-                "reference": "6e6096d31148a1d2fde8a0dd4b17e60d7f0892e8",
+                "url": "https://api.github.com/repos/fullcalendar/fullcalendar-scheduler/zipball/6ebc6d1ec1d4cc82481e0c57272b70df80330494",
+                "reference": "6ebc6d1ec1d4cc82481e0c57272b70df80330494",
                 "shasum": null
             },
-            "type": "bower-asset"
+            "require": {
+                "bower-asset/fullcalendar": "~3.9.0",
+                "bower-asset/jquery": ">=2,<4.0",
+                "bower-asset/moment": ">=2.20.1,<3.0.0"
+            },
+            "type": "bower-asset",
+            "license": [
+                "SEE LICENSE IN LICENSE.md"
+            ]
         },
         {
             "name": "bower-asset/inputmask",
@@ -6338,10 +6353,10 @@
         },
         {
             "name": "npm-asset/select2",
-            "version": "4.0.5",
+            "version": "4.0.6",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/select2/-/select2-4.0.5.tgz",
+                "url": "https://registry.npmjs.org/select2/-/select2-4.0.6.tgz",
                 "reference": null,
                 "shasum": null
             },
@@ -7082,21 +7097,21 @@
         },
         {
             "name": "philippfrenzel/yii2fullcalendar",
-            "version": "4.0.2",
+            "version": "3.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/philippfrenzel/yii2fullcalendar.git",
-                "reference": "53c8b2f524c5f5d85bd30f6ed7ba34b563479782"
+                "reference": "0b56a80486fa01b874dda5072ffb9b2cf06210ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/philippfrenzel/yii2fullcalendar/zipball/53c8b2f524c5f5d85bd30f6ed7ba34b563479782",
-                "reference": "53c8b2f524c5f5d85bd30f6ed7ba34b563479782",
+                "url": "https://api.github.com/repos/philippfrenzel/yii2fullcalendar/zipball/0b56a80486fa01b874dda5072ffb9b2cf06210ed",
+                "reference": "0b56a80486fa01b874dda5072ffb9b2cf06210ed",
                 "shasum": ""
             },
             "require": {
-                "bower-asset/fullcalendar": "^4.0.2@stable",
-                "bower-asset/fullcalendar-scheduler": "^4.0.2@stable",
+                "bower-asset/fullcalendar": "^3.9.0@stable",
+                "bower-asset/fullcalendar-scheduler": "^1.9.2@stable",
                 "yiisoft/yii2": "*",
                 "yiisoft/yii2-jui": "*"
             },
@@ -7128,7 +7143,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2019-04-17T13:42:59+00:00"
+            "time": "2018-05-04T09:06:24+00:00"
         },
         {
             "name": "phpoffice/phpspreadsheet",
@@ -7580,7 +7595,7 @@
         },
         {
             "name": "symfony/css-selector",
-            "version": "v3.4.26",
+            "version": "v3.4.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/css-selector.git",
@@ -7633,7 +7648,7 @@
         },
         {
             "name": "symfony/dom-crawler",
-            "version": "v3.4.26",
+            "version": "v3.4.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dom-crawler.git",
@@ -7690,16 +7705,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v3.4.26",
+            "version": "v3.4.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "90454ad44c95d75faf3507d56388056001b74baf"
+                "reference": "fa02215233be8de1c2b44617088192f9e8db3512"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/90454ad44c95d75faf3507d56388056001b74baf",
-                "reference": "90454ad44c95d75faf3507d56388056001b74baf",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/fa02215233be8de1c2b44617088192f9e8db3512",
+                "reference": "fa02215233be8de1c2b44617088192f9e8db3512",
                 "shasum": ""
             },
             "require": {
@@ -7740,7 +7755,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2019-04-17T14:51:18+00:00"
+            "time": "2019-05-01T08:04:33+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -8096,7 +8111,7 @@
         },
         {
             "name": "symfony/process",
-            "version": "v4.2.7",
+            "version": "v4.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
@@ -8635,12 +8650,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "b80830c5f8c221b8bd6a830c5b2f45544f82c4d7"
+                "reference": "be563f0211bd5d4424680d0fcdef578090f08e41"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/b80830c5f8c221b8bd6a830c5b2f45544f82c4d7",
-                "reference": "b80830c5f8c221b8bd6a830c5b2f45544f82c4d7",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/be563f0211bd5d4424680d0fcdef578090f08e41",
+                "reference": "be563f0211bd5d4424680d0fcdef578090f08e41",
                 "shasum": ""
             },
             "require": {
@@ -8727,7 +8742,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2019-04-16T14:27:26+00:00"
+            "time": "2019-04-23T12:48:26+00:00"
         },
         {
             "name": "yiisoft/yii2-authclient",
@@ -8904,16 +8919,16 @@
         },
         {
             "name": "yiisoft/yii2-httpclient",
-            "version": "2.0.9",
+            "version": "2.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-httpclient.git",
-                "reference": "d788e6783c76ef043a5bff1f2b47d82cf44bbe8c"
+                "reference": "d3d780d37bc8aa092e9ae555ed38645464587a07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-httpclient/zipball/d788e6783c76ef043a5bff1f2b47d82cf44bbe8c",
-                "reference": "d788e6783c76ef043a5bff1f2b47d82cf44bbe8c",
+                "url": "https://api.github.com/repos/yiisoft/yii2-httpclient/zipball/d3d780d37bc8aa092e9ae555ed38645464587a07",
+                "reference": "d3d780d37bc8aa092e9ae555ed38645464587a07",
                 "shasum": ""
             },
             "require": {
@@ -8950,7 +8965,7 @@
                 "httpclient",
                 "yii2"
             ],
-            "time": "2019-04-23T11:06:27+00:00"
+            "time": "2019-04-30T14:57:35+00:00"
         },
         {
             "name": "yiisoft/yii2-imagine",
@@ -9286,16 +9301,16 @@
         },
         {
             "name": "codeception/codeception",
-            "version": "2.5.5",
+            "version": "2.5.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Codeception.git",
-                "reference": "547a64cb31edcf1902b296c511f5ca74101bcb4c"
+                "reference": "b83a9338296e706fab2ceb49de8a352fbca3dc98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/547a64cb31edcf1902b296c511f5ca74101bcb4c",
-                "reference": "547a64cb31edcf1902b296c511f5ca74101bcb4c",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/b83a9338296e706fab2ceb49de8a352fbca3dc98",
+                "reference": "b83a9338296e706fab2ceb49de8a352fbca3dc98",
                 "shasum": ""
             },
             "require": {
@@ -9374,7 +9389,7 @@
                 "functional testing",
                 "unit testing"
             ],
-            "time": "2019-03-23T17:57:45+00:00"
+            "time": "2019-04-24T11:28:19+00:00"
         },
         {
             "name": "codeception/phpunit-wrapper",
@@ -9813,16 +9828,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "4.3.0",
+            "version": "4.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "94fd0001232e47129dd3504189fa1c7225010d08"
+                "reference": "bdd9f737ebc2a01c06ea7ff4308ec6697db9b53c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/94fd0001232e47129dd3504189fa1c7225010d08",
-                "reference": "94fd0001232e47129dd3504189fa1c7225010d08",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/bdd9f737ebc2a01c06ea7ff4308ec6697db9b53c",
+                "reference": "bdd9f737ebc2a01c06ea7ff4308ec6697db9b53c",
                 "shasum": ""
             },
             "require": {
@@ -9860,7 +9875,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2017-11-30T07:14:17+00:00"
+            "time": "2019-04-30T17:48:53+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -10513,16 +10528,16 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "4.1.0",
+            "version": "4.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "6fda8ce1974b62b14935adc02a9ed38252eca656"
+                "reference": "3095910f0f0fb155ac4021fc51a4a7a39ac04e8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/6fda8ce1974b62b14935adc02a9ed38252eca656",
-                "reference": "6fda8ce1974b62b14935adc02a9ed38252eca656",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/3095910f0f0fb155ac4021fc51a4a7a39ac04e8a",
+                "reference": "3095910f0f0fb155ac4021fc51a4a7a39ac04e8a",
                 "shasum": ""
             },
             "require": {
@@ -10537,7 +10552,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.1-dev"
+                    "dev-master": "4.2-dev"
                 }
             },
             "autoload": {
@@ -10562,7 +10577,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2019-02-01T05:27:49+00:00"
+            "time": "2019-04-25T07:55:20+00:00"
         },
         {
             "name": "sebastian/exporter",
@@ -10914,7 +10929,7 @@
         },
         {
             "name": "symfony/browser-kit",
-            "version": "v4.2.7",
+            "version": "v4.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/browser-kit.git",
@@ -10971,7 +10986,7 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.2.7",
+            "version": "v4.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
@@ -11111,7 +11126,7 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v4.2.7",
+            "version": "v4.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
@@ -11175,7 +11190,7 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v4.2.7",
+            "version": "v4.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
@@ -11224,7 +11239,7 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.2.7",
+            "version": "v4.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
