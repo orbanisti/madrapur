@@ -12,7 +12,5 @@ namespace common\base;
 use yii\web\AssetManager;
 
 class MadAssetManager extends AssetManager {
-    public function hashCallback($path) {
-        return $path;
-    }
+ 
 }
