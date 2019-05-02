@@ -14,7 +14,10 @@ use wbraganca\dynamicform\DynamicFormWidget;
 
 
 ?>
+<?php
 
+
+?>
 
 
 <?php
@@ -67,6 +70,8 @@ $form = ActiveForm::begin([
   <?=$form->field($model, 'currency')->dropDownList(array('HUF' => 'HUF', 'EUR' => 'EUR',), array('options' => array('HUF' => array('selected' => true))));?>
   <?=$form->field($model, 'status')->dropDownList(array('active' => 'active', 'inactive' => 'inactive',), array('options' => array('active' => array('selected' => true))));?>
   <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+
+  <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'description')->widget(\yii\redactor\widgets\Redactor::className(), [
         'clientOptions' => [
             'imageManagerJson' => ['/redactor/upload/image-json'],

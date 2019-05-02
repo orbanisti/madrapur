@@ -23,8 +23,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="panel-body">
     <?php
     $gridColumns = [
-        ['class' => 'yii\grid\SerialColumn'],
-        'bookingId',
+        ['class' => 'kartik\grid\EditableColumn',
+        'attribute'=>'bookingId'],
         'productId',
         'source',
         'invoiceDate',
@@ -38,24 +38,14 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
 
     ];
-    $gridColumns2=[
 
 
-
-
-    ]
-
-    echo \yii\grid\GridView::widget([
-        'pager' => [
-            'firstPageLabel' => Yii::t('app', 'Első oldal'),
-            'lastPageLabel' => Yii::t('app', 'Utolsó oldal'),
-        ],
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => $gridColumns,
+    // the GridView widget (you must use kartik\grid\GridView)
+    echo \kartik\grid\GridView::widget([
+        'dataProvider'=>$dataProvider,
+        'filterModel'=>$searchModel,
+        'columns'=>$gridColumns
     ]);
-
-
     ?>
     </div>
     </div>

@@ -66,6 +66,14 @@ class Product extends MadActiveRecord{
         $this->times = $orderDetails;
     }
 
+    public function getProdUrl() {
+        return $this->times;
+    }
+    public function setProdUrl($orderDetails) {
+        $this->times = $orderDetails;
+    }
+
+
     public static function getProdById($id){
 
 //TODO get product from ID
