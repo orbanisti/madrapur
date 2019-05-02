@@ -6,6 +6,7 @@ namespace backend\modules\Product\controllers;
 use backend\modules\Product\models\Product;
 use backend\modules\Product\models\ProductEdit;
 
+use backend\modules\Product\models\ProductOverview;
 use backend\modules\Product\models\ProductPrice;
 
 use backend\modules\Product\models\ProductSource;
@@ -77,6 +78,35 @@ class ProductController extends Controller {
     /**
      * @return string
      */
+
+
+    function slugify($text)
+    {
+        // replace non letter or digits by -
+        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+
+        // transliterate
+        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+
+        // remove unwanted characters
+        $text = preg_replace('~[^-\w]+~', '', $text);
+
+        // trim
+        $text = trim($text, '-');
+
+        // remove duplicate -
+        $text = preg_replace('~-+~', '-', $text);
+
+        // lowercase
+        $text = strtolower($text);
+
+        if (empty($text)) {
+            return 'n-a';
+        }
+
+        return $text;
+    }
+
     public function actionUpdate()
     {
 
@@ -116,6 +146,7 @@ class ProductController extends Controller {
                 'images' => $productEdit['images'],
                 'start_date' => $productEdit['start_date'],
                 'end_date' => $productEdit['end_date'],
+                'slug'=>$productEdit['slug'],
             ];
 
 
@@ -396,6 +427,7 @@ class ProductController extends Controller {
                     'product_id' => $prodId,
                     'id' => $postedSources['id'],
                     'color'=>$postedSources['color']
+
                 ];
 
 
@@ -520,6 +552,10 @@ class ProductController extends Controller {
                 }
             }
 
+    if($model->slug=='testSlug' || $model->slug==''){
+        $model->slug='/product/'.$this->slugify($model->title);
+    }
+
 
             return $this->render(
                 'update', ['model' => $model, 'backendData' => $backendData,
@@ -545,7 +581,9 @@ class ProductController extends Controller {
     public function actionIndex() {
         return $this->render('index');
     }
+
     public function actionDaye(){
+
         $searchModel = new ReservationsAdminSearchModel();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

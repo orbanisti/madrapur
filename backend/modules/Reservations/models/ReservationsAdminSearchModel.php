@@ -18,11 +18,14 @@ class ReservationsAdminSearchModel extends Reservations
         return [
             [['bookingId'], 'integer'],
             [['source'], 'string', 'max' => 255],
+            [['fname'], 'string', 'max' => 255],
+            [['lname'], 'string', 'max' => 255],
             [['data'], 'string', 'max' => 1000],
             [['invoiceDate'], 'date', 'format' => 'yyyy-MM-dd'],
             [['bookingDate'], 'date', 'format' => 'yyyy-MM-dd'],
         ];
     }
+
 
     public function search($params)
 {
@@ -77,5 +80,7 @@ class ReservationsAdminSearchModel extends Reservations
     public function returnBookingId() {
         return $this['bookingId'];
     }
+
+
 }
 
