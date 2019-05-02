@@ -13,6 +13,13 @@ class m190426_083158_addSlugToProduct extends Migration {
             'slug',
             'varchar(255)'
         );
+
+        $this->update(
+            $this->tableName,
+            [
+                'slug' => 'testSlug'
+            ]
+        );
     }
 
     public function safeDown() {
