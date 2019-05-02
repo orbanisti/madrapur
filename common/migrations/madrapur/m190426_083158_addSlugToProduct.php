@@ -4,7 +4,7 @@ use yii\db\Schema;
 use yii\db\Migration;
 
 class m190426_083158_addSlugToProduct extends Migration {
-    public $tableName = "modulusproducts";
+    public $tableName = "modulusProducts";
     public $columnName = "slug";
 
     public function safeUp() {
