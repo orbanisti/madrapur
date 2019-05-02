@@ -145,6 +145,7 @@ class ProductController extends Controller {
                 'images' => $productEdit['images'],
                 'start_date' => $productEdit['start_date'],
                 'end_date' => $productEdit['end_date'],
+                'slug'=>$productEdit['slug'],
             ];
 
 
@@ -425,6 +426,7 @@ class ProductController extends Controller {
                     'product_id' => $prodId,
                     'id' => $postedSources['id'],
                     'color'=>$postedSources['color']
+
                 ];
 
 
@@ -550,7 +552,7 @@ class ProductController extends Controller {
             }
 
     if($model->slug=='testSlug' || $model->slug==''){
-        $model->slug=$this->slugify($model->title);
+        $model->slug='/product/'.$this->slugify($model->title);
     }
 
 
