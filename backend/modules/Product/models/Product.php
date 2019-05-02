@@ -35,7 +35,7 @@ class Product extends MadActiveRecord{
             [['end_date'], 'string', 'max' => 255],
             [['capacity'], 'string', 'max' => 255],
             [['duration'], 'string', 'max' => 255],
-            [['slug'], 'string', 'max' => 255],
+             [['slug'], 'string', 'max' => 255],
         ];
     }
 //TODO
@@ -52,6 +52,8 @@ class Product extends MadActiveRecord{
             'times','prices'
         ]);
     }
+
+
 
     public function getPricesDetails() {
         return $this->prices;
