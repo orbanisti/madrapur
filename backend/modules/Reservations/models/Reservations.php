@@ -49,10 +49,10 @@ class Reservations extends MadActiveRecord
         parent::afterFind();
 
         $myjson=json_decode($this->data);
-        if($myjson)
+        if($myjson){
             $this->setAttribute("fname",$myjson->orderDetails->billing_first_name);
             $this->setAttribute("lname",$myjson->orderDetails->billing_last_name);
-        endif;
+        }
 
     }
     public function beforeSave($insert)
