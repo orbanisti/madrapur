@@ -25,6 +25,9 @@ $config = [
         'gridview' => [
             'class' => kartik\grid\Module::class,
         ],
+        'Payment' => [
+                'class' => backend\modules\Payment\Module::class,
+        ],
         'redactor' => [
             'class' => yii\redactor\RedactorModule::class,
         ],

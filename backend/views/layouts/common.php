@@ -366,6 +366,15 @@ echo Menu::widget(
                                     ],],
                             ],
                             [
+                                'label' => Yii::t('backend', 'Mad-Payment'),
+                                'url' => [
+                                    '/Payment/payment/admin'
+                                ],
+                                'icon' => '<i class="fa fa-money"></i>',
+                                'active' => (Yii::$app->controller->id == 'product'),
+
+                            ],
+                            [
                                 'label' => Yii::t('backend', 'Mad-Reservations'),
                                 'url' => [
                                     '/Reservations/reservations/admin'
