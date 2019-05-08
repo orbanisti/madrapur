@@ -22,7 +22,8 @@ class ProductPrice extends MadActiveRecord{
 
             [['name'], 'required'],
             [['product_id','id'], 'integer'],
-            [['name','description','discount'], 'string', 'max' => 100],
+            [['name','discount'], 'string', 'max' => 5000],
+            [['description'], 'string', 'max' => 50000],
             [['price'], 'number'],
 
         ];

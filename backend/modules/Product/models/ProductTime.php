@@ -23,7 +23,7 @@ class ProductTime extends MadActiveRecord{
             [['name'], 'required'],
             [['product_id','id'], 'integer'],
             [['start_date', 'end_date'], 'date','format' => 'yyyy-m-d'],
-            [['name'], 'string', 'max' => 100]
+            [['name'], 'string', 'max' => 5000]
         ];
     }
 
