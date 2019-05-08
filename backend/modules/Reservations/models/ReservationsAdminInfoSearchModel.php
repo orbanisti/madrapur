@@ -10,7 +10,7 @@ use backend\modules\Products\models\Productscountires;
 use yii\helpers\ArrayHelper;
 use backend\modules\Products\models\Graylinepartners;
 
-class ReservationsAdminSearchModel extends Reservations
+class ReservationsAdminInfoSearchModel extends ReservationsInfo
 {
 
     public function rules()
@@ -18,8 +18,8 @@ class ReservationsAdminSearchModel extends Reservations
         return [
             [['bookingId'], 'integer'],
             [['source'], 'string', 'max' => 255],
-         /*   [['fname'], 'string', 'max' => 255],
-            [['lname'], 'string', 'max' => 255],*/
+            [['fname'], 'string', 'max' => 255],
+            [['lname'], 'string', 'max' => 255],
             [['data'], 'string', 'max' => 1000],
             [['invoiceDate'], 'date', 'format' => 'yyyy-MM-dd'],
             [['bookingDate'], 'date', 'format' => 'yyyy-MM-dd'],
@@ -40,8 +40,8 @@ class ReservationsAdminSearchModel extends Reservations
         # ['source', 'LIKE', 'utca']
     ]);
 
-    $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where);
-    $rows= $query = ReservationsAdminSearchModel::find()->indexBy('id');;
+    $rows = self::aSelect(ReservationsAdminInfoSearchModel::class, $what, $from, $where);
+    $rows= $query = ReservationsAdminInfoSearchModel::find()->indexBy('id');;
     $dataProvider = new ActiveDataProvider([
         'query' => $rows,
         'pagination' => [
@@ -80,6 +80,7 @@ class ReservationsAdminSearchModel extends Reservations
     public function returnBookingId() {
         return $this['bookingId'];
     }
+
 
 
 }

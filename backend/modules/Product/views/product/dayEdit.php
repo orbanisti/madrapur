@@ -9,6 +9,7 @@
 use kartik\helpers\Html;
 use backend\components\extra;
 use yii\widgets\ActiveForm;
+use kartik\grid\EditableColumn;
 
 $this->title = Yii::t('app', 'Foglalások');
 $this->params['breadcrumbs'][] = $this->title;
@@ -23,14 +24,27 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="panel-body">
     <?php
     $gridColumns = [
-        'bookingId',
-        ['class' => 'kartik\grid\EditableColumn',
-        'attribute'=>'fname'],
-        ['class' => 'kartik\grid\EditableColumn',
-            'attribute'=>'lname'],
+        'id',
+        ['class' => EditableColumn::class,
+            'attribute'=>'bookingId'],
+        ['class' => EditableColumn::class,
+        'attribute'=>'fname',
+
+            ],
+        ['class' => EditableColumn::class,
+            'attribute'=>'lname',
+        ],
 
         'productId',
-        'source',
+        ['class' => EditableColumn::class,
+            'attribute'=>'source',
+            'refreshGrid'=>true,
+
+            'editableOptions'=> ['formOptions' => ['action' => ['/Product/product/editbook']]],
+
+
+
+           ],
         'invoiceDate',
         'bookingDate',
         [
@@ -48,8 +62,15 @@ $this->params['breadcrumbs'][] = $this->title;
     echo \kartik\grid\GridView::widget([
         'dataProvider'=>$dataProvider,
         'filterModel'=>$searchModel,
-        'columns'=>$gridColumns
+        'columns'=>$gridColumns,
+        'pjax'=>true
+
+
+
+
     ]);
+
+
     ?>
     </div>
     </div>

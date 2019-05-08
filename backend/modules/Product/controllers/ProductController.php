@@ -12,7 +12,10 @@ use backend\modules\Product\models\ProductPrice;
 use backend\modules\Product\models\ProductSource;
 
 use backend\modules\Reservations\models\Reservations;
+use backend\modules\Reservations\models\ReservationsAdminInfoSearchModel;
 use backend\modules\Reservations\models\ReservationsAdminSearchModel;
+use backend\modules\Reservations\models\ReservationsInfo;
+use kartik\grid\EditableColumnAction;
 use Yii;
 use backend\controllers\Controller;
 use backend\modules\Product\models\ProductUpdate;
@@ -592,9 +595,29 @@ class ProductController extends Controller {
 
         return $this->render('dayEdit', [
             'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel
+            'searchModel' => $searchModel,
+            'model'=>Reservations::class,
 
+        ]);
+    }
+    public function actions()
+    {
+        return ArrayHelper::merge(parent::actions(), [
+            'editbook' => [                                       // identifier for your editable column action
+                'class' => EditableColumnAction::class,     // action class name
+                'modelClass' => ReservationsAdminSearchModel::class,                // the model for the record being edited
+                'outputValue' => function ($model, $attribute, $key, $index) {
+                    return $model->$attribute;      // return any custom output value if desired
+                },
 
+                'showModelErrors' => false,
+
+                'errorOptions' => ['header' => '']                // error summary HTML options
+                // 'postOnly' => true,
+                // 'ajaxOnly' => true,
+                // 'findModel' => function($id, $action) {},
+                // 'checkAccess' => function($action, $model) {}
+            ]
         ]);
     }
 
