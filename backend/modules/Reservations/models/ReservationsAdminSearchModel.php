@@ -81,7 +81,7 @@ class ReservationsAdminSearchModel extends Reservations
             ],
         ]);
         $models=$dataProvider->models;
-        echo \GuzzleHttp\json_encode($sources);
+
         foreach ($models as $i=>$row){
             if(!in_array($row["productId"],$sources)){
                     unset($models[$i]);
