@@ -47,10 +47,37 @@ class ProductSource extends MadActiveRecord{
         return true;
     }
 
-    public function getProduct()
+    public function getProductSources($prodId)
+
     {
-        return $this->hasOne(Product::class, ['id' => 'product_id']);
+
+        $queryGetSources = ProductSource::aSelect(ProductSource::class, '*', ProductSource::tableName(), 'product_id=' . $prodId);
+        try {
+            $sourceRows = $queryGetSources->all();
+            return $sourceRows;
+        } catch (Exception $e) {
+        }
+
     }
+
+    public function getProductSourceIds($prodId){
+        $queryGetSources = ProductSource::aSelect(ProductSource::class, '*', ProductSource::tableName(), 'product_id=' . $prodId);
+        try {
+            $sourceRows = $queryGetSources->all();
+            $sourceIdsArray=[];
+            foreach ($sourceRows as $source) {
+                $sourceIdsArray[]=$source->prodIds;
+
+            }
+            return $sourceIdsArray;
+
+        } catch (Exception $e) {
+        }
+
+
+        }
+
+
 
     public function afterFind() {
         parent::afterFind();

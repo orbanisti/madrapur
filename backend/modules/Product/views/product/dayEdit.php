@@ -11,14 +11,19 @@ use backend\components\extra;
 use yii\widgets\ActiveForm;
 use kartik\grid\EditableColumn;
 
+
+
 $this->title = Yii::t('app', 'Foglalások');
 $this->params['breadcrumbs'][] = $this->title;
+
+
+
 ?>
 
 <!--suppress ALL -->
 <div class="products-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+
 
 <div class="panel">
     <div class="panel-body">

@@ -53,6 +53,48 @@ class ReservationsAdminSearchModel extends Reservations
 
     return $dataProvider;
 }
+
+
+    public function searchDay($params,$sources)
+    {
+        $invoiceDate = '2016-02-05';
+        $bookingDate = '2020-08-20';
+        $selectedDate=\Yii::$app->request->get("date");
+
+        $what = ['*'];
+        $from = self::tableName();
+
+        $wheres=[];
+        $wheres[]=['bookingDate', '=', $selectedDate];
+        $where = self::andWhereFilter($wheres);
+
+
+
+
+
+        $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $rows,
+            'pagination' => [
+                'pageSize' => 15,
+            ],
+        ]);
+        $models=$dataProvider->models;
+
+        foreach ($models as $i=>$row){
+            if(!in_array($row["productId"],$sources)){
+                    unset($models[$i]);
+            }
+
+        }
+        $dataProvider->models=$models;
+
+        $this->load($params);
+
+        return $dataProvider;
+    }
+
     public function searchChart($params)
     {
         $invoiceDate = '2016-02-05';
@@ -65,6 +107,8 @@ class ReservationsAdminSearchModel extends Reservations
             ['bookingDate', '<=', $bookingDate]
             # ['source', 'LIKE', 'utca']
         ]);
+
+
 
         $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where);
 

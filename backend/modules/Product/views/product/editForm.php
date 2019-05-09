@@ -555,12 +555,30 @@ $form = ActiveForm::begin([
                 </h4>
             </div>
             <div class="panel-body">
+                <script>
+
+                    var prodId=<?=$prodId?>;
+
+                </script>
                 <?php
+
                 $JSEventClick = <<<EOF
 function(calEvent, jsEvent, view) {
-    alert('Event: ' + calEvent.title);
+    
+    var m=new Date(calEvent.start)
+    var Year=m.getUTCFullYear();
+    var Month=m.getUTCMonth()+1;
+    var Day=m.getUTCDate();
+    if(Month<10)Month='0'+Month;
+    if(Day<10)Day='0'+Day;
+    dateString = Year+'-'+Month+'-'+Day;
 
-    alert('Source: ' + calEvent.nonstandard['field1']);
+    urlToGoTo="/Product/product/daye?date="+dateString+"&prodId="+prodId;
+    //console.log(view);
+    window.location.href=urlToGoTo
+    //alert('Event: ' + urlToGoTo);
+
+    //alert('Source: ' + calEvent.nonstandard['field1']);
     // change the border color just for fun
     $(this).css('border-color', 'red');
 }
