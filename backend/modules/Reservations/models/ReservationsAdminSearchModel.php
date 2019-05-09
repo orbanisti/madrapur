@@ -55,7 +55,7 @@ class ReservationsAdminSearchModel extends Reservations
 }
 
 
-    public function searchDay($params,$sources)
+    public function searchDay($params,$sources,$prodId)
     {
         $invoiceDate = '2016-02-05';
         $bookingDate = '2020-08-20';
@@ -65,14 +65,20 @@ class ReservationsAdminSearchModel extends Reservations
         $from = self::tableName();
 
         $wheres=[];
+        $where2=[];
         $wheres[]=['bookingDate', '=', $selectedDate];
+        $wheres[]=['productId', 'IN', $sources];
+
         $where = self::andWhereFilter($wheres);
 
 
 
 
 
-        $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where);
+
+
+        $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where,$sources,$prodId);
+
 
         $dataProvider = new ActiveDataProvider([
             'query' => $rows,
@@ -80,15 +86,9 @@ class ReservationsAdminSearchModel extends Reservations
                 'pageSize' => 15,
             ],
         ]);
-        $models=$dataProvider->models;
 
-        foreach ($models as $i=>$row){
-            if(!in_array($row["productId"],$sources)){
-                    unset($models[$i]);
-            }
 
-        }
-        $dataProvider->models=$models;
+
 
         $this->load($params);
 

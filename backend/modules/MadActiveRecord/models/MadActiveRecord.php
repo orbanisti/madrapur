@@ -52,6 +52,7 @@ class MadActiveRecord extends ActiveRecord
     }
 
 
+
     /**
      * @param MadActiveRecord $model
      * @param $values
