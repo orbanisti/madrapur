@@ -26,6 +26,7 @@ use himiklab\jqgrid\actions\JqGridActiveAction;
 
 
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 
 /**
  * Controller for the `Product` module
@@ -473,6 +474,8 @@ class ProductController extends Controller {
         } catch (Exception $e) {
         }
 
+
+
         if (isset($sourceRows)) {
 
 
@@ -586,9 +589,18 @@ class ProductController extends Controller {
     }
 
     public function actionDaye(){
+        $currentProductId=Yii::$app->request->get('prodId');
 
         $searchModel = new ReservationsAdminSearchModel();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        if($currentProductId){
+
+            $currentProduct=Product::getProdById($currentProductId);
+            $sourcesRows=ProductSource::getProductSourceIds($currentProductId);
+            $dataProvider = $searchModel->searchDay(Yii::$app->request->queryParams,$sourcesRows);
+
+
+        }
 
 
 
@@ -597,6 +609,7 @@ class ProductController extends Controller {
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
             'model'=>Reservations::class,
+            'currentProduct'=>$currentProduct
 
         ]);
     }
