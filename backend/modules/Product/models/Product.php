@@ -89,8 +89,11 @@ class Product extends MadActiveRecord{
         $allPrices=$queryPrices->all();
 
 
-
+        $prodInfo=new Product();
         try {
+            $prodInfo = $query->one();
+
+
             $thisProdTimes=[];
             foreach ($allTimes as $time){
                  if($time->product_id==$id){
@@ -99,15 +102,14 @@ class Product extends MadActiveRecord{
 
                  }
             }
-            $prodInfo=new Product;
-            $prodInfo->times=$thisProdTimes;
+            $prodInfo->setAttribute("times", $thisProdTimes);
             $thisProdPrice=[];
             foreach ($allPrices as $price){
                 if($price->product_id==$id){
                     $thisProdPrice[]=$price;
                     }
             }
-            $prodInfo->prices=$thisProdPrice;
+            $prodInfo->setAttribute("prices", $thisProdPrice);
 
 
 
