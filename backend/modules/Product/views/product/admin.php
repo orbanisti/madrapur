@@ -1,5 +1,6 @@
 <?php
 
+use backend\modules\Product\models\ProductSource;
 
 
 
@@ -11,12 +12,19 @@
 <?php
 /**
  * Json RPC Communication TODO Close this hole asap
- *//*
-    $client = new \nizsheanez\jsonRpc\Client('http://www.api.localhost.com/v1/worker/');
+ */
+/*
+ * Example of Yell function of Api Rester returns free spaces of productId on selecetedDate in Int
+    $client = new \nizsheanez\jsonRpc\Client('http://www.api.localhost.com/v1/worker');
+    $currentProduct=44;
 
-    $response = $client->product(43);
+    $selectedDate=date("Y-m-d");
 
+    $response = $client->yell($selectedDate,$currentProduct);
+    echo $response;
 */
+
+
     ?>
     <h1><?= $this->context->action->uniqueId ?></h1>
            <?php

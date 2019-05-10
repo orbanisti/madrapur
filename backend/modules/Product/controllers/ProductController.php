@@ -597,7 +597,10 @@ class ProductController extends Controller {
 
             $currentProduct=Product::getProdById($currentProductId);
             $sourcesRows=ProductSource::getProductSourceIds($currentProductId);
-            $dataProvider = $searchModel->searchDay(Yii::$app->request->queryParams,$sourcesRows,$currentProductId);
+            $selectedDate=\Yii::$app->request->get("date");
+            $dataProvider = $searchModel->searchDay(Yii::$app->request->queryParams,$selectedDate,$sourcesRows,$currentProductId);
+            $takenChairsCount=$searchModel->countTakenChairsOnDay(Yii::$app->request->queryParams,$selectedDate,$sourcesRows,$currentProductId);
+            $availableChairsOnDay=$searchModel->availableChairsOnDay(Yii::$app->request->queryParams,$selectedDate,$sourcesRows,$currentProductId);
 
         }
 
@@ -610,6 +613,8 @@ class ProductController extends Controller {
             'model'=>Reservations::class,
             'currentProduct'=>$currentProduct,
             'currentDay'=>Yii::$app->request->get('date'),
+            'takenChairsCount'=>$takenChairsCount,
+            'availableChairs'=>$availableChairsOnDay,
 
         ]);
     }
