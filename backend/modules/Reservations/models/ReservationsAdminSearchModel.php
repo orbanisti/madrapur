@@ -2,6 +2,7 @@
 
 namespace backend\modules\Reservations\models;
 
+use backend\modules\Product\models\Product;
 use backend\modules\Product\models\ProductSource;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -58,45 +59,73 @@ class ReservationsAdminSearchModel extends Reservations
 
 
 
-    public function searchDay($params,$sources,$prodId)
+    public function searchDay($params,$selectedDate,$sources,$prodId)
     {
-        $invoiceDate = '2016-02-05';
-        $bookingDate = '2020-08-20';
-        $selectedDate=\Yii::$app->request->get("date");
+
 
         $what = ['*'];
         $from = self::tableName();
-
         $wheres=[];
-        $where2=[];
         $wheres[]=['bookingDate', '=', $selectedDate];
         $wheres[]=['productId', 'IN', $sources];
-
         $where = self::andWhereFilter($wheres);
-
-
-
-
-
-
-
         $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where,$sources,$prodId);
-
-
         $dataProvider = new ActiveDataProvider([
             'query' => $rows,
             'pagination' => [
                 'pageSize' => 15,
             ],
         ]);
-
-
-
-
         $this->load($params);
-
         return $dataProvider;
     }
+    public function countTakenChairsOnDay($params,$selectedDate,$sources,$prodId)
+    {
+
+        $what = ['*'];
+        $from = self::tableName();
+        $wheres=[];
+        $wheres[]=['bookingDate', '=', $selectedDate];
+        $wheres[]=['productId', 'IN', $sources];
+        $where = self::andWhereFilter($wheres);
+        $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where,$sources,$prodId);
+        $bookigsFromThatDay=$rows->all();
+        $counter=0;
+        foreach ($bookigsFromThatDay as $reservation){
+            if(isset($reservation->bookedChairsCount)){
+                $counter=$counter+$reservation->bookedChairsCount;
+
+            }
+        }
+        return $counter;
+    }
+    public function availableChairsOnDay($params,$selectedDate,$sources,$prodId)
+    {
+
+        $what = ['*'];
+        $from = self::tableName();
+        $wheres=[];
+        $wheres[]=['bookingDate', '=', $selectedDate];
+        $wheres[]=['productId', 'IN', $sources];
+        $where = self::andWhereFilter($wheres);
+        $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where,$sources,$prodId);
+        $bookigsFromThatDay=$rows->all();
+        $counter=0;
+        foreach ($bookigsFromThatDay as $reservation){
+            if(isset($reservation->bookedChairsCount)){
+                $counter=$counter+$reservation->bookedChairsCount;
+
+            }
+        }
+        $currentProduct=Product::getProdById($prodId);
+        $placesleft=$currentProduct->capacity-$counter;
+        if($placesleft%3!=0){
+            $placesleft-=1;
+        }
+        return $placesleft;
+    }
+
+
 
     public function searchChart($params)
     {

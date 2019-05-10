@@ -155,6 +155,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
     ?>
     </div>
+    <div class="panel">
+        <div class="panel-heading">
+            <h3>Total capacity left for this day: <?=$availableChairs?></br></h3>
+            <h4>Total places bought for this day: <?=$takenChairsCount?></br></h4>
+            <h5>Total capacity for this product:<?=$currentProduct->capacity?></br></h5>
+
+
+        </div>
+        <div class="panel-body">
+
+        </div>
+
+    </div>
     </div>
 
 

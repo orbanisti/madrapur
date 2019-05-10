@@ -60,7 +60,7 @@ class ProductSource extends MadActiveRecord{
 
     }
 
-    public function getProductSourceIds($prodId){
+    public static function getProductSourceIds($prodId){
         $queryGetSources = ProductSource::aSelect(ProductSource::class, '*', ProductSource::tableName(), 'product_id=' . $prodId);
         try {
             $sourceRows = $queryGetSources->all();
