@@ -2,6 +2,7 @@
 
 namespace backend\modules\Reservations\models;
 
+use backend\modules\Product\models\ProductSource;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\modules\Products\models\Products;
@@ -53,6 +54,8 @@ class ReservationsAdminSearchModel extends Reservations
 
     return $dataProvider;
 }
+
+
 
 
     public function searchDay($params,$sources,$prodId)
