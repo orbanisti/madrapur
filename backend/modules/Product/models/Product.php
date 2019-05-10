@@ -89,7 +89,7 @@ class Product extends MadActiveRecord{
         $allPrices=$queryPrices->all();
 
 
-        $prodInfo=$query->one();
+
         try {
             $thisProdTimes=[];
             foreach ($allTimes as $time){
@@ -99,7 +99,7 @@ class Product extends MadActiveRecord{
 
                  }
             }
-
+            $prodInfo=Null;
             $prodInfo->times=$thisProdTimes;
             $thisProdPrice=[];
             foreach ($allPrices as $price){
