@@ -119,7 +119,7 @@ class ReservationsAdminSearchModel extends Reservations
         }
         $currentProduct=Product::getProdById($prodId);
         $placesleft=$currentProduct->capacity-$counter;
-        if($placesleft%3!=0){
+        if($placesleft%2!=0){
             $placesleft-=1;
         }
         return $placesleft;
