@@ -7,6 +7,7 @@ use Psr\Log\NullLogger;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 
 /**
  * Default model for the `Product` module
@@ -74,6 +75,7 @@ class Product extends MadActiveRecord{
     public function setProdUrl($orderDetails) {
         $this->times = $orderDetails;
     }
+
 
 
     public static function getProdById($id){
@@ -167,5 +169,33 @@ class Product extends MadActiveRecord{
         return $models;
     }
 
+
+    public static function searchSourceName($sourceID,$sourceUrl){
+        /**
+         * Returns source name
+         */
+        $what = ['*'];
+        $from = ProductSource::tableName();
+        $wheres=[];
+            $wheres[]=['prodIds', '=', $sourceID];
+        $wheres[]=['url', '=',Html::encode($sourceUrl) ];
+
+        $where = self::andWhereFilter($wheres);
+
+
+        $rows = self::aSelect(ProductSource::class, $what, $from, $where);
+
+        $myreturned=$rows->one();
+        if(isset($myreturned->name)){
+
+            return $myreturned->name;
+        }
+        else {
+            return null;
+        }
+
+
+
+    }
 
 }

@@ -608,7 +608,8 @@ class ProductController extends Controller {
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
             'model'=>Reservations::class,
-            'currentProduct'=>$currentProduct
+            'currentProduct'=>$currentProduct,
+            'currentDay'=>Yii::$app->request->get('date'),
 
         ]);
     }
@@ -618,16 +619,14 @@ class ProductController extends Controller {
             'editbook' => [                                       // identifier for your editable column action
                 'class' => EditableColumnAction::class,     // action class name
                 'modelClass' => ReservationsAdminSearchModel::class,                // the model for the record being edited
-                'outputValue' => function ($model, $attribute, $key, $index) {
-                    return $model->$attribute;      // return any custom output value if desired
-                },
 
-                'showModelErrors' => false,
 
-                'errorOptions' => ['header' => '']                // error summary HTML options
+                'showModelErrors' => true,
+
+                'errorOptions' => ['header' => '']      ,          // error summary HTML options
                 // 'postOnly' => true,
                 // 'ajaxOnly' => true,
-                // 'findModel' => function($id, $action) {},
+                 //'findModel' => function($id, $action) {},
                 // 'checkAccess' => function($action, $model) {}
             ]
         ]);
