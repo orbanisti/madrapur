@@ -2,13 +2,14 @@
 
 namespace backend\modules\ModulusCart\models;
 
+use backend\modules\MadActiveRecord\models\MadActiveRecord;
 use Yii;
 use yii\db\ActiveRecord;
 
 /**
  * Default model for the `ModulusCart` module
  */
-class ModulusCart extends ActiveRecord {
+class ModulusCart extends MadActiveRecord {
  
     public static function tableName() {
         return 'modulusCarts';
