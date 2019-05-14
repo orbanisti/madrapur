@@ -22,6 +22,9 @@ $config = [
         ],
     ],
     'modules' => [
+        'ModulusCart' => [
+            'class' => backend\modules\ModulusCart\Module::class,
+        ],
         'gridview' => [
             'class' => kartik\grid\Module::class,
         ],
