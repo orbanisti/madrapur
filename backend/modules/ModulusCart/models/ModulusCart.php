@@ -17,7 +17,7 @@ class ModulusCart extends MadActiveRecord {
 
     public function rules() {
         return [
-            [['id'], 'integer'],
+            [['id'],  'string', 'max' => 200],
             [['items'], 'string', 'max' => 50000],
             [['createDate'], 'date', 'format' => 'yyyy-MM-dd'],
         ];
