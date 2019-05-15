@@ -353,9 +353,9 @@ $form = ActiveForm::begin([
         console.log("Deleted item!");
     });
 
-    $(".dynamicform_wrapper").on("limitReached", function(e, item) {
+   /* $(".dynamicform_wrapper").on("limitReached", function(e, item) {
         alert("Limit elérve");
-    });
+    });*/
     ');
 
         $this->registerJs('
@@ -378,9 +378,9 @@ $form = ActiveForm::begin([
         console.log("Deleted item!");
     });
 
-    $(".dynamicform_wrapper_times").on("limitReached", function(e, item) {
+    /*$(".dynamicform_wrapper_times").on("limitReached", function(e, item) {
         alert("Limit elérve");
-    });
+    });*/
     ');
         ?>
 
@@ -530,10 +530,10 @@ $form = ActiveForm::begin([
     $(".dynamicform_wrapper_times").on("afterDelete", function(e) {
         console.log("Deleted item!");
     });
-
+/*
     $(".dynamicform_wrapper_times").on("limitReached", function(e, item) {
         alert("Limit elérve");
-    });
+    });*/
     ');
         ?>
 
