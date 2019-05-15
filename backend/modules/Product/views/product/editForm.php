@@ -197,9 +197,32 @@ $form = ActiveForm::begin([
                                             <div class="col-sm-4">
                                                 <?= $form->field($modelPrice, "[{$i}]discount")->textInput() ?>
                                             </div>
-                                            <!--<div class="col-sm-4">
-                                                <?php //echo $form->field($modelPrice, "[{$i}]status")->dropDownList(Productsprice::status()); ?>
-                                            </div>-->
+                                            <div class="col-sm-4">
+                                                <?= $form->field($modelPrice, "[{$i}]start_date")->widget(DateControl::class, [
+                                                    'type' => DateControl::FORMAT_DATE,
+                                                    'ajaxConversion' => false,
+                                                    'autoWidget' => true,
+                                                    'displayFormat' => 'php:Y-m-d',
+                                                    'options' => [
+                                                        'pluginOptions' => [
+                                                            'autoclose' => true
+                                                        ]
+                                                    ]
+                                                ]); ?>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <?= $form->field($modelPrice, "[{$i}]end_date")->widget(DateControl::class, [
+                                                    'type' => DateControl::FORMAT_DATE,
+                                                    'ajaxConversion' => false,
+                                                    'autoWidget' => true,
+                                                    'displayFormat' => 'php:Y-m-d',
+                                                    'options' => [
+                                                        'pluginOptions' => [
+                                                            'autoclose' => true
+                                                        ]
+                                                    ]
+                                                ]); ?>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -229,7 +252,7 @@ $form = ActiveForm::begin([
             'widgetContainer' => 'dynamicform_wrapper_times', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
             'widgetBody' => '.container-items-times', // required: css class selector
             'widgetItem' => '.item-times', // required: css class
-            'limit' =>999, // the maximum times, an element can be cloned (default 999)
+            'limit' =>10, // the maximum times, an element can be cloned (default 999)
             'min' => 0, // 0 or 1 (default 1)
             'insertButton' => '.add-item-times', // css class
             'deleteButton' => '.remove-item-times', // css class
@@ -399,7 +422,7 @@ $form = ActiveForm::begin([
             'widgetContainer' => 'dynamicform_wrapper_sources', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
             'widgetBody' => '.container-items-sources', // required: css class selector
             'widgetItem' => '.item-sources', // required: css class
-            'limit' =>999, // the maximum times, an element can be cloned (default 999)
+            'limit' =>10, // the maximum times, an element can be cloned (default 999)
             'min' => 0, // 0 or 1 (default 1)
             'insertButton' => '.add-item-sources', // css class
             'deleteButton' => '.remove-item-sources', // css class
