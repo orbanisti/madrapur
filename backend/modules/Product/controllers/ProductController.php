@@ -323,11 +323,19 @@ class ProductController extends Controller {
             $result = ProductPrice::deleteAll(['id' => $deletedPricesIds]);
 
             foreach ($productPostedPrices as $postedPrice):
+                if ($postedPrice['start_date'] == 'NULL' || $postedPrice['start_date'] == '') {
+                    $postedPrice['start_date'] = date("Y-m-d");
+                }
+                if ($postedPrice['end_date'] == 'NULL' || $postedPrice['end_date'] == '') {
+                    $postedPrice['end_date'] = date("Y-m-d");
+                }
 
 
                 $values = [
                     'name' => $postedPrice['name'],
                     'description' => $postedPrice['description'],
+                    'start_date' => $postedPrice['start_date'],
+                    'end_date' => $postedPrice['end_date'],
                     'discount' => $postedPrice['discount'],
                     'price' => $postedPrice['price'],
                     'product_id' => $prodId,
