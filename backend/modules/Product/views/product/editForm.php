@@ -229,7 +229,7 @@ $form = ActiveForm::begin([
             'widgetContainer' => 'dynamicform_wrapper_times', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
             'widgetBody' => '.container-items-times', // required: css class selector
             'widgetItem' => '.item-times', // required: css class
-            'limit' =>10, // the maximum times, an element can be cloned (default 999)
+            'limit' =>999, // the maximum times, an element can be cloned (default 999)
             'min' => 0, // 0 or 1 (default 1)
             'insertButton' => '.add-item-times', // css class
             'deleteButton' => '.remove-item-times', // css class
@@ -353,9 +353,9 @@ $form = ActiveForm::begin([
         console.log("Deleted item!");
     });
 
-   /* $(".dynamicform_wrapper").on("limitReached", function(e, item) {
+    $(".dynamicform_wrapper").on("limitReached", function(e, item) {
         alert("Limit elérve");
-    });*/
+    });
     ');
 
         $this->registerJs('
@@ -378,9 +378,9 @@ $form = ActiveForm::begin([
         console.log("Deleted item!");
     });
 
-    /*$(".dynamicform_wrapper_times").on("limitReached", function(e, item) {
+    $(".dynamicform_wrapper_times").on("limitReached", function(e, item) {
         alert("Limit elérve");
-    });*/
+    });
     ');
         ?>
 
@@ -399,7 +399,7 @@ $form = ActiveForm::begin([
             'widgetContainer' => 'dynamicform_wrapper_sources', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
             'widgetBody' => '.container-items-sources', // required: css class selector
             'widgetItem' => '.item-sources', // required: css class
-            'limit' =>10, // the maximum times, an element can be cloned (default 999)
+            'limit' =>999, // the maximum times, an element can be cloned (default 999)
             'min' => 0, // 0 or 1 (default 1)
             'insertButton' => '.add-item-sources', // css class
             'deleteButton' => '.remove-item-sources', // css class
@@ -530,10 +530,10 @@ $form = ActiveForm::begin([
     $(".dynamicform_wrapper_times").on("afterDelete", function(e) {
         console.log("Deleted item!");
     });
-/*
+
     $(".dynamicform_wrapper_times").on("limitReached", function(e, item) {
         alert("Limit elérve");
-    });*/
+    });
     ');
         ?>
 
