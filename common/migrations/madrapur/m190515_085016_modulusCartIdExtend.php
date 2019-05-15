@@ -7,6 +7,7 @@ class m190515_085016_modulusCartIdExtend extends Migration {
     public $tableName = "modulusCarts";
     public $tableOptions = "";
 
+
     public $fields = [
         'id'
     ];
@@ -30,5 +31,6 @@ class m190515_085016_modulusCartIdExtend extends Migration {
                 $this->integer(20)
             );
         }
+
     }
 }
