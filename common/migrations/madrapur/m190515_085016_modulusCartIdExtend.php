@@ -7,22 +7,30 @@ class m190515_085016_modulusCartIdExtend extends Migration {
     public $tableName = "modulusCarts";
     public $tableOptions = "";
 
-    public function safeUp() {
-        if ($this->db->driverName === 'mysql') {
-            // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
-            $this->tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
-        }
 
-        $this->createTable(
-            $this->tableName, [
-                'id' => $this->primaryKey(),
-                'title' => $this->string(12)->notNull()->unique(),
-                'body' => $this->text(),
-            ], $this->tableOptions
-        );
+    public $fields = [
+        'id'
+    ];
+
+    public function safeUp() {
+        foreach ($this->fields as $field) {
+            $this->alterColumn(
+                $this->tableName,
+                $field,
+                $this->string(100)
+            );
+        }
     }
 
+
     public function safeDown() {
-        $this->dropTable($this->tableName);
+        foreach ($this->fields as $field) {
+            $this->alterColumn(
+                $this->tableName,
+                $field,
+                $this->integer(20)
+            );
+        }
+
     }
 }
