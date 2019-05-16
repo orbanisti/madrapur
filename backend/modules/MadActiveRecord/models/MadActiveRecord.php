@@ -65,6 +65,22 @@ class MadActiveRecord extends ActiveRecord
         return $model->save(false);
     }
 
+    /**
+     * @param MadActiveRecord $model
+     * @param $values
+     * @return int | bool
+     */
+    public static function insertOneReturn(MadActiveRecord $model, $values)
+    {
+        $model->setAttributes($values);
+
+        if ($model->save(false)) {
+            return $model->id;
+        }
+
+        return false;
+    }
+
 
     public static function insertAll(string $model, $values)
     {

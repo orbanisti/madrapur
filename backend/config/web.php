@@ -172,6 +172,7 @@ $config = [
 ];
 
 define("WEB_ROOT", ".");
+define("OTP", "../../../../simplepay/");
 
 if (YII_ENV_DEV) {
     $config['modules']['gii'] = [
