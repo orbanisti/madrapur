@@ -23,6 +23,16 @@ class Controller extends \yii\web\Controller {
             'http://api.modulus.hu',
             'http://backend.modulus.hu',
             'http://frontend.modulus.hu',
+            'http://budapestrivercruise.co.uk',
+            'http://api.budapestrivercruise.co.uk',
+            'http://backend.budapestrivercruise.co.uk',
+            'http://frontend.budapestrivercruise.co.uk',
+            'http://storage.budapestrivercruise.co.uk',
+            'https://budapestrivercruise.co.uk',
+            'https://api.budapestrivercruise.co.uk',
+            'https://backend.budapestrivercruise.co.uk',
+            'https://frontend.budapestrivercruise.co.uk',
+            'https://storage.budapestrivercruise.co.uk',
         ];
     }
 

@@ -100,7 +100,7 @@ class Reservations extends MadActiveRecord
             if(isset($myjson->orderDetails->edited_source_name)){
                 $this->setAttribute("sourceName",$myjson->orderDetails->edited_source_name);
             }else{
-                if($myjson->boookingDetails->booking_product_id){
+                if(isset($myjson->boookingDetails->booking_product_id)){
                     $mySourceName=Product::searchSourceName($myjson->boookingDetails->booking_product_id,$this->source);
                  //   Yii::error('Mysourcename'.$mySourceName);
                     if($mySourceName!=null){
