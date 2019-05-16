@@ -1,11 +1,4 @@
 <?php
-
-	/**
-	 * Optional error riporting
-	 */	 
-	error_reporting(E_ALL|E_STRICT);
-	ini_set('display_errors', '1');
-		
 	/**
 	 * Import config data
 	 */		
@@ -57,8 +50,8 @@
 
 		// Check log if IPN message was received
 		$ipnInLog = false;
-		if($backref->order_ref != ""){		
-			$handle = fopen($config['LOG_PATH'] . '/' . @date('Ymd') . '.log', "r");
+		/*if($backref->order_ref != ""){
+			$handle = fopen(OTP.$config['LOG_PATH'] . '/' . @date('Ymd') . '.log', "r");
 			if ($handle) {			
 				while (($line = fgets($handle)) !== false) {	 
 					$logRow = explode(" ", $line);
@@ -73,7 +66,7 @@
 					}
 				}
 			}
-		}
+		}*/
 		
 		// Notification by payment method		
 		//CCVISAMC
@@ -158,7 +151,9 @@
 			'data' => (isset($backStatus)) ? $backStatus : "N/A",
 		);
 
-		require_once 'demo/template.php';
+		// require_once OTP.'demo/template.php';
+
+        header("Location: " . "https://budapestrivercruise.co.uk/checkout/thankyou?" . $_SERVER['QUERY_STRING']);
 	/*
 	*	template handling end
 	*/	

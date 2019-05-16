@@ -12,6 +12,7 @@ module.exports  = {
         '5-script': path.resolve(__dirname, './frontend/web/react-bundle/5-script.js'),
         '6-script': path.resolve(__dirname, './frontend/web/react-bundle/6-script.js'),
         '7-script': path.resolve(__dirname, './frontend/web/react-bundle/7-script.js'),
+        '8-script': path.resolve(__dirname, './frontend/web/react-bundle/8-script.js'),
         'app-style': path.resolve(__dirname, './frontend/web/react-bundle/app-style.css'),
         '1-style': path.resolve(__dirname, './frontend/web/react-bundle/1-style.css'),
         '2-style': path.resolve(__dirname, './frontend/web/react-bundle/2-style.css'),
@@ -20,6 +21,7 @@ module.exports  = {
         '5-style': path.resolve(__dirname, './frontend/web/react-bundle/5-style.css'),
         '6-style': path.resolve(__dirname, './frontend/web/react-bundle/6-style.css'),
         '7-style': path.resolve(__dirname, './frontend/web/react-bundle/7-style.css'),
+        '8-style': path.resolve(__dirname, './frontend/web/react-bundle/8   -style.css'),
     },
     output: {
         filename: '[name].js',

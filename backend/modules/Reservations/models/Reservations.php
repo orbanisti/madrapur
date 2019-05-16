@@ -68,7 +68,8 @@ class Reservations extends MadActiveRecord
         parent::afterFind();
 
         $myjson=json_decode($this->data);
-        if($myjson){
+
+        if($myjson && isset($myjson->orderDetails)){
             if(isset($myjson->orderDetails->edited_first_name)){
                 $this->setAttribute("firstName",$myjson->orderDetails->edited_first_name);
             }else{
@@ -100,7 +101,7 @@ class Reservations extends MadActiveRecord
             if(isset($myjson->orderDetails->edited_source_name)){
                 $this->setAttribute("sourceName",$myjson->orderDetails->edited_source_name);
             }else{
-                if($myjson->boookingDetails->booking_product_id){
+                if(isset($myjson->boookingDetails->booking_product_id)){
                     $mySourceName=Product::searchSourceName($myjson->boookingDetails->booking_product_id,$this->source);
                  //   Yii::error('Mysourcename'.$mySourceName);
                     if($mySourceName!=null){
@@ -184,6 +185,10 @@ class Reservations extends MadActiveRecord
         return ArrayHelper::map(self::find()->all(), 'bookingId', 'bookingDate');
     }
 
+    public static function getReservationById($id) {
+        $reservation = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'id=' . $id);
 
+        return $reservation->one();
+    }
 
 }

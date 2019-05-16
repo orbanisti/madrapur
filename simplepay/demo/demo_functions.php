@@ -1,7 +1,5 @@
 <?php
 
-session_start();
-
 if (isset($_REQUEST['guilang'])) {
 	$_SESSION['guilang']=$_REQUEST['guilang'];
 }

@@ -2,11 +2,11 @@
  
 $config = array(
 	//HUF
-	'HUF_MERCHANT' => "S020001",			//merchant account ID (HUF)
-    'HUF_SECRET_KEY' => "Y1mxDcWtY1jtyr2zP3R2T560DYdt4u9b",			//secret key for account ID (HUF)
+	'HUF_MERCHANT' => "",			//merchant account ID (HUF)
+    'HUF_SECRET_KEY' => "",			//secret key for account ID (HUF)
 	//EUR
-    'EUR_MERCHANT' => "S020002",			//merchant account ID (EUR)
-    'EUR_SECRET_KEY' => "V9XzT12tX1jCL6Top333Tu3eodZtY3Om",			//secret key for account ID (EUR)
+    'EUR_MERCHANT' => "S146906",			//merchant account ID (EUR)
+    'EUR_SECRET_KEY' => "3vBvvaBiD1DyL9B90iv34mVW4l2i7k4A",			//secret key for account ID (EUR)
 	//USD
     'USD_MERCHANT' => "",			//merchant account ID (USD)
     'USD_SECRET_KEY' => "",			//secret key for account ID (USD)
@@ -36,11 +36,11 @@ $config = array(
     'SANDBOX' => true,				//true: sandbox transaction, false: live transaction
 	'PROTOCOL' => 'https',			//http or https
 	
-    'BACK_REF' => $_SERVER['HTTP_HOST'] . '/api/v1/rester/backref',		   //url of payment backref page
-    'TIMEOUT_URL' => $_SERVER['HTTP_HOST'] . '/api/v1/rester/timeout',     //url of payment timeout page
-    'IRN_BACK_URL' => $_SERVER['HTTP_HOST'] . '/api/v1/rester/irn',        //url of payment irn page
-    'IDN_BACK_URL' => $_SERVER['HTTP_HOST'] . '/api/v1/rester/idn',        //url of payment idn page
-    'IOS_BACK_URL' => $_SERVER['HTTP_HOST'] . '/api/v1/rester/ios',        //url of payment idn page
+    'BACK_REF' => $_SERVER['HTTP_HOST'] . '/v1/rester/backref',		   //url of payment backref page
+    'TIMEOUT_URL' => $_SERVER['HTTP_HOST'] . '/v1/rester/timeout',     //url of payment timeout page
+    'IRN_BACK_URL' => $_SERVER['HTTP_HOST'] . '/v1/rester/irn',        //url of payment irn page
+    'IDN_BACK_URL' => $_SERVER['HTTP_HOST'] . '/v1/rester/idn',        //url of payment idn page
+    'IOS_BACK_URL' => $_SERVER['HTTP_HOST'] . '/v1/rester/ios',        //url of payment idn page
 	
     'GET_DATA' => $_GET,
     'POST_DATA' => $_POST,

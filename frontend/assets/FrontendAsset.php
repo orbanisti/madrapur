@@ -35,6 +35,7 @@ class FrontendAsset extends AssetBundle {
         '5-style.css',
         '6-style.css',
         '7-style.css',
+        '8-style.css',
     ];
 
     /**
@@ -50,6 +51,7 @@ class FrontendAsset extends AssetBundle {
         '5-script.js',
         '6-script.js',
         '7-script.js',
+        '8-script.js',
     ];
 
     /**
