@@ -4,7 +4,7 @@ use yii\db\Schema;
 use yii\db\Migration;
 
 class m190515_124309_modulusExtendPrices extends Migration {
-    public $tableName = "modulusproductprice";
+    public $tableName = "modulusProductPrice";
     public $tableOptions = "";
 
 
