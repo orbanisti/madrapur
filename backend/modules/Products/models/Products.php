@@ -415,6 +415,7 @@ class Products extends \yii\db\ActiveRecord
         }
 
         $blockouts=$this->blockouts;
+
         if(empty($blockouts)) {
             $blockouts = new Blockouts;
             $blockouts->product_id=$this->id;
