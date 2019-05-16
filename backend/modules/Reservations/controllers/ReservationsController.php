@@ -19,7 +19,7 @@ use yii\helpers\Json;
 class ReservationsController extends Controller {
 
 
-    public function actionAlius() {
+    public function actionAddReservation() {
         $searchModel = new ReservationsAdminSearchModel();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $chartData=$searchModel->searchChart(Yii::$app->request->queryParams);
