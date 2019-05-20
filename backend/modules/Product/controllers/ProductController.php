@@ -682,6 +682,9 @@ class ProductController extends Controller {
                             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);*/
                             $curl=new CurlHttpClient();
                             $response=$curl->getContent($curlUrl);
+                            if($response!=0){
+                                $response=$curl->getContent($curlUrl);
+                            }
                             echo 'url:'.$curlUrl;
                             echo 'response:'.$response;
 
