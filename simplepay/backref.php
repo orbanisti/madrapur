@@ -153,7 +153,7 @@
 
 		// require_once OTP.'demo/template.php';
 
-        header("Location: " . "https://budapestrivercruise.co.uk/checkout/thankyou?" . $_SERVER['QUERY_STRING']);
+		redirect("https://budapestrivercruise.co.uk/checkout/thankyou?" . $_SERVER['QUERY_STRING']);
 	/*
 	*	template handling end
 	*/	

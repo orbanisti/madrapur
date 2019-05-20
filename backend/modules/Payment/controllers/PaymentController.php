@@ -93,7 +93,7 @@ class PaymentController extends Controller {
                 'info' => '',			//product description [ string ]
                 'price' => $sumPrice, 								//product price [ HUF: integer | EUR, USD decimal 0.00 ]
                 'vat' => 0,										//product tax rate [ in case of gross price: 0 ] (percent)
-                'qty' => $orderDetails->allPersons,							//product quantity [ integer ]
+                'qty' => 1,							//product quantity [ integer ]
             ));
         }
 

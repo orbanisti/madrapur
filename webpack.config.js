@@ -21,7 +21,7 @@ module.exports  = {
         '5-style': path.resolve(__dirname, './frontend/web/react-bundle/5-style.css'),
         '6-style': path.resolve(__dirname, './frontend/web/react-bundle/6-style.css'),
         '7-style': path.resolve(__dirname, './frontend/web/react-bundle/7-style.css'),
-        '8-style': path.resolve(__dirname, './frontend/web/react-bundle/8   -style.css'),
+        '8-style': path.resolve(__dirname, './frontend/web/react-bundle/8-style.css'),
     },
     output: {
         filename: '[name].js',
