@@ -18,6 +18,7 @@ use backend\modules\Reservations\models\ReservationsAdminInfoSearchModel;
 use backend\modules\Reservations\models\ReservationsAdminSearchModel;
 use backend\modules\Reservations\models\ReservationsInfo;
 use kartik\grid\EditableColumnAction;
+use League\Uri\PublicSuffix\CurlHttpClient;
 use Mpdf\Tag\B;
 use Yii;
 use backend\controllers\Controller;
@@ -679,7 +680,9 @@ class ProductController extends Controller {
                             curl_setopt($curl, CURLOPT_HEADER, 0);
                             curl_setopt($curl, CURLOPT_VERBOSE, 0);
                             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);*/
-                            $response=file_get_contents($curlUrl);
+                            $curl=new CurlHttpClient();
+                            $response=$curl->getContent($curlUrl);
+
 
 
                             }//ToDo not only eu
