@@ -66,22 +66,22 @@ if (!isset($config['LANGUAGE']) || $config['LANGUAGE'] == 'HU' || $config['LANGU
 	define("IOS_TEXT3","IOS");
 	define("RUN_TEXT","indítás");
 	define("NO_ORDERREF_TEXT","Nincs rendelésszám az REQUEST-ben.");
-	
+
 	define("LOGTEXT1","Megrendelés (order_ref)");
 	define("LOGTEXT2","Művelet");
 	define("LOGTEXT3","Dátum");
 	define("LOGTEXT4","Változó");
 	define("LOGTEXT5","Érték");
-	
+
 	define("IRNTEXTTPL","<p>Az IRN eredményét a kereskedői vezérlőpulton a <b>%s</b> tranzakció adatainál tudja nyomon követni</p>");
-	
+
 
 	//LiveUpdate
 	define("LIVEUPDATE_TEST_TRANSACTION", "Teszt tranzakció");
 	define("BACKREF_REDIRECT_PAGE", "tájékoztató oldal");
 	define("TIMEOUT_PAGE", "Időtúllépés");
 	define("SET_UP_MERCHANT", "Az sdk/config.php fájlban állítsa be a kereskedői azonosítóját (MERCHANT)");
-	define("SET_UP_SECRET_KEY", "Az sdk/config.php fájlban állítsa be a titkos kulcsát (SECRET_KEY)");	
+	define("SET_UP_SECRET_KEY", "Az sdk/config.php fájlban állítsa be a titkos kulcsát (SECRET_KEY)");
 	define("METHOD_CCVISAMC", "Bankkártya");
 	define("METHOD_WIRE", "Átutalás");
 	define("START_CCVISAMC", "Bankkártyás fizetés indítása");
@@ -91,7 +91,7 @@ if (!isset($config['LANGUAGE']) || $config['LANGUAGE'] == 'HU' || $config['LANGU
 	define("PAYMENT_BUTTON", "SimplePay online fizetés indítása");
 	define("PAYMENT_PAGE_LANGUAGE", "Fizetőoldal nyelve");
 	define("PAYMENT_CURRENCY", "Devizanem");
-		
+
 	//BackRef
 	define("SUCCESSFUL_CARD_AUTHORIZATION", "Sikeres kártya ellenőrzés.");
 	define("SUCCESSFUL_WIRE", "Sikeres megrendelés. <br/>Az utalás megérkezése után lesz teljesítve a megrendelés");
@@ -110,7 +110,7 @@ if (!isset($config['LANGUAGE']) || $config['LANGUAGE'] == 'HU' || $config['LANGU
 	define("RESPONSECODE", "Válaszkód");
 	define("RESPONSEMSG", "Válasz üzenet");
 	define("PAYMENT_TEST", "Teszt fizetés");
-	
+
 	//Timeout
 	define("ABORTED_TRANSACTION", "Megszakított tranzakció");
 	define("TIMEOUT_TRANSACTION", "Időtúllépéses tranzakció	");
@@ -119,23 +119,23 @@ if (!isset($config['LANGUAGE']) || $config['LANGUAGE'] == 'HU' || $config['LANGU
 
 	//IRN
 	define("IRN_PAGE_TITLE", "Instant Refund Notification");
-	
+
 	//IDN
 	define("IDN_PAGE_TITLE", "Instant Delivery Notification");
-	
+
 
 } elseif ($config['LANGUAGE']=='EN' ) {
 
 	$langActiveClassHu = '';
 	$langActiveClassEn = 'class="active"';
 	define("LANGUAGE", "EN");
-	
+
 	//General
-	define("TEST", "test");	
+	define("TEST", "test");
 	define("TEST_UPPER", "Test");
 	define("DEVELOPER_GUIDE", "Developer and testing guide for online payment solutions");
-	define("MORE", "More");	
-	define("BACK", "Back");	
+	define("MORE", "More");
+	define("BACK", "Back");
 
 	define("CALL_TO_START_TRANSACTION", "By clicking on button below you can start test payment transaction immediately");
 	define("METHOD_CCVISAMC_DESC", "During the transaction you will be redirected to SimplePay payment page. On this page you can fill your card data and then you return here automatically.");
@@ -143,8 +143,8 @@ if (!isset($config['LANGUAGE']) || $config['LANGUAGE'] == 'HU' || $config['LANGU
 
 	//Redirect page
 	define("TRANSACTION_STARTED", "Transaction started");
-	define("TRANSACTION_ABORTED", "Transaction was aborted in purpose of debug!");	
-	define("PLEASE_WAIT", "Please wait!");			
+	define("TRANSACTION_ABORTED", "Transaction was aborted in purpose of debug!");
+	define("PLEASE_WAIT", "Please wait!");
 	define("WILL_BE_REDIRECTED", "You will be redirect shortly.");
 	define("ABORT_DESC_1", "DEBUG_LIVEUPDATE_PAGE variable in sdk/config.php controlls the debug process.");
 	define("ABORT_DESC_2", "In case of general transaction switch it to false!");
@@ -161,26 +161,26 @@ if (!isset($config['LANGUAGE']) || $config['LANGUAGE'] == 'HU' || $config['LANGU
 	define("USD_PAYMETN_BTN", "USD payment");
 	define("MISSING_PARAMS", "<b>Missing merchant data</b><br>Please set up a MERCHANT and a SECRET_KEY data in sdk/config.php. You can start transaction with them only. You have this data if you have a contract with <a href=\"http://simplepartner.hu/online_fizetesi_szolgaltatas.html\" target=\"_blank\">OTP Mobil Kft</a><br>");
 	define("MISSING_PARAMS_WIRE", "<b>Missing merchant data</b><br>Please set up HUF MERCHANT and a SECRET_KEY data in sdk/config.php. You can start transaction with them only. You have this data if you have a contract with <a href=\"http://simplepartner.hu/online_fizetesi_szolgaltatas.html\" target=\"_blank\">OTP Mobil Kft</a><br>");
-	
+
 	define("IRN_TEXT", "<p>IRN (Instant Refund Notification) allows for merchants to send refund from their own admin system.</p><p>No need any SimplePay settings.</p>");
 	define("IRN_TEXT2", "Start IRN to this (<b> %s </b>) transaction!");
 	define("IDN_TEXT", "<p>IDN (Instant Delivery Notification) allows for merchants to send confirm from their own admin system. This funcion is only for two step payment.</p><p>SimplePay has to turning on this feature!</p>");
 	define("IDN_TEXT2", "Start IDN to this (<b> %s </b>) transaction!");
 	define("IOS_TEXT", "<p>IOS (Instant Order Status) allows for merchants to send order status query from their own admin system.</p><p>No need any SimplePay settings!</p>");
 	define("IOS_TEXT2", "Start IOS to this (<b> %s </b>) transaction!");
-	
+
 	define("IRN_TEXT3","IRN");
 	define("IDN_TEXT3","IDN");
 	define("IOS_TEXT3","IOS");
 	define("RUN_TEXT","start");
 	define("NO_ORDERREF_TEXT","There is no order ref in REQUEST.");
-	
+
 	define("LOGTEXT1","Order (order_ref)");
 	define("LOGTEXT2","Type");
 	define("LOGTEXT3","Date");
 	define("LOGTEXT4","Parameter");
 	define("LOGTEXT5","Value");
-	
+
 	define("IRNTEXTTPL","You can check the result of the IRN (<b>%s</b>) on the admin system .");
 						
 	//LiveUpdate

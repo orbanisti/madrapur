@@ -50,8 +50,8 @@
 
 		// Check log if IPN message was received
 		$ipnInLog = false;
-		/*if($backref->order_ref != ""){
-			$handle = fopen(OTP.$config['LOG_PATH'] . '/' . @date('Ymd') . '.log', "r");
+		if($backref->order_ref != ""){
+			$handle = fopen(OTP.$config['LOG_PATH'] . '/' . @date('Ymd') . '.log', "c");
 			if ($handle) {			
 				while (($line = fgets($handle)) !== false) {	 
 					$logRow = explode(" ", $line);
@@ -66,29 +66,29 @@
 					}
 				}
 			}
-		}*/
+		}
 		
 		// Notification by payment method		
 		//CCVISAMC
 		if ($backStatus['PAYMETHOD'] == 'Visa/MasterCard/Eurocard') {
-			$message .= '<b><font color="green">' . SUCCESSFUL_CARD_AUTHORIZATION . '</font></b><br/>';
+			$message .= 'SUCCESSFUL_CARD_AUTHORIZATION';
 			if ($backStatus['ORDER_STATUS'] == 'IN_PROGRESS') {
-				$message .= '<b><font color="green">' . WAITING_FOR_IPN . '</font></b><br/>';
+				$message .= 'WAITING_FOR_IPN;';
 			} elseif ($backStatus['ORDER_STATUS' ] == 'PAYMENT_AUTHORIZED') {
-				$message .= '<b><font color="green">' . WAITING_FOR_IPN . '</font></b><br/>';
+				$message .= 'WAITING_FOR_IPN;';
 			} elseif ($backStatus['ORDER_STATUS'] == 'COMPLETE') {
-				$completeMessage = '<b><font color="green">' . WAITING_FOR_IPN . '</font></b><br/>';
+				$completeMessage = 'WAITING_FOR_IPN;';
 				if ($ipnInLog) {
-					$completeMessage = '<b><font color="green">'. CONFIRMED_IPN .'</font></b><br/>';
+					$completeMessage = 'CONFIRMED_IPN;';
 				}
 				$message .= $completeMessage;			
 			}
 		}
 		//WIRE
 		elseif ($backStatus['PAYMETHOD'] == 'Bank/Wire transfer') {
-			$message = '<b><font color="green">' . SUCCESSFUL_WIRE . '</font></b><br/>';
+			$message = '<b>wire' . SUCCESSFUL_WIRE . '</b><br/>';
 			if ($backStatus['ORDER_STATUS'] == 'PAYMENT_AUTHORIZED' || $backStatus['ORDER_STATUS'] == 'COMPLETE') {
-				$message .= '<b><font color="green">' . CONFIRMED_WIRE . '</font></b><br/>';
+				$message .= '<b>waut' . CONFIRMED_WIRE . '</b><br/>';
 			} 			
 		}
 		
@@ -107,8 +107,8 @@
 		 */
 		$backStatus = $backref->backStatusArray;	
 
-		$message = '<b><font color="red">' . UNSUCCESSFUL_TRANSACTION . '</font></b><br/>';
-		$message .= '<b><font color="red">' . END_OF_TRANSACTION . '</font></b><br/>';
+		$message = '<b>' . UNSUCCESSFUL_TRANSACTION . '</b><br/>';
+		$message .= '<b>' . END_OF_TRANSACTION . '</b><br/>';
 		$message .= UNSUCCESSFUL_NOTICE . '<br/><br/>';
 
 		/**
@@ -129,7 +129,7 @@
 	
 	if (isset($_REQUEST['err'])) {
 		$message .= '<hr>';
-		$message .= '<b><font color="red">ERROR: </font></b>  ' . $_REQUEST['err'] . '<br/>'; 
+		$message .= '<b>ERROR: </b>  ' . $_REQUEST['err'] . '<br/>'; 
 	}
 	
 ?>
@@ -151,9 +151,21 @@
 			'data' => (isset($backStatus)) ? $backStatus : "N/A",
 		);
 
-		// require_once OTP.'demo/template.php';
+		require_once OTP.'demo/template.php';
 
-		redirect("https://budapestrivercruise.co.uk/checkout/thankyou?" . $_SERVER['QUERY_STRING']);
+        $qString = $_SERVER['QUERY_STRING'];
+        $prettyString = "";
+
+        $qStringArray = explode("&", $qString);
+
+        foreach ($qStringArray as $element) {
+            $elementString = explode("=", $element);
+
+            $prettyString .= "/" . $elementString[1];
+        }
+
+        return true;
+		redirect("https://budapestrivercruise.co.uk/checkout/thankyou" . $prettyString);
 	/*
 	*	template handling end
 	*/	

@@ -2,7 +2,7 @@
 
 	date_default_timezone_set('Europe/Budapest');
 
-	$handle = fopen($config['LOG_PATH'] . '/' . date('Ymd') . '.log', "r");
+	$handle = fopen(OTP.$config['LOG_PATH'] . '/' . date('Ymd') . '.log', "c");
 	$outarray=Array();
 	$tipusgyujto = $blokkok = Array();	
 	$valto = '';
@@ -10,21 +10,21 @@
 	$orderref= isset($_GET['order_ref']) ? $_GET['order_ref'] : '';
 
 	if($orderref !=""){		
-		if ($handle) {			
+		if ($handle) {
 			while (($line = fgets($handle)) !== false) {
-		 
-				$egysor = explode(" ",$line);					
-				if(isset($egysor[4]) and strstr($egysor[4], 'ITEM_') ) {					
+
+				$egysor = explode(" ",$line);
+				if(isset($egysor[4]) and strstr($egysor[4], 'ITEM_') ) {
 					$ujegysor2 = explode("=", $line);
-					$ujegysor = explode(": ", $ujegysor2[1]);					
+					$ujegysor = explode(": ", $ujegysor2[1]);
 					if(isset($ujegysor[0]) and isset($ujegysor[1])){
 						$egysor[4] = $ujegysor[0] . '=' . $ujegysor[1];
-					} else {	
+					} else {
 						$egysor[4] ='empty=empty';
-					}					
-				} 
-			
-				if($egysor[0] == $orderref) {					
+					}
+				}
+
+				if($egysor[0] == $orderref) {
 					if($egysor[1] != $valto and $valto != "") {
 						$valto = $egysor[1];
 						$blokkszamlalo++;
@@ -32,8 +32,8 @@
 						$valto = $egysor[1];
 					}
 					$blokkok[$valto . '-' . $blokkszamlalo]['data'][] = $egysor[4];
-					$blokkok[$valto . '-' . $blokkszamlalo]['date'] = $egysor[2] . ' ' . $egysor[3];				
-				}			
+					$blokkok[$valto . '-' . $blokkszamlalo]['date'] = $egysor[2] . ' ' . $egysor[3];
+				}
 			}
 		fclose($handle);
 		

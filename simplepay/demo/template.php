@@ -20,9 +20,9 @@
 			</div>
 		</div>
 	</div>
-	<?php 
-		 require_once('templates/' . $mydata['type'] . '.php');
-		 require_once('templates/backref.php');
+	<?php
+        require_once('templates/' . $mydata['type'] . '.php');
+        require_once('templates/backref.php');
 	?>
 
 	<?php if($mydata['type'] != "liveupdate"){

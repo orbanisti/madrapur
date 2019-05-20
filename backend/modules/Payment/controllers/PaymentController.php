@@ -51,9 +51,9 @@ class PaymentController extends Controller {
 
     }
 
-    public static function actionPay($id) {
-        $order = Reservations::getReservationById($id);
-
+    public static function actionPay($ids) {
+return $ids;
+        $order = Reservations::getReservationsByIds($id);
         error_reporting(E_ALL|E_STRICT);
         ini_set('display_errors', '1');
         require_once(OTP.'sdk/config.php');
@@ -128,31 +128,32 @@ class PaymentController extends Controller {
 
         $lu->errorLogger();
 
-        header ('Content-type: text/html; charset=utf-8');
-        echo '<span style="display: none;">'.$display.'</span>';
+        return '<span style="display: none;">'.$display.'</span>';
     }
 
     public static function actionBackref() {
-        require_once(OTP."backref.php");
+        $string = "myString";
+
+        require_once(OTP."nogui/backref.php");
     }
 
     public static function actionTimeout() {
-        require_once(OTP."timeout.php");
+        require_once(OTP."nogui/timeout.php");
     }
 
     public static function actionIrn() {
-        require_once(OTP."irn.php");
+        require_once(OTP."nogui/irn.php");
     }
 
     public static function actionIdn() {
-        require_once(OTP."idn.php");
+        require_once(OTP."nogui/idn.php");
     }
 
     public static function actionIos() {
-        require_once(OTP."ios.php");
+        require_once(OTP."nogui/ios.php");
     }
 
     public static function actionIpn() {
-        require_once(OTP."ipn.php");
+        require_once(OTP."nogui/ipn.php");
     }
 }

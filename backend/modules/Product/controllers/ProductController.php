@@ -18,6 +18,7 @@ use backend\modules\Reservations\models\ReservationsAdminInfoSearchModel;
 use backend\modules\Reservations\models\ReservationsAdminSearchModel;
 use backend\modules\Reservations\models\ReservationsInfo;
 use kartik\grid\EditableColumnAction;
+use League\Uri\PublicSuffix\CurlHttpClient;
 use Mpdf\Tag\B;
 use Yii;
 use backend\controllers\Controller;
@@ -669,14 +670,26 @@ class ProductController extends Controller {
                 if (!empty($deletedTimesIds)) {
                     foreach($deletedTimesIds as $date){
 
-                        foreach ($sources as $source){
+                        foreach ($sources as $source ){
+
                             $myurl=$source['url'];
                             $myprodid=$source['prodIds'];
+                            if($source['url']=='https://budapestrivercruise.eu'){
                             $curlUrl=$myurl.'/wp-json/unblock/v1/start/'.$date.'/end/'.$date.'/id/'.$myprodid;
-                            $curl=curl_init($curlUrl);
-                            $response=curl_exec($curl);
+                            /*$curl=curl_init($curlUrl);
+                            curl_setopt($curl, CURLOPT_HEADER, 0);
+                            curl_setopt($curl, CURLOPT_VERBOSE, 0);
+                            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);*/
+                            $curl=new CurlHttpClient();
+                            $response=$curl->getContent($curlUrl);
+                            if($response!=0){
+                                $response=$curl->getContent($curlUrl);
+                            }
 
-                            curl_close($curl);
+
+
+
+                            }//ToDo not only eu
                         }
 
 
@@ -700,14 +713,19 @@ class ProductController extends Controller {
 
 
                     foreach ($sources as $source){
-                        $myurl=$source['url'];
-                        $myprodid=$source['prodIds'];
-                        $curlUrl=$myurl.'/wp-json/block/v1/start/'.$date.'/end/'.$date.'/id/'.$myprodid;
-                        $curl=curl_init($curlUrl);
-                        $response=curl_exec($curl);
+                        if($source['url']=='https://budapestrivercruise.eu') {
+                            $myurl = $source['url'];
+                            $myprodid = $source['prodIds'];
+                            $curlUrl = $myurl . '/wp-json/block/v1/start/' . $date . '/end/' . $date . '/id/' . $myprodid;
+                            $curl = curl_init($curlUrl);
+                            curl_setopt($curl, CURLOPT_HEADER, 0);
+                             curl_setopt($curl, CURLOPT_VERBOSE, 0);
+                              curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                            $response = curl_exec($curl);
 
 
-                        curl_close($curl);
+
+                        }//Todo no only eu
                     }
                 }
 
