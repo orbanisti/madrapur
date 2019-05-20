@@ -674,6 +674,9 @@ class ProductController extends Controller {
                             $myprodid=$source['prodIds'];
                             $curlUrl=$myurl.'/wp-json/unblock/v1/start/'.$date.'/end/'.$date.'/id/'.$myprodid;
                             $curl=curl_init($curlUrl);
+                            curl_setopt($curl, CURLOPT_HEADER, 0);
+                            curl_setopt($curl, CURLOPT_VERBOSE, 0);
+                            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
                             $response=curl_exec($curl);
 
                             curl_close($curl);
@@ -704,6 +707,9 @@ class ProductController extends Controller {
                         $myprodid=$source['prodIds'];
                         $curlUrl=$myurl.'/wp-json/block/v1/start/'.$date.'/end/'.$date.'/id/'.$myprodid;
                         $curl=curl_init($curlUrl);
+                        curl_setopt($curl, CURLOPT_HEADER, 0);
+                        curl_setopt($curl, CURLOPT_VERBOSE, 0);
+                        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);gi
                         $response=curl_exec($curl);
 
 
