@@ -675,8 +675,6 @@ class ProductController extends Controller {
                             $curlUrl=$myurl.'/wp-json/unblock/v1/start/'.$date.'/end/'.$date.'/id/'.$myprodid;
                             $curl=curl_init($curlUrl);
                             $response=curl_exec($curl);
-                            var_dump($response);
-                            echo $curlUrl;
 
                             curl_close($curl);
                         }
@@ -700,22 +698,17 @@ class ProductController extends Controller {
 
                 foreach($veglegesdates as $i=>$date){
 
+
                     foreach ($sources as $source){
                         $myurl=$source['url'];
                         $myprodid=$source['prodIds'];
                         $curlUrl=$myurl.'/wp-json/block/v1/start/'.$date.'/end/'.$date.'/id/'.$myprodid;
                         $curl=curl_init($curlUrl);
                         $response=curl_exec($curl);
-                        var_dump($response);
-                        echo $curlUrl;
+
 
                         curl_close($curl);
                     }
-
-
-                    $jsonResponse=json_decode(utf8_decode($response));
-
-
                 }
 
             }
