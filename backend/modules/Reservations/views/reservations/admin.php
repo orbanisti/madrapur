@@ -43,7 +43,13 @@ $this->params['breadcrumbs'][] = $this->title;
         if(isset($data->data->orderDetails)) {
             $cBookingPaidDate = date('Y-m-d', strtotime($data->data->orderDetails->paid_date));
             $cBookingCurrency = $data->data->orderDetails->order_currency;
-            $cBookingTotal = $data->data->boookingDetails->booking_cost;
+            if(isset($data->data->boookingDetails->booking_cost)) {
+                $cBookingTotal = $data->data->boookingDetails->booking_cost;
+            }
+            else{
+                $cBookingTotal ='0';//**Todo  update $data booking cost;
+
+            }
             if ($cBookingCurrency != 'EUR') {
                 $cBookingTotal = intval($cBookingTotal) / 300;
             }
