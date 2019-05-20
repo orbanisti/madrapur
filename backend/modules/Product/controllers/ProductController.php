@@ -675,11 +675,11 @@ class ProductController extends Controller {
                             $myprodid=$source['prodIds'];
                             if($source['url']=='https://budapestrivercruise.eu'){
                             $curlUrl=$myurl.'/wp-json/unblock/v1/start/'.$date.'/end/'.$date.'/id/'.$myprodid;
-                            $curl=curl_init($curlUrl);
+                            /*$curl=curl_init($curlUrl);
                             curl_setopt($curl, CURLOPT_HEADER, 0);
                             curl_setopt($curl, CURLOPT_VERBOSE, 0);
-                            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                            $response=curl_exec($curl);
+                            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);*/
+                            $response=file_get_contents($curlUrl);
 
 
                             }//ToDo not only eu
