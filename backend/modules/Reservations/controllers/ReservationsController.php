@@ -173,7 +173,7 @@ class ReservationsController extends Controller {
         }
 
         $backendData=$bookingInfo;
-        return $this->render('bookingedit',['model'=>$model,'backenddata'=>$backendData]);
+        return $this->render('bookingEdit',['model'=>$model,'backenddata'=>$backendData]);
 
 
     }
