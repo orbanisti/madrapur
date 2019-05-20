@@ -669,17 +669,20 @@ class ProductController extends Controller {
                 if (!empty($deletedTimesIds)) {
                     foreach($deletedTimesIds as $date){
 
-                        foreach ($sources as $source){
+                        foreach ($sources as $source ){
+
                             $myurl=$source['url'];
                             $myprodid=$source['prodIds'];
+                            if($source['url']=='https://budapestrivercruiser.eu'){
                             $curlUrl=$myurl.'/wp-json/unblock/v1/start/'.$date.'/end/'.$date.'/id/'.$myprodid;
                             $curl=curl_init($curlUrl);
-                            curl_setopt($curl, CURLOPT_HEADER, 0);
+                            #curl_setopt($curl, CURLOPT_HEADER, 0);
                             #curl_setopt($curl, CURLOPT_VERBOSE, 0);
-                           # curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
                             $response=curl_exec($curl);
 
                             curl_close($curl);
+                            }//ToDo not only eu
                         }
 
 
@@ -703,17 +706,19 @@ class ProductController extends Controller {
 
 
                     foreach ($sources as $source){
-                        $myurl=$source['url'];
-                        $myprodid=$source['prodIds'];
-                        $curlUrl=$myurl.'/wp-json/block/v1/start/'.$date.'/end/'.$date.'/id/'.$myprodid;
-                        $curl=curl_init($curlUrl);
-                        curl_setopt($curl, CURLOPT_HEADER, 0);
-                       # curl_setopt($curl, CURLOPT_VERBOSE, 0);
-                      #  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                        $response=curl_exec($curl);
+                        if($source['url']=='https://budapestrivercruiser.eu') {
+                            $myurl = $source['url'];
+                            $myprodid = $source['prodIds'];
+                            $curlUrl = $myurl . '/wp-json/block/v1/start/' . $date . '/end/' . $date . '/id/' . $myprodid;
+                            $curl = curl_init($curlUrl);
+                            #curl_setopt($curl, CURLOPT_HEADER, 0);
+                            # curl_setopt($curl, CURLOPT_VERBOSE, 0);
+                              curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                            $response = curl_exec($curl);
 
 
-                        curl_close($curl);
+                            curl_close($curl);
+                        }//Todo no only eu
                     }
                 }
 
