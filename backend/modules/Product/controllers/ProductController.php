@@ -673,7 +673,7 @@ class ProductController extends Controller {
 
                             $myurl=$source['url'];
                             $myprodid=$source['prodIds'];
-                            if($source['url']=='https://budapestrivercruiser.eu'){
+                            if($source['url']=='https://budapestrivercruise.eu'){
                             $curlUrl=$myurl.'/wp-json/unblock/v1/start/'.$date.'/end/'.$date.'/id/'.$myprodid;
                             $curl=curl_init($curlUrl);
                             #curl_setopt($curl, CURLOPT_HEADER, 0);
@@ -706,7 +706,7 @@ class ProductController extends Controller {
 
 
                     foreach ($sources as $source){
-                        if($source['url']=='https://budapestrivercruiser.eu') {
+                        if($source['url']=='https://budapestrivercruise.eu') {
                             $myurl = $source['url'];
                             $myprodid = $source['prodIds'];
                             $curlUrl = $myurl . '/wp-json/block/v1/start/' . $date . '/end/' . $date . '/id/' . $myprodid;
