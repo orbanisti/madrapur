@@ -4,6 +4,7 @@ namespace backend\modules\Product\controllers;
 
 
 use backend\modules\Product\models\Product;
+use backend\modules\Product\models\ProductBlockout;
 use backend\modules\Product\models\ProductEdit;
 
 use backend\modules\Product\models\ProductOverview;
@@ -11,11 +12,13 @@ use backend\modules\Product\models\ProductPrice;
 
 use backend\modules\Product\models\ProductSource;
 
+use backend\modules\Products\controllers\BlockoutsController;
 use backend\modules\Reservations\models\Reservations;
 use backend\modules\Reservations\models\ReservationsAdminInfoSearchModel;
 use backend\modules\Reservations\models\ReservationsAdminSearchModel;
 use backend\modules\Reservations\models\ReservationsInfo;
 use kartik\grid\EditableColumnAction;
+use Mpdf\Tag\B;
 use Yii;
 use backend\controllers\Controller;
 use backend\modules\Product\models\ProductUpdate;
@@ -625,6 +628,253 @@ class ProductController extends Controller {
             'availableChairs'=>$availableChairsOnDay,
 
         ]);
+    }
+
+
+    public function actionBlocked(){
+        $returnMessage='Currently no modification initiated';
+        $currentProductId=Yii::$app->request->get('prodId');
+        if($currentProductId) {
+            $currentProduct = Product::getProdById($currentProductId);
+            $sourcesRows = ProductSource::getProductSourceIds($currentProductId);
+            $sourcesUrls= ProductSource::getProductSourceUrls($currentProductId);
+            $sources=ProductSource::getProductSources($currentProductId);
+        }
+
+        $productPostedBlockouts = Yii::$app->request->post('ProductBlockout');
+
+        #$modelPrices[] = new ProductPrice();
+        #$returnMessage=$productPostedBlockouts;
+
+        if($productPostedBlockouts["dates"]){
+
+
+
+            $query = ProductBlockout::aSelect(ProductBlockout::class, '*', ProductBlockout::tableName(), 'product_id=' . $currentProductId);
+
+            try {
+                $rowsOne = $query->one();
+
+            } catch (Exception $e) {
+            }
+
+            if(isset($rowsOne)){
+
+                $model=$rowsOne;
+                $a=explode(',',$model->dates);
+                $b=explode(',',$productPostedBlockouts["dates"]);
+                $deletedTimesIds = array_diff($a, $b);
+                #var_dump($deletedTimesIds);
+
+                if (!empty($deletedTimesIds)) {
+                    foreach($deletedTimesIds as $date){
+
+                        foreach ($sources as $source){
+                            $myurl=$source['url'];
+                            $myprodid=$source['prodIds'];
+                            $curlUrl=$myurl.'/wp-json/unblock/v1/start/'.$date.'/end/'.$date.'/id/'.$myprodid;
+                            $curl=curl_init($curlUrl);
+                            $response=curl_exec($curl);
+
+                            curl_close($curl);
+                        }
+
+
+
+                       // var_dump($response.$url); find UNBLOCK URL HERE
+
+                    }
+                }
+
+                $dates=explode(',',$productPostedBlockouts["dates"]);
+
+                foreach ($dates as $i =>$date){
+                    if(in_array($date,$deletedTimesIds)){
+                        unset($dates[$i]);
+                    }
+                }
+
+                $veglegesdates=$dates;
+
+                foreach($veglegesdates as $i=>$date){
+
+
+                    foreach ($sources as $source){
+                        $myurl=$source['url'];
+                        $myprodid=$source['prodIds'];
+                        $curlUrl=$myurl.'/wp-json/block/v1/start/'.$date.'/end/'.$date.'/id/'.$myprodid;
+                        $curl=curl_init($curlUrl);
+                        $response=curl_exec($curl);
+                        var_dump($response);
+                        echo $curlUrl;
+
+                        curl_close($curl);
+                    }
+                }
+
+            }
+            else{
+
+                $model=new ProductBlockout();
+            }
+            $values = [
+                'product_id' => $currentProductId,
+                'dates' => $productPostedBlockouts['dates'],
+
+            ];
+
+            if(ProductBlockout::insertOne($model,$values)){
+                $returnMessage='Successfully Saved';
+
+            }
+            else{
+                $returnMessage='Save not Succesful';
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+
+/*
+        if ($productPostedBlockouts) {
+
+
+
+            foreach ($productPostedPrices as $postedPrice):
+                if ($postedPrice['start_date'] == 'NULL' || $postedPrice['start_date'] == '') {
+                    $postedPrice['start_date'] = date("Y-m-d");
+                }
+                if ($postedPrice['end_date'] == 'NULL' || $postedPrice['end_date'] == '') {
+                    $postedPrice['end_date'] = date("Y-m-d");
+                }
+
+
+                $values = [
+                    'name' => $postedPrice['name'],
+                    'description' => $postedPrice['description'],
+                    'start_date' => $postedPrice['start_date'],
+                    'end_date' => $postedPrice['end_date'],
+                    'discount' => $postedPrice['discount'],
+                    'price' => $postedPrice['price'],
+                    'product_id' => $prodId,
+                    'id' => $postedPrice['id']
+                ];
+
+
+                $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $prodId . ' and id="' . $values['id'] . '"');
+
+                try {
+                    $rows = $query->one();
+
+                } catch (Exception $e) {
+                }
+                if (isset($rows)) {
+                    $newPrice = $rows;
+                    //letezao productot updatelunk
+                } else {
+                    $newPrice = new ProductPrice();
+
+
+                }
+
+
+                if (Product::insertOne($newPrice, $values)) {
+                    $updateResponse = 1;
+
+                } else {
+                    $updateResponse = 0;
+
+                    //show an error message
+                }
+
+
+            endforeach;
+
+
+        }
+
+*/
+
+
+
+
+
+
+
+
+
+        $queryGetPrices = ProductBlockout::aSelect(ProductBlockout::class, '*', ProductBlockout::tableName(), 'product_id=' . $currentProductId);
+        try {
+            $rowsOne = $queryGetPrices->one();
+        } catch (Exception $e) {
+        }
+
+        if (isset($rowsOne)) {
+
+            $model=$rowsOne;
+
+        } else {
+            $model=new ProductBlockout();
+
+
+        }
+
+        /*update sources*/
+
+        if(Yii::$app->request->get('update')=='all'){
+
+            $dates=explode(',',$model->dates);
+            foreach($dates as $i=>$date){
+
+
+                $source='https://budapestrivercruise.eu';
+
+                $url=$source.'/wp-json/block/v1/start/'.$date.'/end/'.$date.'/id/'.'30649';
+
+                $curl=curl_init($url);
+                curl_setopt($curl, CURLOPT_HEADER, 0);
+                curl_setopt($curl, CURLOPT_VERBOSE, 0);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+                $response=curl_exec($curl);
+
+                curl_close($curl);
+
+                $jsonResponse=json_decode(utf8_decode($response));
+
+
+            }
+        }
+
+        if(isset($jsonResponse)){
+            $returnMessage='Eu updated an product dates blocked';
+
+        }
+
+
+
+        return $this->render('blocked',[
+            'currentProduct'=>$currentProduct,
+            'model'=>$model,
+            'returnMessage'=>$returnMessage,
+
+        ]);
+
+
+
+
     }
     public function actions()
     {

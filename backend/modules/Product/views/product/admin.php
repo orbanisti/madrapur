@@ -31,7 +31,6 @@ use backend\modules\Product\models\ProductSource;
         $gridColumns = [
             ['class' => 'yii\grid\SerialColumn'],
             'id',
-
             'title',
             'capacity',
             'currency',
@@ -40,6 +39,13 @@ use backend\modules\Product\models\ProductSource;
                 'format'=>'html',
                 'value' => function ($model) {
                     return '<a href="/Product/product/update?prodId='.$model->id.'">Edit'.'</a>';
+                }
+            ],
+            [
+                'label' => 'Block Days',
+                'format'=>'html',
+                'value' => function ($model) {
+                    return '<a href="/Product/product/blocked?prodId='.$model->id.'">Block Days'.'</a>';
                 }
             ],
 
