@@ -685,8 +685,7 @@ class ProductController extends Controller {
                             if($response!=0){
                                 $response=$curl->getContent($curlUrl);
                             }
-                            echo 'url:'.$curlUrl;
-                            echo 'response:'.$response;
+
 
 
 
