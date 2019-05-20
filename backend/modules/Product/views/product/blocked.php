@@ -58,19 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => 'btn']) ?>
             </div>
             <?php ActiveForm::end(); ?>
-            <?php
-            $form = ActiveForm::begin([
-                'id' => 'update-blocked',
-                'action' => 'blocked?prodId='.$currentProduct->id.'&update=all',
-                'options' => ['class' => 'product-edit','enctype'=>'multipart/form-data'],
 
-            ]);
-            ?>
-
-
-
-            <?php echo Html::submitButton('Update Sources'); ?>
-            <?php ActiveForm::end(); ?>
         </div>
 
     </div>

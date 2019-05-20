@@ -637,6 +637,8 @@ class ProductController extends Controller {
         if($currentProductId) {
             $currentProduct = Product::getProdById($currentProductId);
             $sourcesRows = ProductSource::getProductSourceIds($currentProductId);
+            $sourcesUrls= ProductSource::getProductSourceUrls($currentProductId);
+            $sources=ProductSource::getProductSources($currentProductId);
         }
 
         $productPostedBlockouts = Yii::$app->request->post('ProductBlockout');
@@ -645,6 +647,9 @@ class ProductController extends Controller {
         #$returnMessage=$productPostedBlockouts;
 
         if($productPostedBlockouts["dates"]){
+
+
+
             $query = ProductBlockout::aSelect(ProductBlockout::class, '*', ProductBlockout::tableName(), 'product_id=' . $currentProductId);
 
             try {
@@ -656,6 +661,62 @@ class ProductController extends Controller {
             if(isset($rowsOne)){
 
                 $model=$rowsOne;
+                $a=explode(',',$model->dates);
+                $b=explode(',',$productPostedBlockouts["dates"]);
+                $deletedTimesIds = array_diff($a, $b);
+                #var_dump($deletedTimesIds);
+
+                if (!empty($deletedTimesIds)) {
+                    foreach($deletedTimesIds as $date){
+
+                        foreach ($sources as $source){
+                            $myurl=$source['url'];
+                            $myprodid=$source['prodIds'];
+                            $curlUrl=$myurl.'/wp-json/unblock/v1/start/'.$date.'/end/'.$date.'/id/'.$myprodid;
+                            $curl=curl_init($curlUrl);
+                            $response=curl_exec($curl);
+                            var_dump($response);
+                            echo $curlUrl;
+
+                            curl_close($curl);
+                        }
+
+
+
+                       // var_dump($response.$url); find UNBLOCK URL HERE
+
+                    }
+                }
+
+                $dates=explode(',',$productPostedBlockouts["dates"]);
+
+                foreach ($dates as $i =>$date){
+                    if(in_array($date,$deletedTimesIds)){
+                        unset($dates[$i]);
+                    }
+                }
+
+                $veglegesdates=$dates;
+
+                foreach($veglegesdates as $i=>$date){
+
+                    foreach ($sources as $source){
+                        $myurl=$source['url'];
+                        $myprodid=$source['prodIds'];
+                        $curlUrl=$myurl.'/wp-json/block/v1/start/'.$date.'/end/'.$date.'/id/'.$myprodid;
+                        $curl=curl_init($curlUrl);
+                        $response=curl_exec($curl);
+                        var_dump($response);
+                        echo $curlUrl;
+
+                        curl_close($curl);
+                    }
+
+
+                    $jsonResponse=json_decode(utf8_decode($response));
+
+
+                }
 
             }
             else{
@@ -676,6 +737,19 @@ class ProductController extends Controller {
                 $returnMessage='Save not Succesful';
 
             }
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
 
 
@@ -760,6 +834,38 @@ class ProductController extends Controller {
         } else {
             $model=new ProductBlockout();
 
+
+        }
+
+        /*update sources*/
+
+        if(Yii::$app->request->get('update')=='all'){
+
+            $dates=explode(',',$model->dates);
+            foreach($dates as $i=>$date){
+
+
+                $source='https://budapestrivercruise.eu';
+
+                $url=$source.'/wp-json/block/v1/start/'.$date.'/end/'.$date.'/id/'.'30649';
+
+                $curl=curl_init($url);
+                curl_setopt($curl, CURLOPT_HEADER, 0);
+                curl_setopt($curl, CURLOPT_VERBOSE, 0);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+                $response=curl_exec($curl);
+
+                curl_close($curl);
+
+                $jsonResponse=json_decode(utf8_decode($response));
+
+
+            }
+        }
+
+        if(isset($jsonResponse)){
+            $returnMessage='Eu updated an product dates blocked';
 
         }
 

@@ -47,7 +47,7 @@ class ProductSource extends MadActiveRecord{
         return true;
     }
 
-    public function getProductSources($prodId)
+    public static function getProductSources($prodId)
 
     {
 
@@ -76,6 +76,23 @@ class ProductSource extends MadActiveRecord{
 
 
         }
+    public static function getProductSourceUrls($prodId){
+        $queryGetSources = ProductSource::aSelect(ProductSource::class, '*', ProductSource::tableName(), 'product_id=' . $prodId);
+        try {
+            $sourceRows = $queryGetSources->all();
+            $sourceIdsArray=[];
+            foreach ($sourceRows as $source) {
+                $sourceIdsArray[]=$source->url;
+
+            }
+            $finalArray=array_unique($sourceIdsArray);
+            return $finalArray;
+
+        } catch (Exception $e) {
+        }
+
+
+    }
 
 
 
