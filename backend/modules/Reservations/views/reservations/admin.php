@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
         $entity['data']=array();
         foreach ($price as $pDate=>$pValue){
             if(isset($pValue[$source])) {
-                $oneDate = array(0 => $pDate, 1 => $pValue[$source]);
+                $oneDate = array(0 => date('Y-m-d',strtotime($pDate)), 1 => $pValue[$source]);
                 $entity['data'][] = $oneDate;
             }
 
@@ -96,11 +96,13 @@ $this->params['breadcrumbs'][] = $this->title;
         $series2[]=$entity;
     }
 
+    #echo(json_encode($series2));
+
     if(Yii::$app->user->getIdentity()->username !== "manager") {
 
         echo \onmotion\apexcharts\ApexchartsWidget::widget([
-            'type' => 'bar', // default area
-            'height' => '400', // default 350
+            'type' => 'line', // default area
+            'height' => '700', // default 350
 
             'chartOptions' => [
                 'chart' => [
@@ -109,18 +111,26 @@ $this->params['breadcrumbs'][] = $this->title;
                         'autoSelected' => 'zoom'
                     ],
                 ],
+
                 'xaxis' => [
                     'type' => 'datetime',
                     // 'categories' => $categories,
                 ],
-                'plotOptions' => [
-                    'bar' => [
-                        'horizontal' => false,
-                        'endingShape' => 'rounded'
+             /*   'markers'=>[
+                    'markers'=> [
+                        'size'=> '0',
+                        'strokeColor'=> "#fff",
+                        'strokeWidth'=> '3',
+                        'strokeOpacity'=> '1',
+                        'fillOpacity'=> '1',
+                        'hover'=> [
+                            'size'=> '6',
+                        ],
                     ],
-                ],
+                ],*/
+
                 'dataLabels' => [
-                    'enabled' => false
+                    'enabled' => false,
                 ],
                 'stroke' => [
                     'show' => true,
@@ -134,7 +144,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'series' => $series2
         ]);
     }
-
+        echo (json_encode($series2));
 
 
     ?>
