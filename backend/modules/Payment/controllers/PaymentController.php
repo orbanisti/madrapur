@@ -52,18 +52,17 @@ class PaymentController extends Controller {
     }
 
     public static function actionPay($ids) {
-return $ids;
-        $order = Reservations::getReservationsByIds($id);
+        $orders = Reservations::getReservationsByIds($ids);
         error_reporting(E_ALL|E_STRICT);
         ini_set('display_errors', '1');
         require_once(OTP.'sdk/config.php');
         require_once(OTP.'sdk/SimplePayment.class.php');
 
-        $orderedProducts = json_decode($order->data);
+        $orderData = json_decode($orders[0]->data);
 
-        $cur = ($orderedProducts[0]->orderDetails->order_currency === 'EUR' || $orderedProducts[0]->orderDetails->order_currency === 'HUF') ? $orderedProducts[0]->orderDetails->order_currency : 'EUR';
+        $cur = ($orderData->orderDetails->order_currency === 'EUR' || $orderData->orderDetails->order_currency === 'HUF') ? $orderData->orderDetails->order_currency : 'EUR';
         $orderCurrency = $cur;
-        $payOrderId = (int)'0'.$order->id;
+        $payOrderId = (int)'0'.$orders[0]->id;
 
         $lu = new \SimpleLiveUpdate($config, $orderCurrency);
         $lu->setField("ORDER_REF", $payOrderId);
@@ -72,16 +71,17 @@ return $ids;
         $lu->setField("LANGUAGE", $simpleLang);
 
         /*
-        if(!empty($order->coupon)) { // ha van kupon megadva, akkor kiszámoljuk a kedvezmény értékét
-            $discount=($order->orderedproductsprice-$order->totalprice);
-            $discount=($order->currency=='HUF')?((int)$discount):(number_format($discount, 2, '.', '')); // valutánként más formátum kell
+        if(!empty($orders->coupon)) { // ha van kupon megadva, akkor kiszámoljuk a kedvezmény értékét
+            $discount=($orders->orderedproductsprice-$orders->totalprice);
+            $discount=($orders->currency=='HUF')?((int)$discount):(number_format($discount, 2, '.', '')); // valutánként más formátum kell
             $lu->setField("DISCOUNT", $discount);
         }
         */
 
-        foreach($orderedProducts as $key => $product) {
-            $orderDetails = $product->orderDetails;
-            $bookingDetails = $product->bookingDetails;
+        foreach($orders as $key => $order) {
+            $data = json_decode($order->data);
+            $orderDetails = $data->orderDetails;
+            $bookingDetails = $data->bookingDetails;
             $orderTotal = $orderDetails->order_total;
             $sumPrice = 0.00;
 
@@ -98,31 +98,31 @@ return $ids;
         }
 
         //Billing data
-        $lu->setField("BILL_FNAME", $orderedProducts[0]->orderDetails->billing_first_name);
-        $lu->setField("BILL_LNAME", $orderedProducts[0]->orderDetails->billing_last_name);
-        $lu->setField("BILL_EMAIL", $orderedProducts[0]->orderDetails->billing_email);
-        $lu->setField("BILL_PHONE", $orderedProducts[0]->orderDetails->billing_phone);
+        $lu->setField("BILL_FNAME", $orderData->orderDetails->billing_first_name);
+        $lu->setField("BILL_LNAME", $orderData->orderDetails->billing_last_name);
+        $lu->setField("BILL_EMAIL", $orderData->orderDetails->billing_email);
+        $lu->setField("BILL_PHONE", $orderData->orderDetails->billing_phone);
         $lu->setField("BILL_COMPANY", '');          		// optional
         //$lu->setField("BILL_FISCALCODE", " ");                  		// optional
-        $lu->setField("BILL_COUNTRYCODE", $orderedProducts[0]->orderDetails->billing_country->value);
+        $lu->setField("BILL_COUNTRYCODE", $orderData->orderDetails->billing_country->value);
         $lu->setField("BILL_STATE", '');
-        $lu->setField("BILL_CITY", $orderedProducts[0]->orderDetails->billing_city);
-        $lu->setField("BILL_ADDRESS", $orderedProducts[0]->orderDetails->billing_address1);
-        //$lu->setField("BILL_ADDRESS2", $orderedProducts[0]->orderDetails->billing_address2);		// optional
-        $lu->setField("BILL_ZIPCODE", $orderedProducts[0]->orderDetails->billing_postcode);
+        $lu->setField("BILL_CITY", $orderData->orderDetails->billing_city);
+        $lu->setField("BILL_ADDRESS", $orderData->orderDetails->billing_address1);
+        //$lu->setField("BILL_ADDRESS2", $orderData->orderDetails->billing_address2);		// optional
+        $lu->setField("BILL_ZIPCODE", $orderData->orderDetails->billing_postcode);
 
-        $lu->setField("DELIVERY_FNAME", $orderedProducts[0]->orderDetails->billing_first_name);
-        $lu->setField("DELIVERY_LNAME", $orderedProducts[0]->orderDetails->billing_last_name);
-        $lu->setField("DELIVERY_EMAIL", $orderedProducts[0]->orderDetails->billing_email);
-        $lu->setField("DELIVERY_PHONE", $orderedProducts[0]->orderDetails->billing_phone);
+        $lu->setField("DELIVERY_FNAME", $orderData->orderDetails->billing_first_name);
+        $lu->setField("DELIVERY_LNAME", $orderData->orderDetails->billing_last_name);
+        $lu->setField("DELIVERY_EMAIL", $orderData->orderDetails->billing_email);
+        $lu->setField("DELIVERY_PHONE", $orderData->orderDetails->billing_phone);
         $lu->setField("DELIVERY_COMPANY", '');          		// optional
         //$lu->setField("DELIVERY_FISCALCODE", " ");                  		// optional
-        $lu->setField("DELIVERY_COUNTRYCODE", $orderedProducts[0]->orderDetails->billing_country->value);
+        $lu->setField("DELIVERY_COUNTRYCODE", $orderData->orderDetails->billing_country->value);
         $lu->setField("DELIVERY_STATE", '');
-        $lu->setField("DELIVERY_CITY", $orderedProducts[0]->orderDetails->billing_city);
-        $lu->setField("DELIVERY_ADDRESS", $orderedProducts[0]->orderDetails->billing_address1);
-        //$lu->setField("DELIVERY_ADDRESS2", $orderedProducts[0]->orderDetails->billing_address2);		// optional
-        $lu->setField("DELIVERY_ZIPCODE", $orderedProducts[0]->orderDetails->billing_postcode);
+        $lu->setField("DELIVERY_CITY", $orderData->orderDetails->billing_city);
+        $lu->setField("DELIVERY_ADDRESS", $orderData->orderDetails->billing_address1);
+        //$lu->setField("DELIVERY_ADDRESS2", $orderData->orderDetails->billing_address2);		// optional
+        $lu->setField("DELIVERY_ZIPCODE", $orderData->orderDetails->billing_postcode);
 
         $display = $lu->createHtmlForm('SimpleForm', 'auto', 'Start Payment');   // format: link, button, auto (auto is redirects to payment page immediately )
 
