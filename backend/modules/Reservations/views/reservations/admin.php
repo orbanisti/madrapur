@@ -151,7 +151,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'label' => 'Edit Booking',
             'format'=>'html',
             'value' => function ($model) {
-                return '<a href="/Reservations/reservations/bookingedit?bookingId='.$model->returnBookingId().'">Edit'.'</a>';
+                return '<a href="/Reservations/reservations/bookingedit?id='.$model->returnId().'">Edit'.'</a>';
             }
         ],
 

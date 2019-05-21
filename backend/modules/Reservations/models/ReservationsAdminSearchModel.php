@@ -157,6 +157,10 @@ class ReservationsAdminSearchModel extends Reservations
         return $this['bookingId'];
     }
 
+    public function returnId() {
+        return $this['id'];
+    }
+
 
 }
 
