@@ -2,6 +2,7 @@
 
 namespace backend\modules\Payment\controllers;
 
+use backend\modules\Order\models\Order;
 use backend\modules\Reservations\models\Reservations;
 use Yii;
 use backend\controllers\Controller;
@@ -41,7 +42,7 @@ class PaymentController extends Controller {
     }
 
     public function beforeAction($action) {
-        if ("simpleipn" === Yii::$app->controller->action->id)
+        // if ("simpleipn" === Yii::$app->controller->action->id)
             $this->enableCsrfValidation = false;
 
         return parent::beforeAction($action);
@@ -52,50 +53,62 @@ class PaymentController extends Controller {
     }
 
     public static function actionPay($ids) {
-        $orders = Reservations::getReservationsByIds($ids);
+        $reservations = Reservations::getReservationsByIds($ids);
         error_reporting(E_ALL|E_STRICT);
         ini_set('display_errors', '1');
         require_once(OTP.'sdk/config.php');
         require_once(OTP.'sdk/SimplePayment.class.php');
 
-        $orderData = json_decode($orders[0]->data);
+        $orderData = json_decode($reservations[0]->data);
 
         $cur = ($orderData->orderDetails->order_currency === 'EUR' || $orderData->orderDetails->order_currency === 'HUF') ? $orderData->orderDetails->order_currency : 'EUR';
         $orderCurrency = $cur;
-        $payOrderId = (int)'0'.$orders[0]->id;
 
         $lu = new \SimpleLiveUpdate($config, $orderCurrency);
-        $lu->setField("ORDER_REF", $payOrderId);
 
         $simpleLang = (Yii::$app->language === "hu-HU") ? 'HU' : 'EN';
         $lu->setField("LANGUAGE", $simpleLang);
 
         /*
-        if(!empty($orders->coupon)) { // ha van kupon megadva, akkor kiszámoljuk a kedvezmény értékét
-            $discount=($orders->orderedproductsprice-$orders->totalprice);
-            $discount=($orders->currency=='HUF')?((int)$discount):(number_format($discount, 2, '.', '')); // valutánként más formátum kell
+        if(!empty($reservations->coupon)) { // ha van kupon megadva, akkor kiszámoljuk a kedvezmény értékét
+            $discount=($reservations->orderedproductsprice-$reservations->totalprice);
+            $discount=($reservations->currency=='HUF')?((int)$discount):(number_format($discount, 2, '.', '')); // valutánként más formátum kell
             $lu->setField("DISCOUNT", $discount);
         }
         */
 
-        foreach($orders as $key => $order) {
+        $orderIds = [];
+        foreach($reservations as $key => $order) {
             $data = json_decode($order->data);
             $orderDetails = $data->orderDetails;
             $bookingDetails = $data->bookingDetails;
             $orderTotal = $orderDetails->order_total;
             $sumPrice = 0.00;
+            $orderIds[] = $order->id;
 
-            foreach ($orderTotal as $price) $sumPrice += $price;
+            foreach ($orderTotal as $price)
+                $sumPrice += $price;
 
             $lu->addProduct(array(
                 'name' => $bookingDetails->booking_name,							//product name [ string ]
-                'code' => 'ML'.$bookingDetails->booking_product_id,							//merchant systemwide unique product ID [ string ]
+                'code' => $bookingDetails->booking_product_id,							//merchant systemwide unique product ID [ string ]
                 'info' => '',			//product description [ string ]
                 'price' => $sumPrice, 								//product price [ HUF: integer | EUR, USD decimal 0.00 ]
                 'vat' => 0,										//product tax rate [ in case of gross price: 0 ] (percent)
                 'qty' => 1,							//product quantity [ integer ]
             ));
         }
+
+        $order = new Order();
+        $values= [
+            'status' => 'pending',
+            'transactionId' => '',
+            'reservationIds' => json_encode($orderIds),
+            'data' => ''
+        ];
+
+        $payOrderId = Order::insertOneReturn($order, $values);
+        $lu->setField("ORDER_REF", $payOrderId);
 
         //Billing data
         $lu->setField("BILL_FNAME", $orderData->orderDetails->billing_first_name);
@@ -132,8 +145,6 @@ class PaymentController extends Controller {
     }
 
     public static function actionBackref() {
-        $string = "myString";
-
         require_once(OTP."nogui/backref.php");
     }
 
@@ -154,6 +165,7 @@ class PaymentController extends Controller {
     }
 
     public static function actionIpn() {
+        $postData = Yii::$app->request->post();
         require_once(OTP."nogui/ipn.php");
     }
 }

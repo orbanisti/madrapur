@@ -1,9 +1,10 @@
 <?php
- 	require_once OTP.'sdk/config.php';
-	require_once OTP.'/sdk/SimplePayment.class.php';
+
+require_once OTP.'sdk/config.php';
+require_once OTP.'sdk/SimplePayment.class.php';
 
 	$orderCurrency = (isset($_REQUEST['order_currency'])) ? $_REQUEST['order_currency'] : 'N/A';
-	$orderRef = (isset($_REQUEST['order_ref'])) ? $_REQUEST['order_ref'] : 'N/A'; 	
+	$orderRef = (isset($_REQUEST['order_ref'])) ? $_REQUEST['order_ref'] : 'N/A';
 
 	$backref = new SimpleBackRef($config, $orderCurrency);
 	$backref->order_ref = $orderRef;
@@ -27,6 +28,7 @@
 		//CCVISAMC
 		if ($backStatus['PAYMETHOD'] == 'Visa/MasterCard/Eurocard') {
 			$response['mainStatus'] = 'SUCCESSFUL_CARD_AUTHORIZATION';
+
 			if ($backStatus['ORDER_STATUS'] == 'IN_PROGRESS') {
 				 $response['status'][] = 'WAITING_FOR_IPN';
 			} elseif ($backStatus['ORDER_STATUS' ] == 'PAYMENT_AUTHORIZED') {
@@ -56,18 +58,15 @@
 	$response['orderid'] = $backStatus['REFNOEXT'];
 	$response['backrefdate'] = $backStatus['BACKREF_DATE'];
 	$backref->errorLogger();
-	//echo $response.$links;
 
-	$qString = $_SERVER['QUERY_STRING'];
-	$prettyString = "";
+    $order = \backend\modules\Order\models\Order::findOne(['id' => $response['orderid']]);
+    $values= [
+        'status' => $response['status'][0],
+        'transactionId' => $backStatus['PAYREFNO'],
+        'transactionDate' => $backStatus['BACKREF_DATE'],
+    ];
+	\backend\modules\Order\models\Order::insertOne($order, $values);
 
-	$qStringArray = explode("&", $qString);
 
-	foreach ($qStringArray as $element) {
-		$elementString = explode("=", $element);
-
-		$prettyString .= "/" . $elementString[1];
-	}
-
-	redirect("https://budapestrivercruise.co.uk/checkout/thankyou" . json_encode($response), 301);
-
+	$url = "https://budapestrivercruise.co.uk/checkout/thankyou/" . $response['orderid'] . "/" . $response['status'][0];
+	redirect($url, 301);
