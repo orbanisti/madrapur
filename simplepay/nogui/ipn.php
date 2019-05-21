@@ -3,19 +3,20 @@
 	require_once OTP.'sdk/SimplePayment.class.php';
 	
 	$orderCurrency = (isset($_REQUEST['CURRENCY'])) ? $_REQUEST['CURRENCY'] : 'N/A';
-	
-	$ipn = new SimpleIpn($config, $orderCurrency);		
-	if($ipn->validateReceived()){	
-		$ipn->confirmReceived();	 
+
+	$ipn = new SimpleIpn($config, $orderCurrency);
+	if($ipn->validateReceived()){
+		$ipn->confirmReceived();
 	}
 	$ipn->errorLogger();
-	
+
     if ($ipn->debug) {
-        print $ipn->getDebugMessage();
+        return "debug";
     }
     if (count($ipn->errorMessage) > 0) {
-        print $ipn->getErrorMessage();
+        return "error";
     }
-?>
+
+    return true;
 
 
