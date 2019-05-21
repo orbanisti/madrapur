@@ -164,8 +164,8 @@ class ReservationsController extends Controller {
 
         $model = new DateImport();
         $request=Yii::$app->request;
-        $bookingId=$request->get('bookingId');
-        $query = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'bookingId=' . $bookingId);
+        $id=$request->get('id');
+        $query = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'id=' . $id);
 
         try {
             $bookingInfo = $query->one();

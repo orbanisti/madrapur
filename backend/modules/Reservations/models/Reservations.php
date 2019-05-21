@@ -198,4 +198,10 @@ class Reservations extends MadActiveRecord
         return $reservation->one();
     }
 
+    public static function getReservationsById($ids) {
+        $reservation = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'id  IN (' . implode("','",$ids) . ')');
+
+        return $reservation->all();
+    }
+
 }
