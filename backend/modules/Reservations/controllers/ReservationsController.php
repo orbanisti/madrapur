@@ -169,15 +169,40 @@ class ReservationsController extends Controller {
         $searchModel = new ReservationsAdminSearchModel();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $product=Yii::$app->request->post('Product');
+        $productPrice=Yii::$app->request->post('ProductPrice');
         $disableForm=0;
         $myprices=[];
         if($product){
             $disableForm=1;
             $query=ProductPrice::aSelect(ProductPrice::class,'*',ProductPrice::tableName(),'product_id='.$product['title']);
             $myprices=$query->all();
+            $countPrices=$query->count();
+        }
+        if(!isset($countPrices)){
+            $countPrices=0;
 
         }
+        if($productPrice){
 
+            $newReservarion= new Reservations();
+            $values=[
+                'invoiceDate'=>date('Y-m-d'),
+                'bookingDate'=>$productPrice['booking_date'],
+                'source'=>'Utca',
+                'productId'=>$productPrice['product_id'],
+            ];
+            $updateResponse='';
+                if (Reservations::insertOne($newReservarion, $values)) {
+                    $updateResponse = '<span style="color:green">Reservation Successful</span>';
+                } else {
+                    $updateResponse = '<span style="color:red">Reservation Failed</span>';
+                    //show an error message
+                }
+
+
+
+
+        }
 
         return $this->render('create', [
             'model'=>new Product(),
@@ -185,7 +210,9 @@ class ReservationsController extends Controller {
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'disableForm'=>$disableForm,
-            'myPrices'=>$myprices
+            'myPrices'=>$myprices,
+            'countPrices'=>$countPrices,
+            'newReservation'=>$updateResponse,
 
         ]);
     }
@@ -202,6 +229,49 @@ class ReservationsController extends Controller {
             return [
             'search' => $mytimes,
         ];
+        }
+
+    }
+    public function actionCalcprice(){
+        if (Yii::$app->request->isAjax) {
+            $data=Yii::$app->request->post();
+            $currID=$data['productId'];
+            $query=ProductPrice::aSelect(ProductPrice::class,'*',ProductPrice::tableName(),'product_id='.$currID);
+            $myprices=$query->all();
+
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            $productsBought=[];
+            foreach ($data['prices'] as $priceId=>$price){
+                if($price){
+                    $productsBought[$priceId]=$price;
+                }
+            }
+
+
+            $fullTotal=0;
+
+            foreach ($productsBought as $priceId=>$priceAmount){
+
+                foreach ($myprices as $remotePrice){
+                   if($remotePrice->id==$priceId){
+                       $currentPrice=(int)$remotePrice->price;
+                       $fullTotal=$fullTotal+($currentPrice*$priceAmount);
+                   }
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+            return [
+                'search' => $fullTotal,
+            ];
         }
 
     }

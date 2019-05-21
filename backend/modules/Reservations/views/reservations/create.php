@@ -23,7 +23,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php
     if($disableForm!=1){
+    if($newReservation){
 
+        echo $newReservation;
+    }
     $form = ActiveForm::begin(['id' => 'product-form']);
 
 
@@ -69,20 +72,22 @@ $this->params['breadcrumbs'][] = $this->title;
     else{
         $form = ActiveForm::begin(['id' => 'product-form']);
         $model=new \backend\modules\Product\models\ProductPrice();
-        var_dump($myPrices);
+       # var_dump($myPrices);
         echo '</br>';
         foreach($myPrices as $i=>$price){
             echo $price->name;
-            echo $form->field($model, "description[$i]")->widget(\kartik\touchspin\TouchSpin::class,['options' => ['placeholder' => 'Adjust ...'],]);
-            echo $form->field($model,'product_id')->hiddeninput(['value' => (Yii::$app->request->post('Product'))['title']])->label(false);;
+            $currentProdId=(Yii::$app->request->post('Product'))['title'];
+            echo $form->field($model, "description[$price->id]")->widget(\kartik\touchspin\TouchSpin::class,['options' => ['placeholder' => 'Adjust ...','data-priceid'=>$price->id]]);
+            echo $form->field($model,'product_id')->hiddeninput(['value' => $currentProdId])->label(false);;
             echo $form->field($model,'booking_date')->hiddeninput(['value' => (Yii::$app->request->post('Product'))['start_date']])->label(false);;
             echo $form->field($model,'time_name')->hiddeninput(['value' => (Yii::$app->request->post('Product'))['times']])->label(false);;
 
 
         }
         echo 'Total Price:<div id="total_price"></div>';
-
+        echo Html::submitButton('Create Reservation', ['class' => 'btn btn-primary prodUpdateBtn']);
          ActiveForm::end();
+
     }
 
 
@@ -95,10 +100,25 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <script>
+        var countPrices=<?=$countPrices?>;
+
         function myFunction(item, index) {
 
 
             $('#product-times').html($('#product-times').html()+'<option>'+item['name']+'</option>');
+
+        }
+
+
+        function gatherPrices() {
+            var PricesObj = {}; // note this
+            var i =0;
+            while(i<countPrices){
+                PricesObj[$('#productprice-description-'+i).attr('data-priceid')] =  $('#productprice-description-'+i).val();
+                i=i+1
+            }
+
+            return PricesObj;
 
         }
 
@@ -144,20 +164,28 @@ $this->params['breadcrumbs'][] = $this->title;
             $('#product-times').html($('#product-times').html()+'<option>'+item['name']+'</option>');
 
         }
+        <?php
 
+        $currentProdId=(Yii::$app->request->post('Product'))['title'];
+        if(!$currentProdId){
+            $currentProdId=0;
+
+        }
+        ?>
         var Total=0;
         $('#product-form').change(function(){
             $.ajax({
-                url: '<?php echo Yii::$app->request->baseUrl. '/Reservations/reservations/gettimes' ?>',
+                url: '<?php echo Yii::$app->request->baseUrl. '/Reservations/reservations/calcprice' ?>',
                 type: 'post',
                 data: {
-                    id:$('#productprice-product_id').val(),
+                    prices:gatherPrices(),
+                    productId:<?=$currentProdId?>,
 
                 },
                 success: function (data) {
                     console.log(data.search);
                     mytimes=data.search
-                    $('#total_price').html(Total);
+                    $('#total_price').html(mytimes);
 
 
 

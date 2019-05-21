@@ -141,7 +141,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php
     $gridColumns = [
-        ['class' => 'yii\grid\SerialColumn'],
+        'id',
         'bookingId',
         'productId',
         'source',
