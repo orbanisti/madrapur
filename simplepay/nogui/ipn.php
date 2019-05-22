@@ -11,10 +11,10 @@
 	$ipn->errorLogger();
 
     if ($ipn->debug) {
-        return ["debug"];
+        return "debug";
     }
     if (count($ipn->errorMessage) > 0) {
-        return ["error"];
+        return "error";
     }
 
     return true;

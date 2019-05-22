@@ -21,6 +21,7 @@ class Order extends MadActiveRecord {
             [['transactionId'], 'string', 'max' => 255],
             [['reservationIds'], 'string', 'max' => 255],
             [['data'], 'string', 'max' => 50000],
+            [['transactionDate'], 'string', 'max' => 255],
         ];
     }
 

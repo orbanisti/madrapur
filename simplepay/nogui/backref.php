@@ -67,6 +67,14 @@ require_once OTP.'sdk/SimplePayment.class.php';
     ];
 	\backend\modules\Order\models\Order::insertOne($order, $values);
 
+	/**
+    Yii::$app->mailer->compose()
+        ->setTo('alpe15.1992@gmail.com')
+        ->setFrom('webmaster@budaepestrivercruise.co.uk')
+        ->setSubject('Order')
+        ->setHtmlBody("<h2>Thank you!</h2>")
+        ->send();
+    */
 
 	$url = "https://budapestrivercruise.co.uk/checkout/thankyou/" . $response['orderid'] . "/" . $response['status'][0];
 	redirect($url, 301);
