@@ -178,7 +178,9 @@ echo Menu::widget(
                             ],
                             [
                                 'label' => Yii::t('backend', 'Articles'),
-                                'url' => '#',
+                                'url' => [
+                                    '/content/article/index'
+                                ],
                                 'icon' => '<i class="fa fa-files-o"></i>',
                                 'options' => [
                                     'class' => 'treeview'
@@ -206,7 +208,9 @@ echo Menu::widget(
                             ],
                             [
                                 'label' => Yii::t('backend', 'Widgets'),
-                                'url' => '#',
+                                'url' => [
+                                    '/content/page/index'
+                                ],
                                 'icon' => '<i class="fa fa-code"></i>',
                                 'options' => [
                                     'class' => 'treeview'
@@ -264,7 +268,9 @@ echo Menu::widget(
                             ],
                             [
                                 'label' => Yii::t('backend', 'RBAC Rules'),
-                                'url' => '#',
+                                'url' => [
+                                    '/rbac/rbac-auth-rule/index'
+                                ],
                                 'icon' => '<i class="fa fa-flag"></i>',
                                 'options' => [
                                     'class' => 'treeview'
@@ -343,7 +349,33 @@ echo Menu::widget(
                                 'active' => (Yii::$app->controller->id == 'products'),
                             ],
                             [
-                                'label' => Yii::t('backend', 'Reservations'),
+                                'label' => Yii::t('backend', 'Mad-Product'),
+                                'url' => [
+                                    '/Product/product/admin'
+                                ],
+                                'icon' => '<i class="fa fa-ticket"></i>',
+                                'active' => (Yii::$app->controller->id == 'product'),
+                                'items' => [
+                                    [
+                                        'label' => Yii::t('backend', 'Create'),
+                                        'url' => [
+                                            '/Product/product/create'
+                                        ],
+                                        'icon' => '<i class="fa fa-database"></i>',
+                                        'active' => (Yii::$app->controller->id == 'create'),
+                                    ],],
+                            ],
+                            [
+                                'label' => Yii::t('backend', 'Mad-Payment'),
+                                'url' => [
+                                    '/Payment/payment/admin'
+                                ],
+                                'icon' => '<i class="fa fa-money"></i>',
+                                'active' => (Yii::$app->controller->id == 'product'),
+
+                            ],
+                            [
+                                'label' => Yii::t('backend', 'Mad-Reservations'),
                                 'url' => [
                                     '/Reservations/reservations/admin'
                                 ],

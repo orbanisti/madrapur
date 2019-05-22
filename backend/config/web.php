@@ -22,8 +22,17 @@ $config = [
         ],
     ],
     'modules' => [
+        'ModulusCart' => [
+            'class' => backend\modules\ModulusCart\Module::class,
+        ],
         'gridview' => [
             'class' => kartik\grid\Module::class,
+        ],
+        'Payment' => [
+                'class' => backend\modules\Payment\Module::class,
+        ],
+        'redactor' => [
+            'class' => yii\redactor\RedactorModule::class,
         ],
         'content' => [
             'class' => backend\modules\content\Module::class,
@@ -37,8 +46,14 @@ $config = [
         'madActiveRecord' => [
             'class' => backend\modules\MadActiveRecord\Module::class,
         ],
+        'Order' => [
+            'class' => backend\modules\Order\Module::class,
+        ],
         'Products' => [
             'class' => backend\modules\Products\Module::class,
+        ],
+        'Product' => [
+            'class' => backend\modules\Product\Module::class,
         ],
         'Reservations' => [
             'class' => backend\modules\Reservations\Module::class,
@@ -160,6 +175,7 @@ $config = [
 ];
 
 define("WEB_ROOT", ".");
+define("OTP", "../../../../simplepay/");
 
 if (YII_ENV_DEV) {
     $config['modules']['gii'] = [

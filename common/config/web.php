@@ -2,7 +2,7 @@
 $config = [
     'components' => [
         'assetManager' => [
-            'class' => yii\web\AssetManager::class,
+            'class' => \common\base\MadAssetManager::class,
             'linkAssets' => env('LINK_ASSETS'),
             'appendTimestamp' => YII_ENV_DEV
         ]

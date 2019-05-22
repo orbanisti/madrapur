@@ -4,12 +4,28 @@ const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports  = {
     entry: {
-        app: path.resolve(__dirname, './frontend/web/js/app.js'),
-        style: path.resolve(__dirname, './frontend/web/css/style.less'),
+        'app-script': path.resolve(__dirname, './frontend/web/react-bundle/app-script.js'),
+        '1-script': path.resolve(__dirname, './frontend/web/react-bundle/1-script.js'),
+        '2-script': path.resolve(__dirname, './frontend/web/react-bundle/2-script.js'),
+        '3-script': path.resolve(__dirname, './frontend/web/react-bundle/3-script.js'),
+        '4-script': path.resolve(__dirname, './frontend/web/react-bundle/4-script.js'),
+        '5-script': path.resolve(__dirname, './frontend/web/react-bundle/5-script.js'),
+        '6-script': path.resolve(__dirname, './frontend/web/react-bundle/6-script.js'),
+        '7-script': path.resolve(__dirname, './frontend/web/react-bundle/7-script.js'),
+        '8-script': path.resolve(__dirname, './frontend/web/react-bundle/8-script.js'),
+        'app-style': path.resolve(__dirname, './frontend/web/react-bundle/app-style.css'),
+        '1-style': path.resolve(__dirname, './frontend/web/react-bundle/1-style.css'),
+        '2-style': path.resolve(__dirname, './frontend/web/react-bundle/2-style.css'),
+        '3-style': path.resolve(__dirname, './frontend/web/react-bundle/3-style.css'),
+        '4-style': path.resolve(__dirname, './frontend/web/react-bundle/4-style.css'),
+        '5-style': path.resolve(__dirname, './frontend/web/react-bundle/5-style.css'),
+        '6-style': path.resolve(__dirname, './frontend/web/react-bundle/6-style.css'),
+        '7-style': path.resolve(__dirname, './frontend/web/react-bundle/7-style.css'),
+        '8-style': path.resolve(__dirname, './frontend/web/react-bundle/8-style.css'),
     },
     output: {
         filename: '[name].js',
-        path: path.resolve(__dirname, './frontend/web/bundle'),
+        path: path.resolve(__dirname, './frontend/web/react-bundle'),
     },
     module: {
         rules: [
@@ -24,17 +40,10 @@ module.exports  = {
                 ]
             },
             {
-                test: /\.less$/,
+                test: /\.css$/,
                 use: [
                 	MiniCssExtractPlugin.loader,
                     {loader: 'css-loader', options: {minimize: true, sourceMap: true}},
-                    {
-                        loader: "less-loader",
-                        options: {
-                            minimize: true,
-                            sourceMap: true
-                        }
-                    }
                 ]
             }
         ]

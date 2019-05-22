@@ -25,7 +25,7 @@ echo -e "\n"
 echo -e "${GREEN}######################################"
 echo -e "#######    ${NC}APP SETUP           ${GREEN}#######"
 echo -e "######################################\n${NC}"
-php console/yii app/setup
+php console/yii app/setup --interactive=0
 
 echo -e "\n"
 echo -e "${GREEN}######################################"
