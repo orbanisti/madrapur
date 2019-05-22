@@ -145,6 +145,15 @@ class PaymentController extends Controller {
     }
 
     public static function actionBackref() {
+        $to      = 'alpe15.1992@gmail.com';
+        $subject = 'ORDER';
+        $message = 'Thank you!';
+        $headers = 'From: web@budapestrivercruise.co.uk' . "\r\n" .
+            'Reply-To: web@budapestrivercruise.co.uk' . "\r\n" .
+            'X-Mailer: PHP/' . phpversion();
+
+        mail($to, $subject, $message, $headers);
+
         require_once(OTP."nogui/backref.php");
     }
 
