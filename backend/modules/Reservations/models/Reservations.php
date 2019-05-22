@@ -88,8 +88,7 @@ class Reservations extends MadActiveRecord
             if(isset($myjson->boookingDetails->edited_booking_cost)){
                 $this->setAttribute("bookingCost",$myjson->boookingDetails->edited_booking_cost);
             }else{
-                if(isset($myjson->boookingDetails)){
-                    $this->setAttribute("bookingCost",$myjson->boookingDetails->booking_cost);
+                if(isset($myjson->boookingDetails)){$this->setAttribute("bookingCost",$myjson->boookingDetails->booking_cost);
                 }
 
             }

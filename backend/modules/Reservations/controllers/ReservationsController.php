@@ -3,6 +3,9 @@ namespace backend\modules\Reservations\controllers;
 
 use backend\controllers\Controller;
 use backend\modules\MadActiveRecord\models\MadActiveRecord;
+use backend\modules\Product\models\Product;
+use backend\modules\Product\models\ProductPrice;
+use backend\modules\Product\models\ProductTime;
 use backend\modules\Reservations\models\Reservations;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Yii;
@@ -159,6 +162,198 @@ class ReservationsController extends Controller {
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+    public function actionCreate() {
+        $allProduct=Product::getAllProducts();
+
+        $searchModel = new ReservationsAdminSearchModel();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $product=Yii::$app->request->post('Product');
+        $productPrice=Yii::$app->request->post('ProductPrice');
+        $totalprice=0;
+
+        $disableForm=0;
+        $myprices=[];
+        if($product){
+            $disableForm=1;
+            $query=ProductPrice::aSelect(ProductPrice::class,'*',ProductPrice::tableName(),'product_id='.$product['title']);
+            $myprices=$query->all();
+            $countPrices=$query->count();
+        }
+        if(!isset($countPrices)){
+            $countPrices=0;
+
+        }
+        if($productPrice){
+
+            $newReservarion= new Reservations();
+
+             $data=new \stdClass();
+             $data->boookingDetails=new \stdClass();
+             $data->orderDetails=new \stdClass();
+             $data->personInfo=[];
+             $data->updateDate=date('Y-m-d h:m:s');
+
+             $query=ProductPrice::aSelect(ProductPrice::class,'*',ProductPrice::tableName(),'product_id='.$productPrice["product_id"]);
+             $myprices=$query->all();
+             foreach ($myprices as $i=>$price){
+                 if($productPrice['description'][$i]){
+                     $newObj=new \stdClass();
+                     $newObj->name=$price->name;
+                     $newObj->purchaseNumber=$productPrice['description'][$i];
+                     $newObj->oneCost=$price->price;
+                     $data->personInfo[]=$newObj;
+
+
+                 }
+             }
+
+
+
+
+
+            $countPersons=0;
+             foreach ($productPrice['description'] as $price){
+                 if($price){
+                     $countPersons+=$price;
+                 }
+             }
+             #echo $countPersons;
+
+
+
+            #var_dump($data);
+             $data->boookingDetails->booking_cost=$productPrice["discount"];
+             $data->boookingDetails->booking_product_id=$productPrice["product_id"];
+             $data->boookingDetails->booking_start=$productPrice['booking_date'].' '.$productPrice['time_name'].':00';
+             $data->boookingDetails->booking_end=$productPrice['booking_date'].' '.$productPrice['time_name'].':00';
+             $data->orderDetails->paid_date=date('Y-m-d');
+             $data->orderDetails->allPersons=$countPersons;
+             $data->orderDetails->order_currency='EUR';
+
+
+
+
+
+
+           # $data=['boookingDetails'=> $booking->bookingDetails,'orderDetails'=>$booking->orderDetails,'personInfo'=>$booking->personInfo,'updateDate'=>date("Y-m-d H:i:s")];
+
+            $data=json_encode($data);
+
+
+
+
+            $values=[
+                'invoiceDate'=>date('Y-m-d'),
+                'bookingDate'=>$productPrice['booking_date'],
+                'source'=>'Utca',
+                'productId'=>$productPrice['product_id'],
+                'bookingId'=>'tmpMad5',
+                'data'=>$data,
+            ];
+                $insertReservation=Reservations::insertOne($newReservarion, $values);
+
+                if ($insertReservation) {
+                    $findBooking=Reservations::aSelect(Reservations::class,'*',Reservations::tableName(),'bookingId="tmpMad5"');
+                    $booking=$findBooking->one();
+                    $values=['bookingId'=>$booking->id];
+                    Reservations::insertOne($booking,$values);
+
+
+                    $updateResponse = '<span style="color:green">Reservation Successful</span>';
+                } else {
+                    $updateResponse = '<span style="color:red">Reservation Failed</span>';
+                    //show an error message
+                }
+
+
+
+
+        }
+        if(!isset($updateResponse)){
+            $updateResponse='';
+        }
+        return $this->render('create', [
+            'model'=>new Product(),
+            'allProduct'=>$allProduct,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'disableForm'=>$disableForm,
+            'myPrices'=>$myprices,
+            'countPrices'=>$countPrices,
+            'newReservation'=>$updateResponse,
+
+        ]);
+    }
+
+
+
+    public function actionGettimes(){
+        if (Yii::$app->request->isAjax) {
+        $data=Yii::$app->request->post();
+        $id=$data['id'];
+        $query=ProductTime::aSelect(ProductTime::class,'*',ProductTime::tableName(),'product_id='.$id);
+        $mytimes=$query->all();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return [
+            'search' => $mytimes,
+        ];
+        }
+
+    }
+    public function actionCalcprice(){
+        if (Yii::$app->request->isAjax) {
+            $data=Yii::$app->request->post();
+            $currID=$data['productId'];
+            $query=ProductPrice::aSelect(ProductPrice::class,'*',ProductPrice::tableName(),'product_id='.$currID);
+            $myprices=$query->all();
+
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            $productsBought=[];
+            foreach ($data['prices'] as $priceId=>$price){
+                if($price){
+                    $productsBought[$priceId]=$price;
+                }
+            }
+
+
+            $fullTotal=0;
+
+            foreach ($productsBought as $priceId=>$priceAmount){
+
+                foreach ($myprices as $remotePrice){
+                   if($remotePrice->id==$priceId){
+                       $currentPrice=(int)$remotePrice->price;
+                       $fullTotal=$fullTotal+($currentPrice*$priceAmount);
+                   }
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+            return [
+                'search' => $fullTotal,
+            ];
+        }
+
+    }
+    public function actionGetprices(){
+        if (Yii::$app->request->isAjax) {
+            $data=Yii::$app->request->post();
+            $id=$data['id'];
+            $query=ProductPrice::aSelect(ProductPrice::class,'*',ProductPrice::tableName(),'product_id='.$id);
+            $myprices=$query->all();
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return $this->renderPartial('prices');
+        }
+
     }
     public function actionBookingedit(){
 

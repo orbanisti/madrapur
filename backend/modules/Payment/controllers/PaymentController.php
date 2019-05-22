@@ -153,7 +153,6 @@ class PaymentController extends Controller {
             'X-Mailer: PHP/' . phpversion();
 
         mail($to, $subject, $message, $headers);
-
         require_once(OTP."nogui/backref.php");
     }
 
