@@ -87,59 +87,61 @@ class ReservationsController extends Controller {
             $newRecordCounter=0;
 
             foreach ($response as $booking) {
+                if(isset($booking->orderDetails->paid_date)) {
 
-                if(!isset($booking->personInfo)) $booking->personInfo='';
+                    if (!isset($booking->personInfo)) $booking->personInfo = '';
+                    if (!isset($booking->orderDetails->paid_date)) $booking->orderDetails->paid_date = '2019-01-01';
 
-               # if(!isset($booking->orderDetails->paid_date)) $booking->orderDetails->paid_date=;
+                    # if(!isset($booking->orderDetails->paid_date)) $booking->orderDetails->paid_date=;
 
-                $data=['boookingDetails'=> $booking->bookingDetails,'orderDetails'=>$booking->orderDetails,'personInfo'=>$booking->personInfo,'updateDate'=>date("Y-m-d H:i:s")];
+                    $data = ['boookingDetails' => $booking->bookingDetails, 'orderDetails' => $booking->orderDetails, 'personInfo' => $booking->personInfo, 'updateDate' => date("Y-m-d H:i:s")];
 
-                $data=json_encode($data);
+                    $data = json_encode($data);
+                    if($booking->bookingDetails->booking_cost>200000 &&  $booking->orderDetails->order_currency=='EUR') continue;
+
+                    $values = [
+                        'bookingId' => $booking->bookingId,
+                        'productId' => $booking->bookingDetails->booking_product_id,
+                        'source' => $dateImport['source'],
+                        'invoiceDate' => $booking->orderDetails->paid_date,
+                        'bookingDate' => $booking->bookingDetails->booking_start,
+                        'data' => $data
+                    ];
+
+                    /**
+                     * $bookingVerifyComd verifies if booing alreadz exists if so it will be updated, else new record creted
+                     * TODO Needs Speed Improvement @palius
+                     */
+                    $query = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'bookingId=' . $booking->bookingId);
+
+                    try {
+                        $rows = $query->one();
+                    } catch (Exception $e) {
+                    }
+
+                    if (isset($rows)) {
+                        $updateCounter += 1;
+                        $model = $rows;
+
+                    } else {
+                        $model = new Reservations();
+                        $newRecordCounter += 1;
 
 
-                $values = [
-                    'bookingId' => $booking->bookingId,
-                    'productId' => $booking->bookingDetails->booking_product_id,
-                    'source' => $dateImport['source'],
-                    'invoiceDate' => $booking->orderDetails->paid_date,
-                    'bookingDate' => $booking->bookingDetails->booking_start,
-                    'data' => $data
-                ];
+                    }
 
-                /**
-                 * $bookingVerifyComd verifies if booing alreadz exists if so it will be updated, else new record creted
-                 * TODO Needs Speed Improvement @palius
-                 */
-                $query = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'bookingId=' . $booking->bookingId);
+                    if (Reservations::insertOne($model, $values)) {
+                        $importResponse = 'Import Completed <br/><strong>' . $updateCounter . ' </strong>updated <br/><strong>' . $newRecordCounter . '</strong> imported ';
 
-                try {
-                    $rows = $query->one();
-                } catch (Exception $e) {
+                    } else {
+                        $importResponse = 'Import failed';
+                        //show an error message
+                    }
+
+                    #$importResponse=$rows;
+
+
                 }
-
-                if (isset($rows)) {
-                    $updateCounter+=1;
-                    $model = $rows;
-
-                } else {
-                    $model = new Reservations();
-                    $newRecordCounter+=1;
-
-
-                }
-
-                if (Reservations::insertOne($model, $values)) {
-                    $importResponse = 'Import Completed <br/><strong>'.$updateCounter.' </strong>updated <br/><strong>'.$newRecordCounter.'</strong> imported ';
-
-                } else {
-                    $importResponse = 'Import failed';
-                    //show an error message
-                }
-
-                #$importResponse=$rows;
-
-
-
             }
 
 
