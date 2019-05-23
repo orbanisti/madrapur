@@ -42,8 +42,16 @@ $this->params['breadcrumbs'][] = $this->title;
         $cBookingId=$data->bookingId;
         if(isset($data->data->orderDetails)) {
             $cBookingPaidDate = date('Y-m-d', strtotime($data->data->orderDetails->paid_date));
-            $cBookingCurrency = $data->data->orderDetails->order_currency;
-            if(isset($data->data->boookingDetails->booking_cost)) {
+
+            if(!isset($data->data->orderDetails->order_currency)) {
+                $cBookingCurrency='EUR';
+
+            }else{
+                $cBookingCurrency = $data->data->orderDetails->order_currency;
+
+            }
+
+                if(isset($data->data->boookingDetails->booking_cost)) {
                 $cBookingTotal = $data->data->boookingDetails->booking_cost;
             }
             else{
@@ -79,6 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     }
 
+
     foreach($sources as $source){
         $entity['name']=$source;
         $entity['data']=array();
@@ -95,14 +104,36 @@ $this->params['breadcrumbs'][] = $this->title;
          */
         $series2[]=$entity;
     }
+    function sortFunction( $a, $b ) {
+        return strtotime($a["0"]) - strtotime($b["0"]);
+    }
+
+    /**
+     * Sorba teszem itt a dátumokat
+     */
+    $finalSeries=[];
+
+    foreach ($series2 as $serie){
+      #  echo '<br/><br/>Szeria sorting előtt';
+      #  var_dump($serie);
+
+
+        usort($serie["data"],"sortFunction");
+        $finalSeries[]=$serie;
+       # echo '<br/><br/>Szeria sorting után';
+       # var_dump($serie);
+
+
+    }
+
 
     #echo(json_encode($series2));
 
     if(Yii::$app->user->getIdentity()->username !== "manager") {
 
         echo \onmotion\apexcharts\ApexchartsWidget::widget([
-            'type' => 'line', // default area
-            'height' => '700', // default 350
+            'type' => 'area', // default area
+            'height' => '450', // default 350
 
             'chartOptions' => [
                 'chart' => [
@@ -141,11 +172,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'horizontalAlign' => 'left',
                 ],
             ],
-            'series' => $series2
+            'series' => $finalSeries
         ]);
     }
-        echo (json_encode($series2));
-
 
     ?>
 
