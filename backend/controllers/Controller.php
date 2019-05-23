@@ -20,6 +20,12 @@ class Controller extends \yii\web\Controller {
     public static function allowedDomains() {
         return [
             // '*',                        // star allows all domains
+            'localhost',
+            'http://localhost',
+            'https://localhost',
+            'localhost:45678',
+            'http://localhost:45678',
+            'https://localhost:45678',
             'http://api.modulus.hu',
             'http://backend.modulus.hu',
             'http://frontend.modulus.hu',
@@ -48,7 +54,7 @@ class Controller extends \yii\web\Controller {
                 'cors'  => [
                     // restrict access to domains:
                     'Origin'                           => static::allowedDomains(),
-                    'Access-Control-Request-Method'    => ['POST'],
+                    'Access-Control-Request-Method'    => ['GET', 'POST'],
                     'Access-Control-Allow-Credentials' => true,
                     'Access-Control-Max-Age'           => 0,                 // Cache (seconds)
                 ],
