@@ -75,6 +75,7 @@ $form = ActiveForm::begin([
     <?= $form->field($model, 'description')->widget(froala\froalaeditor\FroalaEditorWidget::className(), [
       'clientOptions' => [
 
+
           'toolbarInline'=> false,
 
           'theme' =>'royal', //optional: dark, red, gray, royal
