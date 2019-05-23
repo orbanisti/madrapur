@@ -77,7 +77,7 @@ class Reservations extends MadActiveRecord
 
                 }
 
-            }
+
 
             if(isset($myjson->orderDetails->edited_last_name)){
                 $this->setAttribute("lastName",$myjson->orderDetails->edited_last_name);

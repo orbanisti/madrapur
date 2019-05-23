@@ -72,23 +72,19 @@ $form = ActiveForm::begin([
   <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
   <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'description')->widget(\yii\redactor\widgets\Redactor::className(), [
-        'clientOptions' => [
-            'imageManagerJson' => ['/redactor/upload/image-json'],
-            'imageUpload' => ['/redactor/upload/image'],
-            'fileUpload' => ['/redactor/upload/file'],
-            'lang' => 'hu_HU',
-            'plugins' => ['clips', 'fontcolor','imagemanager']
-        ]
+    <?= $form->field($model, 'description')->widget(froala\froalaeditor\FroalaEditorWidget::className(), [
+      'clientOptions' => [
+          'toolbarInline'=> true,
+          'theme' =>'royal', //optional: dark, red, gray, royal
+          'language'=>'en_gb' // optional: ar, bs, cs, da, de, en_ca, en_gb, en_us ...
+      ]
     ])?>
-    <?= $form->field($model, 'short_description')->widget(\yii\redactor\widgets\Redactor::className(), [
-        'clientOptions' => [
-            'imageManagerJson' => ['/redactor/upload/image-json'],
-            'imageUpload' => ['/redactor/upload/image'],
-            'fileUpload' => ['/redactor/upload/file'],
-            'lang' => 'hu_HU',
-            'plugins' => ['clips', 'fontcolor','imagemanager']
-        ]
+    <?= $form->field($model, 'short_description')->widget(froala\froalaeditor\FroalaEditorWidget::className(), [
+      'clientOptions' => [
+          'toolbarInline'=> false,
+          'theme' =>'royal', //optional: dark, red, gray, royal
+          'language'=>'en_gb' // optional: ar, bs, cs, da, de, en_ca, en_gb, en_us ...
+      ]
     ])?>
   <?= $form->field($model, 'category')->textInput(['maxlenght' => 60]) ?>
   <?= $form->field($model, 'capacity')->textInput(['maxlenght' => 60]) ?>
