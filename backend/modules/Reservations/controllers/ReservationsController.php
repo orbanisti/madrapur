@@ -87,7 +87,10 @@ class ReservationsController extends Controller {
             $newRecordCounter=0;
 
             foreach ($response as $booking) {
+
                 if(!isset($booking->personInfo)) $booking->personInfo='';
+
+               # if(!isset($booking->orderDetails->paid_date)) $booking->orderDetails->paid_date=;
 
                 $data=['boookingDetails'=> $booking->bookingDetails,'orderDetails'=>$booking->orderDetails,'personInfo'=>$booking->personInfo,'updateDate'=>date("Y-m-d H:i:s")];
 
