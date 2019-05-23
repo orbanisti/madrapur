@@ -20,6 +20,7 @@ class m190521_111032_modulusOrders extends Migration {
                 'transactionId' => $this->string(255),
                 'reservationIds' => $this->string(255),
                 'data' => $this->string(50000),
+                'transactionDate' => $this->string(50),
             ], $this->tableOptions
         );
     }
