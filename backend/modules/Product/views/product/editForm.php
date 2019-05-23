@@ -74,7 +74,8 @@ $form = ActiveForm::begin([
   <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'description')->widget(froala\froalaeditor\FroalaEditorWidget::className(), [
       'clientOptions' => [
-          'toolbarInline'=> false,
+          'toolbarInline'=> true,
+
           'theme' =>'royal', //optional: dark, red, gray, royal
           'language'=>'en_gb' // optional: ar, bs, cs, da, de, en_ca, en_gb, en_us ...
       ]
