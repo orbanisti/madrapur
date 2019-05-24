@@ -132,7 +132,7 @@ $this->params['breadcrumbs'][] = $this->title;
     if(Yii::$app->user->getIdentity()->username !== "manager") {
 
         echo \onmotion\apexcharts\ApexchartsWidget::widget([
-            'type' => 'area', // default area
+            'type' => 'bar', // default area
             'height' => '450', // default 350
 
             'chartOptions' => [
