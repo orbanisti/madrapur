@@ -22,6 +22,9 @@ $config = [
         ],
     ],
     'modules' => [
+        'Modulusreg' => [
+            'class' => backend\modules\ModulusReg\Module::class,
+        ],
         'ModulusCart' => [
             'class' => backend\modules\ModulusCart\Module::class,
         ],
