@@ -76,7 +76,8 @@
 		"kartik-v/yii2-widget-colorinput": "^1.0",
 		"himiklab/yii2-jqgrid-widget": "^1.2",
 		"kartik-v/yii2-widget-touchspin": "dev-master",
-		"froala/yii2-froala-editor": "^2.9"
+		"froala/yii2-froala-editor": "^2.9",
+		"2amigos/yii2-date-picker-widget": "~1.0"
 	},
 	"require-dev": {
 		"yiisoft/yii2-debug": "~2.0.0",

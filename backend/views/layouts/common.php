@@ -128,7 +128,8 @@ $bundle = BackendAsset::register($this);
 			</div>
 			<!-- sidebar menu: : style can be found in sidebar.less -->
             <?php
-
+$imaStreetSeller=Yii::$app->authManager-> getAssignment('streetSeller',Yii::$app->user->getId()) ;
+if(!$imaStreetSeller)
 echo Menu::widget(
                     [
                         'options' => [
@@ -392,6 +393,15 @@ echo Menu::widget(
                                     ],],
                             ],
                             [
+                                'label' => Yii::t('backend', 'ModulusReg'),
+                                'url' => [
+                                    '/Modulusreg/modulusreg/admin'
+                                ],
+                                'icon' => '<i class="fa fa-key"></i>',
+                                'active' => (Yii::$app->controller->id == 'Modulusreg'),
+
+                            ],
+                            [
                                 'label' => Yii::t('backend', 'Key-Value Storage'),
                                 'url' => [
                                     '/system/key-storage/index'
@@ -423,7 +433,49 @@ echo Menu::widget(
                                 'badgeBgClass' => 'label-danger',
                             ],
                         ],
-                    ])?>
+                    ]);
+            else if($imaStreetSeller){
+                echo Menu::widget(
+                    [
+                        'options' => [
+                            'class' => 'sidebar-menu'
+                        ],
+                        'linkTemplate' => '<a href="{url}">{icon}<span>{label}</span>{right-icon}{badge}</a>',
+                        'submenuTemplate' => "\n<ul class=\"treeview-menu\">\n{items}\n</ul>\n",
+                        'activateParents' => true,
+                        'items' => [
+                            [
+                                'label' => Yii::t('backend', 'Main'),
+                                'options' => [
+                                    'class' => 'header'
+                                ],
+                            ],
+                            [
+                                'label' => Yii::t('backend', 'Timeline'),
+                                'icon' => '<i class="fa fa-bar-chart-o"></i>',
+                                'url' => [
+                                    '/timeline-event/index'
+                                ],
+                                'badge' => TimelineEvent::find()->today()->count(),
+                                'badgeBgClass' => 'label-success',
+                            ],
+                            [
+                                'label' => Yii::t('backend', 'Create'),
+                                'url' => [
+                                    '/Reservations/reservations/create'
+                                ],
+                                'icon' => '<i class="fa fa-database"></i>',
+                                'active' => (Yii::$app->controller->id == 'create'),
+                            ],
+
+                        ],
+                    ]);
+
+
+            }
+
+
+            ?>
         </section>
 		<!-- /.sidebar -->
 	</aside>

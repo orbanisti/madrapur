@@ -76,6 +76,7 @@ $form = ActiveForm::begin([
       'clientOptions' => [
 
 
+
           'toolbarInline'=> false,
 
           'theme' =>'royal', //optional: dark, red, gray, royal

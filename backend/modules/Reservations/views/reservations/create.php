@@ -41,9 +41,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ['prompt'=>'Please select a product']);
 
     ?>
-    <?= $form->field($model, "start_date")->widget(\yii\jui\DatePicker::class, [
-
-
+    <?= $form->field($model, "start_date")->widget(\dosamigos\datepicker\DatePicker::class, [
+            'clientOptions' => [
+                'autoclose' => true,
+                'format' => 'yyyy-mm-dd'
+            ]
     ]); ?>
     <?= $form->field($model, 'times')
 
