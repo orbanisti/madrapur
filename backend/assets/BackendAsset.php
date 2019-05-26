@@ -31,7 +31,7 @@ class BackendAsset extends AssetBundle {
      * @var array
      */
     public $css = [
-        'css/style.css'
+        'css/style.css',
     ];
 
     /**
@@ -39,7 +39,7 @@ class BackendAsset extends AssetBundle {
      * @var array
      */
     public $js = [
-        'js/app.js'
+        'js/app.js',
     ];
 
     /**
