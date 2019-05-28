@@ -67,7 +67,7 @@ class ReservationsAdminSearchModel extends Reservations
         $where = self::andWhereFilter([
             # ['invoiceDate', '>=', $invoiceDate],
             # ['bookingDate', '<=', $bookingDate],
-             ['source', '=', 'Street'],
+            # ['source', '=', 'Street'],
             ['sellerId', '=',strval($currentUserId) ],
         ]);
 
@@ -88,6 +88,36 @@ class ReservationsAdminSearchModel extends Reservations
     }
 
 
+
+    public function searchAllreservations($params)
+    {
+
+        $what = ['*'];
+        $from = self::tableName();
+        $currentUserId=\Yii::$app->user->getId();
+
+        $where = self::andWhereFilter([
+            # ['invoiceDate', '>=', $invoiceDate],
+            # ['bookingDate', '<=', $bookingDate],
+            #['source', 'IN', '(Hotel,Street)'],
+            #['sellerId', '=',strval($currentUserId) ],
+        ]);
+
+        $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where);
+
+
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $rows,
+            'pagination' => [
+                'pageSize' => 15,
+            ],
+        ]);
+
+        $this->load($params);
+
+        return $dataProvider;
+    }
 
 
 
