@@ -128,8 +128,10 @@ $bundle = BackendAsset::register($this);
 			</div>
 			<!-- sidebar menu: : style can be found in sidebar.less -->
             <?php
-$imaStreetSeller=Yii::$app->authManager-> getAssignment('streetSeller',Yii::$app->user->getId()) ;
-if(!$imaStreetSeller)
+        $imaStreetSeller=Yii::$app->authManager-> getAssignment('streetSeller',Yii::$app->user->getId()) ;
+    $imaHotelSeller=Yii::$app->authManager-> getAssignment('hotelSeller',Yii::$app->user->getId()) ;
+    $imaBookKeeper=Yii::$app->authManager-> getAssignment('bookKeeper',Yii::$app->user->getId()) ;
+if(!$imaStreetSeller && !$imaHotelSeller && !$imaBookKeeper)
 echo Menu::widget(
                     [
                         'options' => [
@@ -400,6 +402,14 @@ echo Menu::widget(
                                         'icon' => '<i class="fa fa-calendar"></i>',
                                         'active' => (Yii::$app->controller->id == 'myreservations'),
                                     ],
+                                    [
+                                        'label' => Yii::t('backend', 'allReservations'),
+                                        'url' => [
+                                            '/Reservations/reservations/allreservations'
+                                        ],
+                                        'icon' => '<i class="fa fa-calendar"></i>',
+                                        'active' => (Yii::$app->controller->id == 'allreservations'),
+                                    ],
                                     ],
                             ],
 
@@ -436,7 +446,7 @@ echo Menu::widget(
                             ],
                         ],
                     ]);
-            else if($imaStreetSeller){
+            else if($imaStreetSeller || $imaHotelSeller){
                 echo Menu::widget(
                     [
                         'options' => [
@@ -483,6 +493,47 @@ echo Menu::widget(
 
 
             }
+            else if($imaBookKeeper && !$imaStreetSeller && !$imaHotelSeller){
+                echo Menu::widget(
+                    [
+                        'options' => [
+                            'class' => 'sidebar-menu'
+                        ],
+                        'linkTemplate' => '<a href="{url}">{icon}<span>{label}</span>{right-icon}{badge}</a>',
+                        'submenuTemplate' => "\n<ul class=\"treeview-menu\">\n{items}\n</ul>\n",
+                        'activateParents' => true,
+                        'items' => [
+                            [
+                                'label' => Yii::t('backend', 'Main'),
+                                'options' => [
+                                    'class' => 'header'
+                                ],
+                            ],
+                            [
+                                'label' => Yii::t('backend', 'Timeline'),
+                                'icon' => '<i class="fa fa-bar-chart-o"></i>',
+                                'url' => [
+                                    '/timeline-event/index'
+                                ],
+                                'badge' => TimelineEvent::find()->today()->count(),
+                                'badgeBgClass' => 'label-success',
+                            ],
+
+                            [
+                                'label' => Yii::t('backend', 'allReservations'),
+                                'url' => [
+                                    '/Reservations/reservations/allreservations'
+                                ],
+                                'icon' => '<i class="fa fa-calendar"></i>',
+                                'active' => (Yii::$app->controller->id == 'allreservations'),
+                            ],
+
+                        ],
+                    ]);
+
+
+            }
+
 
 
             ?>
