@@ -44,32 +44,6 @@ $bundle = BackendAsset::register($this);
                                 <?php echo TimelineEvent::find()->today()->count() ?>
                             </span>
 					</a></li>
-					<!-- Notifications: style can be found in dropdown.less -->
-					<li id="log-dropdown" class="dropdown notifications-menu"><a
-						href="#" class="dropdown-toggle" data-toggle="dropdown"> <i
-							class="fa fa-warning"></i> <span class="label label-danger">
-                                <?php echo SystemLog::find()->count() ?>
-                            </span>
-					</a>
-						<ul class="dropdown-menu">
-							<li class="header"><?php echo Yii::t('backend', 'You have {num} log items', ['num' => SystemLog::find()->count()]) ?></li>
-							<li>
-								<!-- inner menu: contains the actual data -->
-								<ul class="menu">
-                                    <?php foreach (SystemLog::find()->orderBy(['log_time' => SORT_DESC])->limit(5)->all() as $logEntry): ?>
-                                        <li><a
-										href="<?php echo Yii::$app->urlManager->createUrl(['/system/log/view', 'id' => $logEntry->id]) ?>">
-											<i
-											class="fa fa-warning <?php echo $logEntry->level === Logger::LEVEL_ERROR ? 'text-red' : 'text-yellow' ?>"></i>
-                                                <?php echo $logEntry->category ?>
-                                            </a></li>
-                                    <?php endforeach; ?>
-                                </ul>
-							</li>
-							<li class="footer">
-                                <?php echo Html::a(Yii::t('backend', 'View all'), ['/system/log/index']) ?>
-                            </li>
-						</ul></li>
 					<!-- User Account: style can be found in dropdown.less -->
 					<li class="dropdown user user-menu"><a href="#"
 						class="dropdown-toggle" data-toggle="dropdown"> <img

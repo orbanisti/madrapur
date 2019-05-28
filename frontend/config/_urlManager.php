@@ -35,6 +35,22 @@ return [
             'pattern' => 'product/<slug>',
             'route' => 'site/index'
         ],
+        [
+            'pattern' => 'privacy-policy',
+            'route' => 'site/index'
+        ],
+        [
+            'pattern' => 'checkout',
+            'route' => 'site/index'
+        ],
+        [
+            'pattern' => 'checkout/thankyou/<orderRef>/<status>',
+            'route' => 'site/index'
+        ],
+        [
+            'pattern' => 'cart',
+            'route' => 'site/index'
+        ],
 
         // Sitemap
         [

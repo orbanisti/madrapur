@@ -414,16 +414,22 @@ class ReservationsController extends Controller {
     public function actionAllreservations(){
             $searchModel=new ReservationsAdminSearchModel();
             $dataProvider = $searchModel->searchAllreservations(Yii::$app->request->queryParams);
-            $dataProvider->setSort([
+            $chartDataProvider = $searchModel->searchChart(Yii::$app->request->queryParams);
 
+            $dataProvider->setSort([
                 'defaultOrder' => [
                     'id' => SORT_DESC
                 ]
             ]);
 
-
-
-            return $this->render('allreservations',['dataProvider'=>$dataProvider,'searchModel'=>$searchModel]);
+            return $this->render(
+                'allreservations',
+                [
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'chartDataProvider' => $chartDataProvider,
+                ]
+            );
         }
 
 }

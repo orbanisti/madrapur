@@ -3,6 +3,8 @@
 namespace backend\modules\Payment\controllers;
 
 use backend\modules\Order\models\Order;
+use backend\modules\Payment\models\Payment;
+use backend\modules\Payment\models\PaymentSearchModel;
 use backend\modules\Reservations\models\Reservations;
 use Yii;
 use backend\controllers\Controller;
@@ -17,7 +19,14 @@ class PaymentController extends Controller {
      * @return string
      */
     public function actionAdmin() {
-        return $this->render('admin');
+        $searchModel=new PaymentSearchModel();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('admin',
+            [
+                'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
+            ]);
     }
 
     /**

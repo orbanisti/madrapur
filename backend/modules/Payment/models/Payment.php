@@ -11,7 +11,7 @@ use yii\db\ActiveRecord;
 class Payment extends ActiveRecord {
  
     public static function tableName() {
-        return 'YOUR-TABLE-NAME';
+        return 'modulusorders';
     }
 
     public function rules() {

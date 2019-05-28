@@ -96,12 +96,15 @@ class ReservationsAdminSearchModel extends Reservations
         $from = self::tableName();
         $currentUserId=\Yii::$app->user->getId();
 
-        $where = self::andWhereFilter([
-            # ['invoiceDate', '>=', $invoiceDate],
-            # ['bookingDate', '<=', $bookingDate],
-            #['source', 'IN', '(Hotel,Street)'],
-            #['sellerId', '=',strval($currentUserId) ],
-        ]);
+        $searchParams = isset($params['ReservationsAdminSearchModel']) ? $params['ReservationsAdminSearchModel'] : [] ;
+        $filters = [];
+
+        foreach ($searchParams as $paramName => $paramValue) {
+            if ($paramValue)
+                $filters[] = [$paramName, 'LIKE', $paramValue];
+        }
+
+        $where = self::andWhereFilter($filters);
 
         $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where);
 
