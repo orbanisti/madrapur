@@ -23,7 +23,6 @@ class Controller extends \yii\web\Controller {
             'localhost',
             'http://localhost',
             'http://localhost:8080',
-
             'https://localhost',
             'localhost:45678',
             'http://localhost:45678',
