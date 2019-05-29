@@ -24,6 +24,11 @@
  ExpiresByType text/javascript "access plus 1 months"
  </IfModule>
 
+RewriteEngine On
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://budapestrivercruise.co.uk/$1 [R,L]
+
+
  RequestHeader set X-Prerender-Token "szSbr1x1xEXhAF8Nwjtv"
 
            <IfModule mod_rewrite.c>
@@ -38,11 +43,8 @@
            </IfModule>
 
 
-
 RewriteEngine On
 RewriteCond %{HTTP_USER_AGENT} !(googlebot|bingbot|yandex|baiduspider|facebookexternalhit|twitterbot|rogerbot|linkedinbot|embedly|quora\ link\ preview|showyoubot|outbrain|pinterest|slackbot|vkShare|W3C_Validator) [NC]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . index.php
-
-
