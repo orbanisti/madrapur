@@ -1,3 +1,2 @@
-*.js
-*.css
-*.map
+*
+!bootstrap.min.css
