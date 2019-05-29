@@ -26,7 +26,7 @@
 
 RewriteEngine On
 RewriteCond %{SERVER_PORT} 80
-RewriteRule ^(.*)$ https://budapestrivercruise.co.uk/$1 [R,L]
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R,L]
 
 
  RequestHeader set X-Prerender-Token "szSbr1x1xEXhAF8Nwjtv"
@@ -38,7 +38,7 @@ RewriteRule ^(.*)$ https://budapestrivercruise.co.uk/$1 [R,L]
                    RewriteCond %{QUERY_STRING} _escaped_fragment_
                    DirectoryIndex index.php
                    # Only proxy the request to Prerender if it's a request for HTML
-                   RewriteRule ^(?!.*?(\.js|\.css|\.xml|\.less|\.png|\.jpg|\.jpeg|\.gif|\.pdf|\.doc|\.txt|\.ico|\.rss|\.zip|\.mp3|\.rar|\.exe|\.wmv|\.doc|\.avi|\.ppt|\.mpg|\.mpeg|\.tif|\.wav|\.mov|\.psd|\.ai|\.xls|\.mp4|\.m4a|\.swf|\.dat|\.dmg|\.iso|\.flv|\.m4v|\.torrent|\.ttf|\.woff|\.svg))(.*) http://service.prerender.io/https://budapestrivercruise.co.uk/$2 [P,L]
+                   RewriteRule ^(?!.*?(\.js|\.css|\.xml|\.less|\.png|\.jpg|\.jpeg|\.gif|\.pdf|\.doc|\.txt|\.ico|\.rss|\.zip|\.mp3|\.rar|\.exe|\.wmv|\.doc|\.avi|\.ppt|\.mpg|\.mpeg|\.tif|\.wav|\.mov|\.psd|\.ai|\.xls|\.mp4|\.m4a|\.swf|\.dat|\.dmg|\.iso|\.flv|\.m4v|\.torrent|\.ttf|\.woff|\.svg))(.*) http://service.prerender.io/https://%{HTTP_HOST}/$2 [P,L]
                 </IfModule>
            </IfModule>
 
