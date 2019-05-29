@@ -36,6 +36,7 @@ class FrontendAsset extends AssetBundle {
         '6-style.css',
         '7-style.css',
         '8-style.css',
+        'bootstrap.min.css'
     ];
 
     /**
@@ -59,4 +60,9 @@ class FrontendAsset extends AssetBundle {
      * @var array
      */
     public $depends = [];
+
+    public $cssOptions = [
+        "async" => "async",
+        "defer" => "defer",
+    ];
 }
