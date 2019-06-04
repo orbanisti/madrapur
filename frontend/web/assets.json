@@ -1,0 +1,33 @@
+{
+  "app": {
+    "css": "/react-bundle/app-style.css",
+    "js": "/react-bundle/app-script.js"
+  },
+  "vendors~app": {
+    "js": "/react-bundle/1-script.js"
+  },
+  "": {
+    "html": "/index.html",
+    "js": [
+      "/react-bundle/2-script.js",
+      "/react-bundle/3-script.js",
+      "/react-bundle/4-script.js",
+      "/react-bundle/5-script.js",
+      "/react-bundle/6-script.js",
+      "/react-bundle/7-script.js",
+      "/react-bundle/8-script.js"
+    ],
+    "css": [
+      "/react-bundle/3-style.css",
+      "/react-bundle/4-style.css",
+      "/react-bundle/5-style.css",
+      "/react-bundle/6-style.css",
+      "/react-bundle/8-style.css"
+    ],
+    "eot": "/react-bundle/YourFavoriteFont.eot",
+    "otf": "/react-bundle/YourFavoriteFont.otf"
+  },
+  "metadata": {
+    "version": "1.2.4"
+  }
+}
