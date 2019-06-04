@@ -45,9 +45,11 @@ use backend\modules\Product\models\ProductSource;
                 'label' => 'Block Days',
                 'format'=>'html',
                 'value' => function ($model) {
-                    return '<a href="/Product/product/blocked?prodId='.$model->id.'">Block Days'.'</a>';
+                    return '<a href="/Product/product/blocked?prodId='.$model->id.'">Block Days'.'</a>'
+                    .'<br/><a href="/Product/product/blockedtimes?prodId='.$model->id.'">Block Times'.'</a>';
                 }
             ],
+
 
         ];
 
