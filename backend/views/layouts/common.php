@@ -418,6 +418,15 @@ echo Menu::widget(
                                 'badge' => SystemLog::find()->count(),
                                 'badgeBgClass' => 'label-danger',
                             ],
+
+                            [
+                                'label' => Yii::t('backend', 'Statistics'),
+                                'url' => [
+                                    '/Statistics/statistics/admin'
+                                ],
+                                'icon' => '<i class="fa fa-line-chart"></i>',
+                                'active' => (Yii::$app->controller->id == 'statistics'),
+                            ],
                         ],
                     ]);
             else if($imaStreetSeller || $imaHotelSeller){
@@ -500,6 +509,15 @@ echo Menu::widget(
                                 ],
                                 'icon' => '<i class="fa fa-calendar"></i>',
                                 'active' => (Yii::$app->controller->id == 'allreservations'),
+                            ],
+
+                            [
+                                'label' => Yii::t('backend', 'Statistics'),
+                                'url' => [
+                                    '/Statistics/statistics/admin'
+                                ],
+                                'icon' => '<i class="fa fa-line-chart"></i>',
+                                'active' => (Yii::$app->controller->id == 'statistics'),
                             ],
 
                         ],

@@ -26,6 +26,7 @@
 
 RewriteEngine On
 RewriteCond %{SERVER_PORT} 80
+RewriteCond %{HTTP_HOST} !backend.madrapur.lh
 RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R,L]
 
 

@@ -63,6 +63,9 @@ $config = [
         'system' => [
             'class' => backend\modules\system\Module::class,
         ],
+        'Statistics' => [
+            'class' => backend\modules\Statistics\Module::class,
+        ],
         'translation' => [
             'class' => backend\modules\translation\Module::class,
         ],

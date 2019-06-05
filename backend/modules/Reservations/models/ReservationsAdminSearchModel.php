@@ -219,6 +219,26 @@ class ReservationsAdminSearchModel extends Reservations
         return $dataProvider;
     }
 
+    public function searchChartForStats($startDate = null, $endDate = null, $source = null) {
+        $what = ['*'];
+        $from = self::tableName();
+        $where = self::andWhereFilter([
+            ['invoiceDate', '>=', $startDate],
+            ['invoiceDate', '<=', $endDate],
+            # ['source', 'LIKE', 'utca']
+        ]);
+
+
+
+        $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $rows,
+        ]);
+
+        return $dataProvider;
+    }
+
     public function returnBookingId() {
         return $this['bookingId'];
     }
