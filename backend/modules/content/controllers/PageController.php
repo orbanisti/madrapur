@@ -109,6 +109,12 @@ class PageController extends Controller {
         ]);
     }
 
+    public static function getContent($slug = "") {
+        $query = Page::aSelect(Page::class, '*', Page::tableName(), "`slug` LIKE '$slug'");
+
+        return $query->one();
+    }
+
     /**
      *
      * @param integer $id

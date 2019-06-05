@@ -7,10 +7,10 @@ return [
     'showScriptName' => false,
     'rules' => [
         // Pages
-        [
+        /*[
             'pattern' => 'page/<slug>',
             'route' => 'page/view'
-        ],
+        ],*/
 
         // Articles
         [
@@ -27,6 +27,14 @@ return [
         ],
 
         // .co.uk routes
+        [
+            'pattern' => '<slug>',
+            'route' => 'site/index',
+        ],
+        [
+            'pattern' => 'page/<slug>',
+            'route' => 'site/index',
+        ],
         [
             'pattern' => 'cruise-shop',
             'route' => 'site/index'

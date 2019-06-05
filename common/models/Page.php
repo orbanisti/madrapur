@@ -1,6 +1,7 @@
 <?php
 namespace common\models;
 
+use backend\modules\MadActiveRecord\models\MadActiveRecord;
 use common\models\query\PageQuery;
 use Yii;
 use yii\behaviors\SluggableBehavior;
@@ -19,7 +20,7 @@ use yii\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  */
-class Page extends ActiveRecord {
+class Page extends MadActiveRecord {
 
     const STATUS_DRAFT = 0;
 
