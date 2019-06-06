@@ -811,120 +811,20 @@ class ProductController extends Controller
             $sources = ProductSource::getProductSources($currentProductId);
         }
 
-        $productPostedBlockouts = Yii::$app->request->post('ProductBlockout');
+        $postedBlockout = Yii::$app->request->post('ProductBlockoutTime');
+        $postedBlockoutDelete = Yii::$app->request->get('delete');
 
         #$modelPrices[] = new ProductPrice();
         #$returnMessage=$productPostedBlockouts;
 
-        if ($productPostedBlockouts["dates"]) {
+        $model=new ProductBlockoutTime();
+        $searchModel = new ProductBlockoutTime();
 
 
-            $query = ProductBlockout::aSelect(ProductBlockout::class, '*', ProductBlockout::tableName(), 'product_id=' . $currentProductId);
-
-            try {
-                $rowsOne = $query->one();
-
-            } catch (Exception $e) {
-            }
-
-            if (isset($rowsOne)) {
-
-                $model = $rowsOne;
-                $a = explode(',', $model->dates);
-                $b = explode(',', $productPostedBlockouts["dates"]);
-                $deletedTimesIds = array_diff($a, $b);
-                #var_dump($deletedTimesIds);
-
-                if (!empty($deletedTimesIds)) {
-                    foreach ($deletedTimesIds as $date) {
-
-                        foreach ($sources as $source) {
-
-                            $myurl = $source['url'];
-                            $myprodid = $source['prodIds'];
-                            if ($source['url'] == 'https://budapestrivercruise.eu') {
-                                $curlUrl = $myurl . '/wp-json/unblock/v1/start/' . $date . '/end/' . $date . '/id/' . $myprodid;
-                                /*$curl=curl_init($curlUrl);
-                                curl_setopt($curl, CURLOPT_HEADER, 0);
-                                curl_setopt($curl, CURLOPT_VERBOSE, 0);
-                                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);*/
-                                $curl = new CurlHttpClient();
-                                $response = $curl->getContent($curlUrl);
-                                if ($response != 0) {
-                                    $response = $curl->getContent($curlUrl);
-                                }
-
-
-                            }//ToDo not only eu
-                        }
-
-
-                        // var_dump($response.$url); find UNBLOCK URL HERE
-
-                    }
-                }
-
-                $dates = explode(',', $productPostedBlockouts["dates"]);
-
-                foreach ($dates as $i => $date) {
-                    if (in_array($date, $deletedTimesIds)) {
-                        unset($dates[$i]);
-                    }
-                }
-
-                $veglegesdates = $dates;
-
-
-                foreach ($veglegesdates as $i => $date) {
-
-
-                    foreach ($sources as $source) {
-                        if ($source['url'] == 'https://budapestrivercruise.eu') {
-
-
-                            $myurl = $source['url'];
-                            $myprodid = $source['prodIds'];
-                            /**
-                             * Először Vizsgálom hogy már fel van e küldve
-                             */
-                            $askURL = $myurl . '/wp-json/getav/v1/id/' . $myprodid;
-                            $curlAsk = curl_init($askURL);
-                            curl_setopt($curlAsk, CURLOPT_HEADER, 0);
-                            curl_setopt($curlAsk, CURLOPT_VERBOSE, 0);
-                            curl_setopt($curlAsk, CURLOPT_RETURNTRANSFER, true);
-                            $response = curl_exec($curlAsk);
-                            $alreadyblocked = json_decode($response)[0];
-                            $alreadyBlockedArray = [];
-
-                            foreach ($alreadyblocked as $blockedDate) {
-                                if ($blockedDate->bookable == 'no' && $blockedDate->from == $blockedDate->to) {
-                                    $alreadyBlockedArray[] = $blockedDate->from;
-                                }
-
-                            }
-
-                            if (!in_array($date, $alreadyBlockedArray)) {
-                                $curlUrl = $myurl . '/wp-json/block/v1/start/' . $date . '/end/' . $date . '/id/' . $myprodid;
-                                $curl = curl_init($curlUrl);
-                                curl_setopt($curl, CURLOPT_HEADER, 0);
-                                curl_setopt($curl, CURLOPT_VERBOSE, 0);
-                                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                                $response = curl_exec($curl);
-                            }
-
-
-                        }//Todo no only eu
-                    }
-                }
-
-            } else {
-
-                $model = new ProductBlockout();
-            }
+        if ($postedBlockout["date"]) {
             $values = [
                 'product_id' => $currentProductId,
-                'dates' => $productPostedBlockouts['dates'],
-
+                'date' => $postedBlockout['date'],
             ];
 
             if (ProductBlockout::insertOne($model, $values)) {
@@ -935,27 +835,20 @@ class ProductController extends Controller
 
             }
 
+        }
+        if($postedBlockoutDelete){
+            $blockoutToDelete=ProductBlockoutTime::meById(new ProductBlockoutTime(),$postedBlockoutDelete);
+            if($blockoutToDelete->delete()){
+                $returnMessage='Successfully deleted '.$postedBlockoutDelete;
+
+            }
+
+
 
         }
 
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$currentProductId);
 
-        $queryGetPrices = ProductBlockoutTime::aSelect(ProductBlockoutTime::class, '*', ProductBlockoutTime::tableName(), 'product_id=' . $currentProductId);
-        try {
-            $rowsOne = $queryGetPrices->one();
-            $returnMessage=$rowsOne;
-        } catch (Exception $e) {
-
-        }
-
-        if (isset($rowsOne)) {
-
-            $model = $rowsOne;
-
-        } else {
-            $model = new ProductBlockoutTime();
-
-
-        }
 
         /*update sources*/
 
@@ -964,6 +857,8 @@ class ProductController extends Controller
             'currentProduct' => $currentProduct,
             'model' => $model,
             'returnMessage' => $returnMessage,
+            'dataProvider'=>$dataProvider,
+            'searchModel'=>$searchModel,
 
         ]);
     }

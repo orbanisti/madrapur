@@ -4,6 +4,7 @@ namespace backend\modules\Product\models;
 
 use backend\modules\MadActiveRecord\models\MadActiveRecord;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
 
 /**
@@ -47,6 +48,33 @@ class ProductBlockoutTime extends MadActiveRecord{
 
     }
 
+    public function search($params,$productId)
+    {
+        #  $invoiceDate = '2016-02-05';
+        # $bookingDate = '2020-08-20';
+
+        $what = ['*'];
+        $from = self::tableName();
+        $where = self::andWhereFilter([
+            ['product_id', '=', $productId],
+        ]);
+
+
+        $rows = self::aSelect(ProductBlockoutTime::class, $what, $from,$where);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $rows,
+            'pagination' => [
+                'pageSize' => 15,
+            ],
+        ]);
+
+        $this->load($params);
+
+        return $dataProvider;
+    }
+
+
     public function init() {
         parent::init();
 
@@ -54,32 +82,13 @@ class ProductBlockoutTime extends MadActiveRecord{
 
         return true;
     }
-    public function initTime(){
-        if($this->start_date=='' || is_null($this->start_date) || $this->start_date=='0000-00-00'){
-            $this->start_date=date('Y-m-d');
-            //\backend\components\extra::e($this);
-        }
-        return $this;
 
-    }
 
     public function getProduct()
     {
         return $this->hasOne(Product::class, ['id' => 'product_id']);
     }
 
-    public function afterFind() {
-        parent::afterFind();
 
-        if($this->start_date=='' || is_null($this->start_date) || $this->start_date=='0000-00-00'){
-            $this->start_date=date('Y-m-d');
-        }
-
-        if($this->end_date=='' || is_null($this->end_date) || $this->end_date=='0000-00-00'){
-            $this->end_date=date('Y-m-d');
-        }
-
-        return true;
-    }
 
 }

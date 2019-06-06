@@ -51,6 +51,18 @@ class MadActiveRecord extends ActiveRecord
         return $query;
     }
 
+    public static function meById($modelClass = null,$id){
+        /**
+         * @param $modelClass i need a new Model
+         * @param $id
+         * @return your model /w id of choice
+         */
+
+        $query = $modelClass::aSelect($modelClass, '*', $modelClass::tableName(), 'id=' . $id);
+        $me=$query->one();
+        return $me;
+    }
+
 
 
     /**
