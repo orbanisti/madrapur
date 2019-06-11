@@ -28,14 +28,14 @@ class FrontendAsset extends AssetBundle {
      */
     public $css = [
         'app-style.css',
-        '1-style.css',
+        //'1-style.css',
         '2-style.css',
         '3-style.css',
         '4-style.css',
-        '5-style.css',
-        '6-style.css',
+        //'5-style.css',
+        //'6-style.css',
         '7-style.css',
-        '8-style.css',
+        //'8-style.css',
         'bootstrap.min.css'
     ];
 
@@ -52,7 +52,7 @@ class FrontendAsset extends AssetBundle {
         '5-script.js',
         '6-script.js',
         '7-script.js',
-        '8-script.js',
+        //'8-script.js',
     ];
 
     /**
