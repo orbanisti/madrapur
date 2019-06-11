@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
             echo $form->field($model, 'date')->widget(\kartik\datetime\DateTimePicker::class, [
                 //'id' => 'products-blockoutsdates',
                 'pluginOptions' => [
-                    'format' => 'yyyy-mm-dd h:i',
+                    'format' => 'yyyy-mm-dd hh:ii',
                     'autoclose'=>true,
                 ]
             ]);
