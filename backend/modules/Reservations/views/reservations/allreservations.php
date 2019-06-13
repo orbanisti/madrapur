@@ -6,8 +6,12 @@
  * Time: 20:38
  */
 
+use backend\modules\Reservations\models\Reservations;
+use backend\modules\Reservations\models\ReservationsAdminSearchModel;
+use kartik\grid\GridView;
 use kartik\helpers\Html;
 use backend\components\extra;
+use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 
 
@@ -201,6 +205,108 @@ use yii\widgets\ActiveForm;
 
 
 
+    ]);
+
+    $groupedGridColumns = [
+        ['class' => kartik\grid\SerialColumn::class],
+        [
+            'attribute' => 'invoiceMonth',
+            'group' => true,
+            'groupFooter' => function (ReservationsAdminSearchModel $model, $key, $index, $widget) {
+                $im = date("m", strtotime($model->invoiceDate));
+                $iy = date("Y", strtotime($model->invoiceDate));
+
+                return [
+                    'mergeColumns' => [[1, 3]],
+                    'content' => [             // content to show in each summary cell
+                        1 => "Month Total ({$im}→{$iy})",
+                        4 => GridView::F_SUM,
+                    ],
+                    'contentFormats' => [      // content reformatting for each summary cell
+                        4 => ['format' => 'number', 'decimals' => 0],
+                    ],
+                    'contentOptions' => [      // content html attributes for each summary cell
+                        4 => ['class' => 'text-right'],
+                    ],
+                    'options' => ['class' => 'success table-success h6']
+                ];
+            }
+        ],
+        [
+            'attribute' => 'source',
+            'width' => '310px',
+            'value' => function (ReservationsAdminSearchModel $model, $key, $index, $widget) {
+                return $model->source;
+            },
+            'filterType' => GridView::FILTER_SELECT2,
+            'filter' => ArrayHelper::map(Reservations::find()->orderBy('source')->asArray()->all(), 'source', 'source'),
+            'filterWidgetOptions' => [
+                'pluginOptions' => ['allowClear' => true],
+            ],
+            'filterInputOptions' => ['placeholder' => 'Any supplier'],
+            'subGroupOf' => 1,
+            'group' => true,
+            'groupFooter' => function (ReservationsAdminSearchModel $model, $key, $index, $widget) {
+                return [
+                    'mergeColumns' => [[2, 3]],
+                    'content' => [              // content to show in each summary cell
+                        2 => "Source Total ({$model->source}})",
+                        4 => GridView::F_SUM,
+                    ],
+                    'contentFormats' => [      // content reformatting for each summary cell
+                        4 => ['format' => 'number', 'decimals' => 0],
+                    ],
+                    'contentOptions' => [      // content html attributes for each summary cell
+                        4 => ['class' => 'text-right'],
+                    ],
+                    'options' => ['class' => 'success table-success h6']
+                ];
+            }
+        ],
+        [
+            'attribute' => 'sellerName',
+            'pageSummary' => 'Page Summary',
+            'pageSummaryOptions' => ['class' => 'text-right'],
+            'subGroupOf' => 2,
+            'group' => true,
+            'groupFooter' => function (ReservationsAdminSearchModel $model, $key, $index, $widget) {
+                $im = date("m", strtotime($model->invoiceDate));
+                $iy = date("Y", strtotime($model->invoiceDate));
+
+                return [
+                    'content' => [              // content to show in each summary cell
+                        3 => "sELLER Total ({$model->sellerName}})",
+                        4 => GridView::F_SUM,
+                    ],
+                    'contentFormats' => [      // content reformatting for each summary cell
+                        4 => ['format' => 'number', 'decimals' => 0],
+                    ],
+                    'contentOptions' => [      // content html attributes for each summary cell
+                        4 => ['class' => 'text-right'],
+                    ],
+                    'options' => ['class' => 'success table-success h6']
+                ];
+            }
+        ],
+        [
+            'attribute' => 'booking_cost',
+            'width' => '150px',
+            'hAlign' => 'right',
+            'format' => ['decimal',  0],
+            'pageSummary' => true,
+        ],
+    ];
+
+    echo \kartik\grid\GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'showPageSummary' => true,
+        'pjax' => true,
+        'striped' => true,
+        'hover' => true,
+        'panel' => ['type' => 'primary', 'heading' => 'Grid Grouping Example'],
+        'toggleDataContainer' => ['class' => 'btn-group mr-2'],
+        'columns' => $groupedGridColumns,
     ]);
 
     if(Yii::$app->user->getIdentity()->username !== "manager") {

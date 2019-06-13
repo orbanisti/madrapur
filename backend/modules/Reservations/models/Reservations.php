@@ -6,6 +6,7 @@ use backend\modules\MadActiveRecord\models\MadActiveRecord;
 use backend\modules\Product\models\Product;
 use Yii;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 class Reservations extends MadActiveRecord
 {
@@ -221,6 +222,10 @@ class Reservations extends MadActiveRecord
     public static function getList()
     {
         return ArrayHelper::map(self::find()->all(), 'bookingId', 'bookingDate');
+    }
+
+    public static function getCustomList($column = 'data') {
+        return ArrayHelper::map(self::find()->all(), 'id', $column);
     }
 
     public static function getReservationById($id) {
