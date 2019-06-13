@@ -63,8 +63,8 @@ class m190612_091419_extractReservationsData extends Migration {
         $reservationsInvoiceDate = Reservations::getCustomList('invoiceDate');
 
         foreach ($reservationsInvoiceDate as $id => $invoiceDate) {
-            $invoiceMonth = date("M", strtotime($invoiceDate));
-
+            $invoiceMonth = date("m", strtotime($invoiceDate));
+          
             $this->update(
                 $this->tableName,
                 ["invoiceMonth" => $invoiceMonth],
@@ -102,7 +102,7 @@ class m190612_091419_extractReservationsData extends Migration {
         $reservationsInvoiceDate = Reservations::getCustomList('invoiceDate');
 
         foreach ($reservationsInvoiceDate as $id => $invoiceDate) {
-            $invoiceMonth = date("M", strtotime($invoiceDate));
+            $invoiceMonth = date("m", strtotime($invoiceDate));
 
             $this->update(
                 $this->tableName,
