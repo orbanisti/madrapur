@@ -42,7 +42,7 @@ class ReservationsAdminSearchModel extends Reservations
         # ['source', 'LIKE', 'utca']
     ]);
 
-    $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where);
+    $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where, ['invoiceMonth' => SORT_ASC], ['invoiceMonth']);
     $rows= $query = ReservationsAdminSearchModel::find()->indexBy('id');;
     $dataProvider = new ActiveDataProvider([
         'query' => $rows,
@@ -106,7 +106,7 @@ class ReservationsAdminSearchModel extends Reservations
 
         $where = self::andWhereFilter($filters);
 
-        $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where);
+        $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where, ['invoiceMonth' => SORT_ASC, 'source' => SORT_ASC, 'sellerName' => SORT_ASC, 'bookingId' => SORT_ASC]);
 
 
 

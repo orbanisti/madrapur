@@ -17,7 +17,7 @@ class StatisticsController extends Controller {
      */
     public function actionAdmin() {
         $searchModel = new ReservationsAdminSearchModel();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->searchAllreservations(Yii::$app->request->queryParams);
 
         $postedDateRange = Yii::$app->request->post('Product');
 
@@ -190,7 +190,7 @@ class StatisticsController extends Controller {
             usort($serie["data"], array("self", "sortFunction"));
             $finalHotelSeries[]=$serie;
         }
-Yii::error($streetPrice);
+
         return $this->render('admin', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
