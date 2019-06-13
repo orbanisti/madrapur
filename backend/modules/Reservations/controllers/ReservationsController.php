@@ -407,12 +407,18 @@ class ReservationsController extends Controller {
         ]);
 
 
+        $monthlySold = $searchModel->getMonthlyBySeller(Yii::$app->user->identity->username);
+        $todaySold = $searchModel->getTodayBySeller(Yii::$app->user->identity->username);
 
-
-
-
-
-        return $this->render('myreservations',['dataProvider'=>$dataProvider,'searchModel'=>$searchModel]);
+        return $this->render(
+            'myreservations',
+            [
+                'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
+                'monthlySold' => $monthlySold,
+                'todaySold' => $todaySold,
+            ]
+        );
     }
 
     public function actionAllreservations(){

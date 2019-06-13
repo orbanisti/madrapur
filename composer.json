@@ -77,7 +77,8 @@
 		"himiklab/yii2-jqgrid-widget": "^1.2",
 		"kartik-v/yii2-widget-touchspin": "dev-master",
 		"froala/yii2-froala-editor": "^2.9",
-		"2amigos/yii2-date-picker-widget": "~1.0"
+		"2amigos/yii2-date-picker-widget": "~1.0",
+		"insolita/yii2-adminlte-widgets": "~3.1"
 	},
 	"require-dev": {
 		"yiisoft/yii2-debug": "~2.0.0",
