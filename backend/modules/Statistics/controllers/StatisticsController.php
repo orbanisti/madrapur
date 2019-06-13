@@ -32,8 +32,6 @@ class StatisticsController extends Controller {
 
         $chartDataProvider = $searchModel->searchChartForStats($startDate, $endDate);
 
-
-
         $chartProvider=$chartDataProvider->query->all();
         $series=array();
         $price=array();
@@ -44,45 +42,35 @@ class StatisticsController extends Controller {
         $hotelSellers=array();
 
 
-
-
         /**
          * Visualise Chart on Bookings data TODO: Sort, Import Refunded Bookings + Voucher Orders
          */
         foreach($chartProvider as $data){
-            if(!in_array($data->source,$sources)){
+            if(!in_array($data->source, $sources)){
                 $sources[]=$data->source;
             }
-            if($data->source == 'Hotel'){
 
+            if($data->source == 'Hotel'){
                 if(!in_array($data->sellerName,$hotelSellers)){
                     $hotelSellers[]=$data->sellerName;
                 }
-
-
             }
-            if( $data->source == 'Street'){
 
+            if( $data->source == 'Street'){
                 if(!in_array($data->sellerName,$streetSellers)){
                     $streetSellers[]=$data->sellerName;
                 }
-
-
             }
-
-
 
             $data->data = json_decode($data->data);
 
             if(isset($data->data->orderDetails)) {
-                $cBookingPaidDate = date('Y-m-d', strtotime($data->data->orderDetails->paid_date));
+                $cBookingPaidDate = date('Y-m-d', strtotime($data->invoiceDate));
 
                 if(!isset($data->data->orderDetails->order_currency)) {
                     $cBookingCurrency='EUR';
-
                 }else{
                     $cBookingCurrency = $data->data->orderDetails->order_currency;
-
                 }
 
                 if(isset($data->data->boookingDetails->booking_cost)) {
@@ -90,18 +78,15 @@ class StatisticsController extends Controller {
                 }
                 else{
                     $cBookingTotal ='0';//**Todo  update $data booking cost;
-
                 }
+
                 if ($cBookingCurrency != 'EUR') {
                     $cBookingTotal = intval($cBookingTotal) / 300;
                 }
 
-
-
                 /**
                  * A fenti if azt az esetet vizsgálja ha az order total mégse annyi mint a booking total pl kupon/teszt vásárlás
                  */
-
                 if (isset($price[$cBookingPaidDate][$data->source]) && isset($price[$cBookingPaidDate][$data->sellerName])) {
                     if(isset($data->data->orderDetails->order_total)) {
                         if ($data->data->orderDetails->order_total == '0') {
@@ -116,7 +101,6 @@ class StatisticsController extends Controller {
                     } elseif ($data->source === "Street") {
                         $streetPrice[$cBookingPaidDate][$data->sellerName] += intval($cBookingTotal);
                     }
-
                 } else {
                     if(isset($data->data->orderDetails->order_total)) {
                         if ($data->data->orderDetails->order_total == '0') {
@@ -134,7 +118,6 @@ class StatisticsController extends Controller {
                 }
             }
         }
-
 
         foreach ($sources as $source) {
             $entity['name']=$source;
@@ -172,8 +155,6 @@ class StatisticsController extends Controller {
 
         $streetseries = [];
         foreach ($streetSellers as $source) {
-
-
             $entity['name']=$source;
             $entity['data']=array();
             foreach ($streetPrice as $pDate=>$pValue){
@@ -188,7 +169,6 @@ class StatisticsController extends Controller {
              */
             $streetseries[]=$entity;
         }
-
 
         /**
          * Sorba teszem itt a dátumokat
@@ -210,7 +190,7 @@ class StatisticsController extends Controller {
             usort($serie["data"], array("self", "sortFunction"));
             $finalHotelSeries[]=$serie;
         }
-
+Yii::error($streetPrice);
         return $this->render('admin', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

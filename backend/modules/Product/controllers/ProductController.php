@@ -494,7 +494,6 @@ class ProductController extends Controller
 
         if (isset($sourceRows)) {
 
-
             if (!$productPostedSources && $productEdit) {
                 if (isset($sourceRows[0])) {
                     $deletedSourcesIds[$sourceRows[0]['id']] = $sourceRows[0]['id'];
@@ -507,6 +506,8 @@ class ProductController extends Controller
             }
             $modelSources = $sourceRows;
         } else {
+            $sourceRows = [];
+
             $modelSources[] = new ProductSource();
             $modelSources = Product::createMultiple(ProductSource::class, $modelSources);
             $modelSources[0] = new ProductSource();
