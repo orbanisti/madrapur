@@ -33,20 +33,31 @@ class MadActiveRecord extends ActiveRecord
     }
 
     /**
-     * @param $modelClass
+     * @param null $modelClass
      * @param $what
      * @param $from
      * @param $where
+     * @param null $orderBy
+     * @param null $groupBy
      * @return ActiveQuery
      */
-    public static function aSelect($modelClass = null, $what, $from, $where)
-    {
+    public static function aSelect($modelClass = null, $what, $from, $where, $orderBy = null, $groupBy = null) {
         $query = new ActiveQuery($modelClass);
+
+        if (!$orderBy) {
+            $orderBy = ['id' => SORT_ASC];
+        }
+
+        if (!$groupBy) {
+            $groupBy = ['id'];
+        }
 
         $query
             ->select($what)
             ->from($from)
-            ->where($where);
+            ->where($where)
+            ->orderBy($orderBy)
+            ->groupBy($groupBy);
 
         return $query;
     }
