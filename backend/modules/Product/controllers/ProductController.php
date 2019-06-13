@@ -831,7 +831,7 @@ class ProductController extends Controller
             if (ProductBlockout::insertOne($model, $values)) {
 
                 
-                $returnMessage=$this->blockDateTime($postedBlockoutDelete['date'],'https://budapestrivercruise.eu',31489);
+                $returnMessage=$this->blockDateTime($postedBlockout['date'],'https://budapestrivercruise.eu',31489);
 
 
 
@@ -900,20 +900,33 @@ class ProductController extends Controller
                 $alreadyBlockedArray = [];
 
                 foreach ($alreadyblocked as $blockedDate) {
-                    if ($blockedDate->bookable == 'no' && $blockedDate->from_date == $blockedDate->to_date && $blockedDate->from==date('H:i',strtotime($date))) {
-                        $alreadyBlockedArray[] = $blockedDate->from;
+                    if ($blockedDate->bookable == 'no' && $blockedDate->from==date('H:i',strtotime($date))) {
+                        if(isset($blockedDate->from_date) && isset($blockedDate->to_date)){
+                            if($blockedDate->from_date == $blockedDate->to_date){
+
+                                $alreadyBlockedArray[] = $blockedDate->from;
+
+                            }
+                        }
+
+
+
                     }
 
                 }
 
                 if (!in_array($date, $alreadyBlockedArray)) {
+                    Yii::error('date:'.$date);
                     $curlUrl = $myurl . '/wp-json/blocktime/v1/date/' . date('Y-m-d',strtotime($date)) . '/time/' . date('H:i',strtotime($date)) . '/id/' . $myprodid;
+                    Yii::error('blockUrl:'.$curlUrl);
                     $curl = curl_init($curlUrl);
+                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
                     curl_setopt($curl, CURLOPT_HEADER, 0);
                     curl_setopt($curl, CURLOPT_VERBOSE, 0);
-                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                    $response = curl_exec($curl);
-                    $responseMessage='Time Blocked Successfully';
+
+                    $response=curl_exec($curl);
+                    $responseMessage='Succesful timeblock';
+                    $responseMessage.=$response;
                 }
                 else{
                     $responseMessage='Time Already Blocked';
