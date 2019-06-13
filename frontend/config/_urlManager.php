@@ -28,16 +28,16 @@ return [
 
         // .co.uk routes
         [
+            'pattern' => '<cruise-shop:\w+>',
+            'route' => 'site/index'
+        ],
+        [
             'pattern' => '<slug>',
             'route' => 'site/index',
         ],
         [
             'pattern' => 'page/<slug>',
             'route' => 'site/index',
-        ],
-        [
-            'pattern' => 'cruise-shop',
-            'route' => 'site/index'
         ],
         [
             'pattern' => 'product/<slug>',
