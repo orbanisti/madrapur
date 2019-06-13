@@ -64,7 +64,7 @@ class m190612_091419_extractReservationsData extends Migration {
 
         foreach ($reservationsInvoiceDate as $id => $invoiceDate) {
             $invoiceMonth = date("m", strtotime($invoiceDate));
-
+          
             $this->update(
                 $this->tableName,
                 ["invoiceMonth" => $invoiceMonth],

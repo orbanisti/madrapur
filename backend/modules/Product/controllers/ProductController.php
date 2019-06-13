@@ -829,23 +829,21 @@ class ProductController extends Controller
             ];
 
             if (ProductBlockout::insertOne($model, $values)) {
-                $returnMessage = 'Successfully Saved';
+
+                
+                $returnMessage=$this->blockDateTime($postedBlockout['date'],'https://budapestrivercruise.eu',31489);
+
+
 
             } else {
                 $returnMessage = 'Save not Succesful';
-
             }
-
         }
         if($postedBlockoutDelete){
             $blockoutToDelete=ProductBlockoutTime::meById(new ProductBlockoutTime(),$postedBlockoutDelete);
             if($blockoutToDelete->delete()){
                 $returnMessage='Successfully deleted '.$postedBlockoutDelete;
-
             }
-
-
-
         }
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$currentProductId);
@@ -883,6 +881,65 @@ class ProductController extends Controller
             ]
         ]);
     }
+
+
+    public function blockDateTime($date,$url,$product_id){
+
+                $myurl = $url;
+                $myprodid = $product_id;
+                /**
+                 * Először Vizsgálom hogy már fel van e küldve
+                 */
+                $askURL = $myurl . '/wp-json/getav/v1/id/' . $myprodid;
+                $curlAsk = curl_init($askURL);
+                curl_setopt($curlAsk, CURLOPT_HEADER, 0);
+                curl_setopt($curlAsk, CURLOPT_VERBOSE, 0);
+                curl_setopt($curlAsk, CURLOPT_RETURNTRANSFER, true);
+                $response = curl_exec($curlAsk);
+                $alreadyblocked = json_decode($response)[0];
+                $alreadyBlockedArray = [];
+
+                foreach ($alreadyblocked as $blockedDate) {
+                    if ($blockedDate->bookable == 'no' && $blockedDate->from==date('H:i',strtotime($date))) {
+                        if(isset($blockedDate->from_date) && isset($blockedDate->to_date)){
+                            if($blockedDate->from_date == $blockedDate->to_date){
+
+                                $alreadyBlockedArray[] = $blockedDate->from;
+
+                            }
+                        }
+
+
+
+                    }
+
+                }
+
+                if (!in_array($date, $alreadyBlockedArray)) {
+                    Yii::error('date:'.$date);
+                    $curlUrl = $myurl . '/wp-json/blocktime/v1/date/' . date('Y-m-d',strtotime($date)) . '/time/' . date('H:i',strtotime($date)) . '/id/' . $myprodid;
+                    Yii::error('blockUrl:'.$curlUrl);
+                    $curl = curl_init($curlUrl);
+                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($curl, CURLOPT_HEADER, 0);
+                    curl_setopt($curl, CURLOPT_VERBOSE, 0);
+
+                    $response=curl_exec($curl);
+                    $responseMessage='Succesful timeblock';
+                    $responseMessage.=$response;
+                }
+                else{
+                    $responseMessage='Time Already Blocked';
+
+                }
+
+                return $responseMessage;
+
+            }
+
+
+
+
 
 
 }

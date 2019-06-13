@@ -25,6 +25,8 @@ class Reservations extends MadActiveRecord
             [['data'], 'string', 'max' => 1000],
             [['productId'], 'string', 'max' => 32],
             [['invoiceDate'], 'date', 'format' => 'yyyy-MM-dd'],
+            [['invoiceMonth'], 'string', 'max' => 20],
+            [['booking_cost'], 'string', 'max' => 100],
             [['bookingDate'], 'date', 'format' => 'yyyy-MM-dd'],
             [['sellerId'], 'string', 'max' => 255],
             [['sellerName'], 'string', 'max' => 255],
