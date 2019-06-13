@@ -123,6 +123,41 @@ class ReservationsAdminSearchModel extends Reservations
     }
 
 
+    public function searchMonthlyStatistics($params) {
+        $what = ['*'];
+        $from = self::tableName();
+
+        $searchParams = isset($params['ReservationsAdminSearchModel']) ? $params['ReservationsAdminSearchModel'] : [] ;
+        $filters = [];
+
+        foreach ($searchParams as $paramName => $paramValue) {
+            if ($paramValue)
+                $filters[] = [$paramName, 'LIKE', $paramValue];
+        }
+
+
+        $filters[] = ['order_currency', '=', 'EUR'];
+
+        $where = self::andWhereFilter($filters);
+
+        $orderBy = ['invoiceMonth' => SORT_ASC, 'source' => SORT_ASC, 'sellerName' => SORT_ASC, 'bookingId' => SORT_ASC];
+
+        $rows = self::aSelect(
+            ReservationsAdminSearchModel::class,
+            $what, $from, $where, $orderBy
+        );
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $rows,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        $this->load($params);
+
+        return $dataProvider;
+    }
 
 
     public function searchDay($params,$selectedDate,$sources,$prodId)
