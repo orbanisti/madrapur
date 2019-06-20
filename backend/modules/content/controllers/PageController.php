@@ -39,6 +39,7 @@ class PageController extends Controller {
         $this->performAjaxValidation($page);
 
         if ($page->load(Yii::$app->request->post()) && $page->save()) {
+
             return $this->redirect([
                 'index'
             ]);
