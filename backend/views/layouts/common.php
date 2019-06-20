@@ -544,9 +544,7 @@ echo Menu::widget(
                     <small><?php echo $this->params['subtitle'] ?></small>
                 <?php endif; ?>
             </h1>
-
             <?php
-
 echo Breadcrumbs::widget(
                     [
                         'tag' => 'ol',
