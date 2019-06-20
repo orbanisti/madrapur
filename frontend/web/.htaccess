@@ -30,7 +30,7 @@ RewriteCond %{HTTP_HOST} !(^(.*).madrapur.lh) [NC,OR]
 RewriteCond %{HTTP_HOST} !madrapur.lh
 RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R,L]
 
-
+BaseHtml
  RequestHeader set X-Prerender-Token "szSbr1x1xEXhAF8Nwjtv"
 
            <IfModule mod_rewrite.c>
