@@ -114,6 +114,27 @@ class PageController extends Controller {
 
         return $query->one();
     }
+    public static function setContent($slug, $content){
+        $query = Page::aSelect(Page::class, '*', Page::tableName(), "`slug` LIKE '$slug'");
+
+        $row=$query->one();
+        $values = [
+            'body' => $content,
+
+
+        ];
+
+        if (Page::insertOne($row, $values)) {
+            $returnMessage = 'Successfully Saved'.$content.$slug;
+
+        } else {
+            $returnMessage = 'Save not Succesful';
+
+        }
+        return $returnMessage;
+
+
+    }
 
     /**
      *

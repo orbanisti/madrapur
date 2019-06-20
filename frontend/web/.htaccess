@@ -24,11 +24,11 @@
  ExpiresByType text/javascript "access plus 1 months"
  </IfModule>
 
-RewriteEngine On
-RewriteCond %{SERVER_PORT} 80
-RewriteCond %{HTTP_HOST} !(^(.*).madrapur.lh) [NC,OR]
-RewriteCond %{HTTP_HOST} !madrapur.lh
-RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R,L]
+#RewriteEngine On
+#RewriteCond %{SERVER_PORT} 80
+#RewriteCond %{HTTP_HOST} !(^(.*).madrapur.lh) [NC,OR]
+#RewriteCond %{HTTP_HOST} !madrapur.lh
+#RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R,L]
 
 
  RequestHeader set X-Prerender-Token "szSbr1x1xEXhAF8Nwjtv"

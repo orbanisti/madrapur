@@ -100,7 +100,7 @@ class ReservationsController extends Controller {
                     if($booking->bookingDetails->booking_cost>200000 &&  $booking->orderDetails->order_currency=='EUR') continue;
 
                     $values = [
-                        'invoiceMonth'=>date('M',strtotime($booking->orderDetails->paid_date)),
+                        'invoiceMonth'=>date('m',strtotime($booking->orderDetails->paid_date)),
                         'booking_cost'=>$booking->bookingDetails->booking_cost,
                         'bookingId' => $booking->bookingId,
                         'productId' => $booking->bookingDetails->booking_product_id,
@@ -263,7 +263,7 @@ class ReservationsController extends Controller {
 
             $values=[
                 'booking_cost'=>$productPrice["discount"],
-                'invoiceMonth'=>date('M'),
+                'invoiceMonth'=>date('m'),
                 'invoiceDate'=>date('Y-m-d'),
                 'bookingDate'=>$productPrice['booking_date'],
                 'source'=>$source,
