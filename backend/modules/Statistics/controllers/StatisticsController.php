@@ -18,6 +18,7 @@ class StatisticsController extends Controller {
     public function actionAdmin() {
         $searchModel = new ReservationsAdminSearchModel();
         $dataProvider = $searchModel->searchAllreservations(Yii::$app->request->queryParams);
+        $groupedDataProvider = $searchModel->searchMonthlyStatistics(Yii::$app->request->queryParams);
 
         $postedDateRange = Yii::$app->request->post('Product');
 
@@ -200,6 +201,7 @@ class StatisticsController extends Controller {
             'finalSeries' => $finalSeries,
             'finalStreetSeries' => $finalStreetSeries,
             'finalHotelSeries' => $finalHotelSeries,
+            'groupedDataProvider' => $groupedDataProvider,
         ]);
     }
 
