@@ -58,7 +58,7 @@ foreach($stripfromStartArray as $i=>$rule){
 
 $ch = curl_init();
 
-curl_setopt($ch, CURLOPT_URL,"http://www.api.localhost.com/v1/rester/update-page-html-slug");
+curl_setopt($ch, CURLOPT_URL,"https://api.budapestrivercruise.co.uk/v1/rester/update-page-html-slug");
 curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS,
     "slug=".$_POST['slug']."&content=".$html2);
