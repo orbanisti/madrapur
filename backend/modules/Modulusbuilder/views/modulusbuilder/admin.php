@@ -911,6 +911,7 @@ curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
 
 $content = curl_exec($ch);
 
+
 curl_close($ch);
 $dependencies='<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet"><script src="http://code.jquery.com/jquery-3.3.1.min.js"></script><script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>';
 $tempPath= "VvvebJs/tmp-".$slug.".html";
