@@ -75,8 +75,7 @@ class Page extends MadActiveRecord {
         return [
             [
                 [
-                    'title',
-                    'body'
+                    'title'
                 ],
                 'required'
             ],

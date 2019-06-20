@@ -113,7 +113,7 @@ class ReservationsAdminSearchModel extends Reservations
         $dataProvider = new ActiveDataProvider([
             'query' => $rows,
             'pagination' => [
-                'pageSize' => 100,
+                'pageSize' => 15,
             ],
         ]);
 

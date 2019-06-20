@@ -17,7 +17,7 @@ echo $form->field($model, 'title')->textInput(['maxlength' => true]);
 
 echo $form->field($model, 'slug')->textInput(['maxlength' => true]);
 
-echo $form->field($model, 'body')->widget(\yii\imperavi\Widget::class,
+/*echo $form->field($model, 'body')->widget(\yii\imperavi\Widget::class,
         [
             'plugins' => [
                 'fullscreen',
@@ -34,6 +34,10 @@ echo $form->field($model, 'body')->widget(\yii\imperavi\Widget::class,
             ],
         ]);
 
+*/
+
+$editLink='/Modulusbuilder/modulusbuilder/admin?slug='.$model->slug;
+echo($model->isNewRecord ? $form->field($model,'body')->hiddenInput(['value'=> '<div class="container">      <div class="row">        <div class="col-lg-12 text-center">          <h1 class="mt-5">Bootstrap 4 start page</h1>          <p class="lead">Start by dragging components to page or double click to edit text</p>        </div>      </div>    </div>'])->label(false) : Html::a('Edit in pagebuilder',[$editLink],['class'=>'btn btn-primary']));
 echo $form->field($model, 'status')->checkbox();
 ?>
 

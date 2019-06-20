@@ -39,6 +39,7 @@ class PageController extends Controller {
         $this->performAjaxValidation($page);
 
         if ($page->load(Yii::$app->request->post()) && $page->save()) {
+
             return $this->redirect([
                 'index'
             ]);
@@ -113,6 +114,27 @@ class PageController extends Controller {
         $query = Page::aSelect(Page::class, '*', Page::tableName(), "`slug` LIKE '$slug'");
 
         return $query->one();
+    }
+    public static function setContent($slug, $content){
+        $query = Page::aSelect(Page::class, '*', Page::tableName(), "`slug` LIKE '$slug'");
+
+        $row=$query->one();
+        $values = [
+            'body' => $content,
+
+
+        ];
+
+        if (Page::insertOne($row, $values)) {
+            $returnMessage = 'Successfully Saved'.$content.$slug;
+
+        } else {
+            $returnMessage = 'Save not Succesful';
+
+        }
+        return $returnMessage;
+
+
     }
 
     /**
