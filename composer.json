@@ -79,6 +79,8 @@
 		"froala/yii2-froala-editor": "^2.9",
 		"2amigos/yii2-date-picker-widget": "~1.0",
 		"yiisoft/yii2-bootstrap4": "^2.0"
+		"insolita/yii2-adminlte-widgets": "~3.1",
+		"phuml/phuml": "^1.7"
 
 	},
 	"require-dev": {

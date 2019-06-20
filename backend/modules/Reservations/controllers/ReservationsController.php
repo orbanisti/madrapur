@@ -4,6 +4,7 @@ namespace backend\modules\Reservations\controllers;
 use backend\controllers\Controller;
 use backend\modules\MadActiveRecord\models\MadActiveRecord;
 use backend\modules\Product\models\Product;
+use backend\modules\Product\models\ProductAdminSearchModel;
 use backend\modules\Product\models\ProductPrice;
 use backend\modules\Product\models\ProductTime;
 use backend\modules\Reservations\models\Reservations;
@@ -14,6 +15,7 @@ use backend\modules\Reservations\models\DateImport;
 
 use yii\db\Exception;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 
 /**
@@ -36,6 +38,42 @@ class ReservationsController extends Controller {
             'connection'=>$connection,
             'dateImportModel'=>$dateImportModel
 
+        ]);
+    }
+
+
+    public function actionCreateReact($id = false) {
+        $searchModel = new ReservationsAdminSearchModel();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        if (!$id)
+            $where = '1 = 1';
+        else
+            $where = 'id = '.$id;
+
+        $data = ProductAdminSearchModel::aSelect(
+            Product::class,
+            ['id', 'title', 'currency'],
+            Product::tableName(),
+            $where
+        )->all();
+
+        $dataArray = ArrayHelper::toArray($data);
+
+        foreach ($dataArray as $k => $v) {
+            $id = $v['id'];
+
+            $myTimes = ProductTime::aSelect(ProductTime::class,'*',ProductTime::tableName(),'product_id='.$id)->all();
+            $dataArray[$k]['times'] = ArrayHelper::toArray($myTimes);
+
+            $myPrices = ProductTime::aSelect(ProductPrice::class,'*',ProductPrice::tableName(),'product_id='.$id)->all();
+            $dataArray[$k]['prices'] = ArrayHelper::toArray($myPrices);
+        }
+
+        return $this->render('createReact', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'data' => json_encode($dataArray),
         ]);
     }
 
@@ -407,12 +445,18 @@ class ReservationsController extends Controller {
         ]);
 
 
+        $monthlySold = $searchModel->getMonthlyBySeller(Yii::$app->user->identity->username);
+        $todaySold = $searchModel->getTodayBySeller(Yii::$app->user->identity->username);
 
-
-
-
-
-        return $this->render('myreservations',['dataProvider'=>$dataProvider,'searchModel'=>$searchModel]);
+        return $this->render(
+            'myreservations',
+            [
+                'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
+                'monthlySold' => $monthlySold,
+                'todaySold' => $todaySold,
+            ]
+        );
     }
 
     public function actionAllreservations(){

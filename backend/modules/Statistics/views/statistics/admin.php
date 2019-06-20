@@ -11,6 +11,7 @@ use yii\helpers\ArrayHelper;
 
 <ul class="nav nav-tabs">
     <li class="active"><a href="#overview" data-toggle="tab"><?= Yii::t('app','Overview') ?></a></li>
+    <li><a href="#overview-monthly" data-toggle="tab"><?= Yii::t('app','Overview (monthly)') ?></a></li>
     <li><a href="#street" data-toggle="tab"><?= Yii::t('app','Street') ?></a></li>
     <li><a href="#hotel" data-toggle="tab"><?= Yii::t('app','Hotel') ?></a></li>
 </ul>
@@ -79,6 +80,27 @@ ActiveForm::end();
                             'series' => $finalSeries
                         ]);
                     ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane" id="overview-monthly">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                OVERVIEW (monthly)
+            </div>
+            <div class="panel-body">
+                <div class="container-items">
+                    <script>
+                        function formatter(source, data) {
+                            var p = 0;
+
+                            source.forEach(function (s) { p += s; });
+
+                            return p + " EUR";
+                        }
+                    </script>
 
                     <?php
                         $groupedGridColumns = [
@@ -86,7 +108,7 @@ ActiveForm::end();
                             [
                                 'attribute' => 'invoiceMonth',
                                 'value' => function (ReservationsAdminSearchModel $model, $key, $index, $widget) {
-                                    return $model->invoiceMonth;
+                                    return date("F", strtotime($model->invoiceDate));
                                 },
                                 'filterType' => GridView::FILTER_SELECT2,
                                 'filter' => ArrayHelper::map(Reservations::find()->orderBy('invoiceMonth')->asArray()->all(), 'invoiceMonth', 'invoiceMonth'),
@@ -94,13 +116,13 @@ ActiveForm::end();
                                 'group' => true,
                                 'groupFooter' => function (ReservationsAdminSearchModel $model, $key, $index, $widget) {
                                     return [
-                                        'mergeColumns' => [[1, 3]],
+                                        'mergeColumns' => [[1, 4]],
                                         'content' => [             // content to show in each summary cell
                                             1 => "Month Total ($model->invoiceMonth)",
                                             5 => GridView::F_SUM,
                                         ],
                                         'contentFormats' => [      // content reformatting for each summary cell
-                                            5 => ['format' => 'number', 'decimals' => 0],
+                                            5 => ['format' => 'callback', 'func' => 'formatter'],
                                         ],
                                         'contentOptions' => [      // content html attributes for each summary cell
                                             5 => ['class' => 'text-right'],
@@ -125,13 +147,13 @@ ActiveForm::end();
                                 'group' => true,
                                 'groupFooter' => function (ReservationsAdminSearchModel $model, $key, $index, $widget) {
                                     return [
-                                        'mergeColumns' => [[2, 3]],
+                                        'mergeColumns' => [[2, 4]],
                                         'content' => [              // content to show in each summary cell
                                             2 => "Source Total ({$model->source}})",
                                             5 => GridView::F_SUM,
                                         ],
                                         'contentFormats' => [      // content reformatting for each summary cell
-                                            5 => ['format' => 'number', 'decimals' => 0],
+                                            5 => ['format' => 'callback', 'func' => 'formatter'],
                                         ],
                                         'contentOptions' => [      // content html attributes for each summary cell
                                             5 => ['class' => 'text-right'],
@@ -151,12 +173,13 @@ ActiveForm::end();
                                     $iy = date("Y", strtotime($model->invoiceDate));
 
                                     return [
+                                        'mergeColumns' => [[3, 4]],
                                         'content' => [              // content to show in each summary cell
                                             3 => "Seller Total ({$model->sellerName})",
                                             5 => GridView::F_SUM,
                                         ],
                                         'contentFormats' => [      // content reformatting for each summary cell
-                                            5 => ['format' => 'number', 'decimals' => 0],
+                                            5 => ['format' => 'callback', 'func' => 'formatter'],
                                         ],
                                         'contentOptions' => [      // content html attributes for each summary cell
                                             5 => ['class' => 'text-right'],
@@ -170,44 +193,25 @@ ActiveForm::end();
                                 'pageSummary' => 'Page Summary',
                                 'pageSummaryOptions' => ['class' => 'text-right'],
                                 'subGroupOf' => 3,
-                                'group' => true,
-                                'groupFooter' => function (ReservationsAdminSearchModel $model, $key, $index, $widget) {
-                                    $im = date("m", strtotime($model->invoiceDate));
-                                    $iy = date("Y", strtotime($model->invoiceDate));
-
-                                    return [
-                                        'content' => [              // content to show in each summary cell
-                                            4 => "bookingId",
-                                            5 => "{$model->order_currency}",
-                                        ],
-                                        'contentFormats' => [      // content reformatting for each summary cell
-                                            5 => ['format' => 'number', 'decimals' => 0],
-                                        ],
-                                        'contentOptions' => [      // content html attributes for each summary cell
-                                            5 => ['class' => 'text-right'],
-                                        ],
-                                        'options' => ['class' => 'info table-info h6']
-                                    ];
-                                }
                             ],
                             [
                                 'attribute' => 'booking_cost',
-                                'subGroupOf' => 4,
+                                'value' => function (ReservationsAdminSearchModel $model, $key, $index, $widget) {
+                                    return "{$model->booking_cost} {$model->order_currency}";
+                                },
                                 'width' => '150px',
                                 'hAlign' => 'right',
-                                'format' => ['decimal',  0],
                                 'pageSummary' => true,
                             ],
                         ];
 
                         echo GridView::widget([
-                            'dataProvider' => $dataProvider,
+                            'dataProvider' => $groupedDataProvider,
                             'filterModel' => $searchModel,
                             'showPageSummary' => true,
                             'pjax' => true,
                             'striped' => true,
                             'hover' => true,
-                            'panel' => ['type' => 'primary', 'heading' => 'Grid Grouping Example'],
                             'toggleDataContainer' => ['class' => 'btn-group mr-2'],
                             'columns' => $groupedGridColumns,
                         ]);

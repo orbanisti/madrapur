@@ -123,6 +123,89 @@ class ReservationsAdminSearchModel extends Reservations
     }
 
 
+    public function searchMonthlyStatistics($params) {
+        $what = ['*'];
+        $from = self::tableName();
+
+        $searchParams = isset($params['ReservationsAdminSearchModel']) ? $params['ReservationsAdminSearchModel'] : [] ;
+        $filters = [];
+
+        foreach ($searchParams as $paramName => $paramValue) {
+            if ($paramValue)
+                $filters[] = [$paramName, 'LIKE', $paramValue];
+        }
+
+
+        $filters[] = ['order_currency', '=', 'EUR'];
+
+        $where = self::andWhereFilter($filters);
+
+        $orderBy = ['invoiceMonth' => SORT_ASC, 'source' => SORT_ASC, 'sellerName' => SORT_ASC, 'bookingId' => SORT_ASC];
+
+        $rows = self::aSelect(
+            ReservationsAdminSearchModel::class,
+            $what, $from, $where, $orderBy
+        );
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $rows,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        $this->load($params);
+
+        return $dataProvider;
+    }
+
+    public function getMonthlyBySeller($sellerName) {
+        $what = ['booking_cost'];
+        $from = self::tableName();
+
+        $filters = [];
+        $filters[] = ['sellerName', '=', $sellerName];
+        $filters[] = ['invoiceMonth', '=', date('m')];
+
+        $where = self::andWhereFilter($filters);
+
+
+        $rows = self::aSelect(
+            ReservationsAdminSearchModel::class,
+            $what, $from, $where
+        )->all();
+
+        $cost = 0;
+        foreach ($rows as $row) {
+            $cost += $row->booking_cost;
+        }
+
+        return $cost;
+    }
+
+    public function getTodayBySeller($sellerName) {
+        $what = ['booking_cost'];
+        $from = self::tableName();
+
+        $filters = [];
+        $filters[] = ['sellerName', '=', $sellerName];
+        $filters[] = ['invoiceDate', '=', date('Y-m-d')];
+
+        $where = self::andWhereFilter($filters);
+
+
+        $rows = self::aSelect(
+            ReservationsAdminSearchModel::class,
+            $what, $from, $where
+        )->all();
+
+        $cost = 0;
+        foreach ($rows as $row) {
+            $cost += $row->booking_cost;
+        }
+
+        return $cost;
+    }
 
 
     public function searchDay($params,$selectedDate,$sources,$prodId)
@@ -135,7 +218,7 @@ class ReservationsAdminSearchModel extends Reservations
         $wheres[]=['bookingDate', '=', $selectedDate];
         $wheres[]=['productId', 'IN', $sources];
         $where = self::andWhereFilter($wheres);
-        $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where,$sources,$prodId);
+        $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where);
         $dataProvider = new ActiveDataProvider([
             'query' => $rows,
             'pagination' => [
@@ -154,7 +237,7 @@ class ReservationsAdminSearchModel extends Reservations
         $wheres[]=['bookingDate', '=', $selectedDate];
         $wheres[]=['productId', 'IN', $sources];
         $where = self::andWhereFilter($wheres);
-        $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where,$sources,$prodId);
+        $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where);
         $bookigsFromThatDay=$rows->all();
         $counter=0;
         foreach ($bookigsFromThatDay as $reservation){
@@ -174,7 +257,7 @@ class ReservationsAdminSearchModel extends Reservations
         $wheres[]=['bookingDate', '=', $selectedDate];
         $wheres[]=['productId', 'IN', $sources];
         $where = self::andWhereFilter($wheres);
-        $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where,$sources,$prodId);
+        $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where);
         $bookigsFromThatDay=$rows->all();
         $counter=0;
         foreach ($bookigsFromThatDay as $reservation){
