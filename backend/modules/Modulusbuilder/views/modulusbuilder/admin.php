@@ -903,7 +903,7 @@
 
 <?php
 $slug=Yii::$app->request->get('slug');
-$curlUrl="http://www.api.localhost.com/v1/rester/get-page-html-by-slug?slug=".$slug;
+$curlUrl="https://budapestrivercruise.co.uk/v1/rester/get-page-html-by-slug?slug=".$slug;
 $ch = curl_init($curlUrl);
 
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
