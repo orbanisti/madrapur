@@ -543,11 +543,8 @@ echo Menu::widget(
                 <?php if (isset($this->params['subtitle'])): ?>
                     <small><?php echo $this->params['subtitle'] ?></small>
                 <?php endif; ?>
-            </h1>BaseHtml
-
-            <?php \yii\helpers\BaseHtml::button()
-
-
+            </h1>
+            <?php
 echo Breadcrumbs::widget(
                     [
                         'tag' => 'ol',
