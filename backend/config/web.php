@@ -69,6 +69,9 @@ $config = [
         'Statistics' => [
             'class' => backend\modules\Statistics\Module::class,
         ],
+        'Tickets' => [
+            'class' => backend\modules\Tickets\Module::class,
+        ],
         'translation' => [
             'class' => backend\modules\translation\Module::class,
         ],
@@ -162,7 +165,9 @@ $config = [
                 ],
                 'allow' => true,
                 'roles' => [
-                    'administrator'
+                    'administrator',
+                    'officeAdmin',
+                    'streetAdmin',
                 ],
             ],
             [
@@ -174,8 +179,14 @@ $config = [
             [
                 'allow' => true,
                 'roles' => [
-                    'manager',
-                    'administrator'
+                    'administrator',
+                    'officeAdmin',
+                    'hotelEditor',
+                    'ticketEditor',
+                    'officeVisitor',
+                    'streetAdmin',
+                    'streetSeller',
+                    'hotline',
                 ],
             ],
         ],

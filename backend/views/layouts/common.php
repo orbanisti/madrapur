@@ -105,7 +105,7 @@ $bundle = BackendAsset::register($this);
         $imaStreetSeller=Yii::$app->authManager-> getAssignment('streetSeller',Yii::$app->user->getId()) ;
     $imaHotelSeller=Yii::$app->authManager-> getAssignment('hotelSeller',Yii::$app->user->getId()) ;
     $imaBookKeeper=Yii::$app->authManager-> getAssignment('bookKeeper',Yii::$app->user->getId()) ;
-if(!$imaStreetSeller && !$imaHotelSeller && !$imaBookKeeper)
+//if(!$imaStreetSeller && !$imaHotelSeller && !$imaBookKeeper)
 echo Menu::widget(
                     [
                         'options' => [
@@ -116,6 +116,7 @@ echo Menu::widget(
                         'submenuTemplate' => "\n<ul class=\"treeview-menu\">\n{items}\n</ul>\n",
                         'activateParents' => true,
                         'items' => [
+                            // MAIN
                             [
                                 'label' => Yii::t('backend', 'Main'),
                                 'options' => [
@@ -138,13 +139,58 @@ echo Menu::widget(
                                     '/user/index'
                                 ],
                                 'active' => Yii::$app->controller->id === 'user',
-                                'visible' => Yii::$app->user->can('administrator'),
+                                'visible' => Yii::$app->user->can('accessUsers'),
                             ],
+
+                            [
+                                'label' => Yii::t('backend', 'Tickets'),
+                                'url' => [
+                                    '/Tickets/tickets/admin'
+                                ],
+                                'icon' => '<i class="fa fa-ticket"></i>',
+                                'items' => [
+                                    [
+                                        'label' => Yii::t('backend', 'Summary'),
+                                        'url' => [
+                                            '/Tickets/tickets/admin'
+                                        ],
+                                        'icon' => '<i class="fa fa-list-alt"></i>',
+                                        'active' => Yii::$app->controller->id === 'tickets' &&
+                                            Yii::$app->controller->action->id === 'admin',
+                                        'visible' => Yii::$app->user->can('accessTicketsAdmin'),
+                                    ],
+                                    [
+                                        'label' => Yii::t('backend', 'Add ticket block'),
+                                        'url' => [
+                                            '/Tickets/tickets/add-block'
+                                        ],
+                                        'icon' => '<i class="fa fa-plus"></i>',
+                                        'active' => Yii::$app->controller->id === 'tickets' &&
+                                            Yii::$app->controller->action->id === 'add-block',
+                                        'visible' => Yii::$app->user->can('addTicketBlock'),
+                                    ],
+//                                    [
+//                                        'label' => Yii::t('backend', 'Assign ticket block'),
+//                                        'url' => [
+//                                            '/Tickets/tickets/assign-block'
+//                                        ],
+//                                        'icon' => '<i class="fa fa-"></i>',
+//                                        'active' => Yii::$app->controller->id === 'tickets' &&
+//                                            Yii::$app->controller->action->id === 'assign-block',
+//                                        'visible' => Yii::$app->user->can('assignTicketBlock'),
+//                                    ],
+                                ],
+                                'active' => Yii::$app->controller->id === 'tickets',
+                                'visible' => Yii::$app->user->can('accessTickets'),
+                            ],
+
+                            // CONTENT
                             [
                                 'label' => Yii::t('backend', 'Content'),
                                 'options' => [
                                     'class' => 'header'
                                 ],
+                                'visible' => Yii::$app->user->can('accessContent'),
                             ],
                             [
                                 'label' => Yii::t('backend', 'Static pages'),
@@ -153,6 +199,7 @@ echo Menu::widget(
                                 ],
                                 'icon' => '<i class="fa fa-thumb-tack"></i>',
                                 'active' => Yii::$app->controller->id === 'page',
+                                'visible' => Yii::$app->user->can('accessContent'),
                             ],
                             [
                                 'label' => Yii::t('backend', 'Articles'),
@@ -183,6 +230,7 @@ echo Menu::widget(
                                         'active' => Yii::$app->controller->id === 'category',
                                     ],
                                 ],
+                                'visible' => Yii::$app->user->can('accessContent'),
                             ],
                             [
                                 'label' => Yii::t('backend', 'Widgets'),
@@ -223,12 +271,16 @@ echo Menu::widget(
                                         ]),
                                     ],
                                 ],
+                                'visible' => Yii::$app->user->can('accessContent'),
                             ],
+
+                            // TRANSLATION
                             [
                                 'label' => Yii::t('backend', 'Translation'),
                                 'options' => [
                                     'class' => 'header'
                                 ],
+                                'visible' => Yii::$app->user->can('accessTranslation'),
                             ],
                             [
                                 'label' => Yii::t('backend', 'Translation'),
@@ -237,12 +289,16 @@ echo Menu::widget(
                                 ],
                                 'icon' => '<i class="fa fa-language"></i>',
                                 'active' => (Yii::$app->controller->module->id == 'translation'),
+                                'visible' => Yii::$app->user->can('accessTranslation'),
                             ],
+
+                            // SYSTEM
                             [
                                 'label' => Yii::t('backend', 'System'),
                                 'options' => [
                                     'class' => 'header'
                                 ],
+                                'visible' => Yii::$app->user->can('accessSystem'),
                             ],
                             [
                                 'label' => Yii::t('backend', 'RBAC Rules'),
@@ -290,6 +346,7 @@ echo Menu::widget(
                                         'icon' => '<i class="fa fa-circle-o"></i>',
                                     ],
                                 ],
+                                'visible' => Yii::$app->user->can('accessRBAC'),
                             ],
                             [
                                 'label' => Yii::t('backend', 'Files'),
@@ -317,22 +374,15 @@ echo Menu::widget(
                                         'active' => (Yii::$app->controller->id == 'manager'),
                                     ],
                                 ],
+                                'visible' => Yii::$app->user->can('accessFiles'),
                             ],
                             [
                                 'label' => Yii::t('backend', 'Products'),
                                 'url' => [
-                                    '/Products/products/admin'
-                                ],
-                                'icon' => '<i class="fa fa-product-hunt"></i>',
-                                'active' => (Yii::$app->controller->id == 'products'),
-                            ],
 
-                            [
-                                'label' => Yii::t('backend', 'Mad-Product'),
-                                'url' => [
                                     '/Product/product/admin'
                                 ],
-                                'icon' => '<i class="fa fa-ticket"></i>',
+                                'icon' => '<i class="fas fa-box-open"></i>',
                                 'active' => (Yii::$app->controller->id == 'product'),
                                 'items' => [
                                     [
@@ -342,23 +392,25 @@ echo Menu::widget(
                                         ],
                                         'icon' => '<i class="fa fa-database"></i>',
                                         'active' => (Yii::$app->controller->id == 'create'),
-                                    ],],
+                                    ],
+                                ],
+                                'visible' => Yii::$app->user->can('accessProducts'),
                             ],
                             [
-                                'label' => Yii::t('backend', 'Mad-Payment'),
+                                'label' => Yii::t('backend', 'Payments'),
                                 'url' => [
                                     '/Payment/payment/admin'
                                 ],
                                 'icon' => '<i class="fa fa-money"></i>',
-                                'active' => (Yii::$app->controller->id == 'product'),
-
+                                'active' => (Yii::$app->controller->id == 'payment'),
+                                'visible' => Yii::$app->user->can('accessPayments'),
                             ],
                             [
-                                'label' => Yii::t('backend', 'Mad-Reservations'),
+                                'label' => Yii::t('backend', 'Bookings'),
                                 'url' => [
                                     '/Reservations/reservations/admin'
                                 ],
-                                'icon' => '<i class="fa fa-ticket"></i>',
+                                'icon' => '<i class="fa fa-check-square"></i>',
                                 'active' => (Yii::$app->controller->id == 'reservations'),
                                 'items' => [
                                     [
@@ -368,6 +420,7 @@ echo Menu::widget(
                                         ],
                                         'icon' => '<i class="fa fa-database"></i>',
                                         'active' => (Yii::$app->controller->id == 'create'),
+
                                     ],
                                     [
                                         'label' => Yii::t('backend', 'myReservations'),
@@ -385,7 +438,17 @@ echo Menu::widget(
                                         'icon' => '<i class="fa fa-calendar"></i>',
                                         'active' => (Yii::$app->controller->id == 'allreservations'),
                                     ],
-                                    ],
+                                ],
+                                'visible' => Yii::$app->user->can('accessBookings'),
+                            ],
+                            [
+                                'label' => Yii::t('backend', 'Statistics'),
+                                'url' => [
+                                    '/Statistics/statistics/admin'
+                                ],
+                                'icon' => '<i class="fa fa-line-chart"></i>',
+                                'active' => (Yii::$app->controller->id == 'statistics'),
+                                'visible' => Yii::$app->user->can('accessStatistics'),
                             ],
 
                             [
@@ -395,6 +458,7 @@ echo Menu::widget(
                                 ],
                                 'icon' => '<i class="fa fa-arrows-h"></i>',
                                 'active' => (Yii::$app->controller->id == 'key-storage'),
+                                'visible' => Yii::$app->user->can('accessKeyValueStorage'),
                             ],
                             [
                                 'label' => Yii::t('backend', 'Cache'),
@@ -402,6 +466,7 @@ echo Menu::widget(
                                     '/system/cache/index'
                                 ],
                                 'icon' => '<i class="fa fa-refresh"></i>',
+                                'visible' => Yii::$app->user->can('accessSystemCache'),
                             ],
                             [
                                 'label' => Yii::t('backend', 'System Information'),
@@ -409,6 +474,7 @@ echo Menu::widget(
                                     '/system/information/index'
                                 ],
                                 'icon' => '<i class="fa fa-dashboard"></i>',
+                                'visible' => Yii::$app->user->can('accessSystemInformation'),
                             ],
                             [
                                 'label' => Yii::t('backend', 'Logs'),
@@ -418,19 +484,11 @@ echo Menu::widget(
                                 'icon' => '<i class="fa fa-warning"></i>',
                                 'badge' => SystemLog::find()->count(),
                                 'badgeBgClass' => 'label-danger',
-                            ],
-
-                            [
-                                'label' => Yii::t('backend', 'Statistics'),
-                                'url' => [
-                                    '/Statistics/statistics/admin'
-                                ],
-                                'icon' => '<i class="fa fa-line-chart"></i>',
-                                'active' => (Yii::$app->controller->id == 'statistics'),
+                                'visible' => Yii::$app->user->can('accessSystemLogs'),
                             ],
                         ],
                     ]);
-            else if($imaStreetSeller || $imaHotelSeller){
+            /*else if($imaStreetSeller || $imaHotelSeller){
                 echo Menu::widget(
                     [
                         'options' => [
@@ -525,7 +583,7 @@ echo Menu::widget(
                     ]);
 
 
-            }
+            }*/
 
 
 

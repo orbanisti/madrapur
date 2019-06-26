@@ -2,71 +2,24 @@
 
 namespace backend\modules\Payment\controllers;
 
+use backend\controllers\Controller;
 use backend\modules\Order\models\Order;
-use backend\modules\Payment\models\Payment;
 use backend\modules\Payment\models\PaymentSearchModel;
 use backend\modules\Reservations\models\Reservations;
 use Yii;
-use backend\controllers\Controller;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 
 /**
  * Controller for the `Payment` module
  */
 class PaymentController extends Controller {
-    /**
-     * Renders the admin view for the module
-     * @return string
-     */
-    public function actionAdmin() {
-        $searchModel=new PaymentSearchModel();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('admin',
-            [
-                'dataProvider' => $dataProvider,
-                'searchModel' => $searchModel,
-            ]);
-    }
-
-    /**
-     * Renders the index view for the module
-     * @return string
-     */
-    public function actionIndex() {
-        return $this->render('index');
-    }
-
-    public function behaviors() {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => [
-                    //'simpleipn' => ['post'],
-                    'create' => ['post'],
-                ],
-            ],
-        ];
-
-    }
-
-    public function beforeAction($action) {
-        // if ("simpleipn" === Yii::$app->controller->action->id)
-            $this->enableCsrfValidation = false;
-
-        return parent::beforeAction($action);
-    }
-
-    public function actionPrePay() {
-
-    }
-
     public static function actionPay($ids) {
         $reservations = Reservations::getReservationsByIds($ids);
-        error_reporting(E_ALL|E_STRICT);
+        error_reporting(E_ALL | E_STRICT);
         ini_set('display_errors', '1');
-        require_once(OTP.'sdk/config.php');
-        require_once(OTP.'sdk/SimplePayment.class.php');
+        require_once(OTP . 'sdk/config.php');
+        require_once(OTP . 'sdk/SimplePayment.class.php');
 
         $orderData = json_decode($reservations[0]->data);
 
@@ -87,7 +40,7 @@ class PaymentController extends Controller {
         */
 
         $orderIds = [];
-        foreach($reservations as $key => $order) {
+        foreach ($reservations as $key => $order) {
             $data = json_decode($order->data);
             $orderDetails = $data->orderDetails;
             $bookingDetails = $data->bookingDetails;
@@ -95,21 +48,22 @@ class PaymentController extends Controller {
             $sumPrice = 0.00;
             $orderIds[] = $order->id;
 
-            foreach ($orderTotal as $price)
+            foreach ($orderTotal as $price) {
                 $sumPrice += $price;
+            }
 
             $lu->addProduct(array(
-                'name' => $bookingDetails->booking_name,							//product name [ string ]
-                'code' => $bookingDetails->booking_product_id,							//merchant systemwide unique product ID [ string ]
-                'info' => '',			//product description [ string ]
-                'price' => $sumPrice, 								//product price [ HUF: integer | EUR, USD decimal 0.00 ]
-                'vat' => 0,										//product tax rate [ in case of gross price: 0 ] (percent)
-                'qty' => 1,							//product quantity [ integer ]
+                'name' => $bookingDetails->booking_name,                            //product name [ string ]
+                'code' => $bookingDetails->booking_product_id,                            //merchant systemwide unique product ID [ string ]
+                'info' => '',            //product description [ string ]
+                'price' => $sumPrice,                                //product price [ HUF: integer | EUR, USD decimal 0.00 ]
+                'vat' => 0,                                        //product tax rate [ in case of gross price: 0 ] (percent)
+                'qty' => 1,                            //product quantity [ integer ]
             ));
         }
 
         $order = new Order();
-        $values= [
+        $values = [
             'status' => 'pending',
             'transactionId' => '',
             'reservationIds' => json_encode($orderIds),
@@ -124,7 +78,7 @@ class PaymentController extends Controller {
         $lu->setField("BILL_LNAME", $orderData->orderDetails->billing_last_name);
         $lu->setField("BILL_EMAIL", $orderData->orderDetails->billing_email);
         $lu->setField("BILL_PHONE", $orderData->orderDetails->billing_phone);
-        $lu->setField("BILL_COMPANY", '');          		// optional
+        $lu->setField("BILL_COMPANY", '');                // optional
         //$lu->setField("BILL_FISCALCODE", " ");                  		// optional
         $lu->setField("BILL_COUNTRYCODE", $orderData->orderDetails->billing_country->value);
         $lu->setField("BILL_STATE", '');
@@ -137,7 +91,7 @@ class PaymentController extends Controller {
         $lu->setField("DELIVERY_LNAME", $orderData->orderDetails->billing_last_name);
         $lu->setField("DELIVERY_EMAIL", $orderData->orderDetails->billing_email);
         $lu->setField("DELIVERY_PHONE", $orderData->orderDetails->billing_phone);
-        $lu->setField("DELIVERY_COMPANY", '');          		// optional
+        $lu->setField("DELIVERY_COMPANY", '');                // optional
         //$lu->setField("DELIVERY_FISCALCODE", " ");                  		// optional
         $lu->setField("DELIVERY_COUNTRYCODE", $orderData->orderDetails->billing_country->value);
         $lu->setField("DELIVERY_STATE", '');
@@ -150,11 +104,11 @@ class PaymentController extends Controller {
 
         $lu->errorLogger();
 
-        return '<span style="display: none;">'.$display.'</span>';
+        return '<span style="display: none;">' . $display . '</span>';
     }
 
     public static function actionBackref() {
-        $to      = 'alpe15.1992@gmail.com';
+        $to = 'alpe15.1992@gmail.com';
         $subject = 'ORDER';
         $message = 'Thank you!';
         $headers = 'From: web@budapestrivercruise.co.uk' . "\r\n" .
@@ -162,27 +116,96 @@ class PaymentController extends Controller {
             'X-Mailer: PHP/' . phpversion();
 
         mail($to, $subject, $message, $headers);
-        require_once(OTP."nogui/backref.php");
+        require_once(OTP . "nogui/backref.php");
     }
 
     public static function actionTimeout() {
-        require_once(OTP."nogui/timeout.php");
+        require_once(OTP . "nogui/timeout.php");
     }
 
     public static function actionIrn() {
-        require_once(OTP."nogui/irn.php");
+        require_once(OTP . "nogui/irn.php");
     }
 
     public static function actionIdn() {
-        require_once(OTP."nogui/idn.php");
+        require_once(OTP . "nogui/idn.php");
     }
 
     public static function actionIos() {
-        require_once(OTP."nogui/ios.php");
+        require_once(OTP . "nogui/ios.php");
     }
 
     public static function actionIpn() {
         $postData = Yii::$app->request->post();
-        require_once(OTP."nogui/ipn.php");
+        require_once(OTP . "nogui/ipn.php");
+    }
+
+    /**
+     * Renders the admin view for the module
+     *
+     * @return string
+     */
+    public function actionAdmin() {
+        $searchModel = new PaymentSearchModel();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('admin',
+            [
+                'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
+            ]);
+    }
+
+    /**
+     * Renders the index view for the module
+     *
+     * @return string
+     */
+    public function actionIndex() {
+        return $this->render('index');
+    }
+
+    public function behaviors() {
+        return array_merge(parent::behaviors(), [
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['admin'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => [
+                            'admin'
+                        ],
+                        'roles' => ['officeAdmin']
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['admin'],
+                        'roles' => ['officeAdmin']
+                    ],
+                    [
+                        'allow' => false
+                    ]
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    //'simpleipn' => ['post'],
+                    'create' => ['post'],
+                ],
+            ],
+        ]);
+    }
+
+    public function beforeAction($action) {
+        // if ("simpleipn" === Yii::$app->controller->action->id)
+        $this->enableCsrfValidation = false;
+
+        return parent::beforeAction($action);
+    }
+
+    public function actionPrePay() {
+
     }
 }
