@@ -77,11 +77,10 @@ class TicketsController extends Controller {
             if (!Yii::$app->user->can('addTicketBlock'))
                 throw new ForbiddenHttpException('userCan');
 
-            Yii::error(Yii::$app->request->post());
-            Yii::error((int)Yii::$app->request->post('startId'));
-            Yii::error(sprintf('%07d', (int)Yii::$app->request->post('startId')));
+//            Yii::error(Yii::$app->request->post());
+//            Yii::error((int)Yii::$app->request->post('startId'));
+//            Yii::error(sprintf('%07d', (int)Yii::$app->request->post('startId')));
             $saved = false;
-
 
             if (Yii::$app->request->post('startId')) {
                 $startId = Yii::$app->request->post('startId');

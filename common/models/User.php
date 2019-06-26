@@ -42,14 +42,25 @@ class User extends MadActiveRecord implements IdentityInterface {
     const ROLE_USER = 'user';
 
     const ROLE_OFFICE_ADMIN = 'officeAdmin';
+    const ASSIGN_OFFICE_ADMIN = 'assign_officeAdmin';
+
     const ROLE_TICKET_EDITOR = 'ticketEditor';
+    const ASSIGN_TICKET_EDITOR = 'assign_ticketEditor';
+
     const ROLE_HOTEL_EDITOR = 'hotelEditor';
+    const ASSIGN_HOTEL_EDITOR = 'assign_hotelEditor';
+
     const ROLE_OFFICE_VISITOR = 'officeVisitor';
+    const ASSIGN_OFFICE_VISITOR = 'assign_officeVisitor';
 
     const ROLE_STREET_ADMIN = 'streetAdmin';
+    const ASSIGN_STREET_ADMIN = 'assign_streetAdmin';
+
     const ROLE_STREET_SELLER = 'streetSeller';
+    const ASSIGN_STREET_SELLER = 'assign_streetSeller';
 
     const ROLE_HOTLINE = 'hotline';
+    const ASSIGN_HOTLINE = 'assign_hotline';
 
     const EVENT_AFTER_SIGNUP = 'afterSignup';
     const EVENT_AFTER_LOGIN = 'afterLogin';

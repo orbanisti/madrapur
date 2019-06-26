@@ -382,7 +382,7 @@ echo Menu::widget(
 
                                     '/Product/product/admin'
                                 ],
-                                'icon' => '<i class="fas fa-box-open"></i>',
+                                'icon' => '<i class="fa fa-box-open"></i>',
                                 'active' => (Yii::$app->controller->id == 'product'),
                                 'items' => [
                                     [
@@ -417,6 +417,15 @@ echo Menu::widget(
                                         'label' => Yii::t('backend', 'Create'),
                                         'url' => [
                                             '/Reservations/reservations/create'
+                                        ],
+                                        'icon' => '<i class="fa fa-database"></i>',
+                                        'active' => (Yii::$app->controller->id == 'create'),
+
+                                    ],
+                                    [
+                                        'label' => Yii::t('backend', 'Create (new)'),
+                                        'url' => [
+                                            '/Reservations/reservations/create-react'
                                         ],
                                         'icon' => '<i class="fa fa-database"></i>',
                                         'active' => (Yii::$app->controller->id == 'create'),

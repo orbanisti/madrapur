@@ -4,6 +4,7 @@ namespace backend\modules\Reservations\models;
 
 use backend\modules\Product\models\Product;
 use backend\modules\Product\models\ProductSource;
+use backend\modules\Tickets\models\TicketBlock;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\modules\Products\models\Products;
@@ -205,6 +206,26 @@ class ReservationsAdminSearchModel extends Reservations
         }
 
         return $cost;
+    }
+
+    public function getTicketBookBySeller() {
+        $what = ['startId'];
+        $from = TicketBlock::tableName();
+
+        $filters = [];
+        $filters[] = ['assignedTo', '=', \Yii::$app->user->id];
+        $filters[] = ['frozen', '=', 0];
+
+        $where = self::andWhereFilter($filters);
+
+        $row = self::aSelect(
+            TicketBlock::class,
+            $what, $from, $where
+        )->one();
+
+
+
+        return $row;
     }
 
 

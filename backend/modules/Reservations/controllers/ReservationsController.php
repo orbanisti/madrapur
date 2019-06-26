@@ -414,6 +414,7 @@ class ReservationsController extends Controller {
 
         $monthlySold = $searchModel->getMonthlyBySeller(Yii::$app->user->identity->username);
         $todaySold = $searchModel->getTodayBySeller(Yii::$app->user->identity->username);
+        $myTicketBook = $searchModel->getTicketBookBySeller();
 
         return $this->render(
             'myreservations',
@@ -422,6 +423,7 @@ class ReservationsController extends Controller {
                 'searchModel' => $searchModel,
                 'monthlySold' => $monthlySold,
                 'todaySold' => $todaySold,
+                'nextTicketId' => $myTicketBook->startId,
             ]
         );
     }

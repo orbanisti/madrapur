@@ -124,7 +124,7 @@ class UserForm extends Model {
         $roles = ArrayHelper::getColumn(Yii::$app->authManager->getRoles(), 'name');
 
         foreach ($roles as $i => $role) {
-            if (!Yii::$app->user->can($role))
+            if (!Yii::$app->user->can('assign_' . $role))
                 unset($roles[$i]);
         }
 
@@ -152,7 +152,7 @@ class UserForm extends Model {
         $this->email = $model->email;
         $this->status = $model->status;
         $this->model = $model;
-        $this->roles = $this->getRoles();
+        $this->roles =  ArrayHelper::getColumn(Yii::$app->authManager->getRolesByUser($model->getId()), 'name');
         return $this->model;
     }
 

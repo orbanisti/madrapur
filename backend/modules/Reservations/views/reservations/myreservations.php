@@ -74,7 +74,7 @@ use yii\widgets\ActiveForm;
             LteInfoBox::begin([
                 'bgIconColor' => LteConst::COLOR_TEAL,
                 'bgColor' => '',
-                'number' => "unset",
+                'number' => "$nextTicketId",
                 'text'=>' ',
                 'icon'=>'fa fa-ticket',
                 'showProgress' => true,

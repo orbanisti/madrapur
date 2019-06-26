@@ -23,6 +23,10 @@ class m190624_102301_modulusTickets extends Migration {
             ], $this->tableOptions
         );
 
+        //TODO dynamic foreign key
+        //$this->addForeignKey('fk_tb_start_id', 'modulus_ticket_blocks', 'startId', 'user', 'id', 'CASCADE',
+        // 'CASCADE');
+
         $this->addForeignKey('fk_user_assigned_by', 'modulus_ticket_blocks', 'assignedBy', 'user', 'id', 'CASCADE', 'CASCADE');
 
         $this->addForeignKey('fk_user_assigned_to', 'modulus_ticket_blocks', 'assignedTo', 'user', 'id', 'CASCADE', 'CASCADE');
