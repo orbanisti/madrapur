@@ -1,6 +1,8 @@
 <?php
+
 namespace common\models;
 
+use backend\modules\MadActiveRecord\models\MadActiveRecord;
 use common\commands\AddToTimelineCommand;
 use common\models\query\UserQuery;
 use Yii;
@@ -27,25 +29,29 @@ use yii\web\IdentityInterface;
  * @property integer $updated_at
  * @property integer $logged_at
  * @property string $password write-only password
- *          
+ *
  * @property \common\models\UserProfile $userProfile
  */
-class User extends ActiveRecord implements IdentityInterface {
+class User extends MadActiveRecord implements IdentityInterface {
 
     const STATUS_NOT_ACTIVE = 1;
-
     const STATUS_ACTIVE = 2;
-
     const STATUS_DELETED = 3;
 
+    const ROLE_ADMINISTRATOR = 'administrator';
     const ROLE_USER = 'user';
 
-    const ROLE_MANAGER = 'manager';
+    const ROLE_OFFICE_ADMIN = 'officeAdmin';
+    const ROLE_TICKET_EDITOR = 'ticketEditor';
+    const ROLE_HOTEL_EDITOR = 'hotelEditor';
+    const ROLE_OFFICE_VISITOR = 'officeVisitor';
 
-    const ROLE_ADMINISTRATOR = 'administrator';
+    const ROLE_STREET_ADMIN = 'streetAdmin';
+    const ROLE_STREET_SELLER = 'streetSeller';
+
+    const ROLE_HOTLINE = 'hotline';
 
     const EVENT_AFTER_SIGNUP = 'afterSignup';
-
     const EVENT_AFTER_LOGIN = 'afterLogin';
 
     /**
@@ -63,8 +69,8 @@ class User extends ActiveRecord implements IdentityInterface {
     public static function findIdentity($id) {
         return static::find()->active()
             ->andWhere([
-            'id' => $id
-        ])
+                'id' => $id
+            ])
             ->one();
     }
 
@@ -83,8 +89,8 @@ class User extends ActiveRecord implements IdentityInterface {
     public static function findIdentityByAccessToken($token, $type = null) {
         return static::find()->active()
             ->andWhere([
-            'access_token' => $token
-        ])
+                'access_token' => $token
+            ])
             ->one();
     }
 
@@ -92,13 +98,14 @@ class User extends ActiveRecord implements IdentityInterface {
      * Finds user by username
      *
      * @param string $username
+     *
      * @return User|array|null
      */
     public static function findByUsername($username) {
         return static::find()->active()
             ->andWhere([
-            'username' => $username
-        ])
+                'username' => $username
+            ])
             ->one();
     }
 
@@ -106,19 +113,20 @@ class User extends ActiveRecord implements IdentityInterface {
      * Finds user by username or email
      *
      * @param string $login
+     *
      * @return User|array|null
      */
     public static function findByLogin($login) {
         return static::find()->active()
             ->andWhere([
-            'or',
-            [
-                'username' => $login
-            ],
-            [
-                'email' => $login
-            ]
-        ])
+                'or',
+                [
+                    'username' => $login
+                ],
+                [
+                    'email' => $login
+                ]
+            ])
             ->one();
     }
 
@@ -154,15 +162,15 @@ class User extends ActiveRecord implements IdentityInterface {
      */
     public function scenarios() {
         return ArrayHelper::merge(parent::scenarios(),
-                [
-                    'oauth_create' => [
-                        'oauth_client',
-                        'oauth_client_user_id',
-                        'email',
-                        'username',
-                        '!status'
-                    ]
-                ]);
+            [
+                'oauth_create' => [
+                    'oauth_client',
+                    'oauth_client_user_id',
+                    'email',
+                    'username',
+                    '!status'
+                ]
+            ]);
     }
 
     /**
@@ -258,6 +266,7 @@ class User extends ActiveRecord implements IdentityInterface {
      *
      * @param string $password
      *            password to validate
+     *
      * @return boolean if password provided is valid for current user
      */
     public function validatePassword($password) {
@@ -281,16 +290,16 @@ class User extends ActiveRecord implements IdentityInterface {
     public function afterSignup(array $profileData = []) {
         $this->refresh();
         Yii::$app->commandBus->handle(
-                new AddToTimelineCommand(
-                        [
-                            'category' => 'user',
-                            'event' => 'signup',
-                            'data' => [
-                                'public_identity' => $this->getPublicIdentity(),
-                                'user_id' => $this->getId(),
-                                'created_at' => $this->created_at
-                            ]
-                        ]));
+            new AddToTimelineCommand(
+                [
+                    'category' => 'user',
+                    'event' => 'signup',
+                    'data' => [
+                        'public_identity' => $this->getPublicIdentity(),
+                        'user_id' => $this->getId(),
+                        'created_at' => $this->created_at
+                    ]
+                ]));
         $profile = new UserProfile();
         $profile->locale = Yii::$app->language;
         $profile->load($profileData, '');

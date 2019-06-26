@@ -114,10 +114,21 @@ class UserForm extends Model {
                 'each',
                 'rule' => [
                     'in',
-                    'range' => ArrayHelper::getColumn(Yii::$app->authManager->getRoles(), 'name')
+                    'range' => $this->getRoles()
                 ]
             ],
         ];
+    }
+
+    public function getRoles() {
+        $roles = ArrayHelper::getColumn(Yii::$app->authManager->getRoles(), 'name');
+
+        foreach ($roles as $i => $role) {
+            if (!Yii::$app->user->can($role))
+                unset($roles[$i]);
+        }
+
+        return $roles;
     }
 
     /**
@@ -141,7 +152,7 @@ class UserForm extends Model {
         $this->email = $model->email;
         $this->status = $model->status;
         $this->model = $model;
-        $this->roles = ArrayHelper::getColumn(Yii::$app->authManager->getRolesByUser($model->getId()), 'name');
+        $this->roles = $this->getRoles();
         return $this->model;
     }
 

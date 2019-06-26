@@ -1,6 +1,7 @@
 <?php
 namespace backend\modules\rbac\models;
 
+use backend\modules\MadActiveRecord\models\MadActiveRecord;
 use Yii;
 
 /**
@@ -12,7 +13,7 @@ use Yii;
  *
  * @property RbacAuthItem $itemName
  */
-class RbacAuthAssignment extends \yii\db\ActiveRecord {
+class RbacAuthAssignment extends MadActiveRecord {
 
     /**
      *

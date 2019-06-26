@@ -2,57 +2,41 @@
 
 namespace backend\modules\Product\controllers;
 
-
+use backend\controllers\Controller;
 use backend\modules\Product\models\Product;
+use backend\modules\Product\models\ProductAdminSearchModel;
 use backend\modules\Product\models\ProductBlockout;
 use backend\modules\Product\models\ProductBlockoutTime;
 use backend\modules\Product\models\ProductEdit;
-
 use backend\modules\Product\models\ProductOverview;
 use backend\modules\Product\models\ProductPrice;
-
 use backend\modules\Product\models\ProductSource;
-
-use backend\modules\Products\controllers\BlockoutsController;
+use backend\modules\Product\models\ProductTime;
+use backend\modules\Product\models\ProductUpdate;
 use backend\modules\Reservations\models\Reservations;
-use backend\modules\Reservations\models\ReservationsAdminInfoSearchModel;
 use backend\modules\Reservations\models\ReservationsAdminSearchModel;
-use backend\modules\Reservations\models\ReservationsInfo;
 use kartik\grid\EditableColumnAction;
 use League\Uri\PublicSuffix\CurlHttpClient;
-use Mpdf\Tag\B;
 use Yii;
-use backend\controllers\Controller;
-use backend\modules\Product\models\ProductUpdate;
-use backend\modules\Product\models\ProductTime;
-
-use backend\modules\Product\models\ProductAdminSearchModel;
-use himiklab\jqgrid\actions\JqGridActiveAction;
-
-
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
 
 /**
  * Controller for the `Product` module
  */
-class ProductController extends Controller
-{
+class ProductController extends Controller {
     /**
      * Renders the admin view for the module
+     *
      * @return string
      */
-    public function actionAdmin()
-    {
+    public function actionAdmin() {
         $searchModel = new ProductAdminSearchModel();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('admin', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
-
     }
 
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new ProductUpdate();
         $request = YII::$app->request;
 
@@ -78,50 +62,15 @@ class ProductController extends Controller
             if (Product::insertOne($newProduct, $values)) {
 
                 $updateResponse = '<span style="color:green">Product Update Successful</span>';
-
             } else {
                 $updateResponse = '<span style="color:red">Product Update Failed</span>';
-
                 //show an error message
             }
         }
         return $this->render('create', ['model' => $model, 'updateResponse' => $updateResponse]);
     }
 
-    /**
-     * @return string
-     */
-
-
-    function slugify($text)
-    {
-        // replace non letter or digits by -
-        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
-
-        // transliterate
-        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-
-        // remove unwanted characters
-        $text = preg_replace('~[^-\w]+~', '', $text);
-
-        // trim
-        $text = trim($text, '-');
-
-        // remove duplicate -
-        $text = preg_replace('~-+~', '-', $text);
-
-        // lowercase
-        $text = strtolower($text);
-
-        if (empty($text)) {
-            return 'n-a';
-        }
-
-        return $text;
-    }
-
-    public function actionUpdate()
-    {
+    public function actionUpdate() {
 
         $model = new ProductEdit();
         $request = Yii::$app->request;
@@ -137,7 +86,6 @@ class ProductController extends Controller
 
         //here I update my model to contain info from the DB to populate the FORM but it's important that you use a Model like Product at the selection so you don't redeclare stuff
         $model = $backendData;
-
 
         $request = YII::$app->request;
 
@@ -162,7 +110,6 @@ class ProductController extends Controller
                 'slug' => $productEdit['slug'],
             ];
 
-
             $query = Product::aSelect(Product::class, '*', Product::tableName(), 'id=' . $prodId);
 
             try {
@@ -174,16 +121,12 @@ class ProductController extends Controller
                 //letezao productot updatelunk
             } else {
                 $newProduct = new Product();
-
             }
-
 
             if (Product::insertOne($newProduct, $values)) {
                 $updateResponse = 1;
-
             } else {
                 $updateResponse = 0;
-
                 //show an error message
             }
         }
@@ -195,22 +138,16 @@ class ProductController extends Controller
                 $model = $prodInfo;
             } catch (Exception $e) {
             }
-
-
         }
 
-
         /*******************Times Rész /TODO bring this to manly form*********************/
-
 
         $request = YII::$app->request;
         $productPostedTimes = $request->post('ProductTime');
         $modelTimes[] = new ProductTime();
 
-
         //$deletedtimesIDs = array_diff($rowsArray, ));
         //  var_dump($deletedtimesIDs);
-
 
         if ($productPostedTimes) {
             $queryGetTimes = ProductTime::aSelect(ProductTime::class, '*', ProductTime::tableName(), 'product_id=' . $prodId);
@@ -223,13 +160,11 @@ class ProductController extends Controller
             $a = array_filter(ArrayHelper::map($rowsArray, 'id', 'id'));
             $b = array_filter(ArrayHelper::map($productPostedTimes, 'id', 'id'));
 
-
             $deletedTimesIds = array_diff($a, $b);
             if (!empty($deletedTimesIds)) {
                 ProductTime::deleteAll(['id' => $deletedTimesIds]);
             }
             foreach ($productPostedTimes as $postedTime):
-
 
                 if ($postedTime['start_date'] == 'NULL' || $postedTime['start_date'] == '') {
                     $postedTime['start_date'] = date("Y-m-d");
@@ -245,12 +180,10 @@ class ProductController extends Controller
                     'id' => $postedTime['id']
                 ];
 
-
                 $query = ProductTime::aSelect(ProductTime::class, '*', ProductTime::tableName(), 'product_id=' . $prodId . ' and id="' . $values['id'] . '"');
 
                 try {
                     $rows = $query->one();
-
                 } catch (Exception $e) {
                 }
                 if (isset($rows)) {
@@ -258,24 +191,16 @@ class ProductController extends Controller
                     //letezao productot updatelunk
                 } else {
                     $newTimes = new ProductTime();
-
-
                 }
-
 
                 if (Product::insertOne($newTimes, $values)) {
                     $updateResponse = 1;
-
                 } else {
                     $updateResponse = 0;
-
                     //show an error message
                 }
 
-
             endforeach;
-
-
         }
 
         $queryGetTimes = ProductTime::aSelect(ProductTime::class, '*', ProductTime::tableName(), 'product_id=' . $prodId);
@@ -297,8 +222,6 @@ class ProductController extends Controller
                 }
             }
             $modelTimes = $rowsAll;
-
-
         } else {
             $modelTimes[] = new ProductTime();
             $modelTimes = Product::createMultiple(ProductTime::className(), $modelTimes);
@@ -308,11 +231,9 @@ class ProductController extends Controller
 
         /*******************Prices Rész /TODO bring this to manly form*********************/
 
-
         $request = YII::$app->request;
         $productPostedPrices = $request->post('ProductPrice');
         $modelPrices[] = new ProductPrice();
-
 
         if ($productPostedPrices) {
             $queryGetPrices = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $prodId);
@@ -325,9 +246,7 @@ class ProductController extends Controller
             $a = array_filter(ArrayHelper::map($rowsArray, 'id', 'id'));
             $b = array_filter(ArrayHelper::map($productPostedPrices, 'id', 'id'));
 
-
             $deletedPricesIds = array_diff($a, $b);
-
 
             $result = ProductPrice::deleteAll(['id' => $deletedPricesIds]);
 
@@ -338,7 +257,6 @@ class ProductController extends Controller
                 if ($postedPrice['end_date'] == 'NULL' || $postedPrice['end_date'] == '') {
                     $postedPrice['end_date'] = date("Y-m-d");
                 }
-
 
                 $values = [
                     'name' => $postedPrice['name'],
@@ -351,12 +269,10 @@ class ProductController extends Controller
                     'id' => $postedPrice['id']
                 ];
 
-
                 $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $prodId . ' and id="' . $values['id'] . '"');
 
                 try {
                     $rows = $query->one();
-
                 } catch (Exception $e) {
                 }
                 if (isset($rows)) {
@@ -364,24 +280,16 @@ class ProductController extends Controller
                     //letezao productot updatelunk
                 } else {
                     $newPrice = new ProductPrice();
-
-
                 }
-
 
                 if (Product::insertOne($newPrice, $values)) {
                     $updateResponse = 1;
-
                 } else {
                     $updateResponse = 0;
-
                     //show an error message
                 }
 
-
             endforeach;
-
-
         }
 
         $queryGetPrices = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $prodId);
@@ -391,7 +299,6 @@ class ProductController extends Controller
         }
 
         if (isset($rowsAll)) {
-
 
             if (!$productPostedPrices && $productEdit) {
                 if (isset($rowsAll[0])) {
@@ -409,17 +316,13 @@ class ProductController extends Controller
             $modelPrices = Product::createMultiple(ProductPrice::class, $modelTimes);
             $modelPrices[0] = new ProductPrice();
             $modelPrices[0]->name = 'asd';
-
         }
 
-
         /*******************Source Rész /TODO bring this to manly form*********************/
-
 
         $request = YII::$app->request;
         $productPostedSources = $request->post('ProductSource');
         $modelSources[] = new ProductSource();
-
 
         if ($productPostedSources) {
             $queryGetSources = ProductSource::aSelect(ProductSource::class, '*', ProductSource::tableName(), 'product_id=' . $prodId);
@@ -432,14 +335,11 @@ class ProductController extends Controller
             $a = array_filter(ArrayHelper::map($rowsArray, 'id', 'id'));
             $b = array_filter(ArrayHelper::map($productPostedSources, 'id', 'id'));
 
-
             $deletedSourcesIds = array_diff($a, $b);
-
 
             $result = ProductSource::deleteAll(['id' => $deletedSourcesIds]);
 
             foreach ($productPostedSources as $postedSources):
-
 
                 $values = [
                     'name' => $postedSources['name'],
@@ -451,12 +351,10 @@ class ProductController extends Controller
 
                 ];
 
-
                 $query = ProductSource::aSelect(ProductSource::class, '*', ProductSource::tableName(), 'product_id=' . $prodId . ' and id="' . $values['id'] . '"');
 
                 try {
                     $sourceRows = $query->one();
-
                 } catch (Exception $e) {
                 }
                 if (isset($sourceRows)) {
@@ -464,33 +362,23 @@ class ProductController extends Controller
                     //letezao productot updatelunk
                 } else {
                     $newSources = new ProductSource();
-
-
                 }
-
 
                 if (Product::insertOne($newSources, $values)) {
                     $updateResponse = 1;
-
                 } else {
                     $updateResponse = 0;
-
                     //show an error message
                 }
 
-
             endforeach;
-
-
         }
-
 
         $queryGetSources = ProductSource::aSelect(ProductSource::class, '*', ProductSource::tableName(), 'product_id=' . $prodId);
         try {
             $sourceRows = $queryGetSources->all();
         } catch (Exception $e) {
         }
-
 
         if (isset($sourceRows)) {
 
@@ -512,7 +400,6 @@ class ProductController extends Controller
             $modelSources = Product::createMultiple(ProductSource::class, $modelSources);
             $modelSources[0] = new ProductSource();
             $modelSources[0]->name = 'asd';
-
         }
 
         /**
@@ -542,7 +429,6 @@ class ProductController extends Controller
                     $event->color = $source->color;
                     $modelEvents2[] = $event;
                 }
-
             }
         endforeach;
         /**
@@ -579,7 +465,6 @@ class ProductController extends Controller
             $model->slug = '/product/' . $this->slugify($model->title);
         }
 
-
         return $this->render(
             'update', ['model' => $model, 'backendData' => $backendData,
                 'updateResponse' => $updateResponse,
@@ -590,21 +475,48 @@ class ProductController extends Controller
                 'modelPrices' => ((empty($modelPrices)) ? [new ProductPrice()] : $modelPrices),
             ]
         );
-
     }
 
+    /**
+     * @return string
+     */
+
+    function slugify($text) {
+        // replace non letter or digits by -
+        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+
+        // transliterate
+        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+
+        // remove unwanted characters
+        $text = preg_replace('~[^-\w]+~', '', $text);
+
+        // trim
+        $text = trim($text, '-');
+
+        // remove duplicate -
+        $text = preg_replace('~-+~', '-', $text);
+
+        // lowercase
+        $text = strtolower($text);
+
+        if (empty($text)) {
+            return 'n-a';
+        }
+
+        return $text;
+    }
 
     /**
      * Renders the index view for the module
+     *
      * @return string
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         return $this->render('index');
     }
 
-    public function actionDaye()
-    {
+    public function actionDaye() {
         $currentProductId = Yii::$app->request->get('prodId');
 
         $searchModel = new ReservationsAdminSearchModel();
@@ -617,9 +529,7 @@ class ProductController extends Controller
             $dataProvider = $searchModel->searchDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
             $takenChairsCount = $searchModel->countTakenChairsOnDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
             $availableChairsOnDay = $searchModel->availableChairsOnDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
-
         }
-
 
         return $this->render('dayEdit', [
             'dataProvider' => $dataProvider,
@@ -633,9 +543,7 @@ class ProductController extends Controller
         ]);
     }
 
-
-    public function actionBlocked()
-    {
+    public function actionBlocked() {
         $returnMessage = 'Currently no modification initiated';
         $currentProductId = Yii::$app->request->get('prodId');
         if ($currentProductId) {
@@ -652,12 +560,10 @@ class ProductController extends Controller
 
         if ($productPostedBlockouts["dates"]) {
 
-
             $query = ProductBlockout::aSelect(ProductBlockout::class, '*', ProductBlockout::tableName(), 'product_id=' . $currentProductId);
 
             try {
                 $rowsOne = $query->one();
-
             } catch (Exception $e) {
             }
 
@@ -687,12 +593,8 @@ class ProductController extends Controller
                                 if ($response != 0) {
                                     $response = $curl->getContent($curlUrl);
                                 }
-
-
                             }//ToDo not only eu
                         }
-
-
                         // var_dump($response.$url); find UNBLOCK URL HERE
 
                     }
@@ -708,13 +610,10 @@ class ProductController extends Controller
 
                 $veglegesdates = $dates;
 
-
                 foreach ($veglegesdates as $i => $date) {
-
 
                     foreach ($sources as $source) {
                         if ($source['url'] == 'https://budapestrivercruise.eu') {
-
 
                             $myurl = $source['url'];
                             $myprodid = $source['prodIds'];
@@ -734,7 +633,6 @@ class ProductController extends Controller
                                 if ($blockedDate->bookable == 'no' && $blockedDate->from == $blockedDate->to) {
                                     $alreadyBlockedArray[] = $blockedDate->from;
                                 }
-
                             }
 
                             if (!in_array($date, $alreadyBlockedArray)) {
@@ -745,12 +643,9 @@ class ProductController extends Controller
                                 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
                                 $response = curl_exec($curl);
                             }
-
-
                         }//Todo no only eu
                     }
                 }
-
             } else {
 
                 $model = new ProductBlockout();
@@ -763,15 +658,10 @@ class ProductController extends Controller
 
             if (ProductBlockout::insertOne($model, $values)) {
                 $returnMessage = 'Successfully Saved';
-
             } else {
                 $returnMessage = 'Save not Succesful';
-
             }
-
-
         }
-
 
         $queryGetPrices = ProductBlockout::aSelect(ProductBlockout::class, '*', ProductBlockout::tableName(), 'product_id=' . $currentProductId);
         try {
@@ -782,15 +672,11 @@ class ProductController extends Controller
         if (isset($rowsOne)) {
 
             $model = $rowsOne;
-
         } else {
             $model = new ProductBlockout();
-
-
         }
 
         /*update sources*/
-
 
         return $this->render('blocked', [
             'currentProduct' => $currentProduct,
@@ -800,8 +686,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function actionBlockedtimes()
-    {
+    public function actionBlockedtimes() {
         $returnMessage = 'Currently no modification initiated';
         $currentProductId = Yii::$app->request->get('prodId');
 
@@ -818,9 +703,8 @@ class ProductController extends Controller
         #$modelPrices[] = new ProductPrice();
         #$returnMessage=$productPostedBlockouts;
 
-        $model=new ProductBlockoutTime();
+        $model = new ProductBlockoutTime();
         $searchModel = new ProductBlockoutTime();
-
 
         if ($postedBlockout["date"]) {
             $values = [
@@ -830,46 +714,83 @@ class ProductController extends Controller
 
             if (ProductBlockout::insertOne($model, $values)) {
 
-                
-                $returnMessage=$this->blockDateTime($postedBlockout['date'],'https://budapestrivercruise.eu',31489);
-
-
-
+                $returnMessage = $this->blockDateTime($postedBlockout['date'], 'https://budapestrivercruise.eu', 31489);
             } else {
                 $returnMessage = 'Save not Succesful';
             }
         }
-        if($postedBlockoutDelete){
-            $blockoutToDelete=ProductBlockoutTime::meById(new ProductBlockoutTime(),$postedBlockoutDelete);
-            if($blockoutToDelete->delete()){
-                $returnMessage='Successfully deleted '.$postedBlockoutDelete;
+        if ($postedBlockoutDelete) {
+            $blockoutToDelete = ProductBlockoutTime::meById(new ProductBlockoutTime(), $postedBlockoutDelete);
+            if ($blockoutToDelete->delete()) {
+                $returnMessage = 'Successfully deleted ' . $postedBlockoutDelete;
             }
         }
 
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$currentProductId);
-
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $currentProductId);
 
         /*update sources*/
-
 
         return $this->render('blockedtimes', [
             'currentProduct' => $currentProduct,
             'model' => $model,
             'returnMessage' => $returnMessage,
-            'dataProvider'=>$dataProvider,
-            'searchModel'=>$searchModel,
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
 
         ]);
     }
 
+    public function blockDateTime($date, $url, $product_id) {
 
-    public function actions()
-    {
+        $myurl = $url;
+        $myprodid = $product_id;
+        /**
+         * Először Vizsgálom hogy már fel van e küldve
+         */
+        $askURL = $myurl . '/wp-json/getav/v1/id/' . $myprodid;
+        $curlAsk = curl_init($askURL);
+        curl_setopt($curlAsk, CURLOPT_HEADER, 0);
+        curl_setopt($curlAsk, CURLOPT_VERBOSE, 0);
+        curl_setopt($curlAsk, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($curlAsk);
+        $alreadyblocked = json_decode($response)[0];
+        $alreadyBlockedArray = [];
+
+        foreach ($alreadyblocked as $blockedDate) {
+            if ($blockedDate->bookable == 'no' && $blockedDate->from == date('H:i', strtotime($date))) {
+                if (isset($blockedDate->from_date) && isset($blockedDate->to_date)) {
+                    if ($blockedDate->from_date == $blockedDate->to_date) {
+
+                        $alreadyBlockedArray[] = $blockedDate->from;
+                    }
+                }
+            }
+        }
+
+        if (!in_array($date, $alreadyBlockedArray)) {
+            Yii::error('date:' . $date);
+            $curlUrl = $myurl . '/wp-json/blocktime/v1/date/' . date('Y-m-d', strtotime($date)) . '/time/' . date('H:i', strtotime($date)) . '/id/' . $myprodid;
+            Yii::error('blockUrl:' . $curlUrl);
+            $curl = curl_init($curlUrl);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_HEADER, 0);
+            curl_setopt($curl, CURLOPT_VERBOSE, 0);
+
+            $response = curl_exec($curl);
+            $responseMessage = 'Succesful timeblock';
+            $responseMessage .= $response;
+        } else {
+            $responseMessage = 'Time Already Blocked';
+        }
+
+        return $responseMessage;
+    }
+
+    public function actions() {
         return ArrayHelper::merge(parent::actions(), [
             'editbook' => [                                       // identifier for your editable column action
                 'class' => EditableColumnAction::class,     // action class name
                 'modelClass' => ReservationsAdminSearchModel::class,                // the model for the record being edited
-
 
                 'showModelErrors' => true,
 
@@ -881,65 +802,5 @@ class ProductController extends Controller
             ]
         ]);
     }
-
-
-    public function blockDateTime($date,$url,$product_id){
-
-                $myurl = $url;
-                $myprodid = $product_id;
-                /**
-                 * Először Vizsgálom hogy már fel van e küldve
-                 */
-                $askURL = $myurl . '/wp-json/getav/v1/id/' . $myprodid;
-                $curlAsk = curl_init($askURL);
-                curl_setopt($curlAsk, CURLOPT_HEADER, 0);
-                curl_setopt($curlAsk, CURLOPT_VERBOSE, 0);
-                curl_setopt($curlAsk, CURLOPT_RETURNTRANSFER, true);
-                $response = curl_exec($curlAsk);
-                $alreadyblocked = json_decode($response)[0];
-                $alreadyBlockedArray = [];
-
-                foreach ($alreadyblocked as $blockedDate) {
-                    if ($blockedDate->bookable == 'no' && $blockedDate->from==date('H:i',strtotime($date))) {
-                        if(isset($blockedDate->from_date) && isset($blockedDate->to_date)){
-                            if($blockedDate->from_date == $blockedDate->to_date){
-
-                                $alreadyBlockedArray[] = $blockedDate->from;
-
-                            }
-                        }
-
-
-
-                    }
-
-                }
-
-                if (!in_array($date, $alreadyBlockedArray)) {
-                    Yii::error('date:'.$date);
-                    $curlUrl = $myurl . '/wp-json/blocktime/v1/date/' . date('Y-m-d',strtotime($date)) . '/time/' . date('H:i',strtotime($date)) . '/id/' . $myprodid;
-                    Yii::error('blockUrl:'.$curlUrl);
-                    $curl = curl_init($curlUrl);
-                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($curl, CURLOPT_HEADER, 0);
-                    curl_setopt($curl, CURLOPT_VERBOSE, 0);
-
-                    $response=curl_exec($curl);
-                    $responseMessage='Succesful timeblock';
-                    $responseMessage.=$response;
-                }
-                else{
-                    $responseMessage='Time Already Blocked';
-
-                }
-
-                return $responseMessage;
-
-            }
-
-
-
-
-
 
 }

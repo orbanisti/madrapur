@@ -57,7 +57,7 @@ class Controller extends \yii\web\Controller {
 
             // For cross-domain AJAX request
             'corsFilter'  => [
-                'class' => \yii\filters\Cors::className(),
+                'class' => \yii\filters\Cors::class,
                 'cors'  => [
                     // restrict access to domains:
                     'Origin'                           => static::allowedDomains(),
@@ -70,9 +70,8 @@ class Controller extends \yii\web\Controller {
         ]);
     }
 
-    public function redirectToAdmin() {
+    public function returnTrue() {
         if(!false)
-            //return $this->redirect(\yii\helpers\Url::current());
             return true;
         else return true;
     }
