@@ -5,6 +5,7 @@ namespace backend\modules\Reservations\models;
 use backend\modules\Product\models\Product;
 use backend\modules\Product\models\ProductSource;
 use backend\modules\Tickets\models\TicketBlock;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\modules\Products\models\Products;
@@ -95,10 +96,10 @@ class ReservationsAdminSearchModel extends Reservations
 
         $what = ['*'];
         $from = self::tableName();
-        $currentUserId=\Yii::$app->user->getId();
 
         $searchParams = isset($params['ReservationsAdminSearchModel']) ? $params['ReservationsAdminSearchModel'] : [] ;
         $filters = [];
+        $filters[] = ['source', 'IN', ['Street', 'Hotel']];
 
         foreach ($searchParams as $paramName => $paramValue) {
             if ($paramValue)
