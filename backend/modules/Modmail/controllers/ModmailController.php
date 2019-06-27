@@ -3,6 +3,7 @@
 namespace backend\modules\Modmail\controllers;
 
 use backend\modules\Modmail\models\Modmail;
+use backend\modules\Product\models\ProductAdminSearchModel;
 use Yii;
 use backend\controllers\Controller;
 
@@ -22,29 +23,35 @@ class ModmailController extends Controller {
 
         if($postedMail){
 
-/*
-            Yii::$app->mailer->compose()
-                ->setTo($postedMail['to'])
-                ->setFrom($postedMail['from'])
-                ->setSubject($postedMail['subject'])
-                ->setHtmlBody($postedMail['body'])
-                ->send();*/
             $to = $postedMail['to'];
             $from=$postedMail['from'];
             $subject = $postedMail['subject'];
             $txt = $postedMail['body'];
             $headers = "From: $from" . "\r\n";
 
-            mail($to,$subject,$txt,$headers);
+            if(mail($to,$subject,$txt,$headers)){
+                Modmail::insertOne($model,$postedMail);
+            }
 
 
         }
 
+        $searchModel = new Modmail();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $gridColumns = [
+            'id',
+            'from',
+            'to',
+            'date',
+            'status',
+            'type',
+
+        ];
 
 
 
 
-        return $this->render('admin',['model'=>$model]);
+        return $this->render('admin',['model'=>$model,'dataProvider'=>$dataProvider,'searchModel'=>$searchModel,'gridColumns'=>$gridColumns]);
     }
     
     /**

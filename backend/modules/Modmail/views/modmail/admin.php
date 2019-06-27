@@ -8,6 +8,10 @@ use yii\widgets\ActiveForm;
 
 <div class="modmail-default-index">
    <div class="panel">
+
+       <div class="panel-heading">
+           <h3>Mail test</h3>
+       </div>
        <div class="panel-body">
            <?php
 
@@ -37,4 +41,22 @@ use yii\widgets\ActiveForm;
 
 
    </div>
+   <div class="panel">
+       <div class="panel-heading">
+           <h3>Mail log</h3>
+       </div>
+       <div class="panel-body">
+           <?= \yii\grid\GridView::widget([
+           'pager' => [
+           'firstPageLabel' => Yii::t('app', 'Első oldal'),
+           'lastPageLabel' => Yii::t('app', 'Utolsó oldal'),
+           ],
+           'dataProvider' => $dataProvider,
+           'filterModel' => $searchModel,
+           'columns' => $gridColumns,
+           ]);?>
+       </div>
+
+   </div>
+
 </div>

@@ -2,13 +2,16 @@
 
 namespace backend\modules\Modmail\models;
 
+use backend\modules\MadActiveRecord\models\MadActiveRecord;
+use backend\modules\Product\models\ProductAdminSearchModel;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
 
 /**
  * Default model for the `Modmail` module
  */
-class Modmail extends ActiveRecord {
+class Modmail extends MadActiveRecord {
  
     public static function tableName() {
         return 'modmail';
@@ -29,5 +32,31 @@ class Modmail extends ActiveRecord {
             'source' => Yii::t('app', 'Forrás'),
             'randomDate' => Yii::t('app', 'Véletlenszerű dátum'),
         ];
+    }
+
+    public function search($params)
+    {
+        #  $invoiceDate = '2016-02-05';
+        # $bookingDate = '2020-08-20';
+
+        $what = ['*'];
+        $from = self::tableName();
+        $where = self::andWhereFilter([
+            ['id', '!=', '0'],
+        ]);
+
+
+        $rows = self::aSelect(Modmail::class, $what, $from,$where);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $rows,
+            'pagination' => [
+                'pageSize' => 15,
+            ],
+        ]);
+
+        $this->load($params);
+
+        return $dataProvider;
     }
 }
