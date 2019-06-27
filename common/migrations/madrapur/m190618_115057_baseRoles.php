@@ -23,6 +23,14 @@ class m190618_115057_baseRoles extends Migration {
     private $_permissions = [
         'loginToBackend' => 'Group can log in to backend.',
         'accessUsers' => 'Group can access Users module.',
+        User::ASSIGN_OFFICE_ADMIN => 'Group can assign office admins.',
+        User::ASSIGN_TICKET_EDITOR => 'Group can assign ticket editors.',
+        User::ASSIGN_HOTEL_EDITOR => 'Group can assign hotel editors.',
+        User::ASSIGN_OFFICE_VISITOR => 'Group can assign office visitors.',
+        User::ASSIGN_STREET_ADMIN => 'Group can assign street admins.',
+        User::ASSIGN_STREET_SELLER => 'Group can assign street sellers.',
+        User::ASSIGN_HOTLINE => 'Group can assign hotline users.',
+
         'accessContent' => 'Group can access Content module.',
         'accessTranslation' => 'Group can access Translation module.',
         'accessSystem' => 'Group can access Translation module.',
@@ -56,6 +64,7 @@ class m190618_115057_baseRoles extends Migration {
         Tickets::ADD_TICKET_BLOCK => 'Group can add ticket blocks.',
         Tickets::ASSIGN_TICKET_BLOCK => 'Group can assign ticket blocks.',
         Tickets::VIEW_TICKET_BLOCKS => 'Group can view ticket blocks.',
+        Tickets::VIEW_OWN_TICKET_BLOCKS => 'Group can view own ticket blocks.',
         Tickets::VIEW_OWN_TICKET_BLOCKS => 'Group can view own ticket blocks.',
 
         'accessStatistics' => 'Group can access Statistics module.',
@@ -94,6 +103,15 @@ class m190618_115057_baseRoles extends Migration {
         $adminPermissions = [
             'loginToBackend',
             'accessUsers',
+            'assignAdministrator',
+            'assignUser',
+            User::ASSIGN_OFFICE_ADMIN,
+            User::ASSIGN_TICKET_EDITOR,
+            User::ASSIGN_HOTEL_EDITOR,
+            User::ASSIGN_OFFICE_VISITOR,
+            User::ASSIGN_STREET_ADMIN,
+            User::ASSIGN_STREET_SELLER,
+            User::ASSIGN_HOTLINE,
             'accessContent',
             'accessTranslation',
             'accessSystem',
@@ -111,19 +129,6 @@ class m190618_115057_baseRoles extends Migration {
             'accessTickets',
         ];
 
-        $adminChildRoles = [
-            User::ROLE_ADMINISTRATOR,
-            User::ROLE_USER,
-            User::ROLE_OFFICE_ADMIN,
-            User::ROLE_TICKET_EDITOR,
-            User::ROLE_HOTEL_EDITOR,
-            User::ROLE_OFFICE_VISITOR,
-            User::ROLE_STREET_ADMIN,
-            User::ROLE_STREET_SELLER,
-            User::ROLE_HOTLINE,
-        ];
-
-        $this->addChildRolesToRole(User::ROLE_ADMINISTRATOR, $adminChildRoles);
         $this->assignPermissionsToRole(User::ROLE_ADMINISTRATOR, $adminPermissions);
     }
 
@@ -131,6 +136,12 @@ class m190618_115057_baseRoles extends Migration {
         $officeAdminPermissions = [
             'loginToBackend',
             'accessUsers',
+            User::ASSIGN_TICKET_EDITOR,
+            User::ASSIGN_HOTEL_EDITOR,
+            User::ASSIGN_OFFICE_VISITOR,
+            User::ASSIGN_STREET_ADMIN,
+            User::ASSIGN_STREET_SELLER,
+            User::ASSIGN_HOTLINE,
             'accessBookings',
             Reservations::ACCESS_BOOKINGS_ADMIN,
             Reservations::CREATE_BOOKING,
@@ -148,17 +159,6 @@ class m190618_115057_baseRoles extends Migration {
             Tickets::VIEW_OWN_TICKET_BLOCKS,
         ];
 
-        $officeAdminChildRoles = [
-            User::ROLE_OFFICE_ADMIN,
-            User::ROLE_TICKET_EDITOR,
-            User::ROLE_HOTEL_EDITOR,
-            User::ROLE_OFFICE_VISITOR,
-            User::ROLE_HOTLINE,
-            User::ROLE_STREET_ADMIN,
-            User::ROLE_STREET_SELLER,
-        ];
-
-        $this->addChildRolesToRole(User::ROLE_OFFICE_ADMIN, $officeAdminChildRoles);
         $this->assignPermissionsToRole(User::ROLE_OFFICE_ADMIN, $officeAdminPermissions);
     }
 
@@ -212,6 +212,7 @@ class m190618_115057_baseRoles extends Migration {
         $streetAdminPermissions = [
             'loginToBackend',
             'accessUsers',
+            User::ASSIGN_STREET_SELLER,
             'accessBookings',
             Reservations::ACCESS_BOOKINGS_ADMIN,
             Reservations::CREATE_BOOKING,
@@ -226,12 +227,6 @@ class m190618_115057_baseRoles extends Migration {
             'accessStatistics',
         ];
 
-        $streetAdminChildRoles = [
-            User::ROLE_STREET_ADMIN,
-            User::ROLE_STREET_SELLER,
-        ];
-
-        $this->addChildRolesToRole(User::ROLE_STREET_ADMIN, $streetAdminChildRoles);
         $this->assignPermissionsToRole(User::ROLE_STREET_ADMIN, $streetAdminPermissions);
     }
 
