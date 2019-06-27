@@ -14,6 +14,11 @@
 			"name": "Péter Alius",
 			"email": "peter.alius92@gmail.com",
 			"homepage": "http://github.com/aekan"
+		},
+		{
+			"name": "István Orbán",
+			"email": "orbanisti94@gmail.com",
+			"homepage": "http://github.com/orbanisti"
 		}
 	],
 	"type": "project",
@@ -100,8 +105,8 @@
 		"process-timeout": 1800,
 		"optimize-autoloader": true,
 		"fxp-asset": {
-		   "enabled": false
-	   }
+			"enabled": false
+		}
 	},
 	"repositories": [
 		{

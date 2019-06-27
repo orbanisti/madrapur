@@ -133,6 +133,13 @@ echo Menu::widget(
                                 'badgeBgClass' => 'label-success',
                             ],
                             [
+                                'label' => Yii::t('backend', 'modMail'),
+                                'icon' => '<i class="fa fa-envelope-o"></i>',
+                                'url' => [
+                                    '/Modmail/modmail/admin'
+                                ],
+                            ],
+                            [
                                 'label' => Yii::t('backend', 'Users'),
                                 'icon' => '<i class="fa fa-users"></i>',
                                 'url' => [
