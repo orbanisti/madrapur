@@ -132,7 +132,7 @@ class TicketsController extends Controller {
                     'user_id'
                 )->one();
 
-                if (!Yii::$app->user->can($assignments->item_name))
+                if (!Yii::$app->user->can('assign_'.$assignments->item_name))
                     unset($users[$idx]);
             }
             /**
