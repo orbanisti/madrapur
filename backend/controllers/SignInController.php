@@ -9,6 +9,7 @@ namespace backend\controllers;
 
 use backend\models\AccountForm;
 use backend\models\LoginForm;
+use common\models\User;
 use Intervention\Image\ImageManagerStatic;
 use trntv\filekit\actions\DeleteAction;
 use trntv\filekit\actions\UploadAction;
@@ -60,6 +61,13 @@ class SignInController extends Controller {
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            if (
+                Yii::$app->user->can(User::ROLE_HOTLINE) ||
+                Yii::$app->user->can(User::ROLE_STREET_SELLER)
+            ) {
+                return $this->redirect('/Reservations/reservations/myreservations');
+            }
+
             return $this->goBack();
         } else {
             return $this->render('login', [

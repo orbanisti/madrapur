@@ -423,13 +423,13 @@ class ReservationsController extends Controller {
                 'searchModel' => $searchModel,
                 'monthlySold' => $monthlySold,
                 'todaySold' => $todaySold,
-                'nextTicketId' => $myTicketBook->startId,
+                'nextTicketId' => isset($myTicketBook->startId) ? $myTicketBook->startId : 'unset',
             ]
         );
     }
 
     public function actionAllreservations() {
-        if (!Yii::$app->user->can(Reservations::VIEW_BOOKINGS) || !Yii::$app->user->can
+        if (!Yii::$app->user->can(Reservations::VIEW_BOOKINGS) && !Yii::$app->user->can
             (Reservations::VIEW_OWN_BOOKINGS)) {
             throw new ForbiddenHttpException('userCan\'t');
         }
