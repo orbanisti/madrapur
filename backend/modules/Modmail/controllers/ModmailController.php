@@ -20,6 +20,7 @@ class ModmailController extends Controller {
         $postedMail=Yii::$app->request->post('Modmail');
         $newUsername=Yii::$app->user->getIdentity()->username;
         $bootstrap='<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">';
+        $bootstrap.='<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >';
         $welcomeHTML="<div class=\"container\">
       <div class=\"row\">
         <div class=\"col-lg-12 text-center\">
