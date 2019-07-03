@@ -812,7 +812,7 @@ class ProductController extends Controller {
             $responseMessage .= $response.$curlUrl;
         } else {
 
-            $responseMessage = 'Already Blocked';
+            $responseMessage = 'Operation Succesful';
         }
 
         return $responseMessage;
