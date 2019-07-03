@@ -19,8 +19,8 @@ class ModmailController extends Controller {
         $model=new Modmail();
         $postedMail=Yii::$app->request->post('Modmail');
         $newUsername=Yii::$app->user->getIdentity()->username;
-
-        $welcomeHTML="<link href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T\" crossorigin=\"anonymous\"><div class=\"container\">
+        $bootstrap='<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">';
+        $welcomeHTML="<div class=\"container\">
       <div class=\"row\">
         <div class=\"col-lg-12 text-center\">
           
@@ -34,7 +34,7 @@ class ModmailController extends Controller {
             $to = $postedMail['to'];
             $from=$postedMail['from'];
             $subject = $postedMail['subject'];
-            $txt = $welcomeHTML;
+            $txt = $bootstrap.$welcomeHTML;
             $headers = "From: $from" . "\r\n";
 
             if(mail($to,$subject,$txt,$headers)){

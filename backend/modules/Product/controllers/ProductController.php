@@ -719,7 +719,6 @@ class ProductController extends Controller {
                     $myurl = $source['url'];
                     $myprodid = $source['prodIds'];
                     if($myurl=='https://budapestrivercruise.eu'){
-                        Yii::error($myurl.$postedBlockout['date'].$myprodid);
 
                         $returnMessage = $this->blockDateTime($postedBlockout['date'], $myurl, $myprodid);
                     }
@@ -739,7 +738,8 @@ class ProductController extends Controller {
                     $myprodid = $source['prodIds'];
                     if($myurl=='https://budapestrivercruise.eu'){
 
-                        $returnMessage = $this->unblockDateTime($blockoutToDelete['date'], $myurl, $myprodid);
+                         $this->unblockDateTime($blockoutToDelete['date'], $myurl, $myprodid);
+                        $returnMessage='Successful Timeblock!'
                         $blockoutToDelete->delete();
                     }
 
