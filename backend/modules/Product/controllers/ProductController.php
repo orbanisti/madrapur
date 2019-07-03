@@ -798,6 +798,7 @@ class ProductController extends Controller {
 
             Yii::error('date:' . $date);
             $curlUrl = $myurl . '/wp-json/blocktime/v1/date/' . date('Y-m-d', strtotime($date)) . '/time/' . date('H:i', strtotime($date)) . '/id/' . $myprodid;
+
             Yii::error('blockUrl:' . $curlUrl);
             $curl = curl_init($curlUrl);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -805,7 +806,7 @@ class ProductController extends Controller {
             curl_setopt($curl, CURLOPT_VERBOSE, 0);
 
             $response = curl_exec($curl);
-            $responseMessage = 'Succesful timeblock';
+            $responseMessage = 'Succesful timeblock<br/>';
             $responseMessage .= $response;
         } else {
             $responseMessage = $response;
