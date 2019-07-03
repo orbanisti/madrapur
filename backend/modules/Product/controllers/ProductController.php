@@ -739,7 +739,7 @@ class ProductController extends Controller {
                     if($myurl=='https://budapestrivercruise.eu'){
 
                          $this->unblockDateTime($blockoutToDelete['date'], $myurl, $myprodid);
-                        $returnMessage='Successful Timeblock!';
+                        $returnMessage='Successful Timeunblock!';
 // todo : sleep
 
                         $blockoutToDelete->delete();
@@ -809,9 +809,10 @@ class ProductController extends Controller {
 
             $response = curl_exec($curl);
             $responseMessage = 'Succesful timeblock<br/>';
-            $responseMessage .= $response;
+            $responseMessage .= $response.$curlUrl;
         } else {
-            $responseMessage = $response;
+
+            $responseMessage = 'Already Blocked';
         }
 
         return $responseMessage;
