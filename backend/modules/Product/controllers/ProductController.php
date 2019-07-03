@@ -739,7 +739,8 @@ class ProductController extends Controller {
                     if($myurl=='https://budapestrivercruise.eu'){
 
                          $this->unblockDateTime($blockoutToDelete['date'], $myurl, $myprodid);
-                        $returnMessage='Successful Timeblock!'
+                        $returnMessage='Successful Timeblock!';
+
                         $blockoutToDelete->delete();
                     }
 
