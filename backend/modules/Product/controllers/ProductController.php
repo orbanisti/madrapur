@@ -785,16 +785,16 @@ class ProductController extends Controller {
         foreach ($alreadyblocked as $blockedDate) {
             if ($blockedDate->bookable == 'no' && $blockedDate->from == date('H:i', strtotime($date))) {
                 if (isset($blockedDate->from_date) && isset($blockedDate->to_date)) {
-                    if ($blockedDate->from_date == $blockedDate->to_date) {
+                    if ($blockedDate->from_date == $blockedDate->from_date) {
 
-                        $alreadyBlockedArray[] = $blockedDate->from;
+                        $alreadyBlockedArray[] = $blockedDate->from_date.' '.$blockedDate->from;
                     }
                 }
             }
         }
 
 
-        if (!in_array(date('H:i', strtotime($date)), $alreadyBlockedArray)) {
+        if (!in_array(date('Y-m-d H:i', strtotime($date)), $alreadyBlockedArray)) {
 
             Yii::error('date:' . $date);
             $curlUrl = $myurl . '/wp-json/blocktime/v1/date/' . date('Y-m-d', strtotime($date)) . '/time/' . date('H:i', strtotime($date)) . '/id/' . $myprodid;
