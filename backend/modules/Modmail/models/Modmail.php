@@ -59,4 +59,7 @@ class Modmail extends MadActiveRecord {
 
         return $dataProvider;
     }
+    public function returnId() {
+        return $this['id'];
+    }
 }
