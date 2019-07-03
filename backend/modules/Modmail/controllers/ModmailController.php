@@ -34,7 +34,14 @@ class ModmailController extends Controller {
             $to = $postedMail['to'];
             $from=$postedMail['from'];
             $subject = $postedMail['subject'];
+            $postedMail['date']=date('Y-m-d h:i');
+            $postedMail['type']='Welcome';
+            $postedMail['status']='sent';
+
+
+
             $txt = $bootstrap.$welcomeHTML;
+            $postedMail['body']=$txt;
             $headers = "From: $from" . "\r\n";
             $headers .= "MIME-Version: 1.0\r\n";
             $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
@@ -48,10 +55,19 @@ class ModmailController extends Controller {
         $gridColumns = [
             'id',
             'from',
+            'subject',
             'to',
             'date',
             'status',
             'type',
+            [
+                'label' => 'View Mail',
+                'format'=>'html',
+                'value' => function ($model) {
+                    return '<a href="/Modmail/modmail/read?id='.$model->returnId().'">Read Mail'.'</a>';
+                }
+            ],
+
 
         ];
 
