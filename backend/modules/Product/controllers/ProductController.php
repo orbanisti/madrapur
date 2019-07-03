@@ -746,7 +746,7 @@ class ProductController extends Controller {
                 $txt = $bootstrap.$newblockHTML; //this is from
 
 
-                $values=[
+                $values2=[
                     'from'=> 'info@budapestrivercruise.co.uk',
                     'to'=> 'orban9408@gmail.com',
                     'subject '=> 'New timeBlock on '.$_SERVER['HTTP_HOST'].' '.date('Y-m-d h:i').' by '.$currentUser,
@@ -763,15 +763,15 @@ class ProductController extends Controller {
                 //the 2 above go together
 
 
-                $headers = "From: ".$values['from']."\r\n";
+                $headers = "From: ".$values2['from']."\r\n";
                 $headers .= "MIME-Version: 1.0\r\n";
                 $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
-                if(mail($values['to'],$values['subject'],$values['body'],$headers)){
+                if(mail($values2['to'],$values2['subject'],$values2['body'],$headers)){
 
                     Yii::warning('Elkuldom a mailt');
 
-                    Modmail::insertOne($mailModel,$values);
+                    Modmail::insertOne($mailModel,$values2);
                 }
             } else {
                 $returnMessage = 'Save not Succesful';
