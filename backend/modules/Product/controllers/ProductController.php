@@ -749,7 +749,7 @@ class ProductController extends Controller {
                 $values2=[
                     'from'=> 'info@budapestrivercruise.co.uk',
                     'to'=> 'orban9408@gmail.com',
-                    'subject '=> 'New timeBlock on '.$_SERVER['HTTP_HOST'].' '.date('Y-m-d h:i').' by '.$currentUser,
+                    'subject'=> 'New timeBlock on '.$_SERVER['HTTP_HOST'].' '.date('Y-m-d h:i').' by '.$currentUser,
                     'date'=>date('Y-m-d h:i'),
                     'type'=>'new timeBlock',
                     'status'=>'sent',
