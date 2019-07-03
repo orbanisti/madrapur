@@ -740,6 +740,7 @@ class ProductController extends Controller {
 
                          $this->unblockDateTime($blockoutToDelete['date'], $myurl, $myprodid);
                         $returnMessage='Successful Timeblock!';
+// todo : sleep
 
                         $blockoutToDelete->delete();
                     }
