@@ -389,7 +389,7 @@ echo Menu::widget(
 
                                     '/Product/product/admin'
                                 ],
-                                'icon' => '<i class="fa fa-box-open"></i>',
+                                'icon' => '<i class="fa fa-box"></i>',
                                 'active' => (Yii::$app->controller->id == 'product'),
                                 'items' => [
                                     [
