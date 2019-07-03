@@ -3,6 +3,7 @@
 namespace backend\modules\Product\controllers;
 
 use backend\controllers\Controller;
+use backend\modules\Modmail\models\Modmail;
 use backend\modules\Product\models\Product;
 use backend\modules\Product\models\ProductAdminSearchModel;
 use backend\modules\Product\models\ProductBlockout;
@@ -715,6 +716,9 @@ class ProductController extends Controller {
             ];
 
             if (ProductBlockout::insertOne($model, $values)) {
+
+
+
                 foreach ($sources as $source){
                     $myurl = $source['url'];
                     $myprodid = $source['prodIds'];
@@ -723,6 +727,51 @@ class ProductController extends Controller {
                         $returnMessage = $this->blockDateTime($postedBlockout['date'], $myurl, $myprodid);
                     }
 
+                }
+
+
+
+                /**
+                 * Let's send E mail notification
+                 *
+                 */
+                $currentUser=Yii::$app->user->identity->username;
+                $mailModel=new Modmail();
+
+
+                $bootstrap='<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">';
+                $bootstrap.='<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >';
+
+                include_once('VvvebJs/mail-templates/newblock.php');
+                $txt = $bootstrap.$newblockHTML; //this is from
+
+
+                $values=[
+                    'from'=> 'info@budapestrivercruise.co.uk',
+                    'to'=> 'orban9408@gmail.com',
+                    'subjectgit '=> 'New timeBlock on '.$_SERVER['HTTP_HOST'].' '.date('Y-m-d h:i').' by '.$currentUser,
+                    'date'=>date('Y-m-d h:i'),
+                    'type'=>'new timeBlock',
+                    'status'=>'sent',
+                    'body'=>$txt
+
+                ];
+
+
+
+
+                //the 2 above go together
+
+
+                $headers = "From: ".$values['from']."\r\n";
+                $headers .= "MIME-Version: 1.0\r\n";
+                $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+
+                if(mail($values['to'],$values['subject'],$values['body'],$headers)){
+
+                    Yii::warning('Elkuldom a mailt');
+
+                    Modmail::insertOne($mailModel,$values);
                 }
             } else {
                 $returnMessage = 'Save not Succesful';
