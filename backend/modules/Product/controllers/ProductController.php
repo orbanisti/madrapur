@@ -799,7 +799,7 @@ class ProductController extends Controller {
             Yii::error('date:' . $date);
             $curlUrl = $myurl . '/wp-json/blocktime/v1/date/' . date('Y-m-d', strtotime($date)) . '/time/' . date('H:i', strtotime($date)) . '/id/' . $myprodid;
 
-            echo '<input type="hidden" value="'.$curlUrl.'"  name="currentCurlUrl"/>';g
+            echo '<input type="hidden" value="'.$curlUrl.'"  name="currentCurlUrl"/>';
 
             Yii::error('blockUrl:' . $curlUrl);
             $curl = curl_init($curlUrl);
