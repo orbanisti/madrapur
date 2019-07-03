@@ -50,7 +50,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ]);
 
-            var_dump($returnMessage);
+            if(isset($returnMessage)){
+                echo ' Successful Operation!';
+            };
             ?>
 
             <div class="form-group">
