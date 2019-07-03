@@ -51,7 +51,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ]);
 
             if(isset($returnMessage)){
-                echo ' Successful Operation!';
+
+               var_dump($returnMessage);
             };
             ?>
 
