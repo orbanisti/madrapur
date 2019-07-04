@@ -39,7 +39,7 @@
       <div class=\" order-md-1 text-center text-md-left pr-md-5  0 1             1 col-md-12 col-lg-12 col-xs-12 col-sm-12 col-12\" style=\"background-color: rgb(248, 245, 245); padding: 3%;\"><p style=\"\"><i class=\"fa fa-mail\"></i></p>
         <h1 class=\"mb-3 bd-text-purple-bright\">New <b>timeBlock</b> added</h1>
         <p class=\"lead\"></p>
-        <p class=\"lead mb-4\"><u>Product</u> : <b>$productName</b></p><p class=\"lead mb-4\"><u><u spellcheckker=\"false\" style=\"font-size: 16px;\"><b><u style=\"font-size: 20px;\">TimeBlock date</u></b></u></u> : <b><span spellcheckker=\"false\" style=\"font-weight: bolder; font-size: 16px;\">$timeBlockDate</span></b></p><div><u><u spellcheckker=\"false\" style=\"font-size: 20px;\">Blocked by</u></u> : <b>$username on $blockedOn 23:30</b></div><p></p>
+        <p class=\"lead mb-4\"><u>Product</u> : <b>$productName</b></p><p class=\"lead mb-4\"><u><u spellcheckker=\"false\" style=\"font-size: 16px;\"><b><u style=\"font-size: 20px;\">TimeBlock date</u></b></u></u> : <b><span spellcheckker=\"false\" style=\"font-weight: bolder; font-size: 16px;\">$timeBlockDate</span></b></p><div><u><u spellcheckker=\"false\" style=\"font-size: 20px;\">Blocked by</u></u> : <b>$username on $blockedOn</b></div><p></p>
         <div class=\"row mx-n2\">
           <div class=\"col-md px-2\">
             
