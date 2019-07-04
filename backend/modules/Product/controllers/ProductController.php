@@ -786,14 +786,14 @@ class ProductController extends Controller {
         if ($postedBlockoutDelete) {
             $blockoutToDelete = ProductBlockoutTime::meById(new ProductBlockoutTime(), $postedBlockoutDelete);
 
-
+            if ($blockoutToDelete) {
                 foreach ($sources as $source){
 
                     $myurl = $source['url'];
                     $myprodid = $source['prodIds'];
                     if($myurl=='https://budapestrivercruise.eu'){
 
-                         $this->unblockDateTime($blockoutToDelete['date'], $myurl, $myprodid);
+                        $this->unblockDateTime($blockoutToDelete['date'], $myurl, $myprodid);
                         $returnMessage='Successful Timeunblock!';
 // todo : sleep
 
@@ -802,6 +802,9 @@ class ProductController extends Controller {
 
 
 
+                }
+            } else {
+                $returnMessage = 'Already deleted or non-existent.';
             }
 
         }
