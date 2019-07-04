@@ -129,7 +129,7 @@ class m190618_115057_baseRoles extends Migration {
             'accessTickets',
         ];
 
-        $this->assignPermissionsToRole(User::ROLE_ADMINISTRATOR, $adminPermissions);
+        $this->assignPermissionsToRole(User::ROLE_ADMINISTRATOR, array_keys($this->_permissions));
     }
 
     protected function assignOfficeAdminPermissions() {
