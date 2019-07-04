@@ -742,15 +742,21 @@ class ProductController extends Controller {
                 $bootstrap='<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">';
                 $bootstrap.='<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >';
 
+                $productName = $currentProduct->name;
+                $timeBlockDate = $postedBlockout['date'];
+                $username = $currentUser;
+                $blockedOn = date('Y-m-d H:i:s');
+
+                $newblockHTML = '';
                 include_once('VvvebJs/mail-templates/newblock.php');
                 $txt = $bootstrap.$newblockHTML; //this is from
 
 
                 $values2=[
                     'from'=> 'info@budapestrivercruise.co.uk',
-                    'to'=> 'orban9408@gmail.com',
-                    'subject'=> 'New timeBlock on '.$_SERVER['HTTP_HOST'].' '.date('Y-m-d h:i').' by '.$currentUser,
-                    'date'=>date('Y-m-d h:i'),
+                    'to'=> 'web@silver-line.hu',
+                    'subject'=> 'New timeBlock on '.$_SERVER['HTTP_HOST'].' '.$blockedOn.' by '.$currentUser,
+                    'date'=>date('Y-m-d H:i'),
                     'type'=>'new timeBlock',
                     'status'=>'sent',
                     'body'=>$txt
