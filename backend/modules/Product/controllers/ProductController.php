@@ -841,7 +841,6 @@ class ProductController extends Controller {
             if ($blockedDate->bookable == 'no' && $blockedDate->from == date('H:i', strtotime($date))) {
                 if (isset($blockedDate->from_date) && isset($blockedDate->to_date)) {
                     if ($blockedDate->from_date == $blockedDate->from_date) {
-
                         $alreadyBlockedArray[] = $blockedDate->from_date.' '.$blockedDate->from;
                     }
                 }

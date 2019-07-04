@@ -401,7 +401,7 @@ echo Menu::widget(
                                         'active' => (Yii::$app->controller->id == 'create'),
                                     ],
                                 ],
-                                'visible' => Yii::$app->user->can('accessProducts'),
+//                                'visible' => Yii::$app->user->can('accessProducts'),
                             ],
                             [
                                 'label' => Yii::t('backend', 'Payments'),
