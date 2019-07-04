@@ -3,7 +3,6 @@
 namespace backend\modules\Reservations\controllers;
 
 use backend\controllers\Controller;
-use backend\controllers\TimelineEventController;
 use backend\modules\Product\models\Product;
 use backend\modules\Product\models\ProductAdminSearchModel;
 use backend\modules\Product\models\ProductPrice;
@@ -12,10 +11,9 @@ use backend\modules\Reservations\models\DateImport;
 use backend\modules\Reservations\models\Reservations;
 use backend\modules\Reservations\models\ReservationsAdminSearchModel;
 use common\commands\AddToTimelineCommand;
-use common\models\TimelineEvent;
 use Yii;
-use yii\db\Exception;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\web\ForbiddenHttpException;
 
 /**
@@ -23,6 +21,12 @@ use yii\web\ForbiddenHttpException;
  */
 class ReservationsController extends Controller {
 
+    /**
+     * @param bool $id
+     *
+     * @return string
+     * @throws ForbiddenHttpException
+     */
     public function actionCreateReact($id = false) {
         if (!Yii::$app->user->can(Reservations::CREATE_BOOKING)) {
             throw new ForbiddenHttpException('userCan\'t');
@@ -59,10 +63,14 @@ class ReservationsController extends Controller {
         return $this->render('createReact', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'data' => json_encode($dataArray),
+            'data' => Json::encode($dataArray),
         ]);
     }
 
+    /**
+     * @return string
+     * @throws ForbiddenHttpException
+     */
     public function actionAdmin() {
         if (!Yii::$app->user->can(Reservations::ACCESS_BOOKINGS_ADMIN)) {
             throw new ForbiddenHttpException('userCan\'t');
@@ -71,7 +79,6 @@ class ReservationsController extends Controller {
         $searchModel = new ReservationsAdminSearchModel();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $chartDataProvider = $searchModel->searchChart(Yii::$app->request->queryParams);
-        $connection = YII::$app->db;
         $dateImportModel = new DateImport();
         $request = Yii::$app->request;
         $dateImport = $request->post('DateImport');
@@ -96,7 +103,6 @@ class ReservationsController extends Controller {
 
                     $data = ['boookingDetails' => $booking->bookingDetails, 'orderDetails' => $booking->orderDetails, 'personInfo' => $booking->personInfo, 'updateDate' => date("Y-m-d H:i:s")];
 
-                    $data = json_encode($data);
                     if ($booking->bookingDetails->booking_cost > 200000 && $booking->orderDetails->order_currency == 'EUR') {
                         continue;
                     }
@@ -109,7 +115,7 @@ class ReservationsController extends Controller {
                         'source' => $dateImport['source'],
                         'invoiceDate' => $booking->orderDetails->paid_date,
                         'bookingDate' => $booking->bookingDetails->booking_start,
-                        'data' => $data
+                        'data' => Json::encode($data)
                     ];
 
                     /**
@@ -118,10 +124,7 @@ class ReservationsController extends Controller {
                      */
                     $query = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'bookingId=' . $booking->bookingId);
 
-                    try {
-                        $rows = $query->one();
-                    } catch (Exception $e) {
-                    }
+                    $rows = $query->one();
 
                     if (isset($rows)) {
                         $updateCounter += 1;
@@ -129,6 +132,29 @@ class ReservationsController extends Controller {
                     } else {
                         $model = new Reservations();
                         $newRecordCounter += 1;
+                    }
+
+                    $columns = [
+                        "booking_cost",
+                        "booking_product_id",
+                        "booking_start",
+                        "booking_end",
+                        "allPersons",
+                        "customer_ip_address",
+                        "paid_date",
+                        "billing_first_name",
+                        "billing_last_name",
+                        "billing_email",
+                        "billing_phone",
+                        "order_currency",
+                    ];
+
+                    foreach ($data as $id => $dataSet) {
+                        foreach ($columns as $colName) {
+                            if (isset($dataSet->$colName)) {
+                                $values[$colName] = $dataSet->$colName;
+                            }
+                        }
                     }
 
                     if (Reservations::insertOne($model, $values)) {
@@ -158,7 +184,6 @@ class ReservationsController extends Controller {
      *
      * @return mixed
      */
-
     public function importDateRange($source, $dateFrom, $dateTo) {
 
         $dateFrom = date('Y-m-d', strtotime($dateFrom));
@@ -174,7 +199,7 @@ class ReservationsController extends Controller {
 
         curl_close($curl);
 
-        $jsonResponse = json_decode(utf8_decode($response));
+        $jsonResponse = Json::decode(utf8_decode($response));
 
         return $jsonResponse;
     }
@@ -182,6 +207,9 @@ class ReservationsController extends Controller {
     /**
      * @return string
      * @throws ForbiddenHttpException
+     * @throws \Throwable
+     * @throws \trntv\bus\exceptions\MissingHandlerException
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionCreate() {
         if (!Yii::$app->user->can(Reservations::CREATE_BOOKING)) {
@@ -299,7 +327,6 @@ class ReservationsController extends Controller {
                         ]
                     )
                 );
-
             } else {
                 $updateResponse = '<span style="color:red">Reservation Failed</span>';
                 //show an error message
@@ -318,6 +345,9 @@ class ReservationsController extends Controller {
         ]);
     }
 
+    /**
+     * @return array
+     */
     public function actionGettimes() {
         if (Yii::$app->request->isAjax) {
             $data = Yii::$app->request->post();
@@ -329,8 +359,12 @@ class ReservationsController extends Controller {
                 'search' => $mytimes,
             ];
         }
+        return [];
     }
 
+    /**
+     * @return array
+     */
     public function actionCalcprice() {
         if (Yii::$app->request->isAjax) {
             $data = Yii::$app->request->post();
@@ -362,8 +396,12 @@ class ReservationsController extends Controller {
                 'search' => $fullTotal,
             ];
         }
+        return [];
     }
 
+    /**
+     * @return array|string
+     */
     public function actionGetprices() {
         if (Yii::$app->request->isAjax) {
             $data = Yii::$app->request->post();
@@ -373,6 +411,7 @@ class ReservationsController extends Controller {
             \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             return $this->renderPartial('prices');
         }
+        return [];
     }
 
     /**
@@ -389,15 +428,16 @@ class ReservationsController extends Controller {
         $id = $request->get('id');
         $query = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'id=' . $id);
 
-        try {
-            $bookingInfo = $query->one();
-        } catch (Exception $e) {
-        }
+        $bookingInfo = $query->one();
 
         $backendData = $bookingInfo;
         return $this->render('bookingEdit', ['model' => $model, 'backenddata' => $backendData]);
     }
 
+    /**
+     * @return string
+     * @throws ForbiddenHttpException
+     */
     public function actionMyreservations() {
         if (!Yii::$app->user->can(Reservations::VIEW_OWN_BOOKINGS)) {
             throw new ForbiddenHttpException('userCan\'t');
@@ -428,6 +468,10 @@ class ReservationsController extends Controller {
         );
     }
 
+    /**
+     * @return string
+     * @throws ForbiddenHttpException
+     */
     public function actionAllreservations() {
         if (!Yii::$app->user->can(Reservations::VIEW_BOOKINGS) && !Yii::$app->user->can
             (Reservations::VIEW_OWN_BOOKINGS)) {
@@ -453,5 +497,4 @@ class ReservationsController extends Controller {
             ]
         );
     }
-
 }

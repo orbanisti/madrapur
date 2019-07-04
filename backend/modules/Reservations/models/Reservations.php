@@ -6,6 +6,7 @@ use backend\modules\MadActiveRecord\models\MadActiveRecord;
 use backend\modules\Product\models\Product;
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 class Reservations extends MadActiveRecord {
 
@@ -57,6 +58,19 @@ class Reservations extends MadActiveRecord {
             [['bookingDate'], 'date', 'format' => 'yyyy-MM-dd'],
             [['sellerId'], 'string', 'max' => 255],
             [['sellerName'], 'string', 'max' => 255],
+            [['booking_cost'], 'string', 'max' => 255],
+            [['booking_product_id'], 'string', 'max' => 255],
+            [['booking_start'], 'string', 'max' => 255],
+            [['booking_end'], 'string', 'max' => 255],
+            [['allPersons'], 'string', 'max' => 255],
+            [['customer_ip_address'], 'string', 'max' => 255],
+            [['paid_date'], 'string', 'max' => 255],
+            [['billing_first_name'], 'string', 'max' => 255],
+            [['billing_last_name'], 'string', 'max' => 255],
+            [['billing_email'], 'string', 'max' => 255],
+            [['billing_phone'], 'string', 'max' => 255],
+            [['order_currency'], 'string', 'max' => 255],
+            [['personInfo'], 'string'],
         ];
     }
 
@@ -70,6 +84,19 @@ class Reservations extends MadActiveRecord {
             'invoiceDate',
             'bookingDate',
             'sellerId',
+            "booking_cost",
+            "booking_product_id",
+            "booking_start",
+            "booking_end",
+            "allPersons",
+            "customer_ip_address",
+            "paid_date",
+            "billing_first_name",
+            "billing_last_name",
+            "billing_email",
+            "billing_phone",
+            "order_currency",
+            "personInfo",
         ];
     }
 
@@ -89,14 +116,27 @@ class Reservations extends MadActiveRecord {
     public function attributes() {
         $attributes = parent::attributes();
         return array_merge($attributes, [
-            'firstName', 'lastName', 'bookedChairsCount', 'bookingCost', 'orderCurrency', 'sourceName', 'updateDate'
+            'firstName', 'lastName', 'bookedChairsCount', 'bookingCost', 'orderCurrency', 'sourceName', 'updateDate',
+            "booking_cost",
+            "booking_product_id",
+            "booking_start",
+            "booking_end",
+            "allPersons",
+            "customer_ip_address",
+            "paid_date",
+            "billing_first_name",
+            "billing_last_name",
+            "billing_email",
+            "billing_phone",
+            "order_currency",
+            "personInfo",
         ]);
     }
 
     public function afterFind() {
         parent::afterFind();
 
-        $myjson = json_decode($this->data);
+        $myjson = Json::decode($this->data);
 
         if ($myjson && isset($myjson->orderDetails)) {
             if (isset($myjson->updateDate)) {
@@ -159,7 +199,7 @@ class Reservations extends MadActiveRecord {
         } else {
             if (is_array($myjson)) {
                 foreach ($myjson as $index => $json) {
-
+                    // TODO: remove this if unnecessary
                 }
             }
         }
@@ -169,7 +209,7 @@ class Reservations extends MadActiveRecord {
 
         /*Yii::$app->log($insert); Turn on for debug*/
         if (is_string($this->data)) {
-            $myjson = json_decode($this->data);
+            $myjson = Json::decode($this->data);
             $editableAttribute = Yii::$app->request->post('editableAttribute');
 
             switch ($editableAttribute) {
@@ -203,7 +243,7 @@ class Reservations extends MadActiveRecord {
                 #Yii::warning('My posted Searchmodel'.\GuzzleHttp\json_encode($mystuff)->firstName);
             }
 
-            $this->data = json_encode($myjson);
+            $this->data = Json::encode($myjson);
             #var_dump($this->data);
 
             unset($this->firstName);

@@ -10,21 +10,19 @@ use yii\widgets\ActiveForm;
 <div class="bookingEdit">
     <?php
 
-        $model->bookingId=$backenddata->bookingId;
-        $model->source=$backenddata->source;
-        $model->invoiceDate=$backenddata->invoiceDate;
-        $model->bookingDate=$backenddata->bookingDate;
-        $model->data=$backenddata->data;
+    foreach (array_keys($model->attributes) as $attribute) {
+        $model[$attribute] = $backenddata[$attribute];
+    }
 
     ?>
     <?php $form = ActiveForm::begin(); ?>
-
-        <?= $form->field($model, 'bookingId') ?>
-        <?= $form->field($model, 'source') ?>
-        <?= $form->field($model, 'data') ?>
-        <?= $form->field($model, 'invoiceDate') ?>
-        <?= $form->field($model, 'bookingDate') ?>
-    
+    <?php
+    foreach (array_keys($model->attributes) as $attribute) {
+    ?>
+        <?= $form->field($model, $attribute) ?>
+    <?php
+    }
+    ?>
         <div class="form-group">
             <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
         </div>
