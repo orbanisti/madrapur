@@ -51,10 +51,19 @@ $this->params['breadcrumbs'][] = $this->title;
             ]);
 
             if(isset($returnMessage)){
+                echo $returnMessage;
 
-               var_dump($returnMessage);
-            };
+            }
             ?>
+            <?=Yii::$app->session->setFlash('error','Message2');?>
+            <?= \insolita\wgadminlte\FlashAlerts::widget([
+                'errorIcon' => '<i class="fa fa-warning"></i>',
+                'successIcon' => '<i class="fa fa-check"></i>',
+                'successTitle' => 'Done!', //for non-titled type like 'success-first'
+                'closable' => true,
+                'encode' => false,
+                'bold' => false,
+            ]); ?>
 
             <div class="form-group">
                 <br/>
