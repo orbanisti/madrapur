@@ -2,8 +2,9 @@
 
 use backend\modules\Product\models\ProductSource;
 use kartik\form\ActiveForm;
-use kartik\helpers\Html;
+
 use kartik\select2\Select2;
+use yii\helpers\Html;
 use yii\web\JsExpression;
 use yii\web\View;
 
