@@ -389,7 +389,7 @@ echo Menu::widget(
 
                                     '/Product/product/admin'
                                 ],
-                                'icon' => '<i class="fa fa-box"></i>',
+                                'icon' => '<i class="fa fa-apple"></i>',
                                 'active' => (Yii::$app->controller->id == 'product'),
                                 'items' => [
                                     [
@@ -400,8 +400,18 @@ echo Menu::widget(
                                         'icon' => '<i class="fa fa-database"></i>',
                                         'active' => (Yii::$app->controller->id == 'create'),
                                     ],
+
                                 ],
 //                                'visible' => Yii::$app->user->can('accessProducts'),
+                            ],
+                            [
+                                'label' => Yii::t('backend', 'Blocking'),
+                                'url' => [
+                                    '/Product/product/uiblock'
+                                ],
+                                'icon' => '<i class="fa fa-hand-stop-o"></i>',
+                                'active' => (Yii::$app->controller->id == 'blocking'),
+                                'visible' => Yii::$app->user->can('accessPayments'),
                             ],
                             [
                                 'label' => Yii::t('backend', 'Payments'),

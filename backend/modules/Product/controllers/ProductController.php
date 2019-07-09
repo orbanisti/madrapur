@@ -37,6 +37,13 @@ class ProductController extends Controller {
         return $this->render('admin', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
     }
 
+    public function actionUiblock() {
+        $searchModel = new ProductAdminSearchModel();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('uiblock', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
+    }
+
     public function actionCreate() {
         $model = new ProductUpdate();
         $request = YII::$app->request;
@@ -583,18 +590,18 @@ class ProductController extends Controller {
 
                             $myurl = $source['url'];
                             $myprodid = $source['prodIds'];
-                            if ($source['url'] == 'https://budapestrivercruise.eu') {
-                                $curlUrl = $myurl . '/wp-json/unblock/v1/start/' . $date . '/end/' . $date . '/id/' . $myprodid;
-                                /*$curl=curl_init($curlUrl);
-                                curl_setopt($curl, CURLOPT_HEADER, 0);
-                                curl_setopt($curl, CURLOPT_VERBOSE, 0);
-                                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);*/
-                                $curl = new CurlHttpClient();
+
+                            $curlUrl = $myurl . '/wp-json/unblock/v1/start/' . $date . '/end/' . $date . '/id/' . $myprodid;
+                            /*$curl=curl_init($curlUrl);
+                            curl_setopt($curl, CURLOPT_HEADER, 0);
+                            curl_setopt($curl, CURLOPT_VERBOSE, 0);
+                            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);*/
+                            $curl = new CurlHttpClient();
+                            $response = $curl->getContent($curlUrl);
+                            if ($response != 0) {
                                 $response = $curl->getContent($curlUrl);
-                                if ($response != 0) {
-                                    $response = $curl->getContent($curlUrl);
-                                }
-                            }//ToDo not only eu
+                            }
+
                         }
                         // var_dump($response.$url); find UNBLOCK URL HERE
 
