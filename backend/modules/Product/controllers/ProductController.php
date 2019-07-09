@@ -621,7 +621,6 @@ class ProductController extends Controller {
                 foreach ($veglegesdates as $i => $date) {
 
                     foreach ($sources as $source) {
-                        if ($source['url'] == 'https://budapestrivercruise.eu') {
 
                             $myurl = $source['url'];
                             $myprodid = $source['prodIds'];
@@ -651,7 +650,7 @@ class ProductController extends Controller {
                                 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
                                 $response = curl_exec($curl);
                             }
-                        }//Todo no only eu
+
                     }
                 }
             } else {
