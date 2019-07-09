@@ -32,6 +32,7 @@ class ProductController extends Controller {
      */
     public function actionAdmin() {
         $searchModel = new ProductAdminSearchModel();
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('admin', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
@@ -39,9 +40,21 @@ class ProductController extends Controller {
 
     public function actionUiblock() {
         $searchModel = new ProductAdminSearchModel();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $model=new Product();
+        $allproducts = $searchModel->searchAllProducts(Yii::$app->request->queryParams);
+        $data=[];
+        foreach($allproducts as $product){
 
-        return $this->render('uiblock', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
+
+            $data[]=$product->title;
+
+        }
+
+
+
+
+
+        return $this->render('uiblock', ['data' => $data, 'searchModel' => $searchModel,'model'=>$model]);
     }
 
     public function actionCreate() {
