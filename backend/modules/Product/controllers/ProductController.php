@@ -728,10 +728,9 @@ class ProductController extends Controller {
                 foreach ($sources as $source){
                     $myurl = $source['url'];
                     $myprodid = $source['prodIds'];
-                    if($myurl=='https://budapestrivercruise.eu'){
 
                         $returnMessage = $this->blockDateTime($postedBlockout['date'], $myurl, $myprodid);
-                    }
+
 
                 }
 
@@ -859,12 +858,12 @@ class ProductController extends Controller {
 
         if (!in_array(date('Y-m-d H:i', strtotime($date)), $alreadyBlockedArray)) {
 
-            Yii::error('date:' . $date);
+
             $curlUrl = $myurl . '/wp-json/blocktime/v1/date/' . date('Y-m-d', strtotime($date)) . '/time/' . date('H:i', strtotime($date)) . '/id/' . $myprodid;
 
             echo '<input type="hidden" value="'.$curlUrl.'"  name="currentCurlUrl"/>';
 
-            Yii::error('blockUrl:' . $curlUrl);
+            Yii::warning('blockUrl:' . $curlUrl);
             $curl = curl_init($curlUrl);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_HEADER, 0);
