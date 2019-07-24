@@ -636,11 +636,30 @@ class ProductController extends Controller {
                             $alreadyblocked = json_decode($response)[0];
                             $alreadyBlockedArray = [];
 
-                            foreach ($alreadyblocked as $blockedDate) {
-                                if ($blockedDate->bookable == 'no' && $blockedDate->from == $blockedDate->to) {
-                                    $alreadyBlockedArray[] = $blockedDate->from;
-                                }
+                            if (!$alreadyblocked) {
+                                Yii::$app->session->setFlash('alert',
+                                    [
+                                        'options' => [
+                                            'class' => 'alert-error'
+                                        ],
+                                        'body' => Yii::t('backend', "
+                                            Something went wrong!<br>
+                                            Ask URL: <a href='$askURL' target='_blank'>$askURL</a><br>
+                                            Product edit URL: <a 
+                                            href='$myurl/wp-admin/post.php?post=$myprodid&action=edit' target='_blank'>$myurl/wp-admin/post.php?post=$myprodid&action=edit</a><br>
+                                            ProdId: $myprodid
+                                        ")
+                                    ]);
+
+                                Yii::error("Oops.. $askURL");
                             }
+
+                            if ($alreadyblocked)
+                                foreach ($alreadyblocked as $blockedDate) {
+                                    if ($blockedDate->bookable == 'no' && $blockedDate->from == $blockedDate->to) {
+                                        $alreadyBlockedArray[] = $blockedDate->from;
+                                    }
+                                }
 
                             if (!in_array($date, $alreadyBlockedArray)) {
                                 $curlUrl = $myurl . '/wp-json/block/v1/start/' . $date . '/end/' . $date . '/id/' . $myprodid;
