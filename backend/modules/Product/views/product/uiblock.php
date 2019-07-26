@@ -1,7 +1,7 @@
 <?php
 
 use backend\modules\Product\models\ProductSource;
-use kartik\form\ActiveForm;
+use yii\widgets\ActiveForm;
 
 use kartik\select2\Select2;
 use yii\helpers\Html;
@@ -31,17 +31,34 @@ use yii\web\View;
 
     ?>
 
+    <script type='text/javascript'>
+        <?php
+
+        $js_array = json_encode($images);
+        echo "var productimages = ". $js_array . ";\n";
+        ?>
+    </script>
+
+
+
            <?php
 
            $format = <<< SCRIPT
+
 function format(state) {
     if (!state.id) return state.text; // optgroup
-    src =state.id.toLowerCase() + '.png'
-    return '<img class="flag" src="' + src + '"/>' + state.text;
+    src =productimages[state.id.toLowerCase()]
+    return '<img class="flag" style="width:20px;height:20px;" src="' + src + '"/>' + state.text;
 }
+
 SCRIPT;
+
+
+
            $escape = new JsExpression("function(m) { return m; }");
            $this->registerJs($format, View::POS_HEAD);
+
+
 
            $form = ActiveForm::begin([
                'id' => 'product-edit',
@@ -49,9 +66,7 @@ SCRIPT;
                'options' => ['class' => 'product-edit','enctype'=>'multipart/form-data'],
 
            ]);
-
-
-           echo $form->field($model, 'title')->widget(Select2::classname(), [
+           echo $form->field($model, 'id')->widget(Select2::classname(), [
                'name' => 'state_12',
                'data' => $data,
                'options' => ['placeholder' => 'Select a product ...'],
@@ -62,9 +77,24 @@ SCRIPT;
                    'allowClear' => true
                ],
            ])->label('Product');
+
+
            ?>
-    <?= Html::submitButton('Block Days', ['class' => 'btn btn-primary', 'value'=>'create_add', 'name'=>'submit']) ?>
-    <?= Html::submitButton('Block Times', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'value'=>'Create', 'name'=>'submit']) ?>
+     <?php
+    echo Html::submitButton(Yii::t('backend', 'Block Days'),
+        [
+            'class' => 'btn btn-primary btn-flat',
+            'name' => 'blocking-button',
+            'value'=>'dayBlocking'
+        ]);
+    echo Html::submitButton(Yii::t('backend', 'Block Times'),
+        [
+            'class' => 'btn btn-success btn-flat',
+            'name' => 'blocking-button',
+            'value'=>'timeBlocking'
+        ]);
+    ?>
+
     <?php ActiveForm::end(); ?>
 
 

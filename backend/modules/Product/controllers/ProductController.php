@@ -39,14 +39,16 @@ class ProductController extends Controller {
     }
 
     public function actionUiblock() {
-        $searchModel = new ProductAdminSearchModel();
-        $model=new Product();
-        $allproducts = $searchModel->searchAllProducts(Yii::$app->request->queryParams);
-        $data=[];
-        foreach($allproducts as $product){
 
-
-            $data[]=$product->title;
+        $postedID=(Yii::$app->request->post('Product'))['id'];
+        $postedAction=Yii::$app->request->post('blocking-button');
+        if($postedID && $postedAction){
+            if($postedAction=='timeBlocking'){
+                $this->redirect('/Product/product/blockedtimes?prodId='.$postedID);
+            }
+            if($postedAction=='dayBlocking'){
+                $this->redirect('/Product/product/blocked?prodId='.$postedID);
+            }
 
         }
 
@@ -54,7 +56,23 @@ class ProductController extends Controller {
 
 
 
-        return $this->render('uiblock', ['data' => $data, 'searchModel' => $searchModel,'model'=>$model]);
+
+        $searchModel = new ProductAdminSearchModel();
+        $model=new Product();
+        $allproducts = $searchModel->searchAllProducts(Yii::$app->request->queryParams);
+        $data=[];
+        $images=[];
+        foreach($allproducts as $product){
+            $data[$product->id]=$product->title;
+            $images[$product->id]=$product->thumbnail;
+
+        }
+
+
+
+
+
+        return $this->render('uiblock', ['data' => $data, 'searchModel' => $searchModel,'model'=>$model,'images'=>$images]);
     }
 
     public function actionCreate() {
@@ -126,6 +144,7 @@ class ProductController extends Controller {
                 'capacity' => $productEdit['capacity'],
                 'duration' => $productEdit['duration'],
                 'images' => $productEdit['images'],
+                'thumbnail' => $productEdit['thumbnail'],
                 'start_date' => $productEdit['start_date'],
                 'end_date' => $productEdit['end_date'],
                 'slug' => $productEdit['slug'],
