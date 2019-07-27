@@ -559,7 +559,7 @@ class ProductController extends Controller {
     public function actionDaye() {
         $currentProductId = Yii::$app->request->get('prodId');
 
-        $searchModel = new ReservationsAdminSearchModel();
+        $searchModel = new Reservations();
 
         if ($currentProductId) {
 
@@ -567,6 +567,8 @@ class ProductController extends Controller {
             $sourcesRows = ProductSource::getProductSourceIds($currentProductId);
             $selectedDate = \Yii::$app->request->get("date");
             $dataProvider = $searchModel->searchDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
+
+
             $takenChairsCount = $searchModel->countTakenChairsOnDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
             $availableChairsOnDay = $searchModel->availableChairsOnDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
         }
@@ -986,7 +988,7 @@ class ProductController extends Controller {
         return ArrayHelper::merge(parent::actions(), [
             'editbook' => [                                       // identifier for your editable column action
                 'class' => EditableColumnAction::class,     // action class name
-                'modelClass' => ReservationsAdminSearchModel::class,                // the model for the record being edited
+                'modelClass' => Reservations::class,                // the model for the record being edited
 
                 'showModelErrors' => true,
 

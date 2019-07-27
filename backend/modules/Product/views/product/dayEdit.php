@@ -99,6 +99,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                        ],
+            'sellerName',
             'invoiceDate',
             'bookingDate',
             [

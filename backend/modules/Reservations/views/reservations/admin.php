@@ -200,8 +200,20 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
 
         'invoiceDate',
-        'bookingDate',
+        [
+            'attribute' => 'bookingDate',
+            'filter' => DatePicker::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'bookingDate',
+                    'name' => 'dp_2',
+                    'type' => DatePicker::TYPE_COMPONENT_PREPEND,
+                    'pluginOptions' => [
+                    'autoclose'=>true,
+                    'format' => 'yyyy-mm-dd'
 
+                ]
+            ]),
+        ],
         [
             'label' => 'Edit Booking',
             'format'=>'html',

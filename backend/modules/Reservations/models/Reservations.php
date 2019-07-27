@@ -136,11 +136,13 @@ class Reservations extends MadActiveRecord {
     }
 
     public function afterFind() {
+
         parent::afterFind();
 
-        $myjson = Json::decode($this->data);
+        $myjson = json_decode($this->data);
 
         if ($myjson && isset($myjson->orderDetails)) {
+
             if (isset($myjson->updateDate)) {
 
                 $this->setAttribute("updateDate", $myjson->updateDate);
@@ -216,30 +218,33 @@ class Reservations extends MadActiveRecord {
 
             switch ($editableAttribute) {
                 case 'firstName':
-                    $mystuff = Yii::$app->request->post('ReservationsAdminSearchModel');
+                    $mystuff = Yii::$app->request->post('Reservations');
                     $myjson->orderDetails->edited_first_name = $mystuff[0]['firstName'];
                     break;
                 case 'lastName':
-                    $mystuff = Yii::$app->request->post('ReservationsAdminSearchModel');
+                    $mystuff = Yii::$app->request->post('Reservations');
                     $myjson->orderDetails->edited_last_name = $mystuff[0]['lastName'];
                     break;
                 case 'bookedChairsCount':
 
-                    $mystuff = Yii::$app->request->post('ReservationsAdminSearchModel');
+                    $mystuff = Yii::$app->request->post('Reservations');
                     $myjson->orderDetails->edited_AllPersons = $mystuff[0]['bookedChairsCount'];
                     break;
                 case 'bookingCost':
 
-                    $mystuff = Yii::$app->request->post('ReservationsAdminSearchModel');
-                    $myjson->boookingDetails->edited_booking_cost = $mystuff[0]['bookingCost'];
+                    $mystuff = Yii::$app->request->post('Reservations');
+                    if(isset($myjson->boookingDetails->edited_booking_cost)){
+                        $myjson->boookingDetails->edited_booking_cost = $mystuff[0]['bookingCost'];
+                    }
+
                     break;
                 case 'orderCurrency':
-                    $mystuff = Yii::$app->request->post('ReservationsAdminSearchModel');
+                    $mystuff = Yii::$app->request->post('Reservations');
                     $myjson->orderDetails->edited_order_currency = $mystuff[0]['order_currency'];
                     break;
                 case 'sourceName':
 
-                    $mystuff = Yii::$app->request->post('ReservationsAdminSearchModel');
+                    $mystuff = Yii::$app->request->post('Reservations');
                     $myjson->orderDetails->edited_source_name = $mystuff[0]['sourceName'];
                     break;
                 #Yii::warning('My posted Searchmodel'.\GuzzleHttp\json_encode($mystuff)->firstName);
@@ -288,6 +293,8 @@ class Reservations extends MadActiveRecord {
             return $dataProvider;
         }
         $query->andFilterWhere((['like', 'source', $this->source]));
+        $query->andFilterWhere((['=', 'bookingDate', $this->bookingDate]));
+
 
         return $dataProvider;
 
@@ -476,6 +483,7 @@ class Reservations extends MadActiveRecord {
         $from = self::tableName();
         $wheres=[];
         $wheres[]=['bookingDate', '=', $selectedDate];
+        $sources[]=$prodId;
         $wheres[]=['productId', 'IN', $sources];
         $where = self::andWhereFilter($wheres);
         $rows = self::aSelect(Reservations::class, $what, $from, $where);
