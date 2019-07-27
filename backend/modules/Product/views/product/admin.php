@@ -53,7 +53,7 @@ use backend\modules\Product\models\ProductSource;
 
         ];
 
-        echo \yii\grid\GridView::widget([
+        echo \kartik\grid\GridView::widget([
             'pager' => [
                 'firstPageLabel' => Yii::t('app', 'Első oldal'),
                 'lastPageLabel' => Yii::t('app', 'Utolsó oldal'),

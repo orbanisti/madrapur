@@ -4,7 +4,9 @@ namespace backend\modules\Reservations\models;
 
 use backend\modules\MadActiveRecord\models\MadActiveRecord;
 use backend\modules\Product\models\Product;
+use backend\modules\Tickets\models\TicketBlock;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 
@@ -261,5 +263,332 @@ class Reservations extends MadActiveRecord {
     public function getData() {
         return $this->data;
     }
+
+
+    public function search($params)
+    {
+        $invoiceDate = '2016-02-05';
+        $bookingDate = '2020-08-20';
+
+        $what = ['*'];
+        $from = self::tableName();
+
+
+       $query = Reservations::find()->indexBy('id');;
+
+       $query->andFilterWhere((['>=','invoiceDate', '2011-12-12']));
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 15,
+            ],
+        ]);
+
+        if (!($this->load($params) && $this->validate())) {
+            return $dataProvider;
+        }
+        $query->andFilterWhere((['like', 'source', $this->source]));
+
+        return $dataProvider;
+
+
+    }
+
+
+    public function searchMyreservations($params)
+    {
+
+        $what = ['*'];
+        $from = self::tableName();
+        $currentUserId=\Yii::$app->user->getId();
+
+        $where = self::andWhereFilter([
+            # ['invoiceDate', '>=', $invoiceDate],
+            # ['bookingDate', '<=', $bookingDate],
+            # ['source', '=', 'Street'],
+            ['sellerId', '=',strval($currentUserId) ],
+        ]);
+
+        $rows = self::aSelect(Reservations::class, $what, $from, $where);
+
+
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $rows,
+            'pagination' => [
+                'pageSize' => 15,
+            ],
+        ]);
+
+        $this->load($params);
+
+        return $dataProvider;
+    }
+
+
+
+    public function searchAllreservations($params)
+    {
+
+        $what = ['*'];
+        $from = self::tableName();
+
+        $searchParams = isset($params['Reservations']) ? $params['Reservations'] : [] ;
+        $filters = [];
+        $filters[] = ['source', 'IN', ['Street', 'Hotel']];
+
+        foreach ($searchParams as $paramName => $paramValue) {
+            if ($paramValue)
+                $filters[] = [$paramName, 'LIKE', $paramValue];
+        }
+
+        $where = self::andWhereFilter($filters);
+
+        $rows = self::aSelect(Reservations::class, $what, $from, $where, ['invoiceMonth' => SORT_ASC, 'source' => SORT_ASC, 'sellerName' => SORT_ASC, 'bookingId' => SORT_ASC]);
+
+
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $rows,
+            'pagination' => [
+                'pageSize' => 15,
+            ],
+        ]);
+
+        $this->load($params);
+
+        return $dataProvider;
+    }
+
+
+    public function searchMonthlyStatistics($params) {
+        $what = ['*'];
+        $from = self::tableName();
+
+        $searchParams = isset($params['Reservations']) ? $params['Reservations'] : [] ;
+        $filters = [];
+
+        foreach ($searchParams as $paramName => $paramValue) {
+            if ($paramValue)
+                $filters[] = [$paramName, 'LIKE', $paramValue];
+        }
+
+
+        $filters[] = ['order_currency', '=', 'EUR'];
+
+        $where = self::andWhereFilter($filters);
+
+        $orderBy = ['invoiceMonth' => SORT_ASC, 'source' => SORT_ASC, 'sellerName' => SORT_ASC, 'bookingId' => SORT_ASC];
+
+        $rows = self::aSelect(
+            Reservations::class,
+            $what, $from, $where, $orderBy
+        );
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $rows,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        $this->load($params);
+
+        return $dataProvider;
+    }
+
+    public function getMonthlyBySeller($sellerName) {
+        $what = ['booking_cost'];
+        $from = self::tableName();
+
+        $filters = [];
+        $filters[] = ['sellerName', '=', $sellerName];
+        $filters[] = ['invoiceMonth', '=', date('m')];
+
+        $where = self::andWhereFilter($filters);
+
+
+        $rows = self::aSelect(
+            Reservations::class,
+            $what, $from, $where
+        )->all();
+
+        $cost = 0;
+        foreach ($rows as $row) {
+            $cost += $row->booking_cost;
+        }
+
+        return $cost;
+    }
+
+    public function getTodayBySeller($sellerName) {
+        $what = ['booking_cost'];
+        $from = self::tableName();
+
+        $filters = [];
+        $filters[] = ['sellerName', '=', $sellerName];
+        $filters[] = ['invoiceDate', '=', date('Y-m-d')];
+
+        $where = self::andWhereFilter($filters);
+
+
+        $rows = self::aSelect(            Reservations::class,
+            $what, $from, $where
+        )->all();
+
+        $cost = 0;
+        foreach ($rows as $row) {
+            $cost += $row->booking_cost;
+        }
+
+        return $cost;
+    }
+
+    /**
+     * @return array|Reservations|null|\yii\db\ActiveRecord
+     */
+    public function getTicketBookBySeller() {
+        $what = ['startId'];
+        $from = TicketBlock::tableName();
+
+        $filters = [];
+        $filters[] = ['assignedTo', '=', \Yii::$app->user->id];
+        $filters[] = ['frozen', '=', 0];
+
+        $where = self::andWhereFilter($filters);
+
+        $row = self::aSelect(
+            TicketBlock::class,
+            $what, $from, $where
+        )->one();
+
+
+
+        return $row;
+    }
+
+
+    public function searchDay($params,$selectedDate,$sources,$prodId)
+    {
+
+
+        $what = ['*'];
+        $from = self::tableName();
+        $wheres=[];
+        $wheres[]=['bookingDate', '=', $selectedDate];
+        $wheres[]=['productId', 'IN', $sources];
+        $where = self::andWhereFilter($wheres);
+        $rows = self::aSelect(Reservations::class, $what, $from, $where);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $rows,
+            'pagination' => [
+                'pageSize' => 15,
+            ],
+        ]);
+        $this->load($params);
+        return $dataProvider;
+    }
+    public function countTakenChairsOnDay($params,$selectedDate,$sources,$prodId)
+    {
+
+        $what = ['*'];
+        $from = self::tableName();
+        $wheres=[];
+        $wheres[]=['bookingDate', '=', $selectedDate];
+        $wheres[]=['productId', 'IN', $sources];
+        $where = self::andWhereFilter($wheres);
+        $rows = self::aSelect(Reservations::class, $what, $from, $where);
+        $bookigsFromThatDay=$rows->all();
+        $counter=0;
+        foreach ($bookigsFromThatDay as $reservation){
+            if(isset($reservation->bookedChairsCount)){
+                $counter=$counter+$reservation->bookedChairsCount;
+
+            }
+        }
+        return $counter;
+    }
+    public function availableChairsOnDay($params,$selectedDate,$sources,$prodId)
+    {
+
+        $what = ['*'];
+        $from = self::tableName();
+        $wheres=[];
+        $wheres[]=['bookingDate', '=', $selectedDate];
+        $wheres[]=['productId', 'IN', $sources];
+        $where = self::andWhereFilter($wheres);
+        $rows = self::aSelect(Reservations::class, $what, $from, $where);
+        $bookigsFromThatDay=$rows->all();
+        $counter=0;
+        foreach ($bookigsFromThatDay as $reservation){
+            if(isset($reservation->bookedChairsCount)){
+                $counter=$counter+$reservation->bookedChairsCount;
+
+            }
+        }
+        $currentProduct=Product::getProdById($prodId);
+        $placesleft=$currentProduct->capacity-$counter;
+        if($placesleft%2!=0){
+            $placesleft-=1;
+        }
+        return $placesleft;
+    }
+
+
+
+    public function searchChart($params)
+    {
+        $invoiceDate = '2016-02-05';
+        $bookingDate = '2020-08-20';
+
+        $what = ['*'];
+        $from = self::tableName();
+        $where = self::andWhereFilter([
+            ['invoiceDate', '>=', $invoiceDate],
+            ['bookingDate', '<=', $bookingDate]
+            # ['source', 'LIKE', 'utca']
+        ]);
+
+
+
+        $rows = self::aSelect(Reservations::class, $what, $from, $where);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $rows,
+        ]);
+
+        $this->load($params);
+
+        return $dataProvider;
+    }
+
+    public function searchChartForStats($startDate = null, $endDate = null, $source = null) {
+        $what = ['*'];
+        $from = self::tableName();
+        $where = self::andWhereFilter([
+            ['invoiceDate', '>=', $startDate],
+            ['invoiceDate', '<=', $endDate],
+            # ['source', 'LIKE', 'utca']
+        ]);
+
+
+
+        $rows = self::aSelect(Reservations::class, $what, $from, $where);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $rows,
+        ]);
+
+        return $dataProvider;
+    }
+
+    public function returnBookingId() {
+        return $this['bookingId'];
+    }
+
+    public function returnId() {
+        return $this['id'];
+    }
+
 
 }
