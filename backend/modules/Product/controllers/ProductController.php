@@ -20,6 +20,7 @@ use kartik\grid\EditableColumnAction;
 use League\Uri\PublicSuffix\CurlHttpClient;
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 
 /**
  * Controller for the `Product` module
@@ -449,7 +450,19 @@ class ProductController extends Controller {
          *
          */
         $modelEvents2 = [];
+
+        $tempsource=new ProductSource();
+        $tempsource2=new ProductSource();
+        $tempsource->url='Hotel';
+        $tempsource->prodIds=Yii::$app->request->get('prodId');
+        $tempsource2->url='Street';
+        $tempsource2->prodIds=Yii::$app->request->get('prodId');
+        $sourceRows[]=$tempsource;
+        $sourceRows[]=$tempsource2;
+
+
         foreach ($sourceRows as $source):
+
             $queryGetReservatios = Product::aSelect(Reservations::class, '*', Reservations::tableName(), 'source="' . $source->url . '"and productId="' . $source->prodIds . '"');
             try {
                 $rowsAll = $queryGetReservatios->all();
@@ -461,8 +474,16 @@ class ProductController extends Controller {
                     $event = new \yii2fullcalendar\models\Event();
                     $event->id = $reservation->id;
                     $reservationData = $reservation->data;
-                    $reservationData = json_decode($reservationData);
-                    $reservationName = $reservationData->orderDetails->billing_first_name . ' ' . $reservationData->orderDetails->billing_last_name;
+                    $reservationJsondata = json_decode($reservationData);
+                    if(isset($reservationJsondata->orderDetails->billing_first_name)) {
+                        $reservationName = $reservationJsondata->orderDetails->billing_first_name . ' ' . $reservationJsondata->orderDetails->billing_last_name;
+                    }
+                    else{
+                        $reservationName = $reservation->sellerName;
+
+                    }
+
+
                     $event->title = $reservationName;
                     $event->start = $reservation->bookingDate;
                     $event->nonstandard = ['field1' => $source->name, 'field2' => $reservation->id];

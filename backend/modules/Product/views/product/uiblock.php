@@ -93,6 +93,7 @@ SCRIPT;
             'name' => 'blocking-button',
             'value'=>'timeBlocking'
         ]);
+     
     ?>
 
     <?php ActiveForm::end(); ?>
