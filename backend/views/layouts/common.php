@@ -411,7 +411,7 @@ echo Menu::widget(
                                 ],
                                 'icon' => '<i class="fa fa-hand-stop-o"></i>',
                                 'active' => (Yii::$app->controller->id == 'blocking'),
-                                'visible' => Yii::$app->user->can('accessPayments'),
+                                'visible' => Yii::$app->user->can('accessTicketsAdmin'),
                             ],
                             [
                                 'label' => Yii::t('backend', 'Payments'),

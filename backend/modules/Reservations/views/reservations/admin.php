@@ -6,8 +6,12 @@
  * Time: 20:38
  */
 
+
+use kartik\date\DatePicker;
 use kartik\helpers\Html;
 use backend\components\extra;
+
+use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 
 $this->title = Yii::t('app', 'Foglalások');
@@ -184,14 +188,32 @@ $this->params['breadcrumbs'][] = $this->title;
 
     ?>
 
+
     <?php
     $gridColumns = [
         'id',
         'bookingId',
         'productId',
-        'source',
+        [
+            'attribute' => 'source',
+            'filter' => array("https://silver-line.hu"=>"https://silver-line.hu","https://budapestrivercruise.eu"=>"https://budapestrivercruise.eu",'Street'=>'Street','Hotel'=>'Hotel'),
+        ],
+
         'invoiceDate',
-        'bookingDate',
+        [
+            'attribute' => 'bookingDate',
+            'filter' => DatePicker::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'bookingDate',
+                    'name' => 'dp_2',
+                    'type' => DatePicker::TYPE_COMPONENT_PREPEND,
+                    'pluginOptions' => [
+                    'autoclose'=>true,
+                    'format' => 'yyyy-mm-dd'
+
+                ]
+            ]),
+        ],
         [
             'label' => 'Edit Booking',
             'format'=>'html',
@@ -202,13 +224,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
     ];
 
-    echo \yii\grid\GridView::widget([
+    echo \kartik\grid\GridView::widget([
         'pager' => [
             'firstPageLabel' => Yii::t('app', 'Első oldal'),
             'lastPageLabel' => Yii::t('app', 'Utolsó oldal'),
         ],
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        'filterModel' => new \backend\modules\Reservations\models\Reservations(),
         'columns' => $gridColumns,
     ]);
 
