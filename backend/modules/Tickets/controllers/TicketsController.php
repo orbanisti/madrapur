@@ -31,8 +31,8 @@ class TicketsController extends Controller {
             [
                 'label' => 'Start ID',
                 'format'=>'html',
-                'value' => function ($model) {
-                    return '<a href="/Tickets/tickets/viewTicket?id='.$model->returnStartId().'">'
+                'value' => function (TicketBlockSearchModel $model) {
+                    return '<a href="/Tickets/tickets/view-ticket?id='.$model->returnStartId().'">'
                         .$model->returnStartId().'</a>';
                 },
                 'filter' => function() {
@@ -42,8 +42,8 @@ class TicketsController extends Controller {
             [
                 'label' => 'Current ID',
                 'format'=>'html',
-                'value' => function ($model) {
-                    return '<a href="/Tickets/tickets/viewTicket?id='.$model->returnCurrentId().'">'
+                'value' => function (TicketBlockSearchModel $model) {
+                    return '<a href="/Tickets/tickets/view-ticket?id='.$model->returnCurrentId().'">'
                         .$model->returnCurrentId().'</a>';
                 },
                 'filter' => function() {
@@ -51,10 +51,21 @@ class TicketsController extends Controller {
                 }
             ],
             [
+                'label' => 'assignedTo',
+                'format'=>'html',
+                'value' => function (TicketBlockSearchModel $model) {
+                    $user = User::findIdentity($model->assignedTo)->username;
+                    return '<a href="/user/view?id='.$model->assignedTo.'">'.$user.'</a>';
+                },
+                'filter' => function($a, $b) {
+                    return true;
+                }
+            ],
+            [
                 'label' => 'View Ticket Block',
                 'format'=>'html',
-                'value' => function ($model) {
-                    return '<a href="/Tickets/tickets/viewBlock?id='.$model->returnId().'">Edit'.'</a>';
+                'value' => function (TicketBlockSearchModel $model) {
+                    return '<a href="/Tickets/tickets/view-block?id='.$model->returnId().'">Edit'.'</a>';
                 }
             ],
         ];
@@ -73,23 +84,26 @@ class TicketsController extends Controller {
      * @throws ForbiddenHttpException
      * @throws \yii\db\Exception
      */
-        public function actionAddBlock() {
-            if (!Yii::$app->user->can('addTicketBlock'))
-                throw new ForbiddenHttpException('userCan');
+    public function actionAddBlock() {
+        if (!Yii::$app->user->can('addTicketBlock'))
+            throw new ForbiddenHttpException('userCan');
 
-//            Yii::error(Yii::$app->request->post());
+            Yii::error(Yii::$app->request->post());
+            Yii::error((int) Yii::$app->user->id);
 //            Yii::error((int)Yii::$app->request->post('startId'));
 //            Yii::error(sprintf('%07d', (int)Yii::$app->request->post('startId')));
-            $saved = false;
+        $saved = false;
 
-            if (Yii::$app->request->post('startId')) {
-                $startId = Yii::$app->request->post('startId');
-                $currentId = (int)$startId;
-                $values = '(\'V' . sprintf('%07d', $currentId) . '\')';
+        if (Yii::$app->request->post('startId') && Yii::$app->request->post('TicketBlock')) {
+            $startId = Yii::$app->request->post('startId');
+            $currentId = (int)$startId;
+            $values = '(\'V' . sprintf('%07d', $currentId) . '\')';
 
-                do {
-                    $values .= ',(\'V' . sprintf('%07d', ++$currentId) . '\')';
-                } while ($currentId < ((int)$startId + 49));
+            do {
+                $values .= ',(\'V' . sprintf('%07d', ++$currentId) . '\')';
+            } while ($currentId < ((int)$startId + 49));
+
+            if (Yii::$app->db->getTableSchema(Yii::$app->db->tablePrefix . 'modulus_tb_v' . $startId, true) === null) {
 
                 $sql = "CALL createTicketBlockTable(:tableName, :startId, :values)";
                 $params = [
@@ -104,46 +118,55 @@ class TicketsController extends Controller {
                 $ticketBlock->assignedTo = (int)Yii::$app->request->post('TicketBlock')['assignedTo'];
                 $ticketBlock->assignedBy = (int)Yii::$app->user->id;
                 $saved = $ticketBlock->save(false);
-
-                //return $this->render('addBlockSuccess');
+            } else {
+                Yii::$app->session->setFlash(
+                    'alert',
+                    [
+                        'options' => [
+                            'class' => 'alert-warning'
+                        ],
+                        'body' => Yii::t('backend', "Ticket block (V$startId) already exists!")
+                    ]
+                );
             }
 
-            $model = new TicketBlock();
-            $roles = ArrayHelper::getColumn(Yii::$app->authManager->getRoles(), 'name');
+            //return $this->render('addBlockSuccess');
+        }
 
-            foreach ($roles as $i => $role) {
-                if (!Yii::$app->user->can($role))
-                    unset($roles[$i]);
-            }
+        $model = new TicketBlock();
+        $roles = ArrayHelper::getColumn(Yii::$app->authManager->getRoles(), 'name');
 
-            $users = User::aSelect(User::class, 'id, username', User::tableName(), '1')->all();
+        foreach ($roles as $i => $role) {
+            if (!Yii::$app->user->can($role))
+                unset($roles[$i]);
+        }
 
-            /**
-             * Remove this.
-             */
-            foreach ($users as $idx => $user) {
-                //TODO remove query from foreach
-                $assignments = RbacAuthAssignment::aSelect(
-                    RbacAuthAssignment::class,
-                    '*',
-                    RbacAuthAssignment::tableName(),
-                    'user_id = ' . $user->id,
-                    'user_id',
-                    'user_id'
-                )->one();
+        $users = User::aSelect(User::class, 'id, username', User::tableName(), '1')->all();
 
+        /**
+         * Remove this.
+         */
+        foreach ($users as $idx => $user) {
+            //TODO remove query from foreach
+            $assignments = RbacAuthAssignment::aSelect(
+                RbacAuthAssignment::class,
+                '*',
+                RbacAuthAssignment::tableName(),
+                'user_id = ' . $user->id,
+                'user_id',
+                'user_id'
+            )->one();
 
-                if (!Yii::$app->user->can("assign_" . $assignments->item_name))
+            if (!Yii::$app->user->can("assign_" . $assignments["item_name"]))
+                unset($users[$idx]);
+        }
+        /**
+         * Remove end.
+         */
 
-                    unset($users[$idx]);
-            }
-            /**
-             * Remove end.
-             */
-
-            /**
-             * Test this.
-             */
+        /**
+         * Test this.
+         */
 //            $assignments = RbacAuthAssignment::aSelect(
 //                RbacAuthAssignment::class,
 //                '*',
@@ -162,10 +185,10 @@ class TicketsController extends Controller {
 //                }
 //            }
 
-            $users = ArrayHelper::map($users, 'id', 'username');
+        $users = ArrayHelper::map($users, 'id', 'username');
 
-            return $this->render(
-            'addBlock',
+        return $this->render(
+        'addBlock',
             [
                 'model' => $model,
                 'users' => $users,
@@ -173,7 +196,32 @@ class TicketsController extends Controller {
             ]
         );
     }
-    
+
+    /**
+     * Renders the viewTicket view for the module
+     *
+     * @param $id
+     *
+     * @return string
+     */
+    public function actionViewTicket($id) {
+        return $this->render('viewTicket', [
+            'id' => $id
+        ]);
+    }
+
+    /**
+     * Renders the viewBlock view for the module
+     *
+     * @param $id
+     *
+     * @return string
+     */
+    public function actionViewBlock($id) {
+        return $this->render('viewBlock', [
+            'id' => $id
+        ]);
+    }
     /**
      * Renders the index view for the module
      * @return string

@@ -390,7 +390,8 @@ echo Menu::widget(
                                     '/Product/product/admin'
                                 ],
                                 'icon' => '<i class="fa fa-apple"></i>',
-                                'active' => (Yii::$app->controller->id == 'product'),
+                                'active' => Yii::$app->controller->id === 'product' &&
+                                            Yii::$app->controller->action->id !== 'uiblock',
                                 'items' => [
                                     [
                                         'label' => Yii::t('backend', 'Create'),
@@ -410,7 +411,8 @@ echo Menu::widget(
                                     '/Product/product/uiblock'
                                 ],
                                 'icon' => '<i class="fa fa-hand-stop-o"></i>',
-                                'active' => (Yii::$app->controller->id == 'blocking'),
+                                'active' => (Yii::$app->controller->id == 'product') &&
+                                    Yii::$app->controller->action->id === 'uiblock',
                                 'visible' => Yii::$app->user->can('accessPayments'),
                             ],
                             [

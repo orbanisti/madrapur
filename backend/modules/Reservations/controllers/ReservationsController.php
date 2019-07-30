@@ -10,6 +10,7 @@ use backend\modules\Product\models\ProductTime;
 use backend\modules\Reservations\models\DateImport;
 use backend\modules\Reservations\models\Reservations;
 use backend\modules\Reservations\models\ReservationsAdminSearchModel;
+use backend\modules\Tickets\models\TicketBlock;
 use common\commands\AddToTimelineCommand;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -277,9 +278,7 @@ class ReservationsController extends Controller {
 
             # $data=['boookingDetails'=> $booking->bookingDetails,'orderDetails'=>$booking->orderDetails,'personInfo'=>$booking->personInfo,'updateDate'=>date("Y-m-d H:i:s")];
 
-            $data = json_encode($data);
-
-            $imaStreetSeller = Yii::$app->authManager->getAssignment('streetSeller', Yii::$app->user->getId());
+            $data = Json::encode($data);
 
             $source = 'unset';
             $imaStreetSeller = Yii::$app->authManager->getAssignment('streetSeller', Yii::$app->user->getId());
@@ -313,6 +312,8 @@ class ReservationsController extends Controller {
                 Reservations::insertOne($booking, $values);
 
                 $updateResponse = '<span style="color:green">Reservation Successful</span>';
+
+                TicketBlock::getDb();
 
                 Yii::$app->commandBus->handle(
                     new AddToTimelineCommand(

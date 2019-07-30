@@ -12,5 +12,4 @@ class TicketBlock extends Tickets {
 
     private const TABLE_PREFIX = 'modulus_tb_';
 
-
 }

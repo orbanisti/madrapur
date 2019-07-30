@@ -46,8 +46,13 @@ class TicketBlockSearchModel extends TicketBlock {
     public function returnCurrentId() {
         $tableName = 'modulus_tb_' . $this['startId'];
 
-        $ticketBlock = self::aSelect(self::class, '*', $tableName, 'sellerId IS NULL', 'ticketId', 'ticketId')->one();
-Yii::error($ticketBlock);
-        return $ticketBlock['startId'];
+        if (Yii::$app->db->schema->getTableSchema("users", true) === null) {
+            $ticketBlock = self::aSelect(self::class, '*', $tableName, 'sellerId IS NULL', 'ticketId', 'ticketId')->one();
+            Yii::error($ticketBlock);
+
+            return $ticketBlock['startId'];
+        }
+
+        return "N/A";
     }
 }

@@ -198,6 +198,7 @@ $config = [
 
 define("WEB_ROOT", ".");
 define("OTP", "../../../../simplepay/");
+define("REACT", "../../react/index.php");
 
 if (YII_ENV_DEV) {
     $config['modules']['gii'] = [
