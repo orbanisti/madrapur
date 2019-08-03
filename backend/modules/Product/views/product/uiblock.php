@@ -93,6 +93,12 @@ SCRIPT;
             'name' => 'blocking-button',
             'value'=>'timeBlocking'
         ]);
+     echo Html::submitButton(Yii::t('backend', 'Time Table'),
+         [
+             'class' => 'btn btn-warning btn-flat',
+             'name' => 'blocking-button',
+             'value'=>'timeTable'
+         ]);
      
     ?>
 

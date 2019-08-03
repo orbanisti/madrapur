@@ -50,6 +50,9 @@ class ProductController extends Controller {
             if($postedAction=='dayBlocking'){
                 $this->redirect('/Product/product/blocked?prodId='.$postedID);
             }
+            if($postedAction=='timeTable'){
+                $this->redirect('/Product/product/timetable?prodId='.$postedID);
+            }
 
         }
 
@@ -75,6 +78,8 @@ class ProductController extends Controller {
 
         return $this->render('uiblock', ['data' => $data, 'searchModel' => $searchModel,'model'=>$model,'images'=>$images]);
     }
+
+
 
     public function actionCreate() {
         $model = new ProductUpdate();
@@ -499,7 +504,7 @@ class ProductController extends Controller {
          *
          */
 
-        $queryGetReservatios = Product::aSelect(Reservations::class, '*', Reservations::tableName(), 'productId=250');
+        $queryGetReservatios = Product::aSelect(Reservations::class, '*', Reservations::tableName(), 'productId=!0');
         try {
             $rowsAll = $queryGetReservatios->all();
         } catch (Exception $e) {
@@ -534,6 +539,88 @@ class ProductController extends Controller {
                 'modelEvents' => $modelEvents2,
                 'modelTimes' => ((empty($modelTimes)) ? [new ProductTime()] : $modelTimes),
                 'modelPrices' => ((empty($modelPrices)) ? [new ProductPrice()] : $modelPrices),
+            ]
+        );
+    }
+
+    public function actionTimetable(){
+
+        $prodId=Yii::$app->request->get('prodId');
+
+        $modelEvents2 = [];
+        $queryGetSources = ProductSource::aSelect(ProductSource::class, '*', ProductSource::tableName(), 'product_id=' . $prodId);
+        try {
+            $sourceRows = $queryGetSources->all();
+        } catch (Exception $e) {
+        }
+
+        if (isset($sourceRows)) {
+
+
+            $modelSources = $sourceRows;
+        } else {
+            $sourceRows = [];
+
+            $modelSources[] = new ProductSource();
+            $modelSources = Product::createMultiple(ProductSource::class, $modelSources);
+            $modelSources[0] = new ProductSource();
+            $modelSources[0]->name = 'asd';
+        }
+
+
+
+
+        $tempsource=new ProductSource();
+        $tempsource2=new ProductSource();
+        $tempsource->url='Hotel';
+        $tempsource->prodIds=Yii::$app->request->get('prodId');
+        $tempsource2->url='Street';
+        $tempsource2->prodIds=Yii::$app->request->get('prodId');
+        $sourceRows[]=$tempsource;
+        $sourceRows[]=$tempsource2;
+
+
+        foreach ($sourceRows as $source):
+
+            $queryGetReservatios = Product::aSelect(Reservations::class, '*', Reservations::tableName(), 'source="' . $source->url . '"and productId="' . $source->prodIds . '"');
+            try {
+                $rowsAll = $queryGetReservatios->all();
+            } catch (Exception $e) {
+            }
+
+            if (isset($rowsAll)) {
+                foreach ($rowsAll as $reservation) {
+                    $event = new \yii2fullcalendar\models\Event();
+                    $event->id = $reservation->id;
+                    $reservationData = $reservation->data;
+                    $reservationJsondata = json_decode($reservationData);
+                    if(isset($reservationJsondata->orderDetails->billing_first_name)) {
+                        $reservationName = $reservationJsondata->orderDetails->billing_first_name . ' ' . $reservationJsondata->orderDetails->billing_last_name;
+                    }
+                    else{
+                        $reservationName = $reservation->sellerName;
+
+                    }
+
+
+                    $event->title = $reservationName;
+                    $event->start = $reservation->bookingDate;
+                    $event->nonstandard = ['field1' => $source->name, 'field2' => $reservation->id];
+                    $event->color = $source->color;
+                    $modelEvents2[] = $event;
+                }
+            }
+        endforeach;
+
+
+        return $this->render(
+            'timetable', [
+                'model'=> ((empty($model)) ? [new ProductEdit()] : $model),
+                'prodId' => $prodId,
+                'modelEvents' => $modelEvents2,
+                'modelTimes' => ((empty($modelTimes)) ? [new ProductTime()] : $modelTimes),
+                'modelPrices' => ((empty($modelPrices)) ? [new ProductPrice()] : $modelPrices),
+
             ]
         );
     }
