@@ -58,6 +58,23 @@ class ProductAdminSearchModel extends Product
         return $dataProvider;
     }
 
+    public function searchAllProducts($params)
+    {
+        #  $invoiceDate = '2016-02-05';
+        # $bookingDate = '2020-08-20';
+
+        $what = ['*'];
+        $from = self::tableName();
+        $where = self::andWhereFilter([
+            ['id', '!=', '0'],
+        ]);
+
+
+        $rows = self::aSelect(Product::class, $what, $from,$where);
+        return $rows->all();
+    }
+
+
     public function returnProductId() {
         return $this['id'];
     }

@@ -20,6 +20,7 @@ use kartik\grid\EditableColumnAction;
 use League\Uri\PublicSuffix\CurlHttpClient;
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 
 /**
  * Controller for the `Product` module
@@ -32,16 +33,47 @@ class ProductController extends Controller {
      */
     public function actionAdmin() {
         $searchModel = new ProductAdminSearchModel();
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('admin', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
     }
 
     public function actionUiblock() {
-        $searchModel = new ProductAdminSearchModel();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('uiblock', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
+        $postedID=(Yii::$app->request->post('Product'))['id'];
+        $postedAction=Yii::$app->request->post('blocking-button');
+        if($postedID && $postedAction){
+            if($postedAction=='timeBlocking'){
+                $this->redirect('/Product/product/blockedtimes?prodId='.$postedID);
+            }
+            if($postedAction=='dayBlocking'){
+                $this->redirect('/Product/product/blocked?prodId='.$postedID);
+            }
+
+        }
+
+
+
+
+
+
+        $searchModel = new ProductAdminSearchModel();
+        $model=new Product();
+        $allproducts = $searchModel->searchAllProducts(Yii::$app->request->queryParams);
+        $data=[];
+        $images=[];
+        foreach($allproducts as $product){
+            $data[$product->id]=$product->title;
+            $images[$product->id]=$product->thumbnail;
+
+        }
+
+
+
+
+
+        return $this->render('uiblock', ['data' => $data, 'searchModel' => $searchModel,'model'=>$model,'images'=>$images]);
     }
 
     public function actionCreate() {
@@ -113,6 +145,7 @@ class ProductController extends Controller {
                 'capacity' => $productEdit['capacity'],
                 'duration' => $productEdit['duration'],
                 'images' => $productEdit['images'],
+                'thumbnail' => $productEdit['thumbnail'],
                 'start_date' => $productEdit['start_date'],
                 'end_date' => $productEdit['end_date'],
                 'slug' => $productEdit['slug'],
@@ -417,7 +450,19 @@ class ProductController extends Controller {
          *
          */
         $modelEvents2 = [];
+
+        $tempsource=new ProductSource();
+        $tempsource2=new ProductSource();
+        $tempsource->url='Hotel';
+        $tempsource->prodIds=Yii::$app->request->get('prodId');
+        $tempsource2->url='Street';
+        $tempsource2->prodIds=Yii::$app->request->get('prodId');
+        $sourceRows[]=$tempsource;
+        $sourceRows[]=$tempsource2;
+
+
         foreach ($sourceRows as $source):
+
             $queryGetReservatios = Product::aSelect(Reservations::class, '*', Reservations::tableName(), 'source="' . $source->url . '"and productId="' . $source->prodIds . '"');
             try {
                 $rowsAll = $queryGetReservatios->all();
@@ -429,8 +474,16 @@ class ProductController extends Controller {
                     $event = new \yii2fullcalendar\models\Event();
                     $event->id = $reservation->id;
                     $reservationData = $reservation->data;
-                    $reservationData = json_decode($reservationData);
-                    $reservationName = $reservationData->orderDetails->billing_first_name . ' ' . $reservationData->orderDetails->billing_last_name;
+                    $reservationJsondata = json_decode($reservationData);
+                    if(isset($reservationJsondata->orderDetails->billing_first_name)) {
+                        $reservationName = $reservationJsondata->orderDetails->billing_first_name . ' ' . $reservationJsondata->orderDetails->billing_last_name;
+                    }
+                    else{
+                        $reservationName = $reservation->sellerName;
+
+                    }
+
+
                     $event->title = $reservationName;
                     $event->start = $reservation->bookingDate;
                     $event->nonstandard = ['field1' => $source->name, 'field2' => $reservation->id];
@@ -527,7 +580,7 @@ class ProductController extends Controller {
     public function actionDaye() {
         $currentProductId = Yii::$app->request->get('prodId');
 
-        $searchModel = new ReservationsAdminSearchModel();
+        $searchModel = new Reservations();
 
         if ($currentProductId) {
 
@@ -535,6 +588,8 @@ class ProductController extends Controller {
             $sourcesRows = ProductSource::getProductSourceIds($currentProductId);
             $selectedDate = \Yii::$app->request->get("date");
             $dataProvider = $searchModel->searchDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
+
+
             $takenChairsCount = $searchModel->countTakenChairsOnDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
             $availableChairsOnDay = $searchModel->availableChairsOnDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
         }
@@ -954,7 +1009,7 @@ class ProductController extends Controller {
         return ArrayHelper::merge(parent::actions(), [
             'editbook' => [                                       // identifier for your editable column action
                 'class' => EditableColumnAction::class,     // action class name
-                'modelClass' => ReservationsAdminSearchModel::class,                // the model for the record being edited
+                'modelClass' => Reservations::class,                // the model for the record being edited
 
                 'showModelErrors' => true,
 

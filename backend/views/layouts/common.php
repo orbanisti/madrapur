@@ -413,7 +413,6 @@ echo Menu::widget(
                                 'icon' => '<i class="fa fa-hand-stop-o"></i>',
                                 'active' => (Yii::$app->controller->id == 'product') &&
                                     Yii::$app->controller->action->id === 'uiblock',
-                                'visible' => Yii::$app->user->can('accessPayments'),
                             ],
                             [
                                 'label' => Yii::t('backend', 'Payments'),

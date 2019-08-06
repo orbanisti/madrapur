@@ -6,11 +6,14 @@ use backend\controllers\Controller;
 use backend\modules\Product\models\Product;
 use backend\modules\Product\models\ProductAdminSearchModel;
 use backend\modules\Product\models\ProductPrice;
+use backend\modules\Product\models\ProductSource;
 use backend\modules\Product\models\ProductTime;
 use backend\modules\Reservations\models\DateImport;
 use backend\modules\Reservations\models\Reservations;
+use backend\modules\Reservations\models\ReservationsAdminInfoSearchModel;
 use backend\modules\Reservations\models\ReservationsAdminSearchModel;
 use backend\modules\Tickets\models\TicketBlock;
+use backend\modules\translation\models\Source;
 use common\commands\AddToTimelineCommand;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -77,7 +80,7 @@ class ReservationsController extends Controller {
             throw new ForbiddenHttpException('userCan\'t');
         }
 
-        $searchModel = new ReservationsAdminSearchModel();
+        $searchModel = new Reservations();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $chartDataProvider = $searchModel->searchChart(Yii::$app->request->queryParams);
         $dateImportModel = new DateImport();
@@ -169,13 +172,14 @@ class ReservationsController extends Controller {
                 }
             }
         }
-
+        $allsources=new ProductSource();
         return $this->render('admin', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'chartDataProvider' => $chartDataProvider,
             'dateImportModel' => $dateImportModel,
-            'importResponse' => $importResponse
+            'importResponse' => $importResponse,
+            'allsources'=>$allsources
 
         ]);
     }
