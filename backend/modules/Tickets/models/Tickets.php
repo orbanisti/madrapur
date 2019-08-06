@@ -14,7 +14,7 @@ class Tickets extends MadActiveRecord {
     public const ACCESS_TICKETS_ADMIN = 'accessTicketsAdmin';
     public const ADD_TICKET_BLOCK = 'addTicketBlock';
     public const ASSIGN_TICKET_BLOCK = 'assignTicketBlock';
-    public const VIEW_TICKET_BLOCKS = 'viewTicketBlockS';
+    public const VIEW_TICKET_BLOCKS = 'viewTicketBlocks';
     public const VIEW_OWN_TICKET_BLOCKS = 'viewOwnTicketBlockS';
 
     public static function tableName() {
@@ -25,6 +25,7 @@ class Tickets extends MadActiveRecord {
         return [
             [['id'], 'integer'],
             [['startId'], 'string'],
+            [['currentId'], 'string'],
             [['assignedBy'], 'string'],
             [['assignedTo'], 'string'],
         ];
@@ -34,6 +35,7 @@ class Tickets extends MadActiveRecord {
         return [
             'id' => Yii::t('app', 'ID'),
             'startId' => Yii::t('app', ''),
+            'currentId' => Yii::t('app', ''),
             'assignedBy' => Yii::t('app', ''),
             'assignedTo' => Yii::t('app', ''),
         ];

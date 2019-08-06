@@ -12,7 +12,6 @@ use yii\db\ActiveRecord;
  */
 class TicketSearchModel extends MadActiveRecord {
 
-
     /**
      * Creates data provider instance with search query applied
      *
@@ -37,19 +36,9 @@ class TicketSearchModel extends MadActiveRecord {
         return $dataProvider;
     }
 
-    public function returnId() {
-        return $this['id'];
-    }
+    public static function getTicket($tsm, $id) {
+        $a = $tsm::find()->where(['=', 'ticketId', $id])->one();
 
-    public function returnStartId() {
-        return $this['startId'];
-    }
-
-    public function returnCurrentId() {
-        $tableName = 'modulus_tb_' . $this['startId'];
-
-        $ticketBlock = self::aSelect(self::class, '*', $tableName, 'sellerId IS NULL', 'ticketId', 'ticketId')->one();
-        Yii::error($ticketBlock);
-        return $ticketBlock['ticketId'];
+        return $a;
     }
 }

@@ -5,9 +5,11 @@ namespace backend\modules\Tickets\controllers;
 use backend\models\search\UserSearch;
 use backend\modules\rbac\models\RbacAuthAssignment;
 use backend\modules\Tickets\models\TicketBlock;
+use backend\modules\Tickets\models\TicketBlockDummySearchModel;
 use backend\modules\Tickets\models\TicketBlockSearchModel;
 use backend\modules\Tickets\models\TicketSearchModel;
 use common\models\User;
+use kartik\helpers\Html;
 use Yii;
 use backend\controllers\Controller;
 use yii\helpers\ArrayHelper;
@@ -30,36 +32,30 @@ class TicketsController extends Controller {
         $gridColumns = [
             [
                 'label' => 'Start ID',
-                'format'=>'html',
+                'format' => 'html',
                 'value' => function (TicketBlockSearchModel $model) {
-                    return '<a href="/Tickets/tickets/view-ticket?id='.$model->returnStartId().'">'
+                    return '<a href="/Tickets/tickets/view-ticket?id='.$model->returnStartId().'&blockId='.$model->returnStartId().'">'
                         .$model->returnStartId().'</a>';
                 },
-                'filter' => function() {
-
-                }
+                'filter' => Html::textInput("startId", Yii::$app->request->getQueryParam('startId', null)),
             ],
             [
                 'label' => 'Current ID',
-                'format'=>'html',
+                'format' => 'html',
                 'value' => function (TicketBlockSearchModel $model) {
-                    return '<a href="/Tickets/tickets/view-ticket?id='.$model->returnCurrentId().'">'
+                    return '<a href="/Tickets/tickets/view-ticket?id='.$model->returnStartId().'&blockId='.$model->returnCurrentId().'">'
                         .$model->returnCurrentId().'</a>';
                 },
-                'filter' => function() {
-
-                }
+//                'filter' => Html::textInput("currentId"),
             ],
             [
                 'label' => 'assignedTo',
-                'format'=>'html',
+                'format' => 'html',
                 'value' => function (TicketBlockSearchModel $model) {
                     $user = User::findIdentity($model->assignedTo)->username;
                     return '<a href="/user/view?id='.$model->assignedTo.'">'.$user.'</a>';
                 },
-                'filter' => function($a, $b) {
-                    return true;
-                }
+                'filter' => Html::textInput("assignedTo", Yii::$app->request->getQueryParam('assignedTo', null)),
             ],
             [
                 'label' => 'View Ticket Block',
@@ -204,9 +200,20 @@ class TicketsController extends Controller {
      *
      * @return string
      */
-    public function actionViewTicket($id) {
+    public function actionViewTicket($id, $blockId) {
+        $model = TicketBlockDummySearchModel::useTable("modulus_tb_".$id);
+
+        $model = $model::find();
+
+        $model->andFilterWhere([
+            '=',
+            'ticketId',
+            $blockId
+        ]);
+
         return $this->render('viewTicket', [
-            'id' => $id
+            'id' => $id,
+            'model' => $model->one()
         ]);
     }
 
@@ -218,10 +225,59 @@ class TicketsController extends Controller {
      * @return string
      */
     public function actionViewBlock($id) {
+
+        $ticketBlockStartId = TicketBlockSearchModel::getStartId($id);
+
+        $searchModel = TicketBlockDummySearchModel::useTable("modulus_tb_$ticketBlockStartId");
+        Yii::error($searchModel::tableName());
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $gridColumns = [
+            [
+                'class' => 'kartik\grid\ExpandRowColumn',
+                'width' => '50px',
+                'value' => function ($model, $key, $index, $column) {
+                    return \kartik\grid\GridView::ROW_COLLAPSED;
+                },
+                'detail' => function ($model, $key, $index, $column) {
+                    return Yii::$app->controller->renderPartial('viewTicketInfo', ['model' => $model]);
+                },
+                'headerOptions' => ['class' => 'kartik-sheet-style'],
+                'expandOneOnly' => true,
+            ],
+            [
+                'label' => 'ticketId',
+                'format' => 'html',
+                'value' => function (TicketBlockDummySearchModel  $model) use ($ticketBlockStartId) {
+                    return '<a href="/Tickets/tickets/view-ticket?id='.$ticketBlockStartId.'&blockId='.$model->ticketId.'">'
+                        .$model->ticketId.'</a>';
+                },
+                'filter' => Html::textInput("startId", Yii::$app->request->getQueryParam('startId', null)),
+            ],
+            'timestamp',
+            'reservationId',
+
+        ];
+
         return $this->render('viewBlock', [
-            'id' => $id
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'gridColumns' => $gridColumns,
+            'id' => $id,
         ]);
     }
+
+    /**
+     * @param $id
+     *
+     * @return string
+     */
+    public function actionViewAssignedBlocks() {
+        return $this->render('viewAssignedBlocks', [
+
+        ]);
+    }
+
     /**
      * Renders the index view for the module
      * @return string

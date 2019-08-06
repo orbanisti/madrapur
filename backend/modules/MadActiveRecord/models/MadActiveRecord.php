@@ -3,6 +3,7 @@
 namespace backend\modules\MadActiveRecord\models;
 
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\conditions\AndCondition;
@@ -14,11 +15,26 @@ use yii\db\Query;
  */
 class MadActiveRecord extends ActiveRecord
 {
+
+    protected static $table;
+    protected static $searchModel;
+    protected static $activeDataProvider;
+
+    public static function useTable($table) {
+        static::$table = $table;
+
+        return new static();
+    }
+
+    public static function tableName() {
+        return static::$table;
+    }
+
     /**
      * @param $what
      * @param $from
      * @param $where
-     * @return ActiveQuery
+     * @return Query
      */
     public static function select($what, $from, $where)
     {

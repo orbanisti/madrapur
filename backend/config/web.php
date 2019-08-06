@@ -24,7 +24,9 @@ $config = [
         ],
     ],
     'modules' => [
-
+        'Dashboard' => [
+            'class' => backend\modules\Dashboard\Module::class,
+        ],
         'Modmail' => [
             'class' => backend\modules\Modmail\Module::class,
         ],

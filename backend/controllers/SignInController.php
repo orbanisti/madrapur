@@ -65,7 +65,7 @@ class SignInController extends Controller {
                 Yii::$app->user->can(User::ROLE_HOTLINE) ||
                 Yii::$app->user->can(User::ROLE_STREET_SELLER)
             ) {
-                return $this->redirect('/Reservations/reservations/myreservations');
+                return $this->redirect('/Dashboard/dashboard/admin');
             }
 
             return $this->goBack();

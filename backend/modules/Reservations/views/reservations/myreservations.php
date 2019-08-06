@@ -16,6 +16,7 @@ use kartik\grid\GridView;
 use kartik\helpers\Html;
 use backend\components\extra;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 
@@ -71,17 +72,16 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="col-xs-12 col-md-3">
             <?php
-            LteInfoBox::begin([
-                'bgIconColor' => LteConst::COLOR_TEAL,
-                'bgColor' => '',
-                'number' => "$nextTicketId",
-                'text'=>' ',
-                'icon'=>'fa fa-ticket',
-                'showProgress' => true,
-                'progressNumber'=>100,
-                'description'=>'Next ticked ID'
+            LteSmallBox::begin([
+                'type' => LteConst::COLOR_TEAL,
+                'title' => "$nextTicketId",
+                'text' => ' ',
+                'icon' => 'fa fa-ticket',
+                'text' => 'Next ticked ID',
+                'footer' => 'View ticket block',
+                'link' => Url::to("/Tickets/tickets/admin")
             ])?>
-            <?php LteInfoBox::end()?>
+            <?php LteSmallBox::end()?>
         </div>
     </div>
     <?php

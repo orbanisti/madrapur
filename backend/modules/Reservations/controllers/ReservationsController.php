@@ -469,6 +469,7 @@ class ReservationsController extends Controller {
                 'monthlySold' => $monthlySold,
                 'todaySold' => $todaySold,
                 'nextTicketId' => isset($myTicketBook->startId) ? $myTicketBook->startId : 'unset',
+                'startTicketId' => isset($myTicketBook->startId) ? $myTicketBook->startId : null,
             ]
         );
     }

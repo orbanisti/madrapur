@@ -123,6 +123,15 @@ echo Menu::widget(
                                     'class' => 'header'
                                 ],
                             ],
+
+                            [
+                                'label' => Yii::t('backend', 'Dashboard'),
+                                'icon' => '<i class="fa fa-bar-chart-o"></i>',
+                                'url' => [
+                                    '/Dashboard/dashboard/admin'
+                                ],
+
+                            ],
                             [
                                 'label' => Yii::t('backend', 'Timeline'),
                                 'icon' => '<i class="fa fa-bar-chart-o"></i>',
@@ -176,16 +185,16 @@ echo Menu::widget(
                                             Yii::$app->controller->action->id === 'add-block',
                                         'visible' => Yii::$app->user->can('addTicketBlock'),
                                     ],
-//                                    [
-//                                        'label' => Yii::t('backend', 'Assign ticket block'),
-//                                        'url' => [
-//                                            '/Tickets/tickets/assign-block'
-//                                        ],
-//                                        'icon' => '<i class="fa fa-"></i>',
-//                                        'active' => Yii::$app->controller->id === 'tickets' &&
-//                                            Yii::$app->controller->action->id === 'assign-block',
+                                    [
+                                        'label' => Yii::t('backend', 'View assigned blocks'),
+                                        'url' => [
+                                            '/Tickets/tickets/view-assigned-blocks'
+                                        ],
+                                        'icon' => '<i class="fa fa-"></i>',
+                                        'active' => Yii::$app->controller->id === 'tickets' &&
+                                            Yii::$app->controller->action->id === 'view-assigned-blocks',
 //                                        'visible' => Yii::$app->user->can('assignTicketBlock'),
-//                                    ],
+                                    ],
                                 ],
                                 'active' => Yii::$app->controller->id === 'tickets',
                                 'visible' => Yii::$app->user->can('accessTickets'),
@@ -437,7 +446,8 @@ echo Menu::widget(
                                             '/Reservations/reservations/create'
                                         ],
                                         'icon' => '<i class="fa fa-database"></i>',
-                                        'active' => (Yii::$app->controller->id == 'create'),
+                                        'active' => (Yii::$app->controller->id == 'reservations' &&
+                                            Yii::$app->controller->action->id === 'create'),
 
                                     ],
                                     [
@@ -446,7 +456,8 @@ echo Menu::widget(
                                             '/Reservations/reservations/create-react'
                                         ],
                                         'icon' => '<i class="fa fa-database"></i>',
-                                        'active' => (Yii::$app->controller->id == 'create'),
+                                        'active' => (Yii::$app->controller->id == 'reservations' &&
+                                            Yii::$app->controller->action->id === 'create-react'),
 
                                     ],
                                     [
@@ -455,7 +466,8 @@ echo Menu::widget(
                                             '/Reservations/reservations/myreservations'
                                         ],
                                         'icon' => '<i class="fa fa-calendar"></i>',
-                                        'active' => (Yii::$app->controller->id == 'myreservations'),
+                                        'active' => (Yii::$app->controller->id == 'reservations' &&
+                                            Yii::$app->controller->action->id === 'myreservations'),
                                     ],
                                     [
                                         'label' => Yii::t('backend', 'allReservations'),
@@ -463,7 +475,8 @@ echo Menu::widget(
                                             '/Reservations/reservations/allreservations'
                                         ],
                                         'icon' => '<i class="fa fa-calendar"></i>',
-                                        'active' => (Yii::$app->controller->id == 'allreservations'),
+                                        'active' => (Yii::$app->controller->id == 'reservations' &&
+                                            Yii::$app->controller->action->id === 'allreservations'),
                                     ],
                                 ],
                                 'visible' => Yii::$app->user->can('accessBookings'),
