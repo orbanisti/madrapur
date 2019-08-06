@@ -16,6 +16,7 @@ use backend\modules\Product\models\ProductTime;
 use backend\modules\Product\models\ProductUpdate;
 use backend\modules\Reservations\models\Reservations;
 use backend\modules\Reservations\models\ReservationsAdminSearchModel;
+use common\models\User;
 use kartik\grid\EditableColumnAction;
 use League\Uri\PublicSuffix\CurlHttpClient;
 use Yii;
@@ -664,7 +665,10 @@ class ProductController extends Controller {
         return $this->render('index');
     }
 
+
+
     public function actionDaye() {
+
         $currentProductId = Yii::$app->request->get('prodId');
 
         $searchModel = new Reservations();
@@ -680,6 +684,48 @@ class ProductController extends Controller {
             $takenChairsCount = $searchModel->countTakenChairsOnDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
             $availableChairsOnDay = $searchModel->availableChairsOnDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
         }
+
+        $passignedId=(Yii::$app->request->post('User'))['id'];
+        $preservatinId=Yii::$app->request->post('reservation');
+        if($passignedId && $preservatinId){
+            $foundReservation=Reservations::find()->where(['id'=>$preservatinId])->one();
+
+            $assignedUser=User::find()->where(['id'=>$preservatinId])->one();
+            $assigneduser=User::findIdentity($passignedId);
+
+
+            $assignData=[];
+            $assignData['time']= date('Y-m-d h:i:s', time());
+            $assignData['by']= Yii::$app->getUser()->identity->username;
+            $assignData['from']= $foundReservation->sellerName;
+            $assignData['to']= $assigneduser->username;
+
+
+
+            if($foundReservation){
+                $Reservationobject=json_decode($foundReservation->data);
+                if(isset($Reservationobject->assignments) && is_array($Reservationobject->assignments)){
+
+                    array_unshift($Reservationobject->assignments, $assignData);
+                }
+                else{
+                    $Reservationobject->assignments[]=$assignData;
+
+                }
+
+                $foundReservation->data=json_encode($Reservationobject);
+                $foundReservation->sellerName=$assigneduser->username;
+                $foundReservation->save(false);
+//                echo \GuzzleHttp\json_encode($foundReservation->data);
+                Yii::$app->session->setFlash('success', Yii::t('app','Successful assignment<u>'.$preservatinId.'</u> reservation to '.$foundReservation->sellerName));
+
+            }
+
+
+
+        }
+
+
 
         return $this->render('dayEdit', [
             'dataProvider' => $dataProvider,

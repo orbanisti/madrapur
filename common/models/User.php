@@ -85,6 +85,7 @@ class User extends MadActiveRecord implements IdentityInterface {
             ->one();
     }
 
+
     /**
      *
      * @return UserQuery

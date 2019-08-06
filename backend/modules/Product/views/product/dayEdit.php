@@ -24,7 +24,18 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <!--suppress ALL -->
+<?php
 
+
+echo \insolita\wgadminlte\FlashAlerts::widget([
+    'errorIcon' => '<i class="fa fa-warning"></i>',
+    'successIcon' => '<i class="fa fa-check"></i>',
+    'successTitle' => 'Done!', //for non-titled type like 'success-first'
+    'closable' => true,
+    'encode' => false,
+    'bold' => false,
+]);
+?>
 
 <div class="products-index">
 
@@ -43,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // uncomment below and comment detail if you need to render via ajax
             // 'detailUrl'=>Url::to(['/site/book-details']),
             'detail' => function ($model, $key, $index, $column) {
-                return Yii::$app->controller->renderPartial('reservationInfo', ['model' => $model]);
+                return Yii::$app->controller->renderPartial('assingui', ['model' => $model]);
             },
             'headerOptions' => ['class' => 'kartik-sheet-style'],
             'expandOneOnly' => true,]
@@ -106,7 +117,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Edit Booking',
                 'format'=>'html',
                 'value' => function ($model) {
-                    return '<a href="/Reservations/reservations/bookingedit?bookingId='.$model->returnBookingId().'">Edit'.'</a>';
+                    return '<a href="/Reservations/reservations/bookingedit?id='.$model->id.'">Edit'.'</a>';
                 }
             ],
 
