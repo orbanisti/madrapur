@@ -26,4 +26,9 @@ class TicketBlockDummySearchModel extends MadActiveRecord {
 
         return $dataProvider;
     }
+
+    public static function primaryKey() {
+        return ['ticketId'];
+    }
+
 }

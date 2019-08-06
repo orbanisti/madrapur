@@ -14,6 +14,7 @@ use backend\modules\Reservations\models\ReservationsAdminInfoSearchModel;
 use backend\modules\Reservations\models\ReservationsAdminSearchModel;
 use backend\modules\Tickets\models\TicketBlock;
 use backend\modules\translation\models\Source;
+use common\commands\AddTicketToReservationCommand;
 use common\commands\AddToTimelineCommand;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -312,9 +313,10 @@ class ReservationsController extends Controller {
                 'data' => $data,
                 'sellerId' => Yii::$app->user->getId(),
                 'sellerName' => Yii::$app->user->identity->username,
+                'ticketId' => 'V0000001'
             ];
             $insertReservation = Reservations::insertOne($newReservarion, $values);
-
+Yii::error($insertReservation);
             if ($insertReservation) {
                 $findBooking = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'bookingId="tmpMad1"');
                 $booking = $findBooking->one();
@@ -322,8 +324,6 @@ class ReservationsController extends Controller {
                 Reservations::insertOne($booking, $values);
 
                 $updateResponse = '<span style="color:green">Reservation Successful</span>';
-
-                TicketBlock::getDb();
 
                 Yii::$app->commandBus->handle(
                     new AddToTimelineCommand(
@@ -335,6 +335,16 @@ class ReservationsController extends Controller {
                                 'user_id' => Yii::$app->user->getId(),
                                 'created_at' => time()
                             ]
+                        ]
+                    )
+                );
+
+                Yii::$app->commandBus->handle(
+                    new AddTicketToReservationCommand(
+                        [
+                            'sellerId' => Yii::$app->user->getId(),
+                            'timestamp' => time(),
+                            'bookingId' => $booking->id,
                         ]
                     )
                 );
