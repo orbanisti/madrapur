@@ -16,6 +16,7 @@ use backend\modules\Product\models\ProductTime;
 use backend\modules\Product\models\ProductUpdate;
 use backend\modules\Reservations\models\Reservations;
 use backend\modules\Reservations\models\ReservationsAdminSearchModel;
+use common\models\User;
 use kartik\grid\EditableColumnAction;
 use League\Uri\PublicSuffix\CurlHttpClient;
 use Yii;
@@ -50,6 +51,9 @@ class ProductController extends Controller {
             if($postedAction=='dayBlocking'){
                 $this->redirect('/Product/product/blocked?prodId='.$postedID);
             }
+            if($postedAction=='timeTable'){
+                $this->redirect('/Product/product/timetable?prodId='.$postedID);
+            }
 
         }
 
@@ -75,6 +79,8 @@ class ProductController extends Controller {
 
         return $this->render('uiblock', ['data' => $data, 'searchModel' => $searchModel,'model'=>$model,'images'=>$images]);
     }
+
+
 
     public function actionCreate() {
         $model = new ProductUpdate();
@@ -499,7 +505,7 @@ class ProductController extends Controller {
          *
          */
 
-        $queryGetReservatios = Product::aSelect(Reservations::class, '*', Reservations::tableName(), 'productId=250');
+        $queryGetReservatios = Product::aSelect(Reservations::class, '*', Reservations::tableName(), 'productId=!0');
         try {
             $rowsAll = $queryGetReservatios->all();
         } catch (Exception $e) {
@@ -534,6 +540,88 @@ class ProductController extends Controller {
                 'modelEvents' => $modelEvents2,
                 'modelTimes' => ((empty($modelTimes)) ? [new ProductTime()] : $modelTimes),
                 'modelPrices' => ((empty($modelPrices)) ? [new ProductPrice()] : $modelPrices),
+            ]
+        );
+    }
+
+    public function actionTimetable(){
+
+        $prodId=Yii::$app->request->get('prodId');
+
+        $modelEvents2 = [];
+        $queryGetSources = ProductSource::aSelect(ProductSource::class, '*', ProductSource::tableName(), 'product_id=' . $prodId);
+        try {
+            $sourceRows = $queryGetSources->all();
+        } catch (Exception $e) {
+        }
+
+        if (isset($sourceRows)) {
+
+
+            $modelSources = $sourceRows;
+        } else {
+            $sourceRows = [];
+
+            $modelSources[] = new ProductSource();
+            $modelSources = Product::createMultiple(ProductSource::class, $modelSources);
+            $modelSources[0] = new ProductSource();
+            $modelSources[0]->name = 'asd';
+        }
+
+
+
+
+        $tempsource=new ProductSource();
+        $tempsource2=new ProductSource();
+        $tempsource->url='Hotel';
+        $tempsource->prodIds=Yii::$app->request->get('prodId');
+        $tempsource2->url='Street';
+        $tempsource2->prodIds=Yii::$app->request->get('prodId');
+        $sourceRows[]=$tempsource;
+        $sourceRows[]=$tempsource2;
+
+
+        foreach ($sourceRows as $source):
+
+            $queryGetReservatios = Product::aSelect(Reservations::class, '*', Reservations::tableName(), 'source="' . $source->url . '"and productId="' . $source->prodIds . '"');
+            try {
+                $rowsAll = $queryGetReservatios->all();
+            } catch (Exception $e) {
+            }
+
+            if (isset($rowsAll)) {
+                foreach ($rowsAll as $reservation) {
+                    $event = new \yii2fullcalendar\models\Event();
+                    $event->id = $reservation->id;
+                    $reservationData = $reservation->data;
+                    $reservationJsondata = json_decode($reservationData);
+                    if(isset($reservationJsondata->orderDetails->billing_first_name)) {
+                        $reservationName = $reservationJsondata->orderDetails->billing_first_name . ' ' . $reservationJsondata->orderDetails->billing_last_name;
+                    }
+                    else{
+                        $reservationName = $reservation->sellerName;
+
+                    }
+
+
+                    $event->title = $reservationName;
+                    $event->start = $reservation->bookingDate;
+                    $event->nonstandard = ['field1' => $source->name, 'field2' => $reservation->id];
+                    $event->color = $source->color;
+                    $modelEvents2[] = $event;
+                }
+            }
+        endforeach;
+
+
+        return $this->render(
+            'timetable', [
+                'model'=> ((empty($model)) ? [new ProductEdit()] : $model),
+                'prodId' => $prodId,
+                'modelEvents' => $modelEvents2,
+                'modelTimes' => ((empty($modelTimes)) ? [new ProductTime()] : $modelTimes),
+                'modelPrices' => ((empty($modelPrices)) ? [new ProductPrice()] : $modelPrices),
+
             ]
         );
     }
@@ -577,7 +665,10 @@ class ProductController extends Controller {
         return $this->render('index');
     }
 
+
+
     public function actionDaye() {
+
         $currentProductId = Yii::$app->request->get('prodId');
 
         $searchModel = new Reservations();
@@ -593,6 +684,48 @@ class ProductController extends Controller {
             $takenChairsCount = $searchModel->countTakenChairsOnDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
             $availableChairsOnDay = $searchModel->availableChairsOnDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
         }
+
+        $passignedId=(Yii::$app->request->post('User'))['id'];
+        $preservatinId=Yii::$app->request->post('reservation');
+        if($passignedId && $preservatinId){
+            $foundReservation=Reservations::find()->where(['id'=>$preservatinId])->one();
+
+            $assignedUser=User::find()->where(['id'=>$preservatinId])->one();
+            $assigneduser=User::findIdentity($passignedId);
+
+
+            $assignData=[];
+            $assignData['time']= date('Y-m-d h:i:s', time());
+            $assignData['by']= Yii::$app->getUser()->identity->username;
+            $assignData['from']= $foundReservation->sellerName;
+            $assignData['to']= $assigneduser->username;
+
+
+
+            if($foundReservation){
+                $Reservationobject=json_decode($foundReservation->data);
+                if(isset($Reservationobject->assignments) && is_array($Reservationobject->assignments)){
+
+                    array_unshift($Reservationobject->assignments, $assignData);
+                }
+                else{
+                    $Reservationobject->assignments[]=$assignData;
+
+                }
+
+                $foundReservation->data=json_encode($Reservationobject);
+                $foundReservation->sellerName=$assigneduser->username;
+                $foundReservation->save(false);
+//                echo \GuzzleHttp\json_encode($foundReservation->data);
+                Yii::$app->session->setFlash('success', Yii::t('app','Successful assignment<u>'.$preservatinId.'</u> reservation to '.$foundReservation->sellerName));
+
+            }
+
+
+
+        }
+
+
 
         return $this->render('dayEdit', [
             'dataProvider' => $dataProvider,

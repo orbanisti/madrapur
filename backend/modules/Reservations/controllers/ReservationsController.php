@@ -87,6 +87,7 @@ class ReservationsController extends Controller {
         $request = Yii::$app->request;
         $dateImport = $request->post('DateImport');
         $response = $this->importDateRange($dateImport['source'], $dateImport['dateFrom'], $dateImport['dateTo']);
+
         $importResponse = 'No Import initiated';
 
         if ($response) {
@@ -94,7 +95,9 @@ class ReservationsController extends Controller {
             $newRecordCounter = 0;
 
             foreach ($response as $booking) {
+
                 if (isset($booking->orderDetails->paid_date)) {
+
 
                     if (!isset($booking->personInfo)) {
                         $booking->personInfo = '';
@@ -195,6 +198,7 @@ class ReservationsController extends Controller {
         $dateTo = date('Y-m-d', strtotime($dateTo));
         $url = $source . '/wp-json/bookings/v1/start/' . $dateFrom . '/end/' . $dateTo;
 
+
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_HEADER, 0);
         curl_setopt($curl, CURLOPT_VERBOSE, 0);
@@ -204,7 +208,9 @@ class ReservationsController extends Controller {
 
         curl_close($curl);
 
-        $jsonResponse = Json::decode(utf8_decode($response));
+        $jsonResponse = json_decode(utf8_decode($response));
+        //json decode junctiont ne változtasd másra!
+
 
         return $jsonResponse;
     }
