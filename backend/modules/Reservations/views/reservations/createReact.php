@@ -385,6 +385,24 @@
                                     </label>
                                 </div>
                             </div>
+                            <div className="option-group">
+                                <div className="option-container">
+                                    <input onChange={this.handleChange} checked={this.state.ido === '8'}  value="8" className="option-input" id="option-3" type="radio" name="options" />
+                                    <input onChange={this.handleChange} checked={this.state.ido === '9'}  value="9" className="option-input" id="option-4" type="radio" name="options" />
+                                    <label className="option" htmlFor="option-3">
+                                        <span className="option__indicator"></span>
+                                        <span className="option__label">
+                                            Folklore
+                                        </span>
+                                    </label>
+                                    <label className="option" htmlFor="option-4">
+                                        <span className="option__indicator"></span>
+                                        <span className="option__label">
+                                            Piano
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
                             <br />
                             <hr />
                         </div>
