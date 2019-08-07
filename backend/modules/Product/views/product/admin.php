@@ -29,7 +29,7 @@ use backend\modules\Product\models\ProductSource;
     <h1><?= $this->context->action->uniqueId ?></h1>
            <?php
         $gridColumns = [
-            ['class' => 'yii\grid\SerialColumn'],
+
             'id',
             'title',
             'capacity',

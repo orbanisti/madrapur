@@ -519,7 +519,11 @@ class ProductController extends Controller {
                 $event->id = $reservation->id;
                 $reservationData = $reservation->data;
                 $reservationData = json_decode($reservationData);
-                $reservationName = $reservationData->orderDetails->billing_first_name . ' ' . $reservationData->orderDetails->billing_last_name;
+                if(isset($reservationData->orderDetails->billing_first_name) && isset($reservationData->orderDetails->billing_first_name) ){
+                    $reservationName = $reservationData->orderDetails->billing_first_name . ' ' . $reservationData->orderDetails->billing_last_name;
+                }else{
+                    $reservationName = $reservation->sellerName;
+                }
                 $event->title = $reservationName;
                 $event->start = $reservation->bookingDate;
                 $event->nonstandard = ['field1' => $reservation->source];
@@ -882,6 +886,7 @@ class ProductController extends Controller {
             $rowsOne = $queryGetPrices->one();
         } catch (Exception $e) {
         }
+
 
         if (isset($rowsOne)) {
 
