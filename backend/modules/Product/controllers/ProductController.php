@@ -677,6 +677,7 @@ class ProductController extends Controller {
 
             $currentProduct = Product::getProdById($currentProductId);
             $sourcesRows = ProductSource::getProductSourceIds($currentProductId);
+
             $selectedDate = \Yii::$app->request->get("date");
             $dataProvider = $searchModel->searchDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
 
