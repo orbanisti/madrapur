@@ -7,6 +7,7 @@ use backend\modules\Tickets\models\TicketBlockDummySearchModel;
 use backend\modules\Tickets\models\TicketBlockSearchModel;
 use backend\modules\Tickets\models\TicketSearchModel;
 use trntv\bus\interfaces\SelfHandlingCommand;
+use Yii;
 use yii\base\BaseObject;
 
 class AddTicketToReservationCommand extends BaseObject implements SelfHandlingCommand {
@@ -22,18 +23,29 @@ class AddTicketToReservationCommand extends BaseObject implements SelfHandlingCo
      * @return mixed
      */
     public function handle($command) {
-        $ticketBlock = TicketBlockSearchModel::find()->andFilterWhere(['=', 'assignedTo', $command->sellerId])->one();
+        $ticketBlock = TicketBlockSearchModel::findOne(['assignedTo' => $command->sellerId]);
         $startId = $ticketBlock->returnStartId();
-        $model = TicketBlockDummySearchModel::useTable('modulus_tb_' . $startId)::find()->andFilterWhere(['=', 'sellerId',
-            null])->andFilterWhere(['=', 'reservationId', null])->one();
-        $sql = TicketBlockDummySearchModel::useTable
-        ('modulus_tb_' . $startId)::find()->andFilterWhere(['=', 'sellerId',
-            null])->andFilterWhere(['=', 'reservationId', null]);
-\Yii::error($sql->sql);
-        $model->sellerId = $command->sellerId;
-        $model->timestamp = $command->timestamp;
-        $model->reservationId = $command->bookingId;
+        $model = TicketBlockDummySearchModel::useTable('modulus_tb_' . $startId)::find()->andWhere(['sellerId' =>
+            null])->andWhere(['reservationId' => null])->one();
 
-        return $model->save(false);
+        if (!$model) {
+            Yii::$app->session->setFlash(
+                'alert',
+                [
+                    'options' => [
+                        'class' => 'alert-warning'
+                    ],
+                    'body' => Yii::t('backend', "Ticket block (V$startId) full!")
+                ]
+            );
+
+            return false;
+        } else {
+            $model->sellerId = $command->sellerId;
+            $model->timestamp = $command->timestamp;
+            $model->reservationId = $command->bookingId;
+
+            return $model->save(false);
+        }
     }
 }
