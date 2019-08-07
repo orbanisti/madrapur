@@ -10,7 +10,6 @@ use backend\modules\Reservations\models\Reservations;
 use backend\modules\Reservations\models\ReservationsAdminSearchModel;
 use insolita\wgadminlte\LteBox;
 use insolita\wgadminlte\LteConst;
-use insolita\wgadminlte\LteInfoBox;
 use insolita\wgadminlte\LteSmallBox;
 use kartik\grid\GridView;
 use kartik\helpers\Html;
@@ -30,52 +29,39 @@ use yii\widgets\ActiveForm;
     <div class="row">
         <div class="col-xs-12 col-md-3">
             <?php
-                LteInfoBox::begin([
-                    'bgIconColor' => LteConst::COLOR_AQUA,
-                    'bgColor' => '',
-                    'number' => $monthlySold,
-                    'text'=>'EUR',
-                    'icon'=>'fa fa-list-alt',
-                    'showProgress' => true,
-                    'progressNumber'=>100,
-                    'description'=>'Monthly sold'
-            ])?>
-            <?php LteInfoBox::end()?>
-        </div>
-        <div class="col-xs-12 col-md-3">
-            <?php
-            LteInfoBox::begin([
-                'bgIconColor' => LteConst::COLOR_BLUE,
-                'bgColor' => '',
-                'number' => $todaySold,
-                'text'=>'EUR',
+            LteSmallBox::begin([
+                'type' => LteConst::COLOR_AQUA,
+                'title' => $monthlySold . 'EUR',
                 'icon'=>'fa fa-list-alt',
-                'showProgress' => true,
-                'progressNumber'=>100,
-                'description'=>'Today sold'
+                'text'=>'Monthly sold'
             ])?>
-            <?php LteInfoBox::end()?>
+            <?php LteSmallBox::end()?>
         </div>
         <div class="col-xs-12 col-md-3">
             <?php
-            LteInfoBox::begin([
-                'bgIconColor' => LteConst::COLOR_OLIVE,
-                'bgColor' => '',
-                'number' => "Batthyány tér",
-                'text'=>' ',
-                'icon'=>'fa fa-map-marker',
-                'showProgress' => true,
-                'progressNumber'=>100,
-                'description'=>'Current assigned location'
+            LteSmallBox::begin([
+                'type' => LteConst::COLOR_BLUE,
+                'title' => $todaySold . ' EUR',
+                'text'=>'Today Sold',
+                'icon'=>'fa fa-list-alt',
             ])?>
-            <?php LteInfoBox::end()?>
+            <?php LteSmallBox::end()?>
+        </div>
+        <div class="col-xs-12 col-md-3">
+            <?php
+            LteSmallBox::begin([
+                'type' => LteConst::COLOR_OLIVE,
+                'title' => "Batthyány tér",
+                'text'=>'Current assigned location',
+                'icon'=>'fa fa-map-marker',
+            ])?>
+            <?php LteSmallBox::end()?>
         </div>
         <div class="col-xs-12 col-md-3">
             <?php
             LteSmallBox::begin([
                 'type' => LteConst::COLOR_TEAL,
                 'title' => "$nextTicketId",
-                'text' => ' ',
                 'icon' => 'fa fa-ticket',
                 'text' => 'Next ticked ID',
                 'footer' => 'View ticket block',

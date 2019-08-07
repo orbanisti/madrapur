@@ -1,11 +1,10 @@
-
+<?php
+use insolita\wgadminlte\LteConst;
+use insolita\wgadminlte\LteSmallBox;
+use yii\helpers\Url;
+?>
 <div class="col-xs-12 col-md-3">
     <?php
-
-    use insolita\wgadminlte\LteConst;
-    use insolita\wgadminlte\LteSmallBox;
-    use yii\helpers\Url;
-
     LteSmallBox::begin([
         'type' => LteConst::COLOR_TEAL,
         'title' => "$nextTicketId",
@@ -14,6 +13,6 @@
         'text' => 'Next ticked ID',
         'footer' => 'View ticket block',
         'link' => Url::to("/Tickets/tickets/admin")
-    ])?>
-    <?php LteSmallBox::end()?>
+    ])::end();
+    ?>
 </div>

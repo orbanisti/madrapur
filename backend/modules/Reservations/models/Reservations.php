@@ -511,7 +511,9 @@ class Reservations extends MadActiveRecord {
         foreach ($bookigsFromThatDay as $reservation){
             if(isset($reservation->bookedChairsCount)){
                 $counter=$counter+$reservation->bookedChairsCount;
-
+                if ($reservation->bookedChairsCount % 2 === 1) {
+                    $counter += 1;
+                }
             }
         }
         return $counter;
