@@ -13,7 +13,6 @@ class m190808_083816_modulusReservationext extends Migration {
             $this->columnName1,
             'varchar(20)'
         );
-
     }
 
     public function safeDown() {

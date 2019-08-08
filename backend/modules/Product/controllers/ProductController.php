@@ -162,6 +162,7 @@ class ProductController extends Controller {
             try {
                 $rows = $query->one();
             } catch (Exception $e) {
+
             }
             if (isset($rows)) {
                 $newProduct = $rows;
@@ -684,9 +685,18 @@ class ProductController extends Controller {
 
             $selectedDate = \Yii::$app->request->get("date");
             $dataProvider = $searchModel->searchDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
+            $timeHours=Reservations::getProductTimeshours($currentProductId);
+
+            $allDataproviders=[];
+
+            foreach($timeHours as $time){
+
+                $tmpdataProvider=$searchModel->searchDayTime(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId,$time);
+                $allDataproviders[$time]=$tmpdataProvider;
+            }
 
 
-            $takenChairsCount = $searchModel->countTakenChairsOnDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
+            $takenChairsCount = Reservations::countTakenChairsOnDay($selectedDate, $sourcesRows);
             $availableChairsOnDay = $searchModel->availableChairsOnDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
         }
 
@@ -732,6 +742,7 @@ class ProductController extends Controller {
 
 
 
+
         return $this->render('dayEdit', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
@@ -740,6 +751,8 @@ class ProductController extends Controller {
             'currentDay' => Yii::$app->request->get('date'),
             'takenChairsCount' => $takenChairsCount,
             'availableChairs' => $availableChairsOnDay,
+            'timesHours'=>$timeHours,
+            'allDataProviders'=>$allDataproviders
 
         ]);
     }

@@ -250,26 +250,7 @@ class ReservationsAdminSearchModel extends Reservations
         $this->load($params);
         return $dataProvider;
     }
-    public function countTakenChairsOnDay($params,$selectedDate,$sources,$prodId)
-    {
 
-        $what = ['*'];
-        $from = self::tableName();
-        $wheres=[];
-        $wheres[]=['bookingDate', '=', $selectedDate];
-        $wheres[]=['productId', 'IN', $sources];
-        $where = self::andWhereFilter($wheres);
-        $rows = self::aSelect(ReservationsAdminSearchModel::class, $what, $from, $where);
-        $bookigsFromThatDay=$rows->all();
-        $counter=0;
-        foreach ($bookigsFromThatDay as $reservation){
-            if(isset($reservation->bookedChairsCount)){
-                $counter=$counter+$reservation->bookedChairsCount;
-
-            }
-        }
-        return $counter;
-    }
     public function availableChairsOnDay($params,$selectedDate,$sources,$prodId)
     {
 
