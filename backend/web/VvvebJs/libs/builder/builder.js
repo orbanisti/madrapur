@@ -1473,17 +1473,24 @@ Vvveb.Gui = {
 		$('#textarea-modal textarea').val(Vvveb.Builder.getHtml());
 		$('#textarea-modal').modal();
 	},
-	
-	//post html content through ajax to save to filesystem/db
-	saveAjax : function () {
 
-		
-		var url = Vvveb.FileManager.getCurrentUrl();
-		
-		return Vvveb.Builder.saveAjax(url, null, function (data) {
-			$('#message-modal').modal().find(".modal-body").html("Page saved");
-		},window.slug,window.content);
+    //post html content through ajax to save to filesystem/db
+    saveAjax : function () {
+
+
+        var url = Vvveb.FileManager.getCurrentUrl();
+
+        return Vvveb.Builder.saveAjax(url, null, function (data) {
+            $('#message-modal').modal().find(".modal-body").html("Page saved");
+        },window.slug,window.content);
 	},
+
+    //post html content through ajax to save to filesystem/db
+    saveAjax2 : function () {
+
+
+         window.alert('asd');
+    },
 	
 	download : function () {
 		filename = /[^\/]+$/.exec(Vvveb.Builder.iframe.src)[0];

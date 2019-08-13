@@ -28,7 +28,8 @@ class ProductAdminSearchModel extends Product
             [['start_date'], 'string', 'max' => 255],
             [['end_date'], 'string', 'max' => 255],
             [['capacity'], 'string', 'max' => 255],
-            [['duration'], 'string', 'max' => 255]
+            [['duration'], 'string', 'max' => 255],
+            [['isDeleted'], 'string', 'max' => 10]
         ];
     }
 
@@ -44,7 +45,6 @@ class ProductAdminSearchModel extends Product
         ]);
 
 
-        $rows = self::aSelect(ProductAdminSearchModel::class, $what, $from,$where);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $rows,
@@ -85,5 +85,7 @@ class ProductAdminSearchModel extends Product
             'fname'
         ]);
     }
+
+
 }
 

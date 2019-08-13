@@ -60,10 +60,32 @@ class ProductSource extends MadActiveRecord{
 
     }
 
+    public static function addLocalSources($prodId){
+        $localsource1=new ProductSource();
+        $localsource2=new ProductSource();
+        $localsource3=new ProductSource();
+        $sourceRows=[];
+        $localsource1->url='Hotel';
+        $localsource1->prodIds=$prodId;
+        $localsource2->url='Street';
+        $localsource2->prodIds=$prodId;
+
+        $localsource3->url='Madrapur';
+        $localsource3->prodIds=$prodId;
+        $sourceRows[]=$localsource1;
+        $sourceRows[]=$localsource2;
+        $sourceRows[]=$localsource3;
+        return $sourceRows;
+
+
+    }
+
     public static function getProductSourceIds($prodId){
         $queryGetSources = ProductSource::aSelect(ProductSource::class, '*', ProductSource::tableName(), 'product_id=' . $prodId);
         try {
             $sourceRows = $queryGetSources->all();
+
+            $sourceRows = array_merge($sourceRows,ProductSource::addLocalSources($prodId));
             $sourceIdsArray=[];
             foreach ($sourceRows as $source) {
                 $sourceIdsArray[]=$source->prodIds;

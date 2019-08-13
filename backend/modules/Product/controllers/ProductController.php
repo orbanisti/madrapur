@@ -36,6 +36,25 @@ class ProductController extends Controller {
         $searchModel = new ProductAdminSearchModel();
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $gotId=Yii::$app->request->get('id');
+        if(Yii::$app->request->get('action')=='delete'){
+            $model=new Product();
+            $query = Product::aSelect(Product::class, '*', Product::tableName(), 'id=' . $gotId);
+            try {
+                $prodInfo = $query->one();
+            } catch (Exception $e) {
+            }
+            $values = [
+                'isDeleted' => 'yes',
+            ];
+            $result=Product::insertOne($prodInfo,$values);
+            Yii::error(Yii::$app->user->id.'deleted '.$prodInfo->id );
+
+
+        }
+
+
+
 
         return $this->render('admin', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
     }
@@ -162,6 +181,7 @@ class ProductController extends Controller {
             try {
                 $rows = $query->one();
             } catch (Exception $e) {
+
             }
             if (isset($rows)) {
                 $newProduct = $rows;
@@ -519,7 +539,11 @@ class ProductController extends Controller {
                 $event->id = $reservation->id;
                 $reservationData = $reservation->data;
                 $reservationData = json_decode($reservationData);
-                $reservationName = $reservationData->orderDetails->billing_first_name . ' ' . $reservationData->orderDetails->billing_last_name;
+                if(isset($reservationData->orderDetails->billing_first_name) && isset($reservationData->orderDetails->billing_first_name) ){
+                    $reservationName = $reservationData->orderDetails->billing_first_name . ' ' . $reservationData->orderDetails->billing_last_name;
+                }else{
+                    $reservationName = $reservation->sellerName;
+                }
                 $event->title = $reservationName;
                 $event->start = $reservation->bookingDate;
                 $event->nonstandard = ['field1' => $reservation->source];
@@ -680,9 +704,18 @@ class ProductController extends Controller {
 
             $selectedDate = \Yii::$app->request->get("date");
             $dataProvider = $searchModel->searchDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
+            $timeHours=Reservations::getProductTimeshours($currentProductId);
+
+            $allDataproviders=[];
+
+            foreach($timeHours as $time){
+
+                $tmpdataProvider=$searchModel->searchDayTime(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId,$time);
+                $allDataproviders[$time]=$tmpdataProvider;
+            }
 
 
-            $takenChairsCount = $searchModel->countTakenChairsOnDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
+            $takenChairsCount = Reservations::countTakenChairsOnDay($selectedDate, $sourcesRows);
             $availableChairsOnDay = $searchModel->availableChairsOnDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
         }
 
@@ -728,6 +761,7 @@ class ProductController extends Controller {
 
 
 
+
         return $this->render('dayEdit', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
@@ -736,6 +770,8 @@ class ProductController extends Controller {
             'currentDay' => Yii::$app->request->get('date'),
             'takenChairsCount' => $takenChairsCount,
             'availableChairs' => $availableChairsOnDay,
+            'timesHours'=>$timeHours,
+            'allDataProviders'=>$allDataproviders
 
         ]);
     }
@@ -884,6 +920,7 @@ class ProductController extends Controller {
         } catch (Exception $e) {
         }
 
+
         if (isset($rowsOne)) {
 
             $model = $rowsOne;
@@ -986,12 +1023,12 @@ class ProductController extends Controller {
                 $headers .= "MIME-Version: 1.0\r\n";
                 $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
-               /* if(mail($values2['to'],$values2['subject'],$values2['body'],$headers)){
+                if(mail($values2['to'],$values2['subject'],$values2['body'],$headers)){
 
                     Yii::warning('Elkuldom a mailt');
 
                     Modmail::insertOne($mailModel,$values2);
-                }*/
+                }
             } else {
                 $returnMessage = 'Save not Succesful';
             }

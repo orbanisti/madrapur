@@ -4,6 +4,7 @@ namespace backend\modules\Reservations\models;
 
 use backend\modules\MadActiveRecord\models\MadActiveRecord;
 use backend\modules\Product\models\Product;
+use backend\modules\Product\models\ProductTime;
 use backend\modules\Tickets\models\TicketBlock;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -64,7 +65,7 @@ class Reservations extends MadActiveRecord {
             [['booking_product_id'], 'string', 'max' => 255],
             [['booking_start'], 'string', 'max' => 255],
             [['booking_end'], 'string', 'max' => 255],
-            [['allPersons'], 'string', 'max' => 255],
+            [['allPersons'], 'integer'],
             [['customer_ip_address'], 'string', 'max' => 255],
             [['paid_date'], 'string', 'max' => 255],
             [['billing_first_name'], 'string', 'max' => 255],
@@ -213,28 +214,32 @@ class Reservations extends MadActiveRecord {
 
         /*Yii::$app->log($insert); Turn on for debug*/
         if (is_string($this->data)) {
-            $myjson = Json::decode($this->data);
+            $myjson = Json::decode($this->data, false);
             $editableAttribute = Yii::$app->request->post('editableAttribute');
 
             switch ($editableAttribute) {
                 case 'firstName':
                     $mystuff = Yii::$app->request->post('Reservations');
-                    $myjson->orderDetails->edited_first_name = $mystuff[0]['firstName'];
+                    Yii::error($myjson);
+                    $arraykey=array_key_first($mystuff);
+                    $myjson->orderDetails->edited_first_name = $mystuff[$arraykey]['firstName'];
                     break;
                 case 'lastName':
                     $mystuff = Yii::$app->request->post('Reservations');
-                    $myjson->orderDetails->edited_last_name = $mystuff[0]['lastName'];
+                    $arraykey=array_key_first($mystuff);
+                    $myjson->orderDetails->edited_last_name = $mystuff[$arraykey]['lastName'];
                     break;
                 case 'bookedChairsCount':
-
                     $mystuff = Yii::$app->request->post('Reservations');
-                    $myjson->orderDetails->edited_AllPersons = $mystuff[0]['bookedChairsCount'];
+                    $arraykey=array_key_first($mystuff);
+                    $myjson->orderDetails->edited_AllPersons = $mystuff[$arraykey]['bookedChairsCount'];
+
                     break;
                 case 'bookingCost':
-
                     $mystuff = Yii::$app->request->post('Reservations');
                     if(isset($myjson->boookingDetails->edited_booking_cost)){
-                        $myjson->boookingDetails->edited_booking_cost = $mystuff[0]['bookingCost'];
+                        $arraykey=array_key_first($mystuff);
+                        $myjson->boookingDetails->edited_booking_cost = $mystuff[$arraykey]['bookingCost'];
                     }
 
                     break;
@@ -493,10 +498,32 @@ class Reservations extends MadActiveRecord {
                 'pageSize' => 15,
             ],
         ]);
+
+        return $dataProvider;
+    }
+    public function searchDayTime($params,$selectedDate,$sources,$prodId,$time)
+    {
+        $what = ['*'];
+        $from = self::tableName();
+        $wheres=[];
+        $wheres[]=['bookingDate', '=', $selectedDate];
+        $sources[]=$prodId;
+        $wheres[]=['productId', 'IN', $sources];
+        $wheres[]=['booking_start', '=', $selectedDate.' '.$time.':00'];
+        $where = self::andWhereFilter($wheres);
+        $rows = self::aSelect(Reservations::class, $what, $from, $where);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $rows,
+            'pagination' => [
+                'pageSize' => 15,
+            ],
+        ]);
         $this->load($params);
         return $dataProvider;
     }
-    public function countTakenChairsOnDay($params,$selectedDate,$sources,$prodId)
+
+    //TODO unused params
+    public function countTakenChairsOnDay($selectedDate,$sources)
     {
 
         $what = ['*'];
@@ -518,6 +545,31 @@ class Reservations extends MadActiveRecord {
         }
         return $counter;
     }
+    public function countTakenChairsOnDayTime($selectedDate,$sources,$time)
+    {
+
+        $what = ['*'];
+        $from = self::tableName();
+        $wheres=[];
+        $wheres[]=['bookingDate', '=', $selectedDate];
+        $wheres[]=['productId', 'IN', $sources];
+        $wheres[]=['booking_start', '=', $selectedDate.' '.$time.':00'];
+        $where = self::andWhereFilter($wheres);
+        $rows = self::aSelect(Reservations::class, $what, $from, $where);
+        $bookigsFromThatDay=$rows->all();
+        $counter=0;
+        foreach ($bookigsFromThatDay as $reservation){
+            if(isset($reservation->bookedChairsCount)){
+                $counter=$counter+$reservation->bookedChairsCount;
+                if ($reservation->bookedChairsCount % 2 === 1) {
+                    $counter += 1;
+                }
+            }
+        }
+        return $counter;
+    }
+
+
     public function availableChairsOnDay($params,$selectedDate,$sources,$prodId)
     {
 
@@ -600,6 +652,27 @@ class Reservations extends MadActiveRecord {
 
     public function returnId() {
         return $this['id'];
+    }
+    public static function getProductTimeshours($id){
+        $model= new ProductTime();
+        $query = ($model->select('name',ProductTime::tableName(),['=','product_id',$id]));
+        //Thats how you query---^_-
+        $mytimes = $query->all();
+
+        $onlyHours=[];
+        foreach ($mytimes as $time){
+            $onlyHours[]=$time['name'];
+        }
+
+        return $onlyHours;
+
+
+
+    }
+    public static function getProductTimes($id){
+        $query = ProductTime::aSelect(ProductTime::class, '*', ProductTime::tableName(), 'product_id=' . $id);
+        $mytimes = $query->all();
+        return $mytimes;
     }
 
 
