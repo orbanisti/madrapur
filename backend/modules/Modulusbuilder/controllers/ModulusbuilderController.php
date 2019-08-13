@@ -2,8 +2,10 @@
 
 namespace backend\modules\Modulusbuilder\controllers;
 
+use backend\modules\Modmail\models\Mailtemplate;
 use Yii;
 use backend\controllers\Controller;
+use yii\debug\models\search\Mail;
 
 /**
  * Controller for the `Modulusbuilder` module
@@ -17,10 +19,23 @@ class ModulusbuilderController extends Controller {
         return $this->renderPartial('admin');
     }
 
+    public function actionUpdate() {
+        return $this->renderPartial('update');
+    }
+
 
     public function actionEmail(){
+        $model=new Mailtemplate();
 
-        return $this->renderPartial('email');
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect([
+                'email'
+            ]);
+        }
+
+        $searchModel=new Mailtemplate();
+        $dataProvider=$model->search([]);
+        return $this->render('email',['model'=>$model,'dataProvider'=>$dataProvider,'searchModel'=>$searchModel]);
 
     }
     
