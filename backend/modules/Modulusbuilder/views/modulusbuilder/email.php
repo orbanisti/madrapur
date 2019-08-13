@@ -12,7 +12,7 @@ use yii\helpers\Html;
  * @var $model common\models\Page
  */
 
-$this->title = Yii::t('backend', 'Pages');
+$this->title = Yii::t('backend', 'Email templates');
 
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="box box-success collapsed-box">
     <div class="box-header with-border">
-        <h3 class="box-title"><?php echo Yii::t('backend', 'Create {modelClass}', ['modelClass' => 'Page']) ?></h3>
+        <h3 class="box-title"><?php echo Yii::t('backend', 'Create {modelClass}', ['modelClass' => 'Email Template']) ?></h3>
         <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse">
                 <i class="fa fa-plus"></i>
