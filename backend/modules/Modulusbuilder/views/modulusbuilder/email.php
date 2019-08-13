@@ -60,6 +60,7 @@ echo GridView::widget(
                 },
                 'format' => 'raw',
             ],
+            'body',
 
             [
                 'class' => 'yii\grid\ActionColumn',

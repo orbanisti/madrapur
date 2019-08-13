@@ -1378,6 +1378,35 @@ Vvveb.Builder = {
 			}
 		});					
 	},
+
+    saveAjax2: function(fileName, startTemplateUrl, callback,id,content)
+    {
+        var data = {};
+        data["fileName"] = (fileName && fileName != "") ? fileName : Vvveb.FileManager.getCurrentUrl();
+        data["startTemplateUrl"] = startTemplateUrl;
+        if (!startTemplateUrl || startTemplateUrl == null)
+        {
+            data["html"] = this.getHtml();
+        }
+
+        data["id"]=id;
+        data["content"]=content;
+
+        $.ajax({
+            type: "POST",
+            url: '/VvvebJs/save-email.php',//set your server side save script url
+            data: data,
+            cache: false,
+            success: function (data) {
+
+                if (callback) callback(data);
+
+            },
+            error: function (data) {
+                alert(data.responseText);
+            }
+        });
+    },
 	
 	setDesignerMode: function(designerMode = false)
 	{
@@ -1487,9 +1516,11 @@ Vvveb.Gui = {
 
     //post html content through ajax to save to filesystem/db
     saveAjax2 : function () {
+        var url = Vvveb.FileManager.getCurrentUrl();
 
-
-         window.alert('asd');
+        return Vvveb.Builder.saveAjax2(url, null, function (data) {
+            $('#message-modal').modal().find(".modal-body").html("Email saved");
+        },window.id,window.content);
     },
 	
 	download : function () {

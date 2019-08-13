@@ -68,11 +68,7 @@
         </div>
 
         <div class="btn-group mr-3" role="group">
-            <button class="btn btn-light" title="Export (Ctrl + E)" id="save-btn" data-vvveb-action="saveAjax" data-vvveb-shortcut="ctrl+e">
-                <i class="la la-save"></i>
-            </button>
-
-            <button class="btn btn-light" title="Export (Ctrl + E)" id="save-btn" data-vvveb-action="saveAjax2" data-vvveb-shortcut="ctrl+e">
+            <button class="btn btn-light" title="Export (Ctrl + E)" id="alius-btn" data-vvveb-action="saveAjax2">
                 <i class="la la-save"></i>
             </button>
 
@@ -954,8 +950,10 @@ else{
 <script>
     $(document).ready(function()
     {
-        window.slug=`<?=$id?>`;
+        window.id=`<?=$id?>`;
         window.content=`<?php echo $content?>`;
+        window.temppath=`<?php echo $tempPath?>`;
+        alert(window.temppath);
 
         //if url has #no-right-panel set one panel demo
         if (window.location.hash.indexOf("no-right-panel") != -1)
@@ -968,7 +966,7 @@ else{
             $(".component-properties-tab").hide();
         }
 
-        Vvveb.Builder.init('demo/narrow-jumbotron/index.html', function() {
+        Vvveb.Builder.init(  window.temppath, function() {
             //run code after page/iframe is loaded
         });
 
