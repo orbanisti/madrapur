@@ -209,6 +209,15 @@ echo Menu::widget(
                                 'visible' => Yii::$app->user->can('accessContent'),
                             ],
                             [
+                                'label' => Yii::t('backend', 'Email templates'),
+                                'url' => [
+                                    '/Modulusbuilder/modulusbuilder/email'
+                                ],
+                                'icon' => '<i class="fa fa-envelope"></i>',
+                                'active' => Yii::$app->controller->id === 'modulusbuilder' &&
+                                    Yii::$app->controller->action === 'email',
+                            ],
+                            [
                                 'label' => Yii::t('backend', 'Static pages'),
                                 'url' => [
                                     '/content/page/index'
