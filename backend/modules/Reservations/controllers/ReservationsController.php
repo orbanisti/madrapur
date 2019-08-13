@@ -66,8 +66,6 @@ class ReservationsController extends Controller {
         }
 
         return $this->render('createReact', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
             'data' => Json::encode($dataArray),
         ]);
     }
