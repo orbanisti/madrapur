@@ -47,13 +47,13 @@ class ModulusbuilderController extends Controller {
         return $this->render('index');
     }
 
-    public static function getContent($slug = "") {
-        $query = Mailt::aSelect(Page::class, '*', Page::tableName(), "`slug` LIKE '$slug'");
+    public static function getContent($id = "") {
+        $query = Mailtemplate::aSelect(Mailtemplate::class, '*', Mailtemplate::tableName(), "`id` LIKE '$id'");
 
         return $query->one();
     }
-    public static function setContent($slug, $content){
-        $query = Page::aSelect(Page::class, '*', Page::tableName(), "`slug` LIKE '$slug'");
+    public static function setContent($id, $content){
+        $query = Mailtemplate::aSelect(Mailtemplate::class, '*', Mailtemplate::tableName(), "`slug` LIKE '$id'");
 
         $row=$query->one();
         $values = [
@@ -62,8 +62,8 @@ class ModulusbuilderController extends Controller {
 
         ];
 
-        if (Page::insertOne($row, $values)) {
-            $returnMessage = 'Successfully Saved'.$content.$slug;
+        if (Mailtemplate::insertOne($row, $values)) {
+            $returnMessage = 'Successfully Saved'.$content.$id;
 
         } else {
             $returnMessage = 'Save not Succesful';
