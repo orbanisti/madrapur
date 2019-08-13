@@ -48,12 +48,12 @@ class ModulusbuilderController extends Controller {
     }
 
     public static function getContent($id = "") {
-        $query = Mailtemplate::aSelect(Mailtemplate::class, '*', Mailtemplate::tableName(), "`id` LIKE '$id'");
+        $query = Mailtemplate::aSelect(Mailtemplate::class, '*', Mailtemplate::tableName(), "`id` = $id");
 
         return $query->one();
     }
     public static function setContent($id, $content){
-        $query = Mailtemplate::aSelect(Mailtemplate::class, '*', Mailtemplate::tableName(), "`id` LIKE '$id'");
+        $query = Mailtemplate::aSelect(Mailtemplate::class, '*', Mailtemplate::tableName(), "`id` = $id");
 
         $row=$query->one();
         $values = [
