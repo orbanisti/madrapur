@@ -53,8 +53,8 @@ class App extends React.Component {
 
   //product pick -> kiválasztott product ideje es jegytipusai
   handleChange(event) {
-    // event.preventDefault();
-    //   this.setState({ ido: event.currentTarget.value });
+    event.preventDefault();
+    this.setState({ ido: event.currentTarget.value });
   }
 
   handleSubmit(event) {
@@ -72,11 +72,9 @@ class App extends React.Component {
       console.log(`onChange fired with value: '${e.currentTarget.value}'`);
 
       this.setState({ Price: e.currentTarget.value });
-
       console.log(Price);
 
       this.setState({ totalCounter: e.currentTarget.value });
-
       console.log(totalCounter);
   }
 
@@ -167,24 +165,6 @@ class App extends React.Component {
                               </label>
                           </div>
                       </div>
-                      <div className="option-group">
-                          <div className="option-container">
-                              <input onChange={this.handleChange}  value="8" className="option-input" id="option-3" type="radio" name="options" />
-                              <input onChange={this.handleChange}  value="9" className="option-input" id="option-4" type="radio" name="options" />
-                              <label className="option" htmlFor="option-3">
-                                  <span className="option__indicator"></span>
-                                  <span className="option__label">
-                                      Folklore
-                                  </span>
-                              </label>
-                              <label className="option" htmlFor="option-4">
-                                  <span className="option__indicator"></span>
-                                  <span className="option__label">
-                                      Piano
-                                  </span>
-                              </label>
-                          </div>
-                      </div>
                       <br />
                       <hr />
                   </div>
@@ -217,7 +197,6 @@ class App extends React.Component {
 
       return (
           <div className="container">
-              {this.state.staticUrl}
               <div id="rDebug" dangerouslySetInnerHTML={{ __html: dataText }} />
               <RenderTitle />
           </div>

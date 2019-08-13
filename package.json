@@ -2,7 +2,8 @@
 	"private": true,
 	"scripts": {
 		"build": "node alius.js",
-		"watch": "webpack --progress --watch"
+		"watch": "webpack --progress --watch",
+		"react": "node addReact.js"
 	},
 	"devDependencies": {
 		"babel-core": "^6.26.3",

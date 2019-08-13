@@ -1,28 +1,24 @@
 const shell = require('shelljs');
+const basePath = './backend/modules/';
+const modulePath = process.argv[2];
+const buildPath = '/build/static';
 
-const fePath = './frontend/madrapur-fe';
-
-shell
-    .cd(fePath)
-    .exec('git pull')
-    .exec('npm run build');
-
-shell.cd('../..');
+const path = basePath + modulePath + buildPath;
 
 shell
-    .ls(fePath + '/docroot/react-bundle/*-script.js*')
+    .ls(path + '/js/*.js*')
     .forEach(
         (file) => {
-            shell.cp('-R', file, './frontend/web/react-bundle');
+            shell.cp('-R', file, './backend/web/react-bundle');
         }
     );
 
 shell
-    .ls(fePath + '/docroot/react-bundle/*-style.css*')
+    .ls(path + '/css/*.css*')
     .forEach(
         (file) => {
-            shell.cp('-R', file, './frontend/web/react-bundle');
+            shell.cp('-R', file, './backend/web/react-bundle');
         }
     );
 
-shell.exec('webpack --progress');
+shell.exec('webpack --progress --config webpack.config.backend.js');

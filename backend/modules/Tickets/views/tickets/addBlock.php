@@ -26,15 +26,16 @@ use kartik\select2\Select2;
         ?>
 
         <div class="form-group">
-            <label for="startId">First ticket ID:</label>
             <?= $form->field($model, 'startId', [
-                    'template' => '{beginLabel}{labelTitle}{endLabel}<div class="input-group"><span class="input-group-addon">V</span>{input}</div>{error}{hint}'
+                    'template' => '{beginLabel}{labelTitle}{endLabel}<div class="input-group"><span class="input-group-addon">ID</span>{input}</div>{error}{hint}',
+                    'hintType' => \kartik\form\ActiveField::HINT_DEFAULT,
+                    'hintSettings' => ['onLabelClick' => false, 'onLabelHover' => true, 'onIconHover' => true,]
             ])->textInput(['placeholder' => 'First ID.', 'name' => 'startId', 'id' =>
-                'startId', 'maxlength' => 7, 'pattern' => '\d*', 'required' => true]) ?>
+                'startId', 'maxlength' => 8, 'pattern' => '\d*', 'required' => true])->hint
+            ('Entering the full ticket ID is mandatory. In case of voucher ticket block include the initial letter, too.') ?>
         </div>
 
         <div class="form-group">
-            <label for="assignedTo">Assign block to:</label>
             <?= $form->field($model, 'assignedTo')->widget(Select2::class, [
                 'name' => 'assignedTo',
                 'data' => $users,

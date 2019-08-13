@@ -32,6 +32,7 @@ class BackendAsset extends AssetBundle {
      */
     public $css = [
         'css/style.css',
+        'react-bundle/main-style.css',
     ];
 
     /**
@@ -40,6 +41,8 @@ class BackendAsset extends AssetBundle {
      */
     public $js = [
         'js/app.js',
+        'react-bundle/main-script.js',
+        'react-bundle/runtime-script.js'
     ];
 
     /**
@@ -47,7 +50,7 @@ class BackendAsset extends AssetBundle {
      * @var array
      */
     public $jsOptions = [
-        'position' => \yii\web\View::POS_HEAD
+        'position' => \yii\web\View::POS_END
     ];
 
     /**

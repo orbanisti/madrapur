@@ -12,4 +12,10 @@ class TicketBlock extends Tickets {
 
     private const TABLE_PREFIX = 'modulus_tb_';
 
+    public function attributeLabels() {
+        return [
+            'startId' => Yii::t('app', 'Start ticket ID'),
+        ];
+    }
+
 }

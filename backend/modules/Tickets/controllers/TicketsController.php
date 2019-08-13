@@ -87,19 +87,32 @@ class TicketsController extends Controller {
             Yii::error(Yii::$app->request->post());
             Yii::error((int) Yii::$app->user->id);
 //            Yii::error((int)Yii::$app->request->post('startId'));
-//            Yii::error(sprintf('%07d', (int)Yii::$app->request->post('startId')));
+//            Yii::error(sprintf('%08d', (int)Yii::$app->request->post('startId')));
         $saved = false;
 
         if (Yii::$app->request->post('startId') && Yii::$app->request->post('TicketBlock')) {
             $startId = Yii::$app->request->post('startId');
             $currentId = (int)$startId;
-            $values = '(\'V' . sprintf('%07d', $currentId) . '\')';
+            $values = '(\'' . sprintf('%08d', $currentId) . '\')';
+            $notAllowed = false;
+            $idToCheck = $currentId - 50;
 
             do {
-                $values .= ',(\'V' . sprintf('%07d', ++$currentId) . '\')';
+                $idToCheck++;
+
+                if ($idToCheck - 49 < 0) {
+                    continue;
+                }
+
+
+            } while ($idToCheck !== (int)$startId);
+
+            do {
+                $values .= ',(\'' . sprintf('%08d', ++$currentId) . '\')';
             } while ($currentId < ((int)$startId + 49));
 
-            if (Yii::$app->db->getTableSchema(Yii::$app->db->tablePrefix . 'modulus_tb_v' . $startId, true) === null) {
+            if (Yii::$app->db->getTableSchema(Yii::$app->db->tablePrefix . 'modulus_tb_' . $startId, true) === null
+                || $notAllowed) {
 
                 $sql = "CALL createTicketBlockTable(:tableName, :startId, :values)";
                 $params = [
@@ -110,7 +123,7 @@ class TicketsController extends Controller {
                 Yii::$app->db->createCommand($sql, $params)->execute();
 
                 $ticketBlock = new TicketBlock();
-                $ticketBlock->startId = 'V' . $startId;
+                $ticketBlock->startId = $startId;
                 $ticketBlock->assignedTo = (int)Yii::$app->request->post('TicketBlock')['assignedTo'];
                 $ticketBlock->assignedBy = (int)Yii::$app->user->id;
                 $saved = $ticketBlock->save(false);
@@ -121,7 +134,7 @@ class TicketsController extends Controller {
                         'options' => [
                             'class' => 'alert-warning'
                         ],
-                        'body' => Yii::t('backend', "Ticket block (V$startId) already exists!")
+                        'body' => Yii::t('backend', "Ticket block ($startId) already exists!")
                     ]
                 );
             }

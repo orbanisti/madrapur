@@ -41,7 +41,7 @@ class m190624_102301_modulusTickets extends Migration {
                 BEGIN
                 
                 SET @DbTableName =
-                    CONCAT('modulus_tb_v', TableName);
+                    CONCAT('modulus_tb_', TableName);
                 
                 SET @CreateTableSQL =
                    CONCAT(
