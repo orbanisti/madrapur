@@ -16,6 +16,13 @@ class ModulusbuilderController extends Controller {
     public function actionAdmin() {
         return $this->renderPartial('admin');
     }
+
+
+    public function actionEmail(){
+
+        return $this->renderPartial('email');
+
+    }
     
     /**
      * Renders the index view for the module

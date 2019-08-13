@@ -1023,12 +1023,12 @@ class ProductController extends Controller {
                 $headers .= "MIME-Version: 1.0\r\n";
                 $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
-               /* if(mail($values2['to'],$values2['subject'],$values2['body'],$headers)){
+                if(mail($values2['to'],$values2['subject'],$values2['body'],$headers)){
 
                     Yii::warning('Elkuldom a mailt');
 
                     Modmail::insertOne($mailModel,$values2);
-                }*/
+                }
             } else {
                 $returnMessage = 'Save not Succesful';
             }
