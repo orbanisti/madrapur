@@ -53,7 +53,7 @@ class ModulusbuilderController extends Controller {
         return $query->one();
     }
     public static function setContent($id, $content){
-        $query = Mailtemplate::aSelect(Mailtemplate::class, '*', Mailtemplate::tableName(), "`slug` LIKE '$id'");
+        $query = Mailtemplate::aSelect(Mailtemplate::class, '*', Mailtemplate::tableName(), "`id` LIKE '$id'");
 
         $row=$query->one();
         $values = [
