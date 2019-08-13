@@ -904,6 +904,7 @@
 <?php
 $id=Yii::$app->request->get('id');
 $curlUrl="https://api.budapestrivercruise.co.uk/v1/rester/get-email-html-by-id?id=".$id;
+
 $ch = curl_init($curlUrl);
 
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -916,6 +917,7 @@ curl_close($ch);
 $dependencies='<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet"><script src="http://code.jquery.com/jquery-3.3.1.min.js"></script><script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>';
 $tempPath= "VvvebJs/tmp-email-".$id.".html";
 
+if(!$content){
 
     $content='<div class="container">
       <div class="row">
@@ -925,6 +927,10 @@ $tempPath= "VvvebJs/tmp-email-".$id.".html";
         </div>
       </div>
     </div>';
+
+
+
+}
 
 
 
