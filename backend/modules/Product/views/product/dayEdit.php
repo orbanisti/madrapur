@@ -136,53 +136,6 @@ echo \insolita\wgadminlte\FlashAlerts::widget([
 {pager}
 HTML;
 
-        echo \kartik\grid\GridView::widget([
-            'dataProvider'=>$dataProvider,
-            'filterModel'=>$searchModel,
-            'columns'=>$gridColumns,
-            'layout' => $layout,
-            'pjax'=>true,
-            'toolbar' =>  [
-                [
-                    'content' =>
-                        Html::button('<i class="fas fa-plus"></i>', [
-                            'class' => 'fa fa-ticket',
-                            'title' => Yii::t('kvgrid', 'Add Book'),
-                            'onclick' => 'alert("This will launch new booking creation!");'
-                        ]) . ' '.
-                        Html::a('<i class="fas fa-redo"></i>', ['grid-demo'], [
-                            'class' => 'btn btn-outline-secondary',
-                            'title'=>Yii::t('kvgrid', 'Reset Grid'),
-                            'data-pjax' => 0,
-                        ]),
-                    'options' => ['class' => 'btn-group mr-2']
-                ],
-                '{export}',
-                '{toggleData}',
-            ],
-            'toggleDataContainer' => ['class' => 'btn-group mr-2'],
-            // set export properties
-            'export' => [
-                'fontAwesome' => true
-            ],
-            'bordered' => true,
-            'striped'=>true,
-            'panel' => [
-                'heading' => '<i class="fa fa-ticket"></i>'.$title,
-                'logo'=>'fa fa-ticket',
-                'footer' => "
-                            <h3>Total capacity left for this day: $availableChairs</br></h3>
-                            <h4>Total places bought for this day: $takenChairsCount</br></h4>
-                            <h5>Total capacity for this product: $currentProduct->capacity</br></h5>
-                ",
-            ],
-
-
-
-
-        ]);
-
-
         ?>
         </div>
     </div>
@@ -207,6 +160,9 @@ HTML;
 
                     ++$i;
                 }
+                echo "       <li class=\"nav-item\">
+                        <a class=\"nav-link \" id=\"times-all-tab\" data-toggle=\"tab\" href='#times-all' role=\"tab\" aria-controls=\"times-all\">Whole Day</a>
+                    </li>";
 
                 ?>
 
@@ -233,7 +189,7 @@ HTML;
                 // the GridView widget (you must use kartik\grid\GridView)
 
                 echo \kartik\grid\GridView::widget([
-                    'dataProvider'=>$dataProvider,
+                    'dataProvider'=>$allDataProviders[$time],
                     'filterModel'=>$searchModel,
                     'columns'=>$gridColumns,
                     'layout' => $layout,
@@ -291,6 +247,55 @@ HTML;
 
                 ++$i;
                 }
+                echo '<div class="tab-pane" id="times-all" role="tabpanel" aria-labelledby="times-all">';
+                echo \kartik\grid\GridView::widget([
+                    'dataProvider'=>$dataProvider,
+                    'filterModel'=>$searchModel,
+                    'columns'=>$gridColumns,
+                    'layout' => $layout,
+                    'pjax'=>true,
+                    'toolbar' =>  [
+                        [
+                            'content' =>
+                                Html::button('<i class="fas fa-plus"></i>', [
+                                    'class' => 'fa fa-ticket',
+                                    'title' => Yii::t('kvgrid', 'Add Book'),
+                                    'onclick' => 'alert("This will launch new booking creation!");'
+                                ]) . ' '.
+                                Html::a('<i class="fas fa-redo"></i>', ['grid-demo'], [
+                                    'class' => 'btn btn-outline-secondary',
+                                    'title'=>Yii::t('kvgrid', 'Reset Grid'),
+                                    'data-pjax' => 0,
+                                ]),
+                            'options' => ['class' => 'btn-group mr-2']
+                        ],
+                        '{export}',
+                        '{toggleData}',
+                    ],
+                    'toggleDataContainer' => ['class' => 'btn-group mr-2'],
+                    // set export properties
+                    'export' => [
+                        'fontAwesome' => true
+                    ],
+                    'bordered' => true,
+                    'striped'=>true,
+                    'panel' => [
+                        'heading' => '<i class="fa fa-ticket"></i>'.$title.' '.'<',
+                        'logo'=>'fa fa-ticket',
+                        'footer' => "
+                            <h3>Total capacity left for this day: $availableChairs</br></h3>
+                            <h4>Total places bought for this day: $takenChairsCount</br></h4>
+                            <h5>Total capacity for this product: $currentProduct->capacity</br></h5>
+                ",
+                    ],
+
+
+
+
+                ]);
+
+                echo '</div>';
+
                 ?>
 
             </div>

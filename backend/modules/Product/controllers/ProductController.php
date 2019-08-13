@@ -36,6 +36,25 @@ class ProductController extends Controller {
         $searchModel = new ProductAdminSearchModel();
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $gotId=Yii::$app->request->get('id');
+        if(Yii::$app->request->get('action')=='delete'){
+            $model=new Product();
+            $query = Product::aSelect(Product::class, '*', Product::tableName(), 'id=' . $gotId);
+            try {
+                $prodInfo = $query->one();
+            } catch (Exception $e) {
+            }
+            $values = [
+                'isDeleted' => 'yes',
+            ];
+            $result=Product::insertOne($prodInfo,$values);
+            Yii::error(Yii::$app->user->id.'deleted '.$prodInfo->id );
+
+
+        }
+
+
+
 
         return $this->render('admin', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
     }

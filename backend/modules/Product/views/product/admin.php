@@ -1,8 +1,8 @@
 <?php
 
 use backend\modules\Product\models\ProductSource;
-
-
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 
 ?>
@@ -49,6 +49,28 @@ use backend\modules\Product\models\ProductSource;
                     .'<br/><a href="/Product/product/blockedtimes?prodId='.$model->id.'">Block Times'.'</a>';
                 }
             ],
+            [
+                'class' => 'kartik\grid\ActionColumn',
+
+                'template' => '{update} {delete}',
+                'buttons' => [
+                    'delete' => function ($url, $model, $key) {
+
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', Url::to(['product/admin', 'id' => $model->id,'action'=>'delete']),
+                                [
+                                    'title' => Yii::t('app', 'Eliminar'),
+                                    'data-pjax' => '1',
+                                    'data' => [
+                                        'method' => 'post',
+                                        'confirm' => Yii::t('app', 'Estás seguro de eliminar el usuario? El usuario dejará de estar disponible en el sistema.'),
+                                        'pjax' => 1,],
+                                ]
+                            );
+
+                    },
+                ]
+            ],
+            'isDeleted',
 
 
         ];
