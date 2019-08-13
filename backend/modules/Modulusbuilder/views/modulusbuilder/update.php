@@ -959,7 +959,7 @@ else{
         window.id=`<?=$id?>`;
         window.content=`<?php echo $content?>`;
         window.temppath=`<?php echo $tempPath?>`;
-        alert(window.temppath);
+
 
         //if url has #no-right-panel set one panel demo
         if (window.location.hash.indexOf("no-right-panel") != -1)
