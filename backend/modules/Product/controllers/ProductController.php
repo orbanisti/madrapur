@@ -1053,14 +1053,19 @@ class ProductController extends Controller {
         $alreadyblocked = json_decode($response)[0];
         $alreadyBlockedArray=[];
 
-        foreach ($alreadyblocked as $blockedDate) {
-            if ($blockedDate->bookable == 'no' && $blockedDate->from == date('H:i', strtotime($date))) {
-                if (isset($blockedDate->from_date) && isset($blockedDate->to_date)) {
-                    if ($blockedDate->from_date == $blockedDate->from_date) {
-                        $alreadyBlockedArray[] = $blockedDate->from_date.' '.$blockedDate->from;
+        if (is_array($alreadyblocked)) {
+            foreach ($alreadyblocked as $blockedDate) {
+                if ($blockedDate->bookable == 'no' && $blockedDate->from == date('H:i', strtotime($date))) {
+                    if (isset($blockedDate->from_date) && isset($blockedDate->to_date)) {
+                        if ($blockedDate->from_date == $blockedDate->from_date) {
+                            $alreadyBlockedArray[] = $blockedDate->from_date.' '.$blockedDate->from;
+                        }
                     }
                 }
             }
+        } else {
+            Yii::error('not array', 'blockDateTime');
+            Yii::error($askURL, 'blockDateTime');
         }
 
 
