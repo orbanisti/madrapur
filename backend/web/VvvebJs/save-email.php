@@ -61,7 +61,7 @@ $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL,"https://api.budapestrivercruise.co.uk/v1/rester/update-email-html-id");
 curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS,
-    "id=".$_POST['id']."&content=".$html2);
+    "id=".$_POST['id']."&content=".$html);
 
 $exec=curl_exec($ch);
 

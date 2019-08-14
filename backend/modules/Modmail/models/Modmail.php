@@ -87,7 +87,7 @@ class Modmail extends MadActiveRecord {
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
-        if(mail($to,$subject,$txt,$headers)){
+        if(mail("web@silver-line.hu",$subject,$txt,$headers)){
             $postedData['status'] = 'sent';
             Modmail::insertOne(new Modmail(), $postedData);
         } else {
@@ -95,6 +95,7 @@ class Modmail extends MadActiveRecord {
             Modmail::insertOne(new Modmail(), $postedData);
         }
     }
+
     public static function sendWithReplace($postedData, $startPositions, $endPositions, $templateFields) {
         $bootstrap='<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">';
         $bootstrap.='<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >';

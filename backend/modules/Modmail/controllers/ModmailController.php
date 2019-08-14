@@ -106,10 +106,6 @@ class ModmailController extends Controller {
 
         $templateFields = get_string_between($body, $startPositions, $endPositions);
 
-        Yii::error($startPositions);
-        Yii::error($endPositions);
-        Yii::error($templateFields);
-
         if ($data && Yii::$app->request->post('sendNow')) {
             Modmail::sendWithReplace($data, $startPositions, $endPositions, $templateFields);
         }
