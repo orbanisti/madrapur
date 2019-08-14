@@ -19,16 +19,19 @@ use yii\widgets\ActiveForm;
            $form = ActiveForm::begin([
                'id' => 'login-form',
                'options' => ['class' => 'form-horizontal'],
+               'action' => 'send',
            ]) ?>
-           <?= $form->field($model, 'from')->textInput(['value'=>'info@budapestrivercruise.co.uk']); ?>
-           <?= $form->field($model, 'to')->textInput(); ?>
-           <?= $form->field($model, 'subject')->textInput(); ?>
-           <?= $form->field($model, 'body')->textarea(); ?>
+           <?= $form->field($model, 'from')->textInput(['value'=>'info@budapestrivercruise.co.uk', 'required' => true])
+           ; ?>
+           <?= $form->field($model, 'to')->textInput(['required' => true]); ?>
+           <?= $form->field($model, 'subject')->textInput(['required' => true]); ?>
+
+           <?= $form->field($model, 'type')->dropDownList($types); ?>
 
 
            <div class="form-group">
                <div class="col-lg-4 col-lg-12">
-                   <?= Html::submitButton('Send Mail', ['class' => 'btn btn-primary']) ?>
+                   <?= Html::submitButton('Next', ['class' => 'btn btn-primary']) ?>
                </div>
            </div>
            <?php ActiveForm::end() ?>
