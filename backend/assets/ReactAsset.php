@@ -7,12 +7,9 @@
  */
 namespace backend\assets;
 
-use common\assets\AdminLte;
-use common\assets\Html5shiv;
 use yii\web\AssetBundle;
-use yii\web\YiiAsset;
 
-class BackendAsset extends AssetBundle {
+class ReactAsset extends AssetBundle {
 
     /**
      *
@@ -31,7 +28,7 @@ class BackendAsset extends AssetBundle {
      * @var array
      */
     public $css = [
-        'css/style.css',
+        'react-bundle/main-style.css',
     ];
 
     /**
@@ -39,7 +36,8 @@ class BackendAsset extends AssetBundle {
      * @var array
      */
     public $js = [
-        'js/app.js',
+        'react-bundle/main-script.js',
+        'react-bundle/runtime-script.js'
     ];
 
     /**
@@ -47,7 +45,7 @@ class BackendAsset extends AssetBundle {
      * @var array
      */
     public $jsOptions = [
-        'position' => \yii\web\View::POS_HEAD
+        'position' => \yii\web\View::POS_END
     ];
 
     /**
@@ -55,8 +53,6 @@ class BackendAsset extends AssetBundle {
      * @var array
      */
     public $depends = [
-        YiiAsset::class,
-        AdminLte::class,
-        Html5shiv::class
+        BackendAsset::class
     ];
 }

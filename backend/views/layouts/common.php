@@ -4,6 +4,7 @@
  * @var $content string
  */
 use backend\assets\BackendAsset;
+use backend\assets\ReactAsset;
 use backend\modules\system\models\SystemLog;
 use backend\widgets\Menu;
 use common\models\TimelineEvent;
@@ -15,6 +16,7 @@ use yii\log\Logger;
 use yii\widgets\Breadcrumbs;
 
 $bundle = BackendAsset::register($this);
+$reactBundle = ReactAsset::register($this);
 
 ?>
 
