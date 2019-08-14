@@ -42,8 +42,10 @@ class ProductAdminSearchModel extends Product
         $from = self::tableName();
         $where = self::andWhereFilter([
             ['id', '!=', '0'],
+            ['isDeleted', '!=', "yes"],
         ]);
 
+      $rows = self::aSelect(Product::class, $what, $from,$where);
 
 
         $dataProvider = new ActiveDataProvider([

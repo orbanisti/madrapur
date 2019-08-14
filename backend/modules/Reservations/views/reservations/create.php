@@ -6,6 +6,7 @@
  * Time: 20:38
  */
 
+use backend\modules\Product\models\Product;
 use kartik\helpers\Html;
 use backend\components\extra;
 use yii\widgets\ActiveForm;
@@ -34,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <?php
-    $allMyProducts=\backend\modules\Product\models\Product::find()->all();
+    $allMyProducts=Product::getAllProducts();
     echo $form->field($model, 'title')
 
         ->dropDownList(\yii\helpers\ArrayHelper::map($allMyProducts, 'id', 'title'),
