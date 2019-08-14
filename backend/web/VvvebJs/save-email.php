@@ -36,7 +36,6 @@ $stripfromStartArray=[
     '<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet">',
     '<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>',
     '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>',
-    '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>',
     '</head>',
     '<body>'
 ];
@@ -48,13 +47,13 @@ if (file_put_contents($fileName, $html))
 else
     echo 'Error saving file '  . $fileName;
 
-foreach($stripfromStartArray as $i=>$rule){
-    $html2=str_replace($rule,"",$html);
-}
-
-foreach($stripfromStartArray as $i=>$rule){
-    $html2=str_replace($rule,"",$html2);
-}
+//foreach($stripfromStartArray as $i=>$rule){
+//    $html2=str_replace($rule,"",$html);
+//}
+//
+//foreach($stripfromStartArray as $i=>$rule){
+//    $html2=str_replace($rule,"",$html2);
+//}
 
 
 $ch = curl_init();

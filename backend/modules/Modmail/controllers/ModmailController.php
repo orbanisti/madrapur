@@ -115,7 +115,18 @@ class ModmailController extends Controller {
         }
 
         if ($data && Yii::$app->request->post('preview')) {
-            return $this->renderFile("VvvebJs/tmp-email-$templateId.html");
+            $file = file_get_contents("VvvebJs/tmp-email-$templateId.html");
+
+            function set_strings($body, $templateFields){
+                foreach ($templateFields as $field) {
+                    $body = str_replace("{{".$field."}}", Yii::$app->request->post($field), $body);
+                }
+                return $body;
+            }
+
+            $txt = set_strings($file, $templateFields);
+
+            return var_dump($txt);
         }
 
         return $this->render('send', [
