@@ -21,7 +21,12 @@ class Product extends MadActiveRecord {
     const BLOCK_TIMES = 'blockTimes';
 
     public static function getAllProducts() {
-        $query = Product::aSelect(Product::class, '*', Product::tableName(), '1');
+
+        $where = self::andWhereFilter([
+            ['id', '!=', '0'],
+            ['isDeleted', '!=', "yes"],
+        ]);
+        $query = Product::aSelect(Product::class, '*', Product::tableName(), $where);
 
         $prodInfo = 0;
 
