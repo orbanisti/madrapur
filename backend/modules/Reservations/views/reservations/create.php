@@ -97,7 +97,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </div>
 
-
     <script>
         var countPrices=<?=$countPrices?>;
 
@@ -121,40 +120,41 @@ $this->params['breadcrumbs'][] = $this->title;
 
         }
 
+        $().ready(() => {
+            $('#product-title').change(function(){
+                $.ajax({
+                    url: '<?php echo Yii::$app->request->baseUrl. '/Reservations/reservations/gettimes' ?>',
+                    type: 'post',
+                    data: {
+                        id:$(this).val(),
 
-        $('#product-title').change(function(){
-            $.ajax({
-                url: '<?php echo Yii::$app->request->baseUrl. '/Reservations/reservations/gettimes' ?>',
-                type: 'post',
-                data: {
-                   id:$(this).val(),
-
-                },
-                success: function (data) {
-                    console.log(data.search);
-                    mytimes=data.search
-                    $('#myTimes').html('');
-                    $('#product-times').html('');
-                    mytimes.forEach(myFunction)
-
-
-                }
-            });
-            $.ajax({
-                url: '<?php echo Yii::$app->request->baseUrl. '/Reservations/reservations/getprices' ?>',
-                type: 'post',
-                data: {
-                    id:$(this).val(),
-
-                },
-                success: function (data) {
-                    console.log(data.search);
-                    mytimes=data.search
-                    $('#myPrices').html(mytimes);
+                    },
+                    success: function (data) {
+                        console.log(data.search);
+                        mytimes=data.search
+                        $('#myTimes').html('');
+                        $('#product-times').html('');
+                        mytimes.forEach(myFunction)
 
 
+                    }
+                });
+                $.ajax({
+                    url: '<?php echo Yii::$app->request->baseUrl. '/Reservations/reservations/getprices' ?>',
+                    type: 'post',
+                    data: {
+                        id:$(this).val(),
 
-                }
+                    },
+                    success: function (data) {
+                        console.log(data.search);
+                        mytimes=data.search
+                        $('#myPrices').html(mytimes);
+
+
+
+                    }
+                });
             });
         });
         function myFunction(item, index) {
