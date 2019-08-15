@@ -6,6 +6,7 @@
  * Time: 20:38
  */
 
+use backend\modules\Reservations\models\Reservations;
 use kartik\helpers\Html;
 use backend\components\extra;
 use yii\widgets\ActiveForm;
@@ -39,8 +40,7 @@ echo \insolita\wgadminlte\FlashAlerts::widget([
 
 <div class="products-index">
 
-    <div class="panel panel-default">
-        <div class="panel-body">
+
         <?php
         $gridColumns = [
           /*  'id',
@@ -70,10 +70,8 @@ echo \insolita\wgadminlte\FlashAlerts::widget([
             ],
             ['class' => EditableColumn::class,
                 'attribute'=>'lastName',
-
                 'label'=>'Last Name',
                 'refreshGrid'=>true,
-
                 'editableOptions'=> ['formOptions' => ['action' => ['/Product/product/editbook']]],
 
             ],
@@ -88,7 +86,6 @@ echo \insolita\wgadminlte\FlashAlerts::widget([
             ['class' => EditableColumn::class,
                 'attribute'=>'bookingCost',
                 'refreshGrid'=>true,
-
                 'editableOptions'=> ['formOptions' => ['action' => ['/Product/product/editbook']]],
 
             ],
@@ -96,7 +93,6 @@ echo \insolita\wgadminlte\FlashAlerts::widget([
                 'attribute'=>'orderCurrency',
                 'refreshGrid'=>true,
                 'editableOptions'=> ['formOptions' => ['action' => ['/Product/product/editbook']]],
-
             ],
 
 
@@ -105,11 +101,7 @@ echo \insolita\wgadminlte\FlashAlerts::widget([
                     ['class' => EditableColumn::class,
                         'attribute'=>'sourceName',
                         'refreshGrid'=>true,
-
                         'editableOptions'=> ['formOptions' => ['action' => ['/Product/product/editbook']]],
-
-
-
                        ],
             'sellerName',
             'invoiceDate',
@@ -137,30 +129,24 @@ echo \insolita\wgadminlte\FlashAlerts::widget([
 HTML;
 
         ?>
-        </div>
-    </div>
+
 
     <div class="panel panel-2">
         <div class="panel-body">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <?php
                 $i = 0;
-                $firstactive='';
+
 
                 foreach($timesHours as $time){
-                    if($i==0){
-                        $firstactive='active';
-                    }else{
-                        $firstactive='';
-                    }
 
                      echo "       <li class=\"nav-item\">
-                        <a class=\"nav-link ".$firstactive."\" id=\"times-$i-tab\" data-toggle=\"tab\" href='#times-$i' role=\"tab\" aria-controls=\"times-$i\">$time</a>
+                        <a class=\"nav-link \" id=\"times-$i-tab\" data-toggle=\"tab\" href='#times-$i' role=\"tab\" aria-controls=\"times-$i\">$time</a>
                     </li>";
 
                     ++$i;
                 }
-                echo "       <li class=\"nav-item\">
+                echo "       <li class=\"nav-item active\">
                         <a class=\"nav-link \" id=\"times-all-tab\" data-toggle=\"tab\" href='#times-all' role=\"tab\" aria-controls=\"times-all\">Whole Day</a>
                     </li>";
 
@@ -172,23 +158,21 @@ HTML;
             <div class="tab-content">
                 <?php
                 $i = 0;
-                $firstactive='';
+
 
 
                 foreach($timesHours as $time){
-                    if($i==0){
-                        $firstactive='active';
-                    }else{
-                        $firstactive='';
-                    }
-                    echo '<div class="tab-pane '.$firstactive.'" id="times-'.$i.'" role="tabpanel" aria-labelledby="times-'.$i.'">';
+
+                    echo '<div class="tab-pane " id="times-'.$i.'" role="tabpanel" aria-labelledby="times-'.$i.'">';
+                    $reservationModel=new Reservations();
+
+                    $availableChairs=$reservationModel->countTakenChairsOnDayTime($selectedDate,$sources,$time);;
 
 
-
-                    echo $time;
                 // the GridView widget (you must use kartik\grid\GridView)
 
                 echo \kartik\grid\GridView::widget([
+                    'id' => 'times'.$time,
                     'dataProvider'=>$allDataProviders[$time],
                     'filterModel'=>$searchModel,
                     'columns'=>$gridColumns,
@@ -220,7 +204,7 @@ HTML;
                     'bordered' => true,
                     'striped'=>true,
                     'panel' => [
-                        'heading' => '<i class="fa fa-ticket"></i>'.$title,
+                        'heading' => "<i class=\"fa fa-ticket\"></i>$title<a class=\"btn btn-success\">$time</a>",
                         'logo'=>'fa fa-ticket',
                         'footer' => "
                             <h3>Total capacity left for this day: $availableChairs</br></h3>
@@ -247,8 +231,9 @@ HTML;
 
                 ++$i;
                 }
-                echo '<div class="tab-pane" id="times-all" role="tabpanel" aria-labelledby="times-all">';
+                echo '<div class="tab-pane active" id="times-all" role="tabpanel" aria-labelledby="times-all">';
                 echo \kartik\grid\GridView::widget([
+                        'id'=>'wholeday',
                     'dataProvider'=>$dataProvider,
                     'filterModel'=>$searchModel,
                     'columns'=>$gridColumns,
@@ -280,7 +265,7 @@ HTML;
                     'bordered' => true,
                     'striped'=>true,
                     'panel' => [
-                        'heading' => '<i class="fa fa-ticket"></i>'.$title.' '.'<',
+                        'heading' => '<i class="fa fa-ticket"></i>'.$title.' ',
                         'logo'=>'fa fa-ticket',
                         'footer' => "
                             <h3>Total capacity left for this day: $availableChairs</br></h3>
