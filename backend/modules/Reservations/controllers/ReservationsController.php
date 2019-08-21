@@ -386,7 +386,12 @@ Yii::error($insertReservation);
      */
     public function actionCalcprice() {
         if (Yii::$app->request->isAjax) {
+
             $data = Yii::$app->request->post();
+            if(isset($data['prices'])){
+
+
+
             $currID = $data['productId'];
             $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $currID);
             $myprices = $query->all();
@@ -413,7 +418,31 @@ Yii::error($insertReservation);
 
             return [
                 'search' => $fullTotal,
+                'response'=>'price'
             ];
+            }
+            else if(isset($data['date'])&& isset($data['time'])){
+                \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+                $currID = $data['productId'];
+                $currDate=$data['date'];
+                $currTime=$data['time'];
+                $reservationModel=new Reservations();
+
+                $sources=ProductSource::getProductSourceIds($currID);
+                $currentProduct = Product::getProdById($currID);
+                $availableChairs=$currentProduct->capacity-$reservationModel->countTakenChairsOnDayTime($currDate,$sources,$currTime);
+
+
+
+                return [
+                    'search'=>"<div id=\"myLabel\">Available places left:$availableChairs</div>",
+                    'response'=>'places'
+
+                ];
+
+            }
+
         }
         return [];
     }

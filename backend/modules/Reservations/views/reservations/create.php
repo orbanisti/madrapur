@@ -7,6 +7,7 @@
  */
 
 use backend\modules\Product\models\Product;
+use dosamigos\datepicker\DatePicker;
 use kartik\helpers\Html;
 use backend\components\extra;
 use yii\widgets\ActiveForm;
@@ -42,10 +43,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ['prompt'=>'Please select a product']);
 
     ?>
-    <?= $form->field($model, "start_date")->widget(\dosamigos\datepicker\DatePicker::class, [
+    <?= $form->field($model, "start_date")->widget(DatePicker::class, [
             'clientOptions' => [
                 'autoclose' => true,
-                'format' => 'yyyy-mm-dd'
+                'format' => 'yyyy-mm-dd',
+
+                    'startDate' => date('today'),
+
             ]
     ]); ?>
     <?= $form->field($model, 'times')
@@ -59,6 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 
 
+
     <div id="myTimes"></div>
     <div id="myPrices"></div>
     <?= Html::submitButton('Create Reservation', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
@@ -70,6 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
         $model=new \backend\modules\Product\models\ProductPrice();
        # var_dump($myPrices);
         echo '</br>';
+        // TODO fix this nonsense másmodelenátpushingolni egy Reservation
         foreach($myPrices as $i=>$price){
             echo $price->name;
             $currentProdId=(Yii::$app->request->post('Product'))['title'];
@@ -152,7 +158,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         $('#myPrices').html(mytimes);
 
 
-
                     }
                 });
             });
@@ -191,14 +196,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 type: 'post',
                 data: {
                     prices:gatherPrices(),
-                    productId:<?=$currentProdId?>,
-
+                    productId:$('#product-title').val(),
+                    date: $('#product-start_date').val(),
+                    time: $('#product-times').val(),
                 },
                 success: function (data) {
                     console.log(data.search);
                     mytimes=data.search
                     $('#total_price').html(mytimes);
                     $('#productprice-discount').val(mytimes);
+                    if(data.response=='places'){
+                        $('#myPrices').html(mytimes);
+                    }
+
 
 
 
