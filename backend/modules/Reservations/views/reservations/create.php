@@ -7,21 +7,31 @@
  */
 
 use backend\modules\Product\models\Product;
-use dosamigos\datepicker\DatePicker;
+
 use kartik\helpers\Html;
 use backend\components\extra;
 use yii\widgets\ActiveForm;
-
+use kartik\date\DatePicker;
 use kartik\datecontrol\DateControl;
+
+
 
 $this->title = Yii::t('app', 'New Reservation');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <!--suppress ALL -->
+<style>
+    .wrapper{
+        overflow-y:hidden;
+    }
+</style>
 <div class="products-index">
+    <div class="panel">
+    <div class="panel-heading">
 
-
+    </div>
+<div class="panel-body">
 
     <?php
     if($disableForm!=1){
@@ -44,11 +54,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
     ?>
     <?= $form->field($model, "start_date")->widget(DatePicker::class, [
-            'clientOptions' => [
+            'options' =>['value'=>date('Y-m-d',time())],
+            'type' => DatePicker::TYPE_INLINE,
+            'pickerIcon' => '<i class="fa fa-calendar text-primary"></i>',
+            'removeIcon' => '<i class="fa fa-trash text-danger"></i>',
+            'pluginOptions' => [
                 'autoclose' => true,
                 'format' => 'yyyy-mm-dd',
-
-                    'startDate' => date('today'),
+                'startDate' => date(time()),
 
             ]
     ]); ?>
@@ -102,6 +115,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 
 </div>
+    </div>
 
     <script>
         var countPrices=<?=$countPrices?>;
@@ -110,6 +124,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
             $('#product-times').html($('#product-times').html()+'<option>'+item['name']+'</option>');
+            $('#product-times option:eq(2)').attr('selected', 'selected');
+            $('#product-times option:eq(1)').attr('selected', 'selected');
 
         }
 
@@ -139,7 +155,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         console.log(data.search);
                         mytimes=data.search
                         $('#myTimes').html('');
-                        $('#product-times').html('');
+                        $('#product-times').html('<option>Please select a time</option>')
                         mytimes.forEach(myFunction)
 
 
@@ -199,6 +215,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     productId:$('#product-title').val(),
                     date: $('#product-start_date').val(),
                     time: $('#product-times').val(),
+                    time: $('#product-times').val(),
+                    prodid: <?=(Yii::$app->request->post('Product'))['title'] ? (Yii::$app->request->post('Product'))['title'] : 999 ?>,
                 },
                 success: function (data) {
                     console.log(data.search);

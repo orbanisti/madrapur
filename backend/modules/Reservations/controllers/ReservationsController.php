@@ -287,7 +287,7 @@ class ReservationsController extends Controller {
 
             # $data=['boookingDetails'=> $booking->bookingDetails,'orderDetails'=>$booking->orderDetails,'personInfo'=>$booking->personInfo,'updateDate'=>date("Y-m-d H:i:s")];
 
-            $data = Json::encode($data);
+
 
             $source = 'unset';
             $imaStreetSeller = Yii::$app->authManager->getAssignment('streetSeller', Yii::$app->user->getId());
@@ -305,10 +305,11 @@ class ReservationsController extends Controller {
                 'invoiceMonth' => date('m'),
                 'invoiceDate' => date('Y-m-d'),
                 'bookingDate' => $productPrice['booking_date'],
+                'booking_start' => $data->boookingDetails->booking_start,
                 'source' => $source,
                 'productId' => $productPrice['product_id'],
                 'bookingId' => 'tmpMad1',
-                'data' => $data,
+                'data' => json_encode($data),
                 'sellerId' => Yii::$app->user->getId(),
                 'sellerName' => Yii::$app->user->identity->username,
                 'ticketId' => 'V0000001'
@@ -392,7 +393,7 @@ Yii::error($insertReservation);
 
 
 
-            $currID = $data['productId'];
+            $currID = $data['prodid'];
             $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $currID);
             $myprices = $query->all();
 
