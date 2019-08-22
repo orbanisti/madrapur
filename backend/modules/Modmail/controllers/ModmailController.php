@@ -44,7 +44,7 @@ class ModmailController extends Controller {
                 'label' => 'View Mail',
                 'format'=>'html',
                 'value' => function ($model) {
-                    return '<a href="/Modmail/modmail/read?id='.$model->returnId().'">Read Mail'.'</a>';
+                    return '<a href="/Modmail/modmail/readmail?id='.$model->returnId().'">Read Mail'.'</a>';
                 }
             ],
         ];
@@ -67,6 +67,20 @@ class ModmailController extends Controller {
      */
     public function actionIndex() {
         return $this->render('index');
+    }
+
+    public function actionReadmail(){
+        $mailID=Yii::$app->request->get('id');
+        $mail=Modmail::findOne($mailID);
+
+
+
+
+
+        return $this->render('readmail', [
+            'email'=>$mail
+        ]);
+
     }
 
     public function actionSend() {
