@@ -287,7 +287,7 @@ class ReservationsController extends Controller {
 
             # $data=['boookingDetails'=> $booking->bookingDetails,'orderDetails'=>$booking->orderDetails,'personInfo'=>$booking->personInfo,'updateDate'=>date("Y-m-d H:i:s")];
 
-            $data = Json::encode($data);
+
 
             $source = 'unset';
             $imaStreetSeller = Yii::$app->authManager->getAssignment('streetSeller', Yii::$app->user->getId());
@@ -305,10 +305,11 @@ class ReservationsController extends Controller {
                 'invoiceMonth' => date('m'),
                 'invoiceDate' => date('Y-m-d'),
                 'bookingDate' => $productPrice['booking_date'],
+                'booking_start' => $data->boookingDetails->booking_start,
                 'source' => $source,
                 'productId' => $productPrice['product_id'],
                 'bookingId' => 'tmpMad1',
-                'data' => $data,
+                'data' => json_encode($data),
                 'sellerId' => Yii::$app->user->getId(),
                 'sellerName' => Yii::$app->user->identity->username,
                 'ticketId' => 'V0000001'
@@ -386,8 +387,13 @@ Yii::error($insertReservation);
      */
     public function actionCalcprice() {
         if (Yii::$app->request->isAjax) {
+
             $data = Yii::$app->request->post();
-            $currID = $data['productId'];
+            if(isset($data['prices'])){
+
+
+
+            $currID = $data['prodid'];
             $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $currID);
             $myprices = $query->all();
 
@@ -413,7 +419,31 @@ Yii::error($insertReservation);
 
             return [
                 'search' => $fullTotal,
+                'response'=>'price'
             ];
+            }
+            else if(isset($data['date'])&& isset($data['time'])){
+                \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+                $currID = $data['productId'];
+                $currDate=$data['date'];
+                $currTime=$data['time'];
+                $reservationModel=new Reservations();
+
+                $sources=ProductSource::getProductSourceIds($currID);
+                $currentProduct = Product::getProdById($currID);
+                $availableChairs=$currentProduct->capacity-$reservationModel->countTakenChairsOnDayTime($currDate,$sources,$currTime);
+
+
+
+                return [
+                    'search'=>"<div id=\"myLabel\">Available places left:$availableChairs</div>",
+                    'response'=>'places'
+
+                ];
+
+            }
+
         }
         return [];
     }

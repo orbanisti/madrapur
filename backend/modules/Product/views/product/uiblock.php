@@ -38,8 +38,14 @@ use yii\web\View;
         echo "var productimages = ". $js_array . ";\n";
         ?>
     </script>
+    <style>
+        button{
+            margin:5px;
+        }
 
+    </style>
 
+<div class="col-sm-8 ui-inputs">
 
            <?php
 
@@ -113,4 +119,5 @@ SCRIPT;
 
         ?>
     </p>
+</div>
 </div>
