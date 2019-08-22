@@ -771,7 +771,9 @@ class ProductController extends Controller {
             'takenChairsCount' => $takenChairsCount,
             'availableChairs' => $availableChairsOnDay,
             'timesHours'=>$timeHours,
-            'allDataProviders'=>$allDataproviders
+            'allDataProviders'=>$allDataproviders,
+            'sources'=>$sourcesRows,
+            'selectedDate'=>$selectedDate
 
         ]);
     }

@@ -65,6 +65,7 @@
 		"kartik-v/yii2-date-range": "dev-master",
 		"kartik-v/yii2-social": "dev-master",
 		"kartik-v/yii2-mpdf": "*",
+		"kartik-v/yii2-icons": "*",
 		"kartik-v/yii2-widget-switchinput": "*",
 		"kartik-v/yii2-export": "*",
 		"kartik-v/yii2-helpers": "dev-master",

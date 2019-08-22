@@ -7,20 +7,31 @@
  */
 
 use backend\modules\Product\models\Product;
+
 use kartik\helpers\Html;
 use backend\components\extra;
 use yii\widgets\ActiveForm;
-
+use kartik\date\DatePicker;
 use kartik\datecontrol\DateControl;
+
+
 
 $this->title = Yii::t('app', 'New Reservation');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <!--suppress ALL -->
+<style>
+    .wrapper{
+        overflow-y:hidden;
+    }
+</style>
 <div class="products-index">
+    <div class="panel">
+    <div class="panel-heading">
 
-
+    </div>
+<div class="panel-body">
 
     <?php
     if($disableForm!=1){
@@ -42,10 +53,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ['prompt'=>'Please select a product']);
 
     ?>
-    <?= $form->field($model, "start_date")->widget(\dosamigos\datepicker\DatePicker::class, [
-            'clientOptions' => [
+    <?= $form->field($model, "start_date")->widget(DatePicker::class, [
+            'options' =>['value'=>date('Y-m-d',time())],
+            'type' => DatePicker::TYPE_INLINE,
+            'pickerIcon' => '<i class="fa fa-calendar text-primary"></i>',
+            'removeIcon' => '<i class="fa fa-trash text-danger"></i>',
+            'pluginOptions' => [
                 'autoclose' => true,
-                'format' => 'yyyy-mm-dd'
+                'format' => 'yyyy-mm-dd',
+                'startDate' => date(time()),
+
             ]
     ]); ?>
     <?= $form->field($model, 'times')
@@ -59,6 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 
 
+
     <div id="myTimes"></div>
     <div id="myPrices"></div>
     <?= Html::submitButton('Create Reservation', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
@@ -70,6 +88,7 @@ $this->params['breadcrumbs'][] = $this->title;
         $model=new \backend\modules\Product\models\ProductPrice();
        # var_dump($myPrices);
         echo '</br>';
+        // TODO fix this nonsense másmodelenátpushingolni egy Reservation
         foreach($myPrices as $i=>$price){
             echo $price->name;
             $currentProdId=(Yii::$app->request->post('Product'))['title'];
@@ -96,6 +115,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 
 </div>
+    </div>
 
     <script>
         var countPrices=<?=$countPrices?>;
@@ -104,6 +124,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
             $('#product-times').html($('#product-times').html()+'<option>'+item['name']+'</option>');
+            $('#product-times option:eq(2)').attr('selected', 'selected');
+            $('#product-times option:eq(1)').attr('selected', 'selected');
 
         }
 
@@ -133,7 +155,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         console.log(data.search);
                         mytimes=data.search
                         $('#myTimes').html('');
-                        $('#product-times').html('');
+                        $('#product-times').html('<option>Please select a time</option>')
                         mytimes.forEach(myFunction)
 
 
@@ -150,7 +172,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         console.log(data.search);
                         mytimes=data.search
                         $('#myPrices').html(mytimes);
-
 
 
                     }
@@ -191,14 +212,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 type: 'post',
                 data: {
                     prices:gatherPrices(),
-                    productId:<?=$currentProdId?>,
-
+                    productId:$('#product-title').val(),
+                    date: $('#product-start_date').val(),
+                    time: $('#product-times').val(),
+                    time: $('#product-times').val(),
+                    prodid: <?=(Yii::$app->request->post('Product'))['title'] ? (Yii::$app->request->post('Product'))['title'] : 999 ?>,
                 },
                 success: function (data) {
                     console.log(data.search);
                     mytimes=data.search
                     $('#total_price').html(mytimes);
                     $('#productprice-discount').val(mytimes);
+                    if(data.response=='places'){
+                        $('#myPrices').html(mytimes);
+                    }
+
 
 
 
