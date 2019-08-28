@@ -10,6 +10,7 @@ use backend\modules\Product\models\Product;
 
 use kartik\helpers\Html;
 use backend\components\extra;
+use lo\widgets\Toggle;
 use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
 use kartik\datecontrol\DateControl;
@@ -31,6 +32,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="panel-heading">
 
     </div>
+
+<div class="panel">
+
+</div>
+
+
+
 <div class="panel-body">
 
     <?php
@@ -70,10 +78,56 @@ $this->params['breadcrumbs'][] = $this->title;
         ->dropDownList(  ['prompt'=>'Please select a time'] );
 
     ?>
-    <?php
-    // echo $form->field($model, 'id')->widget(\kartik\touchspin\TouchSpin::class,['options' => ['placeholder' => 'Adjust ...'],]);
 
-    ?>
+        <div class="panel">
+
+                <?=Toggle::widget(
+                [
+                'name' => 'payed_status', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
+                'checked' => false,
+                'options' => [
+                'data-on'=>'Paid',
+                'data-off'=>'Unpaid',
+
+                    'data-width'=>'100px'
+
+                ],
+                // checkbox options. More data html options [see here](http://www.bootstraptoggle.com)
+                ]
+                );?>
+
+
+                    <?=Toggle::widget(
+                        [
+                            'name' => 'payed_status', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
+                            'checked' => false,
+                            'options' => [
+                                'data-on'=>'Card',
+                                'data-off'=>'Cash',
+                                'data-width'=>'100px'
+
+                            ],
+                            // checkbox options. More data html options [see here](http://www.bootstraptoggle.com)
+                        ]
+                    );?>
+         <?=   Toggle::widget(
+                    [
+                        'name' => 'payed_currency', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
+                        'checked' => true,
+                        'options' => [
+                            'data-on'=>'EUR',
+                            'data-off'=>'HUF',
+
+                            'data-width'=>'100px'
+                        ],
+                        // checkbox options. More data html options [see here](http://www.bootstraptoggle.com)
+                    ]
+                );?>
+
+        </div>
+
+
+
 
 
 

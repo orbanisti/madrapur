@@ -112,7 +112,7 @@ echo Menu::widget(
                             'class' => 'sidebar-menu',
                             'data-widget' => 'tree'
                         ],
-                        'linkTemplate' => '<a href="{url}">{icon}<span>{label}</span>{right-icon}{badge}</a>',
+                        'linkTemplate' => '<a  href="{url}">{icon}<span>{label}</span>{right-icon}{badge}</a>',
                         'submenuTemplate' => "\n<ul class=\"treeview-menu\">\n{items}\n</ul>\n",
                         'activateParents' => true,
                         'items' => [
@@ -443,6 +443,9 @@ echo Menu::widget(
                             ],
                             [
                                 'label' => Yii::t('backend', 'Bookings'),
+                                'options' => [
+                                    'class' => 'treeview'
+                                ],
                                 'url' => [
                                     '/Reservations/reservations/admin'
                                 ],
@@ -455,6 +458,26 @@ echo Menu::widget(
                                             '/Reservations/reservations/create'
                                         ],
                                         'icon' => '<i class="fa fa-database"></i>',
+                                        'active' => (Yii::$app->controller->id == 'reservations' &&
+                                            Yii::$app->controller->action->id === 'create'),
+
+                                    ],
+                                    [
+                                        'label' => Yii::t('backend', 'Admin'),
+                                        'url' => [
+                                            '/Reservations/reservations/admin'
+                                        ],
+                                        'icon' => '<i class="fa fa-flag"></i>',
+                                        'active' => (Yii::$app->controller->id == 'reservations' &&
+                                            Yii::$app->controller->action->id === 'create'),
+
+                                    ],
+                                    [
+                                        'label' => Yii::t('backend', 'Create2'),
+                                        'url' => [
+                                            '/Reservations/reservations/create2'
+                                        ],
+                                        'icon' => '<i class="fa fa-font-awesome"></i>',
                                         'active' => (Yii::$app->controller->id == 'reservations' &&
                                             Yii::$app->controller->action->id === 'create'),
 

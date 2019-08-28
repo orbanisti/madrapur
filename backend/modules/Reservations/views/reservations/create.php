@@ -10,6 +10,7 @@ use backend\modules\Product\models\Product;
 
 use kartik\helpers\Html;
 use backend\components\extra;
+use lo\widgets\Toggle;
 use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
 use kartik\datecontrol\DateControl;
@@ -28,93 +29,146 @@ $this->params['breadcrumbs'][] = $this->title;
 </style>
 <div class="products-index">
     <div class="panel">
-    <div class="panel-heading">
+        <div class="panel-heading">
 
-    </div>
-<div class="panel-body">
+        </div>
 
-    <?php
-    if($disableForm!=1){
-    if($newReservation){
+        <div class="panel">
 
-        echo $newReservation;
-    }
-    $form = ActiveForm::begin(['id' => 'product-form']);
-
-
-    ?>
-
-
-    <?php
-    $allMyProducts=Product::getAllProducts();
-    echo $form->field($model, 'title')
-
-        ->dropDownList(\yii\helpers\ArrayHelper::map($allMyProducts, 'id', 'title'),
-            ['prompt'=>'Please select a product']);
-
-    ?>
-    <?= $form->field($model, "start_date")->widget(DatePicker::class, [
-            'options' =>['value'=>date('Y-m-d',time())],
-            'type' => DatePicker::TYPE_INLINE,
-            'pickerIcon' => '<i class="fa fa-calendar text-primary"></i>',
-            'removeIcon' => '<i class="fa fa-trash text-danger"></i>',
-            'pluginOptions' => [
-                'autoclose' => true,
-                'format' => 'yyyy-mm-dd',
-                'startDate' => date(time()),
-
-            ]
-    ]); ?>
-    <?= $form->field($model, 'times')
-
-        ->dropDownList(  ['prompt'=>'Please select a time'] );
-
-    ?>
-    <?php
-    // echo $form->field($model, 'id')->widget(\kartik\touchspin\TouchSpin::class,['options' => ['placeholder' => 'Adjust ...'],]);
-
-    ?>
+        </div>
 
 
 
-    <div id="myTimes"></div>
-    <div id="myPrices"></div>
-    <?= Html::submitButton('Create Reservation', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
+        <div class="panel-body">
+
+            <?php
+            if($disableForm!=1){
+                if($newReservation){
+
+                    echo $newReservation;
+                }
+                $form = ActiveForm::begin(['id' => 'product-form']);
 
 
-    <?php ActiveForm::end(); }
-    else{
-        $form = ActiveForm::begin(['id' => 'product-form']);
-        $model=new \backend\modules\Product\models\ProductPrice();
-       # var_dump($myPrices);
-        echo '</br>';
-        // TODO fix this nonsense másmodelenátpushingolni egy Reservation
-        foreach($myPrices as $i=>$price){
-            echo $price->name;
-            $currentProdId=(Yii::$app->request->post('Product'))['title'];
-            echo $form->field($model, "description[$i]")->widget(\kartik\touchspin\TouchSpin::class,['options' => ['placeholder' => 'Adjust ...','data-priceid'=>$price->id,'autocomplete'=>'off','type'=>'number']]);
+                ?>
 
 
-        }
-        echo $form->field($model,'product_id')->hiddeninput(['value' => $currentProdId])->label(false);
-        echo $form->field($model,'booking_date')->hiddeninput(['autocomplete' => 'off', 'autocapitalize' => 'off', 'autocorrect' => 'off', 'value' => (Yii::$app->request->post('Product'))['start_date']])->label(false);
-        echo $form->field($model,'time_name')->hiddeninput(['value' => (Yii::$app->request->post('Product'))['times']])->label(false);
+                <?php
+                $allMyProducts=Product::getAllProducts();
+                echo $form->field($model, 'title')
 
-        echo $form->field($model,'discount')->hiddeninput()->label(false);
+                    ->dropDownList(\yii\helpers\ArrayHelper::map($allMyProducts, 'id', 'title'),
+                        ['prompt'=>'Please select a product']);
 
-        echo 'Total Price:<div id="total_price"></div>';
-        echo Html::submitButton('Create Reservation', ['class' => 'btn btn-primary prodUpdateBtn']);
-         ActiveForm::end();
+                ?>
+                <?= $form->field($model, "start_date")->widget(DatePicker::class, [
+                    'options' =>['value'=>date('Y-m-d',time())],
+                    'type' => DatePicker::TYPE_INLINE,
+                    'pickerIcon' => '<i class="fa fa-calendar text-primary"></i>',
+                    'removeIcon' => '<i class="fa fa-trash text-danger"></i>',
+                    'pluginOptions' => [
+                        'autoclose' => true,
+                        'format' => 'yyyy-mm-dd',
+                        'startDate' => date(time()),
 
-    }
+                    ]
+                ]); ?>
+                <?= $form->field($model, 'times')
+
+                    ->dropDownList(  ['prompt'=>'Please select a time'] );
+
+                ?>
+
+                <div class="panel">
+
+                    <?=Toggle::widget(
+                        [
+                            'name' => 'payed_status', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
+                            'checked' => false,
+                            'options' => [
+                                'data-on'=>'Paid',
+                                'data-off'=>'Unpaid',
+
+                                'data-width'=>'100px'
+
+                            ],
+                            // checkbox options. More data html options [see here](http://www.bootstraptoggle.com)
+                        ]
+                    );?>
+
+
+                    <?=Toggle::widget(
+                        [
+                            'name' => 'payed_status', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
+                            'checked' => false,
+                            'options' => [
+                                'data-on'=>'Card',
+                                'data-off'=>'Cash',
+                                'data-width'=>'100px'
+
+                            ],
+                            // checkbox options. More data html options [see here](http://www.bootstraptoggle.com)
+                        ]
+                    );?>
+                    <?=   Toggle::widget(
+                        [
+                            'name' => 'payed_currency', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
+                            'checked' => true,
+                            'options' => [
+                                'data-on'=>'EUR',
+                                'data-off'=>'HUF',
+
+                                'data-width'=>'100px'
+                            ],
+                            // checkbox options. More data html options [see here](http://www.bootstraptoggle.com)
+                        ]
+                    );?>
+
+                </div>
 
 
 
-//
 
-    ?>
 
-</div>
+
+                <div id="myTimes"></div>
+                <div id="myPrices"></div>
+                <?= Html::submitButton('Create Reservation', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
+
+
+                <?php ActiveForm::end(); }
+            else{
+                $form = ActiveForm::begin(['id' => 'product-form']);
+                $model=new \backend\modules\Product\models\ProductPrice();
+                # var_dump($myPrices);
+                echo '</br>';
+                // TODO fix this nonsense másmodelenátpushingolni egy Reservation
+                foreach($myPrices as $i=>$price){
+                    echo $price->name;
+                    $currentProdId=(Yii::$app->request->post('Product'))['title'];
+                    echo $form->field($model, "description[$i]")->widget(\kartik\touchspin\TouchSpin::class,['options' => ['placeholder' => 'Adjust ...','data-priceid'=>$price->id,'autocomplete'=>'off','type'=>'number']]);
+
+
+                }
+                echo $form->field($model,'product_id')->hiddeninput(['value' => $currentProdId])->label(false);
+                echo $form->field($model,'booking_date')->hiddeninput(['autocomplete' => 'off', 'autocapitalize' => 'off', 'autocorrect' => 'off', 'value' => (Yii::$app->request->post('Product'))['start_date']])->label(false);
+                echo $form->field($model,'time_name')->hiddeninput(['value' => (Yii::$app->request->post('Product'))['times']])->label(false);
+
+                echo $form->field($model,'discount')->hiddeninput()->label(false);
+
+                echo 'Total Price:<div id="total_price"></div>';
+                echo Html::submitButton('Create Reservation', ['class' => 'btn btn-primary prodUpdateBtn']);
+                ActiveForm::end();
+
+            }
+
+
+
+            //
+
+            ?>
+
+        </div>
     </div>
 
     <script>
@@ -144,39 +198,39 @@ $this->params['breadcrumbs'][] = $this->title;
 
         $().ready(() => {
             $('#product-title').change(function(){
-                $.ajax({
-                    url: '<?php echo Yii::$app->request->baseUrl. '/Reservations/reservations/gettimes' ?>',
-                    type: 'post',
-                    data: {
-                        id:$(this).val(),
+            $.ajax({
+                url: '<?php echo Yii::$app->request->baseUrl. '/Reservations/reservations/gettimes' ?>',
+                type: 'post',
+                data: {
+                    id:$(this).val(),
 
-                    },
-                    success: function (data) {
-                        console.log(data.search);
-                        mytimes=data.search
-                        $('#myTimes').html('');
-                        $('#product-times').html('<option>Please select a time</option>')
-                        mytimes.forEach(myFunction)
-
-
-                    }
-                });
-                $.ajax({
-                    url: '<?php echo Yii::$app->request->baseUrl. '/Reservations/reservations/getprices' ?>',
-                    type: 'post',
-                    data: {
-                        id:$(this).val(),
-
-                    },
-                    success: function (data) {
-                        console.log(data.search);
-                        mytimes=data.search
-                        $('#myPrices').html(mytimes);
+                },
+                success: function (data) {
+                    console.log(data.search);
+                    mytimes=data.search
+                    $('#myTimes').html('');
+                    $('#product-times').html('<option>Please select a time</option>')
+                    mytimes.forEach(myFunction)
 
 
-                    }
-                });
+                }
             });
+            $.ajax({
+                url: '<?php echo Yii::$app->request->baseUrl. '/Reservations/reservations/getprices' ?>',
+                type: 'post',
+                data: {
+                    id:$(this).val(),
+
+                },
+                success: function (data) {
+                    console.log(data.search);
+                    mytimes=data.search
+                    $('#myPrices').html(mytimes);
+
+
+                }
+            });
+        });
         });
         function myFunction(item, index) {
 
