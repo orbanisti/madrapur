@@ -8,6 +8,7 @@
 
 use backend\modules\Product\models\Product;
 
+use buttflattery\formwizard\FormWizard;
 use kartik\helpers\Html;
 use backend\components\extra;
 use lo\widgets\Toggle;
@@ -27,6 +28,61 @@ $this->params['breadcrumbs'][] = $this->title;
         overflow-y:hidden;
     }
 </style>
+
+<div class="box">
+    <?php
+
+    $allMyProducts=Product::getAllProducts();
+    $allProdyctList=\yii\helpers\ArrayHelper::map($allMyProducts, 'id', 'title');
+
+
+
+
+    echo FormWizard::widget([
+        'steps'=>[
+            [
+                'model'=>$model,
+                'title'=>'My Shoots',
+                'description'=>'Add your shoots',
+                'formInfoText'=>'Fill all fields',
+                'fieldConfig' => [
+                        'only'=>['title'],
+                        'title'=>[
+                            'options' => [
+                                'type' => 'dropdown',
+                                'itemsList' => $allProdyctList, //the list can be from the database
+                                'prompt' => 'Please select a value',
+                            ]
+                        ],
+                        'id'=>false,
+                ],
+
+            ],
+            [
+                'model'=> $model,
+                'title'=>'My Shoots',
+                'description'=>'Add your shoots',
+                'formInfoText'=>'Fill all fields',
+                'fieldConfig' => [
+                    'only'=>['start_date'],
+                    'start_date'=>[
+                        'widget' => DatePicker::class,
+                        'options' => [
+
+
+                        ]
+                    ],
+                    'id'=>false,
+                ],
+            ],
+        ]
+    ]);
+
+
+    ?>
+</div>
+
+
 <div class="products-index">
     <div class="panel">
         <div class="panel-heading">
