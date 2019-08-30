@@ -541,9 +541,11 @@ Yii::error($insertReservation);
             $currID = $data['prodid'];
             $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $currID);
             $myprices = $query->all();
+            $postedCurrency=$data['currency'];
 
             \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $productsBought = [];
+            Yii::error($data['prices']);
             foreach ($data['prices'] as $priceId => $price) {
                 if ($price) {
                     $productsBought[$priceId] = $price;
@@ -555,6 +557,10 @@ Yii::error($insertReservation);
             foreach ($productsBought as $priceId => $priceAmount) {
 
                 foreach ($myprices as $remotePrice) {
+                    if($postedCurrency=='HUF'){
+                        $remotePrice=ProductPrice::eurtohuf($remotePrice);
+                    }
+
                     if ($remotePrice->id == $priceId) {
                         $currentPrice = (int)$remotePrice->price;
                         $fullTotal = $fullTotal + ($currentPrice * $priceAmount);

@@ -8,6 +8,7 @@
 
 use backend\modules\Product\models\Product;
 
+use backend\modules\Product\models\ProductPrice;
 use kartik\helpers\Html;
 use backend\components\extra;
 use lo\widgets\Toggle;
@@ -19,6 +20,9 @@ use kartik\datecontrol\DateControl;
 
 $this->title = Yii::t('app', 'New Reservation');
 $this->params['breadcrumbs'][] = $this->title;
+
+$huf=Yii::$app->keyStorage->get('currency.huf-value') ? Yii::$app->keyStorage->get('currency.huf-value') : null;
+
 ?>
 
 <!--suppress ALL -->
@@ -34,7 +38,6 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
 <div class="panel">
-
 </div>
 
 
@@ -83,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?=Toggle::widget(
                 [
-                'name' => 'payed_status', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
+                'name' => 'paid_status', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
                 'checked' => false,
                 'options' => [
                 'data-on'=>'Paid',
@@ -99,7 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     <?=Toggle::widget(
                         [
-                            'name' => 'payed_status', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
+                            'name' => 'paid_method', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
                             'checked' => false,
                             'options' => [
                                 'data-on'=>'Card',
@@ -112,7 +115,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     );?>
          <?=   Toggle::widget(
                     [
-                        'name' => 'payed_currency', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
+                        'name' => 'paid_currency', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
                         'checked' => true,
                         'options' => [
                             'data-on'=>'EUR',
@@ -138,13 +141,39 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php ActiveForm::end(); }
     else{
+        if(isset($_POST['paid_status'])){
+            $paid_status='paid';
+        }else{
+            $paid_status='unpaid';
+        }
+
+        if(isset($_POST['paid_method'])){
+            $paid_method='card';
+        }else{
+            $paid_method='cash';
+        }
+        if(isset($_POST['paid_currency'])){
+            $paid_currency='EUR';
+        }else{
+            $paid_currency='HUF';
+
+        }
+
+        
+        
+        
         $form = ActiveForm::begin(['id' => 'product-form']);
-        $model=new \backend\modules\Product\models\ProductPrice();
+        $model=new ProductPrice();
        # var_dump($myPrices);
         echo '</br>';
         // TODO fix this nonsense másmodelenátpushingolni egy Reservation
         foreach($myPrices as $i=>$price){
+            if($paid_currency=='HUF'){
+                $price= ProductPrice::eurtohuf($price);
+            }
+
             echo $price->name;
+
             $currentProdId=(Yii::$app->request->post('Product'))['title'];
             echo $form->field($model, "description[$i]")->widget(\kartik\touchspin\TouchSpin::class,['options' => ['placeholder' => 'Adjust ...','data-priceid'=>$price->id,'autocomplete'=>'off','type'=>'number']]);
 
@@ -269,8 +298,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     productId:$('#product-title').val(),
                     date: $('#product-start_date').val(),
                     time: $('#product-times').val(),
-                    time: $('#product-times').val(),
                     prodid: <?=(Yii::$app->request->post('Product'))['title'] ? (Yii::$app->request->post('Product'))['title'] : 999 ?>,
+                    currency:'<?=isset($paid_currency) ? $paid_currency : 0 ?>'
                 },
                 success: function (data) {
                     console.log(data.search);
