@@ -391,6 +391,23 @@ Yii::error($insertReservation);
             $countPrices = 0;
         }
         if ($productPrice) {
+            if(isset($_POST['paid_status'])){
+                $paid_status='paid';
+            }else{
+                $paid_status='unpaid';
+            }
+
+            if(isset($_POST['paid_method'])){
+                $paid_method='card';
+            }else{
+                $paid_method='cash';
+            }
+            if(isset($_POST['paid_currency'])){
+                $paid_currency='EUR';
+            }else{
+                $paid_currency='HUF';
+
+            }
 
             $newReservarion = new Reservations();
 
@@ -428,7 +445,7 @@ Yii::error($insertReservation);
             $data->boookingDetails->booking_end = $productPrice['booking_date'] . ' ' . $productPrice['time_name'] . ':00';
             $data->orderDetails->paid_date = date('Y-m-d');
             $data->orderDetails->allPersons = $countPersons;
-            $data->orderDetails->order_currency = 'EUR';
+            $data->orderDetails->order_currency = $paid_currency;
 
             # $data=['boookingDetails'=> $booking->bookingDetails,'orderDetails'=>$booking->orderDetails,'personInfo'=>$booking->personInfo,'updateDate'=>date("Y-m-d H:i:s")];
 
@@ -444,6 +461,7 @@ Yii::error($insertReservation);
             if ($imaHotelSeller) {
                 $source = 'Hotel';
             }
+
 
             $values = [
                 'booking_cost' => $productPrice["discount"],

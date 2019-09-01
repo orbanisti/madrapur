@@ -403,6 +403,9 @@ echo Menu::widget(
                             ],
                             [
                                 'label' => Yii::t('backend', 'Products'),
+                                'options' => [
+                                    'class' => 'treeview'
+                                ],
                                 'url' => [
 
                                     '/Product/product/admin'
@@ -412,6 +415,13 @@ echo Menu::widget(
                                             Yii::$app->controller->action->id !== 'uiblock',
                                 'items' => [
                                     [
+                                        'label' => Yii::t('backend', 'Manager'),
+                                        'url' => [
+                                            '/Product/product/admin'
+                                        ],
+                                        'icon' => '<i class="fa fa-apple"></i>',
+                                        'active' => (Yii::$app->controller->id == 'create'),
+                                    ],[
                                         'label' => Yii::t('backend', 'Create'),
                                         'url' => [
                                             '/Product/product/create'
