@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\translation\controllers;
 
 use backend\modules\translation\models\search\SourceSearch;
@@ -58,12 +59,12 @@ class DefaultController extends Controller {
             Url::remember(Yii::$app->request->getUrl(), 'translation-filter');
 
             return $this->render('index',
-                    [
-                        'searchModel' => $searchModel,
-                        'dataProvider' => $dataProvider,
-                        'model' => $model,
-                        'languages' => $this->getLanguages(),
-                    ]);
+                [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                    'model' => $model,
+                    'languages' => $this->getLanguages(),
+                ]);
         }
     }
 
@@ -79,10 +80,10 @@ class DefaultController extends Controller {
         $translationModels = [];
         foreach ($this->getLanguages() as $language => $name) {
             $translationModels[$language] = ($translation = $source->getTranslation($language)) != null ? $translation : new Translation(
-                    [
-                        'id' => $source->id,
-                        'language' => $language
-                    ]);
+                [
+                    'id' => $source->id,
+                    'language' => $language
+                ]);
         }
 
         $model = new MultiModel([
@@ -107,20 +108,6 @@ class DefaultController extends Controller {
      *
      * @param integer $id
      *
-     * @return mixed
-     */
-    public function actionDelete($id) {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(Url::previous('translation-filter') ?: [
-            'index'
-        ]);
-    }
-
-    /**
-     *
-     * @param integer $id
-     *
      * @return Source the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -130,5 +117,19 @@ class DefaultController extends Controller {
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    /**
+     *
+     * @param integer $id
+     *
+     * @return mixed
+     */
+    public function actionDelete($id) {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(Url::previous('translation-filter') ?: [
+            'index'
+        ]);
     }
 }

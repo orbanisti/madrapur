@@ -2,7 +2,6 @@
 
 namespace backend\modules\Order\controllers;
 
-use Yii;
 use backend\controllers\Controller;
 
 /**
@@ -11,14 +10,16 @@ use backend\controllers\Controller;
 class OrderController extends Controller {
     /**
      * Renders the admin view for the module
+     *
      * @return string
      */
     public function actionAdmin() {
         return $this->render('admin');
     }
-    
+
     /**
      * Renders the index view for the module
+     *
      * @return string
      */
     public function actionIndex() {

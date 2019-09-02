@@ -6,8 +6,8 @@
  * @var $languages array
  */
 $this->title = Yii::t('backend', 'Update {modelClass}: ', [
-    'modelClass' => 'I18n Source Message',
-]) . ' ' . $model->getModel('source')->message;
+        'modelClass' => 'I18n Source Message',
+    ]) . ' ' . $model->getModel('source')->message;
 
 $this->params['breadcrumbs'][] = [
     'label' => Yii::t('backend', 'I18n Source Messages'),
@@ -31,6 +31,6 @@ $this->params['breadcrumbs'][] = Yii::t('backend', 'Update');
 echo $this->render('_form', [
     'model' => $model,
     'languages' => $languages,
-])?>
+]) ?>
 
 

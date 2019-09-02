@@ -15,13 +15,11 @@ use backend\modules\Product\models\ProductSource;
 use backend\modules\Product\models\ProductTime;
 use backend\modules\Product\models\ProductUpdate;
 use backend\modules\Reservations\models\Reservations;
-use backend\modules\Reservations\models\ReservationsAdminSearchModel;
 use common\models\User;
 use kartik\grid\EditableColumnAction;
 use League\Uri\PublicSuffix\CurlHttpClient;
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
 
 /**
  * Controller for the `Product` module
@@ -36,9 +34,9 @@ class ProductController extends Controller {
         $searchModel = new ProductAdminSearchModel();
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $gotId=Yii::$app->request->get('id');
-        if(Yii::$app->request->get('action')=='delete'){
-            $model=new Product();
+        $gotId = Yii::$app->request->get('id');
+        if (Yii::$app->request->get('action') == 'delete') {
+            $model = new Product();
             $query = Product::aSelect(Product::class, '*', Product::tableName(), 'id=' . $gotId);
             try {
                 $prodInfo = $query->one();
@@ -47,59 +45,41 @@ class ProductController extends Controller {
             $values = [
                 'isDeleted' => 'yes',
             ];
-            $result=Product::insertOne($prodInfo,$values);
-            Yii::error(Yii::$app->user->id.'deleted '.$prodInfo->id );
-
-
+            $result = Product::insertOne($prodInfo, $values);
+            Yii::error(Yii::$app->user->id . 'deleted ' . $prodInfo->id);
         }
-
-
-
 
         return $this->render('admin', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
     }
 
     public function actionUiblock() {
 
-        $postedID=(Yii::$app->request->post('Product'))['id'];
-        $postedAction=Yii::$app->request->post('blocking-button');
-        if($postedID && $postedAction){
-            if($postedAction=='timeBlocking'){
-                $this->redirect('/Product/product/blockedtimes?prodId='.$postedID);
+        $postedID = (Yii::$app->request->post('Product'))['id'];
+        $postedAction = Yii::$app->request->post('blocking-button');
+        if ($postedID && $postedAction) {
+            if ($postedAction == 'timeBlocking') {
+                $this->redirect('/Product/product/blockedtimes?prodId=' . $postedID);
             }
-            if($postedAction=='dayBlocking'){
-                $this->redirect('/Product/product/blocked?prodId='.$postedID);
+            if ($postedAction == 'dayBlocking') {
+                $this->redirect('/Product/product/blocked?prodId=' . $postedID);
             }
-            if($postedAction=='timeTable'){
-                $this->redirect('/Product/product/timetable?prodId='.$postedID);
+            if ($postedAction == 'timeTable') {
+                $this->redirect('/Product/product/timetable?prodId=' . $postedID);
             }
-
         }
-
-
-
-
-
 
         $searchModel = new ProductAdminSearchModel();
-        $model=new Product();
+        $model = new Product();
         $allproducts = $searchModel->searchAllProducts(Yii::$app->request->queryParams);
-        $data=[];
-        $images=[];
-        foreach($allproducts as $product){
-            $data[$product->id]=$product->title;
-            $images[$product->id]=$product->thumbnail;
-
+        $data = [];
+        $images = [];
+        foreach ($allproducts as $product) {
+            $data[$product->id] = $product->title;
+            $images[$product->id] = $product->thumbnail;
         }
 
-
-
-
-
-        return $this->render('uiblock', ['data' => $data, 'searchModel' => $searchModel,'model'=>$model,'images'=>$images]);
+        return $this->render('uiblock', ['data' => $data, 'searchModel' => $searchModel, 'model' => $model, 'images' => $images]);
     }
-
-
 
     public function actionCreate() {
         $model = new ProductUpdate();
@@ -477,15 +457,14 @@ class ProductController extends Controller {
          */
         $modelEvents2 = [];
 
-        $tempsource=new ProductSource();
-        $tempsource2=new ProductSource();
-        $tempsource->url='Hotel';
-        $tempsource->prodIds=Yii::$app->request->get('prodId');
-        $tempsource2->url='Street';
-        $tempsource2->prodIds=Yii::$app->request->get('prodId');
-        $sourceRows[]=$tempsource;
-        $sourceRows[]=$tempsource2;
-
+        $tempsource = new ProductSource();
+        $tempsource2 = new ProductSource();
+        $tempsource->url = 'Hotel';
+        $tempsource->prodIds = Yii::$app->request->get('prodId');
+        $tempsource2->url = 'Street';
+        $tempsource2->prodIds = Yii::$app->request->get('prodId');
+        $sourceRows[] = $tempsource;
+        $sourceRows[] = $tempsource2;
 
         foreach ($sourceRows as $source):
 
@@ -501,14 +480,11 @@ class ProductController extends Controller {
                     $event->id = $reservation->id;
                     $reservationData = $reservation->data;
                     $reservationJsondata = json_decode($reservationData);
-                    if(isset($reservationJsondata->orderDetails->billing_first_name)) {
+                    if (isset($reservationJsondata->orderDetails->billing_first_name)) {
                         $reservationName = $reservationJsondata->orderDetails->billing_first_name . ' ' . $reservationJsondata->orderDetails->billing_last_name;
-                    }
-                    else{
+                    } else {
                         $reservationName = $reservation->sellerName;
-
                     }
-
 
                     $event->title = $reservationName;
                     $event->start = $reservation->bookingDate;
@@ -539,9 +515,9 @@ class ProductController extends Controller {
                 $event->id = $reservation->id;
                 $reservationData = $reservation->data;
                 $reservationData = json_decode($reservationData);
-                if(isset($reservationData->orderDetails->billing_first_name) && isset($reservationData->orderDetails->billing_first_name) ){
+                if (isset($reservationData->orderDetails->billing_first_name) && isset($reservationData->orderDetails->billing_first_name)) {
                     $reservationName = $reservationData->orderDetails->billing_first_name . ' ' . $reservationData->orderDetails->billing_last_name;
-                }else{
+                } else {
                     $reservationName = $reservation->sellerName;
                 }
                 $event->title = $reservationName;
@@ -564,88 +540,6 @@ class ProductController extends Controller {
                 'modelEvents' => $modelEvents2,
                 'modelTimes' => ((empty($modelTimes)) ? [new ProductTime()] : $modelTimes),
                 'modelPrices' => ((empty($modelPrices)) ? [new ProductPrice()] : $modelPrices),
-            ]
-        );
-    }
-
-    public function actionTimetable(){
-
-        $prodId=Yii::$app->request->get('prodId');
-
-        $modelEvents2 = [];
-        $queryGetSources = ProductSource::aSelect(ProductSource::class, '*', ProductSource::tableName(), 'product_id=' . $prodId);
-        try {
-            $sourceRows = $queryGetSources->all();
-        } catch (Exception $e) {
-        }
-
-        if (isset($sourceRows)) {
-
-
-            $modelSources = $sourceRows;
-        } else {
-            $sourceRows = [];
-
-            $modelSources[] = new ProductSource();
-            $modelSources = Product::createMultiple(ProductSource::class, $modelSources);
-            $modelSources[0] = new ProductSource();
-            $modelSources[0]->name = 'asd';
-        }
-
-
-
-
-        $tempsource=new ProductSource();
-        $tempsource2=new ProductSource();
-        $tempsource->url='Hotel';
-        $tempsource->prodIds=Yii::$app->request->get('prodId');
-        $tempsource2->url='Street';
-        $tempsource2->prodIds=Yii::$app->request->get('prodId');
-        $sourceRows[]=$tempsource;
-        $sourceRows[]=$tempsource2;
-
-
-        foreach ($sourceRows as $source):
-
-            $queryGetReservatios = Product::aSelect(Reservations::class, '*', Reservations::tableName(), 'source="' . $source->url . '"and productId="' . $source->prodIds . '"');
-            try {
-                $rowsAll = $queryGetReservatios->all();
-            } catch (Exception $e) {
-            }
-
-            if (isset($rowsAll)) {
-                foreach ($rowsAll as $reservation) {
-                    $event = new \yii2fullcalendar\models\Event();
-                    $event->id = $reservation->id;
-                    $reservationData = $reservation->data;
-                    $reservationJsondata = json_decode($reservationData);
-                    if(isset($reservationJsondata->orderDetails->billing_first_name)) {
-                        $reservationName = $reservationJsondata->orderDetails->billing_first_name . ' ' . $reservationJsondata->orderDetails->billing_last_name;
-                    }
-                    else{
-                        $reservationName = $reservation->sellerName;
-
-                    }
-
-
-                    $event->title = $reservationName;
-                    $event->start = $reservation->bookingDate;
-                    $event->nonstandard = ['field1' => $source->name, 'field2' => $reservation->id];
-                    $event->color = $source->color;
-                    $modelEvents2[] = $event;
-                }
-            }
-        endforeach;
-
-
-        return $this->render(
-            'timetable', [
-                'model'=> ((empty($model)) ? [new ProductEdit()] : $model),
-                'prodId' => $prodId,
-                'modelEvents' => $modelEvents2,
-                'modelTimes' => ((empty($modelTimes)) ? [new ProductTime()] : $modelTimes),
-                'modelPrices' => ((empty($modelPrices)) ? [new ProductPrice()] : $modelPrices),
-
             ]
         );
     }
@@ -680,6 +574,79 @@ class ProductController extends Controller {
         return $text;
     }
 
+    public function actionTimetable() {
+
+        $prodId = Yii::$app->request->get('prodId');
+
+        $modelEvents2 = [];
+        $queryGetSources = ProductSource::aSelect(ProductSource::class, '*', ProductSource::tableName(), 'product_id=' . $prodId);
+        try {
+            $sourceRows = $queryGetSources->all();
+        } catch (Exception $e) {
+        }
+
+        if (isset($sourceRows)) {
+
+            $modelSources = $sourceRows;
+        } else {
+            $sourceRows = [];
+
+            $modelSources[] = new ProductSource();
+            $modelSources = Product::createMultiple(ProductSource::class, $modelSources);
+            $modelSources[0] = new ProductSource();
+            $modelSources[0]->name = 'asd';
+        }
+
+        $tempsource = new ProductSource();
+        $tempsource2 = new ProductSource();
+        $tempsource->url = 'Hotel';
+        $tempsource->prodIds = Yii::$app->request->get('prodId');
+        $tempsource2->url = 'Street';
+        $tempsource2->prodIds = Yii::$app->request->get('prodId');
+        $sourceRows[] = $tempsource;
+        $sourceRows[] = $tempsource2;
+
+        foreach ($sourceRows as $source):
+
+            $queryGetReservatios = Product::aSelect(Reservations::class, '*', Reservations::tableName(), 'source="' . $source->url . '"and productId="' . $source->prodIds . '"');
+            try {
+                $rowsAll = $queryGetReservatios->all();
+            } catch (Exception $e) {
+            }
+
+            if (isset($rowsAll)) {
+                foreach ($rowsAll as $reservation) {
+                    $event = new \yii2fullcalendar\models\Event();
+                    $event->id = $reservation->id;
+                    $reservationData = $reservation->data;
+                    $reservationJsondata = json_decode($reservationData);
+                    if (isset($reservationJsondata->orderDetails->billing_first_name)) {
+                        $reservationName = $reservationJsondata->orderDetails->billing_first_name . ' ' . $reservationJsondata->orderDetails->billing_last_name;
+                    } else {
+                        $reservationName = $reservation->sellerName;
+                    }
+
+                    $event->title = $reservationName;
+                    $event->start = $reservation->bookingDate;
+                    $event->nonstandard = ['field1' => $source->name, 'field2' => $reservation->id];
+                    $event->color = $source->color;
+                    $modelEvents2[] = $event;
+                }
+            }
+        endforeach;
+
+        return $this->render(
+            'timetable', [
+                'model' => ((empty($model)) ? [new ProductEdit()] : $model),
+                'prodId' => $prodId,
+                'modelEvents' => $modelEvents2,
+                'modelTimes' => ((empty($modelTimes)) ? [new ProductTime()] : $modelTimes),
+                'modelPrices' => ((empty($modelPrices)) ? [new ProductPrice()] : $modelPrices),
+
+            ]
+        );
+    }
+
     /**
      * Renders the index view for the module
      *
@@ -688,8 +655,6 @@ class ProductController extends Controller {
     public function actionIndex() {
         return $this->render('index');
     }
-
-
 
     public function actionDaye() {
 
@@ -704,63 +669,50 @@ class ProductController extends Controller {
 
             $selectedDate = \Yii::$app->request->get("date");
             $dataProvider = $searchModel->searchDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
-            $timeHours=Reservations::getProductTimeshours($currentProductId);
+            $timeHours = Reservations::getProductTimeshours($currentProductId);
 
-            $allDataproviders=[];
+            $allDataproviders = [];
 
-            foreach($timeHours as $time){
+            foreach ($timeHours as $time) {
 
-                $tmpdataProvider=$searchModel->searchDayTime(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId,$time);
-                $allDataproviders[$time]=$tmpdataProvider;
+                $tmpdataProvider = $searchModel->searchDayTime(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId, $time);
+                $allDataproviders[$time] = $tmpdataProvider;
             }
-
 
             $takenChairsCount = Reservations::countTakenChairsOnDay($selectedDate, $sourcesRows);
             $availableChairsOnDay = $searchModel->availableChairsOnDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
         }
 
-        $passignedId=(Yii::$app->request->post('User'))['id'];
-        $preservatinId=Yii::$app->request->post('reservation');
-        if($passignedId && $preservatinId){
-            $foundReservation=Reservations::find()->where(['id'=>$preservatinId])->one();
+        $passignedId = (Yii::$app->request->post('User'))['id'];
+        $preservatinId = Yii::$app->request->post('reservation');
+        if ($passignedId && $preservatinId) {
+            $foundReservation = Reservations::find()->where(['id' => $preservatinId])->one();
 
-            $assignedUser=User::find()->where(['id'=>$preservatinId])->one();
-            $assigneduser=User::findIdentity($passignedId);
+            $assignedUser = User::find()->where(['id' => $preservatinId])->one();
+            $assigneduser = User::findIdentity($passignedId);
 
+            $assignData = [];
+            $assignData['time'] = date('Y-m-d h:i:s', time());
+            $assignData['by'] = Yii::$app->getUser()->identity->username;
+            $assignData['from'] = $foundReservation->sellerName;
+            $assignData['to'] = $assigneduser->username;
 
-            $assignData=[];
-            $assignData['time']= date('Y-m-d h:i:s', time());
-            $assignData['by']= Yii::$app->getUser()->identity->username;
-            $assignData['from']= $foundReservation->sellerName;
-            $assignData['to']= $assigneduser->username;
-
-
-
-            if($foundReservation){
-                $Reservationobject=json_decode($foundReservation->data);
-                if(isset($Reservationobject->assignments) && is_array($Reservationobject->assignments)){
+            if ($foundReservation) {
+                $Reservationobject = json_decode($foundReservation->data);
+                if (isset($Reservationobject->assignments) && is_array($Reservationobject->assignments)) {
 
                     array_unshift($Reservationobject->assignments, $assignData);
-                }
-                else{
-                    $Reservationobject->assignments[]=$assignData;
-
+                } else {
+                    $Reservationobject->assignments[] = $assignData;
                 }
 
-                $foundReservation->data=json_encode($Reservationobject);
-                $foundReservation->sellerName=$assigneduser->username;
+                $foundReservation->data = json_encode($Reservationobject);
+                $foundReservation->sellerName = $assigneduser->username;
                 $foundReservation->save(false);
 //                echo \GuzzleHttp\json_encode($foundReservation->data);
-                Yii::$app->session->setFlash('success', Yii::t('app','Successful assignment<u>'.$preservatinId.'</u> reservation to '.$foundReservation->sellerName));
-
+                Yii::$app->session->setFlash('success', Yii::t('app', 'Successful assignment<u>' . $preservatinId . '</u> reservation to ' . $foundReservation->sellerName));
             }
-
-
-
         }
-
-
-
 
         return $this->render('dayEdit', [
             'dataProvider' => $dataProvider,
@@ -770,10 +722,10 @@ class ProductController extends Controller {
             'currentDay' => Yii::$app->request->get('date'),
             'takenChairsCount' => $takenChairsCount,
             'availableChairs' => $availableChairsOnDay,
-            'timesHours'=>$timeHours,
-            'allDataProviders'=>$allDataproviders,
-            'sources'=>$sourcesRows,
-            'selectedDate'=>$selectedDate
+            'timesHours' => $timeHours,
+            'allDataProviders' => $allDataproviders,
+            'sources' => $sourcesRows,
+            'selectedDate' => $selectedDate
 
         ]);
     }
@@ -828,7 +780,6 @@ class ProductController extends Controller {
                             if ($response != 0) {
                                 $response = $curl->getContent($curlUrl);
                             }
-
                         }
                         // var_dump($response.$url); find UNBLOCK URL HERE
 
@@ -849,54 +800,54 @@ class ProductController extends Controller {
 
                     foreach ($sources as $source) {
 
-                            $myurl = $source['url'];
-                            $myprodid = $source['prodIds'];
-                            /**
-                             * Először Vizsgálom hogy már fel van e küldve
-                             */
-                            $askURL = $myurl . '/wp-json/getav/v1/id/' . $myprodid;
-                            $curlAsk = curl_init($askURL);
-                            curl_setopt($curlAsk, CURLOPT_HEADER, 0);
-                            curl_setopt($curlAsk, CURLOPT_VERBOSE, 0);
-                            curl_setopt($curlAsk, CURLOPT_RETURNTRANSFER, true);
-                            $response = curl_exec($curlAsk);
-                            $alreadyblocked = json_decode($response)[0];
-                            $alreadyBlockedArray = [];
+                        $myurl = $source['url'];
+                        $myprodid = $source['prodIds'];
+                        /**
+                         * Először Vizsgálom hogy már fel van e küldve
+                         */
+                        $askURL = $myurl . '/wp-json/getav/v1/id/' . $myprodid;
+                        $curlAsk = curl_init($askURL);
+                        curl_setopt($curlAsk, CURLOPT_HEADER, 0);
+                        curl_setopt($curlAsk, CURLOPT_VERBOSE, 0);
+                        curl_setopt($curlAsk, CURLOPT_RETURNTRANSFER, true);
+                        $response = curl_exec($curlAsk);
+                        $alreadyblocked = json_decode($response)[0];
+                        $alreadyBlockedArray = [];
 
-                            if (!$alreadyblocked) {
-                                Yii::$app->session->setFlash('alert',
-                                    [
-                                        'options' => [
-                                            'class' => 'alert-error'
-                                        ],
-                                        'body' => Yii::t('backend', "
+                        if (!$alreadyblocked) {
+                            Yii::$app->session->setFlash('alert',
+                                [
+                                    'options' => [
+                                        'class' => 'alert-error'
+                                    ],
+                                    'body' => Yii::t('backend', "
                                             Something went wrong!<br>
                                             Ask URL: <a href='$askURL' target='_blank'>$askURL</a><br>
                                             Product edit URL: <a 
                                             href='$myurl/wp-admin/post.php?post=$myprodid&action=edit' target='_blank'>$myurl/wp-admin/post.php?post=$myprodid&action=edit</a><br>
                                             ProdId: $myprodid
                                         ")
-                                    ]);
+                                ]);
 
-                                Yii::error("Oops.. $askURL");
-                            }
+                            Yii::error("Oops.. $askURL");
+                        }
 
-                            if ($alreadyblocked)
-                                foreach ($alreadyblocked as $blockedDate) {
-                                    if ($blockedDate->bookable == 'no' && $blockedDate->from == $blockedDate->to) {
-                                        $alreadyBlockedArray[] = $blockedDate->from;
-                                    }
+                        if ($alreadyblocked) {
+                            foreach ($alreadyblocked as $blockedDate) {
+                                if ($blockedDate->bookable == 'no' && $blockedDate->from == $blockedDate->to) {
+                                    $alreadyBlockedArray[] = $blockedDate->from;
                                 }
-
-                            if (!in_array($date, $alreadyBlockedArray)) {
-                                $curlUrl = $myurl . '/wp-json/block/v1/start/' . $date . '/end/' . $date . '/id/' . $myprodid;
-                                $curl = curl_init($curlUrl);
-                                curl_setopt($curl, CURLOPT_HEADER, 0);
-                                curl_setopt($curl, CURLOPT_VERBOSE, 0);
-                                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                                $response = curl_exec($curl);
                             }
+                        }
 
+                        if (!in_array($date, $alreadyBlockedArray)) {
+                            $curlUrl = $myurl . '/wp-json/block/v1/start/' . $date . '/end/' . $date . '/id/' . $myprodid;
+                            $curl = curl_init($curlUrl);
+                            curl_setopt($curl, CURLOPT_HEADER, 0);
+                            curl_setopt($curl, CURLOPT_VERBOSE, 0);
+                            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                            $response = curl_exec($curl);
+                        }
                     }
                 }
             } else {
@@ -921,7 +872,6 @@ class ProductController extends Controller {
             $rowsOne = $queryGetPrices->one();
         } catch (Exception $e) {
         }
-
 
         if (isset($rowsOne)) {
 
@@ -950,8 +900,6 @@ class ProductController extends Controller {
             $sources = ProductSource::getProductSources($currentProductId);
         }
 
-
-
         $postedBlockout = Yii::$app->request->post('ProductBlockoutTime');
         $postedBlockoutDelete = Yii::$app->request->get('delete');
 
@@ -961,7 +909,6 @@ class ProductController extends Controller {
         $model = new ProductBlockoutTime();
         $searchModel = new ProductBlockoutTime();
 
-
         if ($postedBlockout["date"]) {
             $values = [
                 'product_id' => $currentProductId,
@@ -970,29 +917,22 @@ class ProductController extends Controller {
 
             if (ProductBlockout::insertOne($model, $values)) {
 
-
-
-                foreach ($sources as $source){
+                foreach ($sources as $source) {
                     $myurl = $source['url'];
                     $myprodid = $source['prodIds'];
 
-                        $returnMessage = $this->blockDateTime($postedBlockout['date'], $myurl, $myprodid);
-
-
+                    $returnMessage = $this->blockDateTime($postedBlockout['date'], $myurl, $myprodid);
                 }
-
-
 
                 /**
                  * Let's send E mail notification
                  *
                  */
-                $currentUser=Yii::$app->user->identity->username;
-                $mailModel=new Modmail();
+                $currentUser = Yii::$app->user->identity->username;
+                $mailModel = new Modmail();
 
-
-                $bootstrap='<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">';
-                $bootstrap.='<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >';
+                $bootstrap = '<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">';
+                $bootstrap .= '<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >';
 
                 $productName = $currentProduct->title;
                 $timeBlockDate = $postedBlockout['date'];
@@ -1001,35 +941,30 @@ class ProductController extends Controller {
 
                 $newblockHTML = '';
                 include_once('VvvebJs/mail-templates/newblock.php');
-                $txt = $bootstrap.$newblockHTML; //this is from
+                $txt = $bootstrap . $newblockHTML; //this is from
 
-
-                $values2=[
-                    'from'=> 'info@budapestrivercruise.co.uk',
-                    'to'=> 'web@silver-line.hu',
-                    'subject'=> 'New timeBlock on '.$_SERVER['HTTP_HOST'].' '.$blockedOn.' by '.$currentUser,
-                    'date'=>date('Y-m-d H:i'),
-                    'type'=>'new timeBlock',
-                    'status'=>'sent',
-                    'body'=>$txt
+                $values2 = [
+                    'from' => 'info@budapestrivercruise.co.uk',
+                    'to' => 'web@silver-line.hu',
+                    'subject' => 'New timeBlock on ' . $_SERVER['HTTP_HOST'] . ' ' . $blockedOn . ' by ' . $currentUser,
+                    'date' => date('Y-m-d H:i'),
+                    'type' => 'new timeBlock',
+                    'status' => 'sent',
+                    'body' => $txt
 
                 ];
 
-
-
-
                 //the 2 above go together
 
-
-                $headers = "From: ".$values2['from']."\r\n";
+                $headers = "From: " . $values2['from'] . "\r\n";
                 $headers .= "MIME-Version: 1.0\r\n";
                 $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
-                if(mail($values2['to'],$values2['subject'],$values2['body'],$headers)){
+                if (mail($values2['to'], $values2['subject'], $values2['body'], $headers)) {
 
                     Yii::warning('Elkuldom a mailt');
 
-                    Modmail::insertOne($mailModel,$values2);
+                    Modmail::insertOne($mailModel, $values2);
                 }
             } else {
                 $returnMessage = 'Save not Succesful';
@@ -1039,26 +974,22 @@ class ProductController extends Controller {
             $blockoutToDelete = ProductBlockoutTime::meById(new ProductBlockoutTime(), $postedBlockoutDelete);
 
             if ($blockoutToDelete) {
-                foreach ($sources as $source){
+                foreach ($sources as $source) {
 
                     $myurl = $source['url'];
                     $myprodid = $source['prodIds'];
-                    if($myurl=='https://budapestrivercruise.eu'){
+                    if ($myurl == 'https://budapestrivercruise.eu') {
 
                         $this->unblockDateTime($blockoutToDelete['date'], $myurl, $myprodid);
-                        $returnMessage='Successful Timeunblock!';
+                        $returnMessage = 'Successful Timeunblock!';
 // todo : sleep
 
                         $blockoutToDelete->delete();
                     }
-
-
-
                 }
             } else {
                 $returnMessage = 'Already deleted or non-existent.';
             }
-
         }
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $currentProductId);
@@ -1075,7 +1006,6 @@ class ProductController extends Controller {
         ]);
     }
 
-
     public function blockDateTime($date, $url, $product_id) {
 
         $myurl = $url;
@@ -1090,14 +1020,14 @@ class ProductController extends Controller {
         curl_setopt($curlAsk, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curlAsk);
         $alreadyblocked = json_decode($response)[0];
-        $alreadyBlockedArray=[];
+        $alreadyBlockedArray = [];
 
         if (is_array($alreadyblocked)) {
             foreach ($alreadyblocked as $blockedDate) {
                 if ($blockedDate->bookable == 'no' && $blockedDate->from == date('H:i', strtotime($date))) {
                     if (isset($blockedDate->from_date) && isset($blockedDate->to_date)) {
                         if ($blockedDate->from_date == $blockedDate->from_date) {
-                            $alreadyBlockedArray[] = $blockedDate->from_date.' '.$blockedDate->from;
+                            $alreadyBlockedArray[] = $blockedDate->from_date . ' ' . $blockedDate->from;
                         }
                     }
                 }
@@ -1107,13 +1037,11 @@ class ProductController extends Controller {
             Yii::error($askURL, 'blockDateTime');
         }
 
-
         if (!in_array(date('Y-m-d H:i', strtotime($date)), $alreadyBlockedArray)) {
-
 
             $curlUrl = $myurl . '/wp-json/blocktime/v1/date/' . date('Y-m-d', strtotime($date)) . '/time/' . date('H:i', strtotime($date)) . '/id/' . $myprodid;
 
-            echo '<input type="hidden" value="'.$curlUrl.'"  name="currentCurlUrl"/>';
+            echo '<input type="hidden" value="' . $curlUrl . '"  name="currentCurlUrl"/>';
 
             Yii::warning('blockUrl:' . $curlUrl);
             $curl = curl_init($curlUrl);
@@ -1123,7 +1051,7 @@ class ProductController extends Controller {
 
             $response = curl_exec($curl);
             $responseMessage = 'Succesful timeblock<br/>';
-            $responseMessage .= $response.$curlUrl;
+            $responseMessage .= $response . $curlUrl;
         } else {
 
             $responseMessage = 'Operation Succesful';
@@ -1147,7 +1075,6 @@ class ProductController extends Controller {
         $response = curl_exec($curlAsk);
         $alreadyblocked = json_decode($response)[0];
 
-
         foreach ($alreadyblocked as $blockedDate) {
             if ($blockedDate->bookable == 'no' && $blockedDate->from == date('H:i', strtotime($date))) {
                 if (isset($blockedDate->from_date) && isset($blockedDate->to_date)) {
@@ -1158,10 +1085,10 @@ class ProductController extends Controller {
                 }
             }
         }
-        $shouldIcurL=false;
+        $shouldIcurL = false;
 
-        if(isset($alreadyBlockedArray) && in_array(date('H:i', strtotime($date)), $alreadyBlockedArray)){
-            $shouldIcurL=true;
+        if (isset($alreadyBlockedArray) && in_array(date('H:i', strtotime($date)), $alreadyBlockedArray)) {
+            $shouldIcurL = true;
         }
 
         if ($shouldIcurL) {

@@ -4,20 +4,19 @@ namespace backend\modules\ModulusCart\models;
 
 use backend\modules\MadActiveRecord\models\MadActiveRecord;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * Default model for the `ModulusCart` module
  */
 class ModulusCart extends MadActiveRecord {
- 
+
     public static function tableName() {
         return 'modulusCarts';
     }
 
     public function rules() {
         return [
-            [['id'],  'string', 'max' => 200],
+            [['id'], 'string', 'max' => 200],
             [['items'], 'string', 'max' => 50000],
             [['createDate'], 'date', 'format' => 'yyyy-MM-dd'],
         ];

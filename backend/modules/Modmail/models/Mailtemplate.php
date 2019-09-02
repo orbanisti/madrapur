@@ -3,19 +3,13 @@
 namespace backend\modules\Modmail\models;
 
 use backend\modules\MadActiveRecord\models\MadActiveRecord;
-use backend\modules\Product\models\ProductAdminSearchModel;
 use Yii;
 use yii\data\ActiveDataProvider;
-use yii\db\ActiveRecord;
 
 /**
  * Default model for the `Modmail` module
  */
 class Mailtemplate extends MadActiveRecord {
- 
-    public static function tableName() {
-        return 'modMailtemplate';
-    }
 
     public function rules() {
         return [
@@ -33,8 +27,7 @@ class Mailtemplate extends MadActiveRecord {
         ];
     }
 
-    public function search($params)
-    {
+    public function search($params) {
         #  $invoiceDate = '2016-02-05';
         # $bookingDate = '2020-08-20';
 
@@ -44,8 +37,7 @@ class Mailtemplate extends MadActiveRecord {
             ['id', '!=', '0'],
         ]);
 
-
-        $rows = self::aSelect(Mailtemplate::class, $what, $from,$where);
+        $rows = self::aSelect(Mailtemplate::class, $what, $from, $where);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $rows,
@@ -58,6 +50,11 @@ class Mailtemplate extends MadActiveRecord {
 
         return $dataProvider;
     }
+
+    public static function tableName() {
+        return 'modMailtemplate';
+    }
+
     public function returnId() {
         return $this['id'];
     }

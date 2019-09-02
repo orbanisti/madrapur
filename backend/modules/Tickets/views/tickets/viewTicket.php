@@ -9,26 +9,23 @@
 use backend\components\extra;
 use backend\models\Product\Product;
 
-
-
-
 ?>
 
 <div class="tickets-view-ticket">
     <style>
-        td{
-            border:1px solid black;
-            padding:3px;
+        td {
+            border: 1px solid black;
+            padding: 3px;
         }
     </style>
     <?php
-    echo \yii\helpers\Html::a( 'Back', Yii::$app->request->referrer);
+    echo \yii\helpers\Html::a('Back', Yii::$app->request->referrer);
     ?>
     <div class="panel">
         <div class="panel-body">
             <table>
-                <?php foreach($model as $i=>$attribute){
-                    echo '<tr>'.'<td>'.$i.'</td>'.'<td>'.$attribute.'</td>'.'</tr>';
+                <?php foreach ($model as $i => $attribute) {
+                    echo '<tr>' . '<td>' . $i . '</td>' . '<td>' . $attribute . '</td>' . '</tr>';
                 } ?>
             </table>
 

@@ -6,8 +6,8 @@
  * @var $categories common\models\ArticleCategory[]
  */
 $this->title = Yii::t('backend', 'Update {modelClass}: ', [
-    'modelClass' => 'Article Category',
-]) . ' ' . $model->title;
+        'modelClass' => 'Article Category',
+    ]) . ' ' . $model->title;
 
 $this->params['breadcrumbs'][] = [
     'label' => Yii::t('backend', 'Article Categories'),
@@ -24,4 +24,4 @@ $this->params['breadcrumbs'][] = Yii::t('backend', 'Update');
 echo $this->render('_form', [
     'model' => $model,
     'categories' => $categories,
-])?>
+]) ?>

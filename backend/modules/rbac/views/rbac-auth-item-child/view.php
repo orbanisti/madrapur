@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -16,34 +17,34 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="rbac-auth-item-child-view">
 
-	<h1><?php echo Html::encode($this->title) ?></h1>
+    <h1><?php echo Html::encode($this->title) ?></h1>
 
-	<p>
+    <p>
         <?php echo Html::a(Yii::t('frontend', 'Update'), ['update', 'parent' => $model->parent, 'child' => $model->child], ['class' => 'btn btn-primary']) ?>
         <?php
 
-echo Html::a(Yii::t('frontend', 'Delete'), [
+        echo Html::a(Yii::t('frontend', 'Delete'), [
             'delete',
             'parent' => $model->parent,
             'child' => $model->child
         ],
-                [
-                    'class' => 'btn btn-danger',
-                    'data' => [
-                        'confirm' => Yii::t('frontend', 'Are you sure you want to delete this item?'),
-                        'method' => 'post',
-                    ],
-                ])?>
+            [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => Yii::t('frontend', 'Are you sure you want to delete this item?'),
+                    'method' => 'post',
+                ],
+            ]) ?>
     </p>
 
     <?php
 
-echo DetailView::widget([
+    echo DetailView::widget([
         'model' => $model,
         'attributes' => [
             'parent',
             'child',
         ],
-    ])?>
+    ]) ?>
 
 </div>

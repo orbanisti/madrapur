@@ -1,4 +1,5 @@
 <?php
+
 use trntv\filekit\widget\Upload;
 use trntv\yii\datetime\DateTimeWidget;
 use yii\bootstrap\ActiveForm;
@@ -18,7 +19,7 @@ use yii\helpers\Html;
 $form = ActiveForm::begin([
     'enableClientValidation' => false,
     'enableAjaxValidation' => true,
-])?>
+]) ?>
 
 <?php echo $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
@@ -27,59 +28,59 @@ $form = ActiveForm::begin([
 echo $form->field($model, 'slug')
     ->hint(Yii::t('backend', 'If you leave this field empty, the slug will be generated automatically'))
     ->textInput([
-    'maxlength' => true
-])?>
+        'maxlength' => true
+    ]) ?>
 
 <?php
 
 echo $form->field($model, 'category_id')->dropDownList(\yii\helpers\ArrayHelper::map($categories, 'id', 'title'),
-        [
-            'prompt' => ''
-        ])?>
+    [
+        'prompt' => ''
+    ]) ?>
 
 <?php
 
 echo $form->field($model, 'body')->widget(\yii\imperavi\Widget::class,
-        [
-            'plugins' => [
-                'fullscreen',
-                'fontcolor',
-                'video'
-            ],
-            'options' => [
-                'minHeight' => 400,
-                'maxHeight' => 400,
-                'buttonSource' => true,
-                'convertDivs' => false,
-                'removeEmptyTags' => true,
-                'imageUpload' => Yii::$app->urlManager->createUrl([
-                    '/file/storage/upload-imperavi'
-                ]),
-            ],
-        ])?>
+    [
+        'plugins' => [
+            'fullscreen',
+            'fontcolor',
+            'video'
+        ],
+        'options' => [
+            'minHeight' => 400,
+            'maxHeight' => 400,
+            'buttonSource' => true,
+            'convertDivs' => false,
+            'removeEmptyTags' => true,
+            'imageUpload' => Yii::$app->urlManager->createUrl([
+                '/file/storage/upload-imperavi'
+            ]),
+        ],
+    ]) ?>
 
 <?php
 
 echo $form->field($model, 'thumbnail')->widget(Upload::class,
-        [
-            'url' => [
-                '/file/storage/upload'
-            ],
-            'maxFileSize' => 5000000, // 5 MiB
-        ]);
+    [
+        'url' => [
+            '/file/storage/upload'
+        ],
+        'maxFileSize' => 5000000, // 5 MiB
+    ]);
 ?>
 
 <?php
 
 echo $form->field($model, 'attachments')->widget(Upload::class,
-        [
-            'url' => [
-                '/file/storage/upload'
-            ],
-            'sortable' => true,
-            'maxFileSize' => 10000000, // 10 MiB
-            'maxNumberOfFiles' => 10,
-        ]);
+    [
+        'url' => [
+            '/file/storage/upload'
+        ],
+        'sortable' => true,
+        'maxFileSize' => 10000000, // 10 MiB
+        'maxNumberOfFiles' => 10,
+    ]);
 ?>
 
 <?php echo $form->field($model, 'view')->textInput(['maxlength' => true]) ?>
@@ -89,17 +90,17 @@ echo $form->field($model, 'attachments')->widget(Upload::class,
 <?php
 
 echo $form->field($model, 'published_at')->widget(DateTimeWidget::class,
-        [
-            'phpDatetimeFormat' => 'yyyy-MM-dd\'T\'HH:mm:ssZZZZZ',
-        ])?>
+    [
+        'phpDatetimeFormat' => 'yyyy-MM-dd\'T\'HH:mm:ssZZZZZ',
+    ]) ?>
 
 <div class="form-group">
     <?php
 
-echo Html::submitButton($model->isNewRecord ? Yii::t('backend', 'Create') : Yii::t('backend', 'Update'),
-            [
-                'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'
-            ])?>
+    echo Html::submitButton($model->isNewRecord ? Yii::t('backend', 'Create') : Yii::t('backend', 'Update'),
+        [
+            'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'
+        ]) ?>
 </div>
 
 <?php ActiveForm::end() ?>

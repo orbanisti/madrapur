@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\system\controllers;
 
 use backend\modules\system\models\search\KeyStorageItemSearch;
@@ -56,11 +57,11 @@ class KeyStorageController extends Controller {
             ];
 
             return $this->render('index',
-                    [
-                        'searchModel' => $searchModel,
-                        'dataProvider' => $dataProvider,
-                        'model' => $model,
-                    ]);
+                [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                    'model' => $model,
+                ]);
         }
     }
 
@@ -89,22 +90,6 @@ class KeyStorageController extends Controller {
     }
 
     /**
-     * Deletes an existing KeyStorageItem model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     *
-     * @param integer $id
-     *
-     * @return mixed
-     */
-    public function actionDelete($id) {
-        $this->findModel($id)->delete();
-
-        return $this->redirect([
-            'index'
-        ]);
-    }
-
-    /**
      * Finds the KeyStorageItem model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
@@ -119,5 +104,21 @@ class KeyStorageController extends Controller {
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    /**
+     * Deletes an existing KeyStorageItem model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     *
+     * @param integer $id
+     *
+     * @return mixed
+     */
+    public function actionDelete($id) {
+        $this->findModel($id)->delete();
+
+        return $this->redirect([
+            'index'
+        ]);
     }
 }

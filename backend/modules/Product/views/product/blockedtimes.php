@@ -6,20 +6,16 @@
  * Time: 20:38
  */
 
-use kartik\helpers\Html;
 use backend\components\extra;
-use yii\widgets\ActiveForm;
-use kartik\grid\EditableColumn;
 use backend\models\Product\Product;
+use kartik\helpers\Html;
+use yii\widgets\ActiveForm;
 
-
-
-$title ='Block Booking Days of '.'<u>'.$currentProduct->title.'</u>';/*
+$title = 'Block Booking Days of ' . '<u>' . $currentProduct->title . '</u>';/*
 $this->title=$title;
 $this->params['breadcrumbs'][] = $this->title;
 
 */
-
 
 ?>
 
@@ -30,28 +26,27 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4><?=$title?></h4>
+            <h4><?= $title ?></h4>
         </div>
         <div class="panel-body">
             <?php
             $form = ActiveForm::begin([
                 'id' => 'product-edit',
-                'action' => 'blockedtimes?prodId='.$currentProduct->id,
-                'options' => ['class' => 'product-edit','enctype'=>'multipart/form-data'],
+                'action' => 'blockedtimes?prodId=' . $currentProduct->id,
+                'options' => ['class' => 'product-edit', 'enctype' => 'multipart/form-data'],
 
             ]);
-
 
             echo $form->field($model, 'date')->widget(\kartik\datetime\DateTimePicker::class, [
                 //'id' => 'products-blockoutsdates',
                 'pluginOptions' => [
                     'format' => 'yyyy-mm-dd hh:ii',
-                    'autoclose'=>true,
+                    'autoclose' => true,
                 ]
             ]);
 
-            if(isset($returnMessage)){
-                 Yii::$app->session->setFlash('info',$returnMessage);
+            if (isset($returnMessage)) {
+                Yii::$app->session->setFlash('info', $returnMessage);
                 echo \insolita\wgadminlte\FlashAlerts::widget([
                     'errorIcon' => '<i class="fa fa-warning"></i>',
                     'successIcon' => '<i class="fa fa-check"></i>',
@@ -60,13 +55,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'encode' => false,
                     'bold' => false,
                 ]);
-
             }
 
-
-
             ?>
-
 
 
             <div class="form-group">
@@ -91,15 +82,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class' => 'kartik\grid\ActionColumn',
                         'template' => '{delete}',
 
-                        'urlCreator' => function($action, $model, $key, $index) { return '?'.$action.'='.$model->id.'&prodId='.$model->product_id; },
+                        'urlCreator' => function ($action, $model, $key, $index) { return '?' . $action . '=' . $model->id . '&prodId=' . $model->product_id; },
                         'viewOptions' => ['title' => 'This will launch the book details page. Disabled for this demo!', 'data-toggle' => 'tooltip'],
                         'deleteOptions' => ['title' => 'This will launch the book delete action. Disabled for this demo!', 'data-toggle' => 'tooltip'],
 
                     ],
 
                 ];
-
-
 
                 echo \kartik\grid\GridView::widget([
                     'id' => 'kv-grid-demo',
@@ -127,7 +116,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'itemLabelSingle' => 'timeblock',
                     'itemLabelPlural' => 'timeblocks'
                 ]);
-
 
                 ?>
 

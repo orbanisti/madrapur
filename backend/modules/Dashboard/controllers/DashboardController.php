@@ -2,8 +2,8 @@
 
 namespace backend\modules\Dashboard\controllers;
 
-use Yii;
 use backend\controllers\Controller;
+use Yii;
 
 /**
  * Controller for the `Dashboard` module
@@ -11,6 +11,7 @@ use backend\controllers\Controller;
 class DashboardController extends Controller {
     /**
      * Renders the admin view for the module
+     *
      * @return string
      */
     public function actionAdmin() {
@@ -31,9 +32,10 @@ class DashboardController extends Controller {
             ]
         );
     }
-    
+
     /**
      * Renders the index view for the module
+     *
      * @return string
      */
     public function actionIndex() {

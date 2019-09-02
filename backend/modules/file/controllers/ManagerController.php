@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\file\controllers;
 
 use alexantr\elfinder\ConnectorAction;

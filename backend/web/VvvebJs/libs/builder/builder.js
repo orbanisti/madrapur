@@ -1812,6 +1812,9 @@ Vvveb.FileManager = {
 		function drawComponentsTree(tree)
 		{
 			var html = $("<ol></ol>");
+
+			if (!j) var j = 0;
+
 			j++;
 			for (i in tree)
 			{

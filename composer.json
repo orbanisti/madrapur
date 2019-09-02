@@ -85,7 +85,8 @@
 		"2amigos/yii2-date-picker-widget": "~1.0",
 		"insolita/yii2-adminlte-widgets": "dev-master",
 		"phuml/phuml": "^1.7",
-		"npm-asset/admin-lte": "2.4.11"
+		"npm-asset/admin-lte": "2.4.11",
+		"pelago/emogrifier": "^2.1"
 	},
 	"require-dev": {
 		"yiisoft/yii2-debug": "~2.0.0",

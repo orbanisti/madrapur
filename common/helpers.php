@@ -63,3 +63,36 @@ function env($key, $default = null) {
 
     return $value;
 }
+
+function isLocalhost() {
+    return in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']);
+}
+
+/**
+ * @param $string
+ * @param $start
+ * @param $end
+ *
+ * @return array
+ */
+function get_string_between($string, $start, $end){
+    $between = [];
+
+    for ($i = 0; $i < count($start); ++$i) {
+        $between[] = substr($string, $start[$i], $end[$i] - $start[$i]);
+    }
+    return $between;
+}
+
+/**
+ * @param $body
+ * @param $templateFields
+ *
+ * @return string
+ */
+function set_strings($body, $templateFields){
+    foreach ($templateFields as $field) {
+        $body = str_replace("{{".$field."}}", Yii::$app->request->post($field), $body);
+    }
+    return $body;
+}

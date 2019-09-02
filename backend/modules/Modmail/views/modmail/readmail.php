@@ -1,9 +1,8 @@
 <?php
-$mailbody=$email->body;
+$mailbody = $email->body;
 
- function htmlCompress($html)
-{
-    preg_match_all('!(<(?:code|pre|script).*>[^<]+</(?:code|pre|script)>)!',$html,$pre);
+function htmlCompress($html) {
+    preg_match_all('!(<(?:code|pre|script).*>[^<]+</(?:code|pre|script)>)!', $html, $pre);
     $html = preg_replace('!<(?:code|pre).*>[^<]+</(?:code|pre)>!', '#pre#', $html);
     $html = preg_replace('#<!–[^\[].+–>#', '', $html);
     $html = preg_replace('/[\r\n\t]+/', ' ', $html);
@@ -11,13 +10,13 @@ $mailbody=$email->body;
     $html = preg_replace('/[\s]+/', ' ', $html);
     if (!empty($pre[0])) {
         foreach ($pre[0] as $tag) {
-            $html = preg_replace('!#pre#!', $tag, $html,1);
+            $html = preg_replace('!#pre#!', $tag, $html, 1);
         }
     }
     return $html;
 }
 
-$mailbody=htmlCompress($mailbody);
+$mailbody = htmlCompress($mailbody);
 
 ?>
 
@@ -39,7 +38,7 @@ $mailbody=htmlCompress($mailbody);
             </script>
         </div>
         <div class="col-xs-6">
-s
+            s
         </div>
     </div>
 

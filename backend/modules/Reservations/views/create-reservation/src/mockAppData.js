@@ -646,6 +646,6 @@ const mockAppData = [
             "end_date": null
         }]
     }
-  ];
+];
 
 export default mockAppData;

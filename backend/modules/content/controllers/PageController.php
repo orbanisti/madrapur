@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\content\controllers;
 
 use backend\modules\content\models\search\PageSearch;
@@ -11,6 +12,29 @@ use yii\web\NotFoundHttpException;
 
 class PageController extends Controller {
     use FormAjaxValidationTrait;
+
+    public static function getContent($slug = "") {
+        $query = Page::aSelect(Page::class, '*', Page::tableName(), "`slug` LIKE '$slug'");
+
+        return $query->one();
+    }
+
+    public static function setContent($slug, $content) {
+        $query = Page::aSelect(Page::class, '*', Page::tableName(), "`slug` LIKE '$slug'");
+
+        $row = $query->one();
+        $values = [
+            'body' => $content,
+
+        ];
+
+        if (Page::insertOne($row, $values)) {
+            $returnMessage = 'Successfully Saved' . $content . $slug;
+        } else {
+            $returnMessage = 'Save not Succesful';
+        }
+        return $returnMessage;
+    }
 
     /**
      *
@@ -48,11 +72,11 @@ class PageController extends Controller {
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index',
-                [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
-                    'model' => $page,
-                ]);
+            [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'model' => $page,
+            ]);
     }
 
     /**
@@ -100,47 +124,6 @@ class PageController extends Controller {
      *
      * @param integer $id
      *
-     * @return mixed
-     */
-    public function actionDelete($id) {
-        $this->findModel($id)->delete();
-
-        return $this->redirect([
-            'index'
-        ]);
-    }
-
-    public static function getContent($slug = "") {
-        $query = Page::aSelect(Page::class, '*', Page::tableName(), "`slug` LIKE '$slug'");
-
-        return $query->one();
-    }
-    public static function setContent($slug, $content){
-        $query = Page::aSelect(Page::class, '*', Page::tableName(), "`slug` LIKE '$slug'");
-
-        $row=$query->one();
-        $values = [
-            'body' => $content,
-
-
-        ];
-
-        if (Page::insertOne($row, $values)) {
-            $returnMessage = 'Successfully Saved'.$content.$slug;
-
-        } else {
-            $returnMessage = 'Save not Succesful';
-
-        }
-        return $returnMessage;
-
-
-    }
-
-    /**
-     *
-     * @param integer $id
-     *
      * @return Page the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -149,5 +132,19 @@ class PageController extends Controller {
             return $model;
         }
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     *
+     * @param integer $id
+     *
+     * @return mixed
+     */
+    public function actionDelete($id) {
+        $this->findModel($id)->delete();
+
+        return $this->redirect([
+            'index'
+        ]);
     }
 }

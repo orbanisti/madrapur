@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\widget\controllers;
 
 use common\models\WidgetCarousel;
@@ -40,14 +41,14 @@ class CarouselItemController extends Controller {
      *
      * @param
      *            $carousel_id
-     *            
+     *
      * @return mixed
      * @throws HttpException
      */
     public function actionCreate($carousel_id) {
         $model = new WidgetCarouselItem();
         $carousel = WidgetCarousel::findOne($carousel_id);
-        if (! $carousel) {
+        if (!$carousel) {
             throw new HttpException(400);
         }
 
@@ -55,12 +56,12 @@ class CarouselItemController extends Controller {
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
                 Yii::$app->getSession()->setFlash('alert',
-                        [
-                            'options' => [
-                                'class' => 'alert-success'
-                            ],
-                            'body' => Yii::t('backend', 'Carousel slide was successfully saved')
-                        ]);
+                    [
+                        'options' => [
+                            'class' => 'alert-success'
+                        ],
+                        'body' => Yii::t('backend', 'Carousel slide was successfully saved')
+                    ]);
 
                 return $this->redirect([
                     '/widget/carousel/update',
@@ -86,12 +87,12 @@ class CarouselItemController extends Controller {
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->getSession()->setFlash('alert',
-                    [
-                        'options' => [
-                            'class' => 'alert-success'
-                        ],
-                        'body' => Yii::t('backend', 'Carousel slide was successfully saved')
-                    ]);
+                [
+                    'options' => [
+                        'class' => 'alert-success'
+                    ],
+                    'body' => Yii::t('backend', 'Carousel slide was successfully saved')
+                ]);
 
             return $this->redirect([
                 '/widget/carousel/update',
@@ -108,21 +109,6 @@ class CarouselItemController extends Controller {
      *
      * @param integer $id
      *
-     * @return mixed
-     */
-    public function actionDelete($id) {
-        ($model = $this->findItem($id))->delete();
-
-        return $this->redirect([
-            '/widget/carousel/update',
-            'id' => $model->carousel_id
-        ]);
-    }
-
-    /**
-     *
-     * @param integer $id
-     *
      * @return WidgetCarouselItem the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -132,5 +118,20 @@ class CarouselItemController extends Controller {
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    /**
+     *
+     * @param integer $id
+     *
+     * @return mixed
+     */
+    public function actionDelete($id) {
+        ($model = $this->findItem($id))->delete();
+
+        return $this->redirect([
+            '/widget/carousel/update',
+            'id' => $model->carousel_id
+        ]);
     }
 }

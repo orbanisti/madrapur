@@ -8,7 +8,7 @@ import mockAppData from "./mockAppData";
 const appData = window.appData ? window.appData : mockAppData;
 const staticUrl = "aliusURL";
 
-ReactDOM.render(<App data={appData} staticUrl={staticUrl} />, document.getElementById('root'));
+ReactDOM.render(<App data={appData} staticUrl={staticUrl}/>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

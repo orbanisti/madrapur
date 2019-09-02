@@ -2,19 +2,15 @@
 
 namespace backend\modules\Reservations\models;
 
-use yii\base\Model;
-use yii\data\ActiveDataProvider;
+use backend\modules\Products\models\Graylinepartners;
 use backend\modules\Products\models\Products;
 use backend\modules\Products\models\Productscities;
 use backend\modules\Products\models\Productscountires;
-use yii\helpers\ArrayHelper;
-use backend\modules\Products\models\Graylinepartners;
+use yii\data\ActiveDataProvider;
 
-class ReservationsAdminInfoSearchModel extends ReservationsInfo
-{
+class ReservationsAdminInfoSearchModel extends ReservationsInfo {
 
-    public function rules()
-    {
+    public function rules() {
         return [
             [['bookingId'], 'integer'],
             [['source'], 'string', 'max' => 255],
@@ -26,35 +22,33 @@ class ReservationsAdminInfoSearchModel extends ReservationsInfo
         ];
     }
 
+    public function search($params) {
+        $invoiceDate = '2016-02-05';
+        $bookingDate = '2020-08-20';
 
-    public function search($params)
-{
-    $invoiceDate = '2016-02-05';
-    $bookingDate = '2020-08-20';
+        $what = ['*'];
+        $from = self::tableName();
+        $where = self::andWhereFilter([
+            ['invoiceDate', '>=', $invoiceDate],
+            ['bookingDate', '<=', $bookingDate],
+            # ['source', 'LIKE', 'utca']
+        ]);
 
-    $what = ['*'];
-    $from = self::tableName();
-    $where = self::andWhereFilter([
-        ['invoiceDate', '>=', $invoiceDate],
-        ['bookingDate', '<=', $bookingDate],
-        # ['source', 'LIKE', 'utca']
-    ]);
+        $rows = self::aSelect(ReservationsAdminInfoSearchModel::class, $what, $from, $where);
+        $rows = $query = ReservationsAdminInfoSearchModel::find()->indexBy('id');;
+        $dataProvider = new ActiveDataProvider([
+            'query' => $rows,
+            'pagination' => [
+                'pageSize' => 15,
+            ],
+        ]);
 
-    $rows = self::aSelect(ReservationsAdminInfoSearchModel::class, $what, $from, $where);
-    $rows= $query = ReservationsAdminInfoSearchModel::find()->indexBy('id');;
-    $dataProvider = new ActiveDataProvider([
-        'query' => $rows,
-        'pagination' => [
-            'pageSize' => 15,
-        ],
-    ]);
+        $this->load($params);
 
-    $this->load($params);
+        return $dataProvider;
+    }
 
-    return $dataProvider;
-}
-    public function searchChart($params)
-    {
+    public function searchChart($params) {
         $invoiceDate = '2016-02-05';
         $bookingDate = '2020-08-20';
 
@@ -80,8 +74,6 @@ class ReservationsAdminInfoSearchModel extends ReservationsInfo
     public function returnBookingId() {
         return $this['bookingId'];
     }
-
-
 
 }
 

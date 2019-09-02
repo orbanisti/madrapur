@@ -1,4 +1,5 @@
 <?php
+
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
@@ -16,7 +17,7 @@ use yii\helpers\Html;
 $form = ActiveForm::begin([
     'enableClientValidation' => false,
     'enableAjaxValidation' => true,
-])?>
+]) ?>
 
 <?php echo $form->field($model, 'key')->textInput() ?>
 

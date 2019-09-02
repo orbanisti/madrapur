@@ -18,14 +18,14 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
     <?php
     foreach (array_keys($model->attributes) as $attribute) {
-    ?>
+        ?>
         <?= $form->field($model, $attribute) ?>
-    <?php
+        <?php
     }
     ?>
-        <div class="form-group">
-            <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
-        </div>
+    <div class="form-group">
+        <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
+    </div>
     <?php ActiveForm::end(); ?>
 
 </div><!-- bookingEdit -->

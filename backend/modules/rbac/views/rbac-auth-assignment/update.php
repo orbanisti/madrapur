@@ -1,12 +1,11 @@
 <?php
-use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\rbac\models\RbacAuthAssignment */
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
-    'modelClass' => 'Rbac Auth Assignment',
-]) . ' ' . $model->item_name;
+        'modelClass' => 'Rbac Auth Assignment',
+    ]) . ' ' . $model->item_name;
 $this->params['breadcrumbs'][] = [
     'label' => Yii::t('app', 'Rbac Auth Assignments'),
     'url' => [
@@ -27,8 +26,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 
     <?php
 
-echo $this->render('_form', [
+    echo $this->render('_form', [
         'model' => $model,
-    ])?>
+    ]) ?>
 
 </div>

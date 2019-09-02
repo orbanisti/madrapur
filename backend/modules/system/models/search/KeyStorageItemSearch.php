@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\system\models\search;
 
 use common\models\KeyStorageItem;
@@ -49,7 +50,7 @@ class KeyStorageItemSearch extends KeyStorageItem {
             'query' => $query,
         ]);
 
-        if (! ($this->load($params) && $this->validate())) {
+        if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 

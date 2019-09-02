@@ -19,27 +19,25 @@ use kartik\form\ActiveForm;
         <div class="panel-body">
             <?php
 
-
             $form = ActiveForm::begin([
                 'id' => 'login-form',
                 'options' => ['class' => 'form-horizontal'],
             ]) ?>
-            <?= $form->field($model, 'from')->textInput(['value'=>$data['from'], 'required' => true])
-            ; ?>
+            <?= $form->field($model, 'from')->textInput(['value' => $data['from'], 'required' => true]); ?>
             <?= $form->field($model, 'to')->textInput(['value' => $data['to'], 'required' => true]); ?>
             <?= $form->field($model, 'subject')->textInput(['value' => $data['subject'], 'required' => true]); ?>
             <?= $form->field($model, 'type')->hiddenInput(['value' => $data['type']])->label(''); ?>
 
             <?php
             foreach ($templateFields as $field) {
-            ?>
+                ?>
                 <div class="form-group">
                     <div class="col-lg-4 col-lg-12">
-                    <?= \yii\helpers\Html::label($field) ?>
-                    <?= \yii\helpers\Html::textInput($field, "", []) ?>
+                        <?= \yii\helpers\Html::label($field) ?>
+                        <?= \yii\helpers\Html::textInput($field, "", []) ?>
                     </div>
                 </div>
-            <?php
+                <?php
             }
             ?>
 
@@ -57,10 +55,7 @@ use kartik\form\ActiveForm;
             <?php ActiveForm::end() ?>
 
 
-
-
         </div>
-
 
 
     </div>

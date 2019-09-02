@@ -2,16 +2,14 @@
 
 namespace backend\modules\Tickets\controllers;
 
-use backend\models\search\UserSearch;
+use backend\controllers\Controller;
 use backend\modules\rbac\models\RbacAuthAssignment;
 use backend\modules\Tickets\models\TicketBlock;
 use backend\modules\Tickets\models\TicketBlockDummySearchModel;
 use backend\modules\Tickets\models\TicketBlockSearchModel;
-use backend\modules\Tickets\models\TicketSearchModel;
 use common\models\User;
 use kartik\helpers\Html;
 use Yii;
-use backend\controllers\Controller;
 use yii\helpers\ArrayHelper;
 use yii\web\ForbiddenHttpException;
 
@@ -24,6 +22,7 @@ class TicketsController extends Controller {
 
     /**
      * Renders the admin view for the module
+     *
      * @return string
      */
     public function actionAdmin() {
@@ -34,8 +33,8 @@ class TicketsController extends Controller {
                 'label' => 'Start ID',
                 'format' => 'html',
                 'value' => function (TicketBlockSearchModel $model) {
-                    return '<a href="/Tickets/tickets/view-ticket?id='.$model->returnStartId().'&blockId='.$model->returnStartId().'">'
-                        .$model->returnStartId().'</a>';
+                    return '<a href="/Tickets/tickets/view-ticket?id=' . $model->returnStartId() . '&blockId=' . $model->returnStartId() . '">'
+                        . $model->returnStartId() . '</a>';
                 },
                 'filter' => Html::textInput("startId", Yii::$app->request->getQueryParam('startId', null)),
             ],
@@ -43,8 +42,8 @@ class TicketsController extends Controller {
                 'label' => 'Current ID',
                 'format' => 'html',
                 'value' => function (TicketBlockSearchModel $model) {
-                    return '<a href="/Tickets/tickets/view-ticket?id='.$model->returnStartId().'&blockId='.$model->returnCurrentId().'">'
-                        .$model->returnCurrentId().'</a>';
+                    return '<a href="/Tickets/tickets/view-ticket?id=' . $model->returnStartId() . '&blockId=' . $model->returnCurrentId() . '">'
+                        . $model->returnCurrentId() . '</a>';
                 },
 //                'filter' => Html::textInput("currentId"),
             ],
@@ -53,15 +52,15 @@ class TicketsController extends Controller {
                 'format' => 'html',
                 'value' => function (TicketBlockSearchModel $model) {
                     $user = User::findIdentity($model->assignedTo)->username;
-                    return '<a href="/user/view?id='.$model->assignedTo.'">'.$user.'</a>';
+                    return '<a href="/user/view?id=' . $model->assignedTo . '">' . $user . '</a>';
                 },
                 'filter' => Html::textInput("assignedTo", Yii::$app->request->getQueryParam('assignedTo', null)),
             ],
             [
                 'label' => 'View Ticket Block',
-                'format'=>'html',
+                'format' => 'html',
                 'value' => function (TicketBlockSearchModel $model) {
-                    return '<a href="/Tickets/tickets/view-block?id='.$model->returnId().'">Edit'.'</a>';
+                    return '<a href="/Tickets/tickets/view-block?id=' . $model->returnId() . '">Edit' . '</a>';
                 }
             ],
         ];
@@ -81,11 +80,12 @@ class TicketsController extends Controller {
      * @throws \yii\db\Exception
      */
     public function actionAddBlock() {
-        if (!Yii::$app->user->can('addTicketBlock'))
+        if (!Yii::$app->user->can('addTicketBlock')) {
             throw new ForbiddenHttpException('userCan');
+        }
 
-            Yii::error(Yii::$app->request->post());
-            Yii::error((int) Yii::$app->user->id);
+        Yii::error(Yii::$app->request->post());
+        Yii::error((int)Yii::$app->user->id);
 //            Yii::error((int)Yii::$app->request->post('startId'));
 //            Yii::error(sprintf('%08d', (int)Yii::$app->request->post('startId')));
         $saved = false;
@@ -103,8 +103,6 @@ class TicketsController extends Controller {
                 if ($idToCheck - 49 < 0) {
                     continue;
                 }
-
-
             } while ($idToCheck !== (int)$startId);
 
             do {
@@ -138,7 +136,6 @@ class TicketsController extends Controller {
                     ]
                 );
             }
-
             //return $this->render('addBlockSuccess');
         }
 
@@ -146,8 +143,9 @@ class TicketsController extends Controller {
         $roles = ArrayHelper::getColumn(Yii::$app->authManager->getRoles(), 'name');
 
         foreach ($roles as $i => $role) {
-            if (!Yii::$app->user->can($role))
+            if (!Yii::$app->user->can($role)) {
                 unset($roles[$i]);
+            }
         }
 
         $users = User::aSelect(User::class, 'id, username', User::tableName(), '1')->all();
@@ -166,8 +164,9 @@ class TicketsController extends Controller {
                 'user_id'
             )->one();
 
-            if (!Yii::$app->user->can("assign_" . $assignments["item_name"]))
+            if (!Yii::$app->user->can("assign_" . $assignments["item_name"])) {
                 unset($users[$idx]);
+            }
         }
         /**
          * Remove end.
@@ -197,7 +196,7 @@ class TicketsController extends Controller {
         $users = ArrayHelper::map($users, 'id', 'username');
 
         return $this->render(
-        'addBlock',
+            'addBlock',
             [
                 'model' => $model,
                 'users' => $users,
@@ -214,7 +213,7 @@ class TicketsController extends Controller {
      * @return string
      */
     public function actionViewTicket($id, $blockId) {
-        $model = TicketBlockDummySearchModel::useTable("modulus_tb_".$id);
+        $model = TicketBlockDummySearchModel::useTable("modulus_tb_" . $id);
 
         $model = $model::find();
 
@@ -261,9 +260,9 @@ class TicketsController extends Controller {
             [
                 'label' => 'ticketId',
                 'format' => 'html',
-                'value' => function (TicketBlockDummySearchModel  $model) use ($ticketBlockStartId) {
-                    return '<a href="/Tickets/tickets/view-ticket?id='.$ticketBlockStartId.'&blockId='.$model->ticketId.'">'
-                        .$model->ticketId.'</a>';
+                'value' => function (TicketBlockDummySearchModel $model) use ($ticketBlockStartId) {
+                    return '<a href="/Tickets/tickets/view-ticket?id=' . $ticketBlockStartId . '&blockId=' . $model->ticketId . '">'
+                        . $model->ticketId . '</a>';
                 },
                 'filter' => Html::textInput("startId", Yii::$app->request->getQueryParam('startId', null)),
             ],
@@ -293,6 +292,7 @@ class TicketsController extends Controller {
 
     /**
      * Renders the index view for the module
+     *
      * @return string
      */
     public function actionIndex() {

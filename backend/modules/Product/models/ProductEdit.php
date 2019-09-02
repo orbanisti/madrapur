@@ -3,12 +3,8 @@
 namespace backend\modules\Product\models;
 
 use backend\modules\MadActiveRecord\models\MadActiveRecord;
-use Yii;
-use yii\db\ActiveRecord;
 
-
-class ProductEdit extends MadActiveRecord
-{
+class ProductEdit extends MadActiveRecord {
     public $dateFrom;
     public $dateTo;
     public $currency;
@@ -23,17 +19,11 @@ class ProductEdit extends MadActiveRecord
     public $capacity;
     public $duration;
 
-
-
-
     public static function tableName() {
         return 'modulusProducts'; //TODO: dynamic table name
     }
 
-
-
-    public function rules()
-    {
+    public function rules() {
         return [
         ];
     }

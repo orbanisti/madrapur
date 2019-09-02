@@ -49,6 +49,7 @@ By default the editor comes with Bootstrap 4 and Widgets components and can be e
 <script src="libs/builder/inputs.js"></script>	
 <!-- components-->
 <script src="libs/builder/components-bootstrap4.js"></script>	
+<script src="libs/builder/components-email.js"></script>	
 <script src="libs/builder/components-widgets.js"></script>	
 
 

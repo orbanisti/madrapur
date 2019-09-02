@@ -1,4 +1,5 @@
 <?php
+
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
@@ -26,8 +27,8 @@ $form = ActiveForm::begin([
 echo $form->field($model, 'slug')
     ->hint(Yii::t('backend', 'If you leave this field empty, the slug will be generated automatically'))
     ->textInput([
-    'maxlength' => 1024
-])?>
+        'maxlength' => 1024
+    ]) ?>
 
 <?php echo $form->field($model, 'parent_id')->dropDownList($categories, ['prompt' => '']) ?>
 

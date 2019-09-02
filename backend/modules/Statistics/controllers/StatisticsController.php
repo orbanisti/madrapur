@@ -18,11 +18,13 @@ class StatisticsController extends Controller {
      * @throws ForbiddenHttpException
      */
     public function actionAdmin() {
-        if (!Yii::$app->authManager->checkAccess(Yii::$app->user->id, 'accessStatistics'))
+        if (!Yii::$app->authManager->checkAccess(Yii::$app->user->id, 'accessStatistics')) {
             throw new ForbiddenHttpException('checkAccess');
+        }
 
-        if (!Yii::$app->user->can('viewStatisticsAdmin'))
+        if (!Yii::$app->user->can('viewStatisticsAdmin')) {
             throw new ForbiddenHttpException('userCan');
+        }
 
         $searchModel = new ReservationsAdminSearchModel();
         $groupedDataProvider = $searchModel->searchMonthlyStatistics(Yii::$app->request->queryParams);
@@ -197,14 +199,14 @@ class StatisticsController extends Controller {
         }
 
         return $this->render('admin', [
-                'searchModel' => $searchModel,
-                'startDate' => $startDate,
-                'endDate' => $endDate,
-                'finalSeries' => $finalSeries,
-                'finalStreetSeries' => $finalStreetSeries,
-                'finalHotelSeries' => $finalHotelSeries,
-                'groupedDataProvider' => $groupedDataProvider,
-            ]);
+            'searchModel' => $searchModel,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'finalSeries' => $finalSeries,
+            'finalStreetSeries' => $finalStreetSeries,
+            'finalHotelSeries' => $finalHotelSeries,
+            'groupedDataProvider' => $groupedDataProvider,
+        ]);
     }
 
     function sortFunction($a, $b) {

@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\widget\models\search;
 
 use common\models\WidgetText;
@@ -52,7 +53,7 @@ class TextSearch extends WidgetText {
             'query' => $query,
         ]);
 
-        if (! ($this->load($params) && $this->validate())) {
+        if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 
@@ -67,15 +68,15 @@ class TextSearch extends WidgetText {
             $this->key
         ])
             ->andFilterWhere([
-            'like',
-            'title',
-            $this->title
-        ])
+                'like',
+                'title',
+                $this->title
+            ])
             ->andFilterWhere([
-            'like',
-            'body',
-            $this->body
-        ]);
+                'like',
+                'body',
+                $this->body
+            ]);
 
         return $dataProvider;
     }

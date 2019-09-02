@@ -1,4 +1,5 @@
 <?php
+
 use trntv\yii\datetime\DateTimeWidget;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -24,55 +25,55 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
 
 echo GridView::widget(
-        [
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'options' => [
-                'class' => 'grid-view table-responsive',
+    [
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'options' => [
+            'class' => 'grid-view table-responsive',
+        ],
+        'columns' => [
+            [
+                'class' => 'yii\grid\SerialColumn'
             ],
-            'columns' => [
-                [
-                    'class' => 'yii\grid\SerialColumn'
+            [
+                'attribute' => 'level',
+                'value' => function ($model) {
+                    return \yii\log\Logger::getLevelName($model->level);
+                },
+                'filter' => [
+                    \yii\log\Logger::LEVEL_ERROR => 'error',
+                    \yii\log\Logger::LEVEL_WARNING => 'warning',
+                    \yii\log\Logger::LEVEL_INFO => 'info',
+                    \yii\log\Logger::LEVEL_TRACE => 'trace',
+                    \yii\log\Logger::LEVEL_PROFILE_BEGIN => 'profile begin',
+                    \yii\log\Logger::LEVEL_PROFILE_END => 'profile end',
                 ],
-                [
-                    'attribute' => 'level',
-                    'value' => function ($model) {
-                        return \yii\log\Logger::getLevelName($model->level);
-                    },
-                    'filter' => [
-                        \yii\log\Logger::LEVEL_ERROR => 'error',
-                        \yii\log\Logger::LEVEL_WARNING => 'warning',
-                        \yii\log\Logger::LEVEL_INFO => 'info',
-                        \yii\log\Logger::LEVEL_TRACE => 'trace',
-                        \yii\log\Logger::LEVEL_PROFILE_BEGIN => 'profile begin',
-                        \yii\log\Logger::LEVEL_PROFILE_END => 'profile end',
-                    ],
-                ],
-                'category',
-                'prefix',
-                [
-                    'attribute' => 'log_time',
-                    'format' => 'datetime',
-                    'value' => function ($model) {
-                        return (int) $model->log_time;
-                    },
-                    'filter' => DateTimeWidget::widget(
-                            [
-                                'model' => $searchModel,
-                                'attribute' => 'log_time',
-                                'phpDatetimeFormat' => 'dd.MM.yyyy',
-                                'momentDatetimeFormat' => 'DD.MM.YYYY',
-                                'clientEvents' => [
-                                    'dp.change' => new JsExpression(
-                                            '(e) => $(e.target).find("input").trigger("change.yiiGridView")'),
-                                ],
-                            ]),
-                ],
+            ],
+            'category',
+            'prefix',
+            [
+                'attribute' => 'log_time',
+                'format' => 'datetime',
+                'value' => function ($model) {
+                    return (int)$model->log_time;
+                },
+                'filter' => DateTimeWidget::widget(
+                    [
+                        'model' => $searchModel,
+                        'attribute' => 'log_time',
+                        'phpDatetimeFormat' => 'dd.MM.yyyy',
+                        'momentDatetimeFormat' => 'DD.MM.YYYY',
+                        'clientEvents' => [
+                            'dp.change' => new JsExpression(
+                                '(e) => $(e.target).find("input").trigger("change.yiiGridView")'),
+                        ],
+                    ]),
+            ],
 
-                [
-                    'class' => 'yii\grid\ActionColumn',
-                    'template' => '{view} {delete}',
-                ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {delete}',
             ],
-        ]);
+        ],
+    ]);
 ?>

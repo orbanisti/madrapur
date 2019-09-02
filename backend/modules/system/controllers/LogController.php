@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\system\controllers;
 
 use backend\modules\system\models\search\SystemLogSearch;
@@ -73,22 +74,6 @@ class LogController extends Controller {
     }
 
     /**
-     * Deletes an existing SystemLog model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     *
-     * @param integer $id
-     *
-     * @return mixed
-     */
-    public function actionDelete($id) {
-        $this->findModel($id)->delete();
-
-        return $this->redirect([
-            'index'
-        ]);
-    }
-
-    /**
      * Finds the SystemLog model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      *
@@ -103,5 +88,21 @@ class LogController extends Controller {
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    /**
+     * Deletes an existing SystemLog model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     *
+     * @param integer $id
+     *
+     * @return mixed
+     */
+    public function actionDelete($id) {
+        $this->findModel($id)->delete();
+
+        return $this->redirect([
+            'index'
+        ]);
     }
 }

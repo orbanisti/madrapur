@@ -1,12 +1,13 @@
 <?php
+
 namespace backend\modules\rbac\controllers;
 
-use Yii;
 use backend\modules\rbac\models\RbacAuthRule;
+use Yii;
 use yii\data\ActiveDataProvider;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * RbacAuthRuleController implements the CRUD actions for RbacAuthRule model.
@@ -49,12 +50,30 @@ class RbacAuthRuleController extends Controller {
      * Displays a single RbacAuthRule model.
      *
      * @param string $id
+     *
      * @return mixed
      */
     public function actionView($id) {
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+    }
+
+    /**
+     * Finds the RbacAuthRule model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     *
+     * @param string $id
+     *
+     * @return RbacAuthRule the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id) {
+        if (($model = RbacAuthRule::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
     }
 
     /**
@@ -83,6 +102,7 @@ class RbacAuthRuleController extends Controller {
      * If update is successful, the browser will be redirected to the 'view' page.
      *
      * @param string $id
+     *
      * @return mixed
      */
     public function actionUpdate($id) {
@@ -105,6 +125,7 @@ class RbacAuthRuleController extends Controller {
      * If deletion is successful, the browser will be redirected to the 'index' page.
      *
      * @param string $id
+     *
      * @return mixed
      */
     public function actionDelete($id) {
@@ -113,21 +134,5 @@ class RbacAuthRuleController extends Controller {
         return $this->redirect([
             'index'
         ]);
-    }
-
-    /**
-     * Finds the RbacAuthRule model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     *
-     * @param string $id
-     * @return RbacAuthRule the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id) {
-        if (($model = RbacAuthRule::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
     }
 }

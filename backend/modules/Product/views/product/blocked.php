@@ -6,20 +6,16 @@
  * Time: 20:38
  */
 
-use kartik\helpers\Html;
 use backend\components\extra;
-use yii\widgets\ActiveForm;
-use kartik\grid\EditableColumn;
 use backend\models\Product\Product;
+use kartik\helpers\Html;
+use yii\widgets\ActiveForm;
 
-
-
-$title ='Block Booking Days of '.'<u>'.$currentProduct->title.'</u>';/*
+$title = 'Block Booking Days of ' . '<u>' . $currentProduct->title . '</u>';/*
 $this->title=$title;
 $this->params['breadcrumbs'][] = $this->title;
 
 */
-
 
 ?>
 
@@ -30,14 +26,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4><?=$title?></h4>
+            <h4><?= $title ?></h4>
         </div>
         <div class="panel-body">
             <?php
             $form = ActiveForm::begin([
                 'id' => 'product-edit',
-                'action' => 'blocked?prodId='.$currentProduct->id,
-                'options' => ['class' => 'product-edit','enctype'=>'multipart/form-data'],
+                'action' => 'blocked?prodId=' . $currentProduct->id,
+                'options' => ['class' => 'product-edit', 'enctype' => 'multipart/form-data'],
 
             ]);
 

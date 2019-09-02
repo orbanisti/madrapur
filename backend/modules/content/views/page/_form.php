@@ -1,4 +1,5 @@
 <?php
+
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
@@ -36,23 +37,25 @@ echo $form->field($model, 'slug')->textInput(['maxlength' => true]);
 
 */
 
-$editLink='/Modulusbuilder/modulusbuilder/admin?slug='.$model->slug;
-echo($model->isNewRecord ? $form->field($model,'body')->hiddenInput(['value'=> '<div class="container">
+$editLink = '/Modulusbuilder/modulusbuilder/admin?slug=' . $model->slug;
+echo($model->isNewRecord ? $form->field($model, 'body')->hiddenInput(['value' => '<div class="container">
       <div class="row">
         <div class="col-lg-12 text-center">
           <h1 class="mt-5">Madrapur start page</h1>
           <p class="lead">Start by dragging components to page or double click to edit text</p>
         </div>
       </div>
-    </div>'])->label(false) : Html::a('Edit in pagebuilder',[$editLink],['class'=>'btn btn-primary']));
+    </div>'])->label(false) : Html::a('Edit in pagebuilder', [$editLink], ['class' => 'btn btn-primary']));
 echo $form->field($model, 'status')->checkbox();
 ?>
 
 <div class="form-group">
     <?php
-        foreach ($model->fields() as $field)
-            if(strpos($field, "meta") === 0)
-                echo $form->field($model, $field)->textInput();
+    foreach ($model->fields() as $field) {
+        if (strpos($field, "meta") === 0) {
+            echo $form->field($model, $field)->textInput();
+        }
+    }
     ?>
 </div>
 

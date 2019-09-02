@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\translation\models\search;
 
 use backend\modules\translation\models\Source;
@@ -53,7 +54,7 @@ class SourceSearch extends Source {
      */
     public function __get($name) {
         if (in_array($name, array_keys($this->getLanguages()))) {
-            if (! isset($this->_translationSearch[$name])) {
+            if (!isset($this->_translationSearch[$name])) {
                 return null;
             } else {
                 return $this->_translationSearch[$name];
@@ -89,7 +90,7 @@ class SourceSearch extends Source {
             'query' => $query,
         ]);
 
-        if (! ($this->load($params) && $this->validate())) {
+        if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 
@@ -106,16 +107,17 @@ class SourceSearch extends Source {
         ]);
 
         foreach ($this->_translationSearch as $lang => $translationSearch) {
-            if (! empty($translationSearch))
+            if (!empty($translationSearch)) {
                 $query->innerJoin("{{%i18n_message}} $lang", "{{%i18n_source_message}}.id = $lang.id")
                     ->andFilterWhere([
-                    "$lang.language" => $lang
-                ])
+                        "$lang.language" => $lang
+                    ])
                     ->andFilterWhere([
-                    'like',
-                    "$lang.translation",
-                    $translationSearch
-                ]);
+                        'like',
+                        "$lang.translation",
+                        $translationSearch
+                    ]);
+            }
         }
 
         return $dataProvider;

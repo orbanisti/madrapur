@@ -1,4 +1,4 @@
-
+<h1>Seller</h1>
 <div class="col-xs-12 col-md-3">
     <?php
 
@@ -14,6 +14,6 @@
         'text' => 'Next ticked ID',
         'footer' => 'View ticket block',
         'link' => Url::to("/Tickets/tickets/admin")
-    ])?>
-    <?php LteSmallBox::end()?>
+    ]) ?>
+    <?php LteSmallBox::end() ?>
 </div>
