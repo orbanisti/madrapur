@@ -602,11 +602,59 @@ Yii::error($insertReservation);
                 $sources=ProductSource::getProductSourceIds($currID);
                 $currentProduct = Product::getProdById($currID);
                 $availableChairs=$currentProduct->capacity-$reservationModel->countTakenChairsOnDayTime($currDate,$sources,$currTime);
+                $progressBarlenght=round($availableChairs,-1);
 
+                $StreetHeader="<span class=\"info-box-text\">Available places left:</span>
+                                  <span class=\"info-box-number\">$availableChairs</span>";
+
+                $capPercentage=round($availableChairs,-1);
+                $HotelHeader="<span class=\"info-box-text\">Remaining capacity:</span>
+                                  <span class=\"info-box-number\">$capPercentage+ </span>";
+
+                if(Yii::$app->user->can('hotelEditor')){
+                    $BoxInfo=$HotelHeader;
+                } else if(Yii::$app->user->can('streetSeller')){
+                    $BoxInfo=$StreetHeader;
+                }else{
+
+                    $BoxInfo=$HotelHeader;
+                }
+                $capcolor='bg-blue';
+                if($availableChairs<($currentProduct->capacity)*25/100){
+                    $capcolor='bg-red';
+                }
+                if($availableChairs>($currentProduct->capacity)*45/100){
+                    $capcolor='bg-yellow';
+                }
+                if($availableChairs>($currentProduct->capacity)*65/100){
+                    $capcolor='bg-blue';
+                }
+
+
+
+
+
+
+
+                $AvailableSpacesHtml="<div class=\"info-box $capcolor\">
+            <span class=\"info-box-icon\"><i class=\"fa fa-clock-o\"></i></span>
+
+            <div class=\"info-box-content\">
+           ".$BoxInfo."
+
+              <div class=\"progress\">
+                <div class=\"progress-bar\" style=\"width:$progressBarlenght%\"></div>
+              </div>
+                 <span class=\"progress-description\">
+                    for <strong>$currTime</strong>
+                 </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>";
 
 
                 return [
-                    'search'=>"<div id=\"myLabel\">Available places left:$availableChairs</div>",
+                    'search'=>"$AvailableSpacesHtml",
                     'response'=>'places'
 
                 ];

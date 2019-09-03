@@ -11,6 +11,7 @@ use backend\modules\Product\models\Product;
 use backend\modules\Product\models\ProductPrice;
 use kartik\helpers\Html;
 use backend\components\extra;
+use kartik\icons\Icon;
 use lo\widgets\Toggle;
 use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
@@ -36,7 +37,6 @@ $huf=Yii::$app->keyStorage->get('currency.huf-value') ? Yii::$app->keyStorage->g
     <div class="panel-heading">
 
     </div>
-
 <div class="panel">
 </div>
 
