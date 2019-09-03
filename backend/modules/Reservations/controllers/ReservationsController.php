@@ -580,13 +580,14 @@ class ReservationsController extends Controller {
             foreach ($productsBought as $priceId => $priceAmount) {
 
                 foreach ($myprices as $remotePrice) {
-                    if($postedCurrency=='HUF'){
-                        $remotePrice=ProductPrice::eurtohuf($remotePrice);
-                    }
+
 
                     if ($remotePrice->id == $priceId) {
+                        if($postedCurrency=='HUF'){
+                            $remotePrice=ProductPrice::eurtohuf($remotePrice);
+                        }
                         $currentPrice = (int)$remotePrice->price;
-                        $fullTotal = $fullTotal + ($currentPrice * $priceAmount);
+                        (int)$fullTotal = (int)$fullTotal + (int)($currentPrice * $priceAmount);
                     }
                 }
             }
@@ -613,7 +614,7 @@ class ReservationsController extends Controller {
                 $StreetHeader="<span class=\"info-box-text\">Available places left:</span>
                                   <span class=\"info-box-number\">$availableChairs</span>";
 
-                $capPercentage=round($availableChairs,-1);
+                $capPercentage=round($availableChairs*0.9,-1);
                 $HotelHeader="<span class=\"info-box-text\">Remaining capacity:</span>
                                   <span class=\"info-box-number\">$capPercentage+ </span>";
 

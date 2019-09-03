@@ -56,7 +56,7 @@ class ProductPrice extends MadActiveRecord {
         $hufprice=($price->price)*(int)Yii::$app->keyStorage->get('currency.huf-value');
         $newname= preg_replace($pattern,'<strong>'.$hufprice.' Ft</strong>',$price->name);
         $price->name=$newname;
-        $price->price=$price->price*(int)Yii::$app->keyStorage->get('currency.huf-value');
+        $price->price=(int)$price->price*(int)Yii::$app->keyStorage->get('currency.huf-value');
         return $price;
     }
 

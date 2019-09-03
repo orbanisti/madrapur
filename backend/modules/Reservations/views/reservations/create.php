@@ -93,6 +93,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 echo $form->field($model, 'discount')->hiddeninput()->label(false);
 
                 echo 'Total Price:<div id="total_price"></div>';
+
+
                 echo Html::submitButton('Create Reservation', ['class' => 'btn btn-primary prodUpdateBtn']);
                 ActiveForm::end();
             }
@@ -129,7 +131,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         }
 
-        $().ready(() => {
+        $().ready() => {
             $('#product-title').change(function () {
                 $.ajax({
                     url: '<?php echo Yii::$app->request->baseUrl . '/Reservations/reservations/gettimes' ?>',
