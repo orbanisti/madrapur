@@ -1,5 +1,5 @@
 {
-	"name": "Aekan/madrapur",
+	"name": "aekan/madrapur",
 	"description": "madrapur",
 	"keywords": [
 		"yii2",
@@ -24,8 +24,8 @@
 	"type": "project",
 	"license": "BSD-3-Clause",
 	"support": {
-		"issues": "https://github.com/Aekan/madrapur/issues?state=open",
-		"source": "https://github.com/Aekan/madrapur"
+		"issues": "https://github.com/aekan/madrapur/issues?state=open",
+		"source": "https://github.com/aekan/madrapur"
 	},
 	"require": {
 		"php": ">=7.1.0",
@@ -85,7 +85,7 @@
 		"2amigos/yii2-date-picker-widget": "~1.0",
 		"insolita/yii2-adminlte-widgets": "dev-master",
 		"phuml/phuml": "^1.7",
-		"npm-asset/admin-lte": "2.4.11",
+		"npm-asset/admin-lte": "2.4.18",
 		"pelago/emogrifier": "^2.1"
 	},
 	"require-dev": {
@@ -121,7 +121,7 @@
 		},
 		{
 			"type": "vcs",
-			"url":  "git@github.com:Aekan/yii2-gii.git"
+			"url":  "git@github.com:aekan/yii2-gii.git"
 		}
 
 	],
