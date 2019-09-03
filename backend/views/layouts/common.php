@@ -163,6 +163,9 @@ echo Menu::widget(
                                 'url' => [
                                     '/Tickets/tickets/admin'
                                 ],
+                                'options' => [
+                                    'class' => 'treeview'
+                                ],
                                 'icon' => '<i class="fa fa-ticket"></i>',
                                 'items' => [
                                     [
@@ -407,17 +410,29 @@ echo Menu::widget(
 
                                     '/Product/product/admin'
                                 ],
+                                'options' => [
+                                    'class' => 'treeview'
+                                ],
                                 'icon' => '<i class="fa fa-apple"></i>',
-                                'active' => Yii::$app->controller->id === 'product' &&
-                                            Yii::$app->controller->action->id !== 'uiblock',
+                                'active' => Yii::$app->controller->id === 'product',
                                 'items' => [
+                                    [
+                                        'label' => Yii::t('backend', 'Overview'),
+                                        'url' => [
+                                            '/Product/product/admin'
+                                        ],
+                                        'icon' => '<i class="fa fa-list-alt"></i>',
+                                        'active' => (Yii::$app->controller->id == 'product') &&
+                                            Yii::$app->controller->action->id !== 'admin',
+                                    ],
                                     [
                                         'label' => Yii::t('backend', 'Create'),
                                         'url' => [
                                             '/Product/product/create'
                                         ],
                                         'icon' => '<i class="fa fa-database"></i>',
-                                        'active' => (Yii::$app->controller->id == 'create'),
+                                        'active' => (Yii::$app->controller->id == 'product') &&
+                                            Yii::$app->controller->action->id !== 'create',
                                     ],
 
                                 ],
@@ -446,9 +461,21 @@ echo Menu::widget(
                                 'url' => [
                                     '/Reservations/reservations/admin'
                                 ],
+                                'options' => [
+                                    'class' => 'treeview'
+                                ],
                                 'icon' => '<i class="fa fa-check-square"></i>',
                                 'active' => (Yii::$app->controller->id == 'reservations'),
                                 'items' => [
+                                    [
+                                        'label' => Yii::t('backend', 'Overview'),
+                                        'url' => [
+                                            '/Reservations/reservations/admin'
+                                        ],
+                                        'icon' => '<i class="fa fa-list-alt"></i>',
+                                        'active' => (Yii::$app->controller->id == 'reservations') &&
+                                            Yii::$app->controller->action->id !== 'admin',
+                                    ],
                                     [
                                         'label' => Yii::t('backend', 'Create'),
                                         'url' => [
@@ -537,102 +564,6 @@ echo Menu::widget(
                             ],
                         ],
                     ]);
-            /*else if($imaStreetSeller || $imaHotelSeller){
-                echo Menu::widget(
-                    [
-                        'options' => [
-                            'class' => 'sidebar-menu'
-                        ],
-                        'linkTemplate' => '<a href="{url}">{icon}<span>{label}</span>{right-icon}{badge}</a>',
-                        'submenuTemplate' => "\n<ul class=\"treeview-menu\">\n{items}\n</ul>\n",
-                        'activateParents' => true,
-                        'items' => [
-                            [
-                                'label' => Yii::t('backend', 'Main'),
-                                'options' => [
-                                    'class' => 'header'
-                                ],
-                            ],
-                            [
-                                'label' => Yii::t('backend', 'Timeline'),
-                                'icon' => '<i class="fa fa-bar-chart-o"></i>',
-                                'url' => [
-                                    '/timeline-event/index'
-                                ],
-                                'badge' => TimelineEvent::find()->today()->count(),
-                                'badgeBgClass' => 'label-success',
-                            ],
-                            [
-                                'label' => Yii::t('backend', 'Create'),
-                                'url' => [
-                                    '/Reservations/reservations/create'
-                                ],
-                                'icon' => '<i class="fa fa-database"></i>',
-                                'active' => (Yii::$app->controller->id == 'create'),
-                            ],
-                            [
-                                'label' => Yii::t('backend', 'myReservations'),
-                                'url' => [
-                                    '/Reservations/reservations/myreservations'
-                                ],
-                                'icon' => '<i class="fa fa-calendar"></i>',
-                                'active' => (Yii::$app->controller->id == 'myreservations'),
-                            ],
-
-                        ],
-                    ]);
-
-
-            }
-            else if($imaBookKeeper && !$imaStreetSeller && !$imaHotelSeller){
-                echo Menu::widget(
-                    [
-                        'options' => [
-                            'class' => 'sidebar-menu'
-                        ],
-                        'linkTemplate' => '<a href="{url}">{icon}<span>{label}</span>{right-icon}{badge}</a>',
-                        'submenuTemplate' => "\n<ul class=\"treeview-menu\">\n{items}\n</ul>\n",
-                        'activateParents' => true,
-                        'items' => [
-                            [
-                                'label' => Yii::t('backend', 'Main'),
-                                'options' => [
-                                    'class' => 'header'
-                                ],
-                            ],
-                            [
-                                'label' => Yii::t('backend', 'Timeline'),
-                                'icon' => '<i class="fa fa-bar-chart-o"></i>',
-                                'url' => [
-                                    '/timeline-event/index'
-                                ],
-                                'badge' => TimelineEvent::find()->today()->count(),
-                                'badgeBgClass' => 'label-success',
-                            ],
-
-                            [
-                                'label' => Yii::t('backend', 'allReservations'),
-                                'url' => [
-                                    '/Reservations/reservations/allreservations'
-                                ],
-                                'icon' => '<i class="fa fa-calendar"></i>',
-                                'active' => (Yii::$app->controller->id == 'allreservations'),
-                            ],
-
-                            [
-                                'label' => Yii::t('backend', 'Statistics'),
-                                'url' => [
-                                    '/Statistics/statistics/admin'
-                                ],
-                                'icon' => '<i class="fa fa-line-chart"></i>',
-                                'active' => (Yii::$app->controller->id == 'statistics'),
-                            ],
-
-                        ],
-                    ]);
-
-
-            }*/
 
 
 
