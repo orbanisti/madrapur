@@ -8,16 +8,13 @@ use Yii;
 /**
  * Default model for the `Product` module
  */
-class ProductTime extends MadActiveRecord
-{
+class ProductTime extends MadActiveRecord {
 
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'modulusProductTimes';
     }
 
-    public function rules()
-    {
+    public function rules() {
         return [
 
             [['name'], 'required'],
@@ -27,8 +24,7 @@ class ProductTime extends MadActiveRecord
         ];
     }
 
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('app', 'ID'),
             'product_id' => Yii::t('app', 'Termék'),
@@ -38,31 +34,25 @@ class ProductTime extends MadActiveRecord
         ];
     }
 
-    public function init()
-    {
+    public function init() {
         parent::init();
-
 
         return true;
     }
 
-    public function initTime()
-    {
+    public function initTime() {
         if ($this->start_date == '' || is_null($this->start_date) || $this->start_date == '0000-00-00') {
             $this->start_date = date('Y-m-d');
             //\backend\components\extra::e($this);
         }
         return $this;
-
     }
 
-    public function getProduct()
-    {
+    public function getProduct() {
         return $this->hasOne(Product::className(), ['id' => 'product_id']);
     }
 
-    public function afterFind()
-    {
+    public function afterFind() {
         parent::afterFind();
 
         if ($this->start_date == '' || is_null($this->start_date) || $this->start_date == '0000-00-00') {

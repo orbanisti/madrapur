@@ -1,4 +1,5 @@
 <?php
+
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
@@ -15,7 +16,7 @@ use yii\helpers\Html;
 $form = ActiveForm::begin([
     'enableClientValidation' => false,
     'enableAjaxValidation' => true,
-])?>
+]) ?>
 
 <?php echo $form->errorSummary($model) ?>
 
@@ -27,7 +28,7 @@ $form = ActiveForm::begin([
 
 echo $form->field($model, 'items')->widget(trntv\aceeditor\AceEditor::class, [
     'mode' => 'json',
-])?>
+]) ?>
 
 <?php echo $form->field($model, 'status')->checkbox() ?>
 

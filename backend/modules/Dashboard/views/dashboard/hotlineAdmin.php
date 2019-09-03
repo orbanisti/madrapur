@@ -1,8 +1,12 @@
 <?php
+
 use insolita\wgadminlte\LteConst;
 use insolita\wgadminlte\LteSmallBox;
 use yii\helpers\Url;
+
 ?>
+<h1>Hotline</h1>
+
 <div class="col-xs-12 col-md-3">
     <?php
     LteSmallBox::begin([

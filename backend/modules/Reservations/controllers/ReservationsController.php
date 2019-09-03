@@ -10,12 +10,10 @@ use backend\modules\Product\models\ProductSource;
 use backend\modules\Product\models\ProductTime;
 use backend\modules\Reservations\models\DateImport;
 use backend\modules\Reservations\models\Reservations;
-use backend\modules\Reservations\models\ReservationsAdminInfoSearchModel;
 use backend\modules\Reservations\models\ReservationsAdminSearchModel;
-use backend\modules\Tickets\models\TicketBlock;
-use backend\modules\translation\models\Source;
 use common\commands\AddTicketToReservationCommand;
 use common\commands\AddToTimelineCommand;
+use common\commands\SendEmailCommand;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
@@ -97,7 +95,6 @@ class ReservationsController extends Controller {
 
                 if (isset($booking->orderDetails->paid_date)) {
 
-
                     if (!isset($booking->personInfo)) {
                         $booking->personInfo = '';
                     }
@@ -174,14 +171,14 @@ class ReservationsController extends Controller {
                 }
             }
         }
-        $allsources=new ProductSource();
+        $allsources = new ProductSource();
         return $this->render('admin', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'chartDataProvider' => $chartDataProvider,
             'dateImportModel' => $dateImportModel,
             'importResponse' => $importResponse,
-            'allsources'=>$allsources
+            'allsources' => $allsources
 
         ]);
     }
@@ -197,7 +194,6 @@ class ReservationsController extends Controller {
         $dateTo = date('Y-m-d', strtotime($dateTo));
         $url = $source . '/wp-json/bookings/v1/start/' . $dateFrom . '/end/' . $dateTo;
 
-
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_HEADER, 0);
         curl_setopt($curl, CURLOPT_VERBOSE, 0);
@@ -209,7 +205,6 @@ class ReservationsController extends Controller {
 
         $jsonResponse = json_decode(utf8_decode($response));
         //json decode junctiont ne változtasd másra!
-
 
         return $jsonResponse;
     }
@@ -287,7 +282,7 @@ class ReservationsController extends Controller {
 
             # $data=['boookingDetails'=> $booking->bookingDetails,'orderDetails'=>$booking->orderDetails,'personInfo'=>$booking->personInfo,'updateDate'=>date("Y-m-d H:i:s")];
 
-
+            $data = Json::encode($data);
 
             $source = 'unset';
             $imaStreetSeller = Yii::$app->authManager->getAssignment('streetSeller', Yii::$app->user->getId());
@@ -305,17 +300,16 @@ class ReservationsController extends Controller {
                 'invoiceMonth' => date('m'),
                 'invoiceDate' => date('Y-m-d'),
                 'bookingDate' => $productPrice['booking_date'],
-                'booking_start' => $data->boookingDetails->booking_start,
                 'source' => $source,
                 'productId' => $productPrice['product_id'],
                 'bookingId' => 'tmpMad1',
-                'data' => json_encode($data),
+                'data' => $data,
                 'sellerId' => Yii::$app->user->getId(),
                 'sellerName' => Yii::$app->user->identity->username,
                 'ticketId' => 'V0000001'
             ];
             $insertReservation = Reservations::insertOne($newReservarion, $values);
-Yii::error($insertReservation);
+            Yii::error($insertReservation);
             if ($insertReservation) {
                 $findBooking = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'bookingId="tmpMad1"');
                 $booking = $findBooking->one();
@@ -344,6 +338,17 @@ Yii::error($insertReservation);
                             'sellerId' => Yii::$app->user->getId(),
                             'timestamp' => time(),
                             'bookingId' => $booking->id,
+                        ]
+                    )
+                );
+
+                Yii::$app->commandBus->handle(
+                    new SendEmailCommand(
+                        [
+                            'to' => 'alpe15.1992@gmail.com',
+                            'from' => 'alpe15.1992@gmail.com',
+                            'subject' => 'New reservation',
+                            'type' => 'newReservation'
                         ]
                     )
                 );
@@ -591,6 +596,7 @@ Yii::error($insertReservation);
                 'response'=>'price'
             ];
             }
+
             else if(isset($data['date'])&& isset($data['time'])){
                 \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
@@ -658,7 +664,6 @@ Yii::error($insertReservation);
                     'response'=>'places'
 
                 ];
-
             }
 
         }

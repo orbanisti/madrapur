@@ -5,7 +5,6 @@ namespace backend\modules\Tickets\models;
 use common\models\User;
 use Yii;
 use yii\data\ActiveDataProvider;
-use yii\db\ActiveRecord;
 
 /**
  * Default model for the `TicketBlockSearchModel` module
@@ -13,6 +12,16 @@ use yii\db\ActiveRecord;
 class TicketBlockSearchModel extends TicketBlock {
 
     protected static $startId;
+
+    public static function getStartId($id) {
+        $a = static::find()->where(['=', 'id', $id])->one();
+        Yii::error($id);
+        return $a->returnStartId();
+    }
+
+    public function returnStartId() {
+        return $this['startId'];
+    }
 
     /**
      * Creates data provider instance with search query applied
@@ -73,10 +82,6 @@ class TicketBlockSearchModel extends TicketBlock {
         return $this['id'];
     }
 
-    public function returnStartId() {
-        return $this['startId'];
-    }
-
     public function returnCurrentId() {
         $tableName = 'modulus_tb_' . $this['startId'];
 
@@ -89,11 +94,5 @@ class TicketBlockSearchModel extends TicketBlock {
         }
 
         return "N/A";
-    }
-
-    public static function getStartId($id) {
-        $a = static::find()->where(['=', 'id', $id])->one();
-Yii::error($id);
-        return $a->returnStartId();
     }
 }

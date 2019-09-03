@@ -2,8 +2,6 @@
 
 namespace backend\modules\MadActiveRecord\models;
 
-use Yii;
-use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\conditions\AndCondition;
@@ -13,8 +11,7 @@ use yii\db\Query;
 /**
  * Default model for the `MadActiveRecord` module
  */
-class MadActiveRecord extends ActiveRecord
-{
+class MadActiveRecord extends ActiveRecord {
 
     protected static $table;
     protected static $searchModel;
@@ -34,10 +31,10 @@ class MadActiveRecord extends ActiveRecord
      * @param $what
      * @param $from
      * @param $where
+     *
      * @return Query
      */
-    public static function select($what, $from, $where)
-    {
+    public static function select($what, $from, $where) {
         $query = new Query();
 
         $query
@@ -55,6 +52,7 @@ class MadActiveRecord extends ActiveRecord
      * @param $where
      * @param null $orderBy
      * @param null $groupBy
+     *
      * @return ActiveQuery
      */
     public static function aSelect($modelClass = null, $what, $from, $where, $orderBy = null, $groupBy = null) {
@@ -78,39 +76,26 @@ class MadActiveRecord extends ActiveRecord
         return $query;
     }
 
-    public static function meById($modelClass = null,$id){
+    public static function meById($modelClass = null, $id) {
         /**
          * @param $modelClass i need a new Model
          * @param $id
+         *
          * @return your model /w id of choice
          */
 
         $query = $modelClass::aSelect($modelClass, '*', $modelClass::tableName(), 'id=' . $id);
-        $me=$query->one();
+        $me = $query->one();
         return $me;
     }
 
-
-
     /**
      * @param MadActiveRecord $model
      * @param $values
-     * @return bool
-     */
-    public static function insertOne(MadActiveRecord $model, $values)
-    {
-        $model->setAttributes($values);
-
-        return $model->save(false);
-    }
-
-    /**
-     * @param MadActiveRecord $model
-     * @param $values
+     *
      * @return int | bool
      */
-    public static function insertOneReturn(MadActiveRecord $model, $values)
-    {
+    public static function insertOneReturn(MadActiveRecord $model, $values) {
         $model->setAttributes($values);
 
         if ($model->save(false)) {
@@ -120,9 +105,7 @@ class MadActiveRecord extends ActiveRecord
         return false;
     }
 
-
-    public static function insertAll(string $model, $values)
-    {
+    public static function insertAll(string $model, $values) {
         foreach ($values as $value) {
             $newModel = new $model;
 
@@ -135,29 +118,32 @@ class MadActiveRecord extends ActiveRecord
     }
 
     /**
+     * @param MadActiveRecord $model
+     * @param $values
+     *
+     * @return bool
+     */
+    public static function insertOne(MadActiveRecord $model, $values) {
+        $model->setAttributes($values);
+
+        return $model->save(false);
+    }
+
+    /**
      * @param $conditions
+     *
      * @return AndCondition
      */
-    public static function andWhereFilter($conditions)
-    {
+    public static function andWhereFilter($conditions) {
         return new AndCondition(self::_setConditions($conditions));
     }
 
     /**
      * @param $conditions
-     * @return OrCondition
-     */
-    public static function orWhereFilter($conditions)
-    {
-        return new OrCondition(self::_setConditions($conditions));
-    }
-
-    /**
-     * @param $conditions
+     *
      * @return array
      */
-    private static function _setConditions($conditions)
-    {
+    private static function _setConditions($conditions) {
         foreach ($conditions as $i => $condition) {
             $glass = $condition[0];
             $condition[0] = $condition[1];
@@ -169,6 +155,13 @@ class MadActiveRecord extends ActiveRecord
         return $conditions;
     }
 
-
+    /**
+     * @param $conditions
+     *
+     * @return OrCondition
+     */
+    public static function orWhereFilter($conditions) {
+        return new OrCondition(self::_setConditions($conditions));
+    }
 
 }

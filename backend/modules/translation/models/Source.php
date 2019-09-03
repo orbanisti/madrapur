@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\translation\models;
 
 use backend\modules\translation\traits\ModuleTrait;
@@ -81,13 +82,14 @@ class Source extends ActiveRecord {
      *
      * @param
      *            $language
-     *            
+     *
      * @return Translation|null
      */
     public function getTranslation($language) {
         foreach ($this->translations as $translation) {
-            if ($translation->language == $language)
+            if ($translation->language == $language) {
                 return $translation;
+            }
         }
 
         return null;

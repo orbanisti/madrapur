@@ -1,4 +1,5 @@
 <?php
+
 use backend\modules\translation\models\Source;
 use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
@@ -17,24 +18,24 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-<div class="box box-success collapsed-box">
-	<div class="box-header with-border">
-		<h3 class="box-title"><?php echo Yii::t('backend', 'Create {modelClass}', ['modelClass' => 'Source Message']) ?></h3>
-		<div class="box-tools pull-right">
-			<button type="button" class="btn btn-box-tool" data-widget="collapse">
-				<i class="fa fa-plus"></i>
-			</button>
-		</div>
-	</div>
-	<div class="box-body">
+    <div class="box box-success collapsed-box">
+        <div class="box-header with-border">
+            <h3 class="box-title"><?php echo Yii::t('backend', 'Create {modelClass}', ['modelClass' => 'Source Message']) ?></h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
             <?php
 
-echo $this->render('_form', [
+            echo $this->render('_form', [
                 'model' => $model,
                 'languages' => $languages,
-            ])?>
+            ]) ?>
         </div>
-</div>
+    </div>
 
 <?php
 
@@ -48,37 +49,37 @@ foreach ($languages as $language => $name) {
 }
 
 echo GridView::widget(
-        [
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'options' => [
-                'class' => 'grid-view table-responsive',
-            ],
-            'columns' => ArrayHelper::merge(
-                    [
-                        [
-                            'attribute' => 'id',
-                            'options' => [
-                                'style' => 'width: 5%'
-                            ],
-                        ],
-                        [
-                            'attribute' => 'category',
-                            'options' => [
-                                'style' => 'width: 10%'
-                            ],
-                            'filter' => ArrayHelper::map(Source::find()->select('category')
-                                ->distinct()
-                                ->all(), 'category', 'category'),
-                        ],
-                        'message:ntext',
-                        [
-                            'class' => 'yii\grid\ActionColumn',
-                            'options' => [
-                                'style' => 'width: 5%'
-                            ],
-                            'template' => '{update} {delete}',
-                        ],
-                    ], $translationColumns),
-        ]);
+    [
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'options' => [
+            'class' => 'grid-view table-responsive',
+        ],
+        'columns' => ArrayHelper::merge(
+            [
+                [
+                    'attribute' => 'id',
+                    'options' => [
+                        'style' => 'width: 5%'
+                    ],
+                ],
+                [
+                    'attribute' => 'category',
+                    'options' => [
+                        'style' => 'width: 10%'
+                    ],
+                    'filter' => ArrayHelper::map(Source::find()->select('category')
+                        ->distinct()
+                        ->all(), 'category', 'category'),
+                ],
+                'message:ntext',
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'options' => [
+                        'style' => 'width: 5%'
+                    ],
+                    'template' => '{update} {delete}',
+                ],
+            ], $translationColumns),
+    ]);
 ?>

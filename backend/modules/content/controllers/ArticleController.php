@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\content\controllers;
 
 use backend\modules\content\models\search\ArticleSearch;
@@ -65,11 +66,11 @@ class ArticleController extends Controller {
         }
 
         return $this->render('create',
-                [
-                    'model' => $article,
-                    'categories' => ArticleCategory::find()->active()
-                        ->all(),
-                ]);
+            [
+                'model' => $article,
+                'categories' => ArticleCategory::find()->active()
+                    ->all(),
+            ]);
     }
 
     /**
@@ -89,25 +90,11 @@ class ArticleController extends Controller {
             ]);
         }
         return $this->render('update',
-                [
-                    'model' => $article,
-                    'categories' => ArticleCategory::find()->active()
-                        ->all(),
-                ]);
-    }
-
-    /**
-     *
-     * @param integer $id
-     *
-     * @return mixed
-     */
-    public function actionDelete($id) {
-        $this->findModel($id)->delete();
-
-        return $this->redirect([
-            'index'
-        ]);
+            [
+                'model' => $article,
+                'categories' => ArticleCategory::find()->active()
+                    ->all(),
+            ]);
     }
 
     /**
@@ -122,5 +109,19 @@ class ArticleController extends Controller {
             return $model;
         }
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     *
+     * @param integer $id
+     *
+     * @return mixed
+     */
+    public function actionDelete($id) {
+        $this->findModel($id)->delete();
+
+        return $this->redirect([
+            'index'
+        ]);
     }
 }

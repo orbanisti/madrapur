@@ -9,7 +9,7 @@ use yii\db\ActiveRecord;
  * Default model for the `Modulusbuilder` module
  */
 class Modulusbuilder extends ActiveRecord {
- 
+
     public static function tableName() {
         return 'YOUR-TABLE-NAME';
     }

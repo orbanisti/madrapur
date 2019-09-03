@@ -9,7 +9,7 @@ use yii\db\ActiveRecord;
  * Default model for the `Statistics` module
  */
 class Statistics extends ActiveRecord {
- 
+
     public static function tableName() {
         return 'YOUR-TABLE-NAME';
     }

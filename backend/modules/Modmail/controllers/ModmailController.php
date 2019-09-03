@@ -2,12 +2,10 @@
 
 namespace backend\modules\Modmail\controllers;
 
+use backend\controllers\Controller;
 use backend\modules\Modmail\models\Mailtemplate;
 use backend\modules\Modmail\models\Modmail;
-use backend\modules\Product\models\ProductAdminSearchModel;
-use function PHPSTORM_META\type;
 use Yii;
-use backend\controllers\Controller;
 
 /**
  * Controller for the `Modmail` module
@@ -15,13 +13,14 @@ use backend\controllers\Controller;
 class ModmailController extends Controller {
     /**
      * Renders the admin view for the module
+     *
      * @return string
      */
     public function actionAdmin() {
-        $model=new Modmail();
-        $newUsername=Yii::$app->user->getIdentity()->username;
+        $model = new Modmail();
+        $newUsername = Yii::$app->user->getIdentity()->username;
 
-        $welcomeHTML="<div class=\"container\">
+        $welcomeHTML = "<div class=\"container\">
       <div class=\"row\">
         <div class=\"col-lg-12 text-center\">
           
@@ -42,9 +41,9 @@ class ModmailController extends Controller {
             'type',
             [
                 'label' => 'View Mail',
-                'format'=>'html',
+                'format' => 'html',
                 'value' => function ($model) {
-                    return '<a href="/Modmail/modmail/readmail?id='.$model->returnId().'">Read Mail'.'</a>';
+                    return '<a href="/Modmail/modmail/readmail?id=' . $model->returnId() . '">Read Mail' . '</a>';
                 }
             ],
         ];
@@ -58,29 +57,25 @@ class ModmailController extends Controller {
             $typesArray[$type['id']] = $type['name'];
         }
 
-        return $this->render('admin',['model'=>$model,'dataProvider'=>$dataProvider,'searchModel'=>$searchModel,'gridColumns'=>$gridColumns, 'types' => $typesArray]);
+        return $this->render('admin', ['model' => $model, 'dataProvider' => $dataProvider, 'searchModel' => $searchModel, 'gridColumns' => $gridColumns, 'types' => $typesArray]);
     }
-    
+
     /**
      * Renders the index view for the module
+     *
      * @return string
      */
     public function actionIndex() {
         return $this->render('index');
     }
 
-    public function actionReadmail(){
-        $mailID=Yii::$app->request->get('id');
-        $mail=Modmail::findOne($mailID);
-
-
-
-
+    public function actionReadmail() {
+        $mailID = Yii::$app->request->get('id');
+        $mail = Modmail::findOne($mailID);
 
         return $this->render('readmail', [
-            'email'=>$mail
+            'email' => $mail
         ]);
-
     }
 
     public function actionSend() {
@@ -91,20 +86,11 @@ class ModmailController extends Controller {
         $template = Mailtemplate::findOne(['=', 'id', $templateId]);
         $body = $template['body'];
 
-        function get_string_between($string, $start, $end){
-            $between = [];
-
-            for ($i = 0; $i < count($start); ++$i) {
-                $between[] = substr($string, $start[$i], $end[$i] - $start[$i]);
-            }
-            return $between;
-        }
-
         $startNeedle = '{{';
         $lastStartPos = 0;
         $startPositions = [];
 
-        while (($lastStartPos = strpos($body, $startNeedle, $lastStartPos))!== false) {
+        while (($lastStartPos = strpos($body, $startNeedle, $lastStartPos)) !== false) {
             $startPositions[] = $lastStartPos + strlen($startNeedle);
             $lastStartPos = $lastStartPos + strlen($startNeedle);
         }
@@ -113,7 +99,7 @@ class ModmailController extends Controller {
         $lastEndPos = 0;
         $endPositions = [];
 
-        while (($lastEndPos = strpos($body, $endNeedle, $lastEndPos))!== false) {
+        while (($lastEndPos = strpos($body, $endNeedle, $lastEndPos)) !== false) {
             $endPositions[] = $lastEndPos;
             $lastEndPos = $lastEndPos + strlen($endNeedle);
         }
@@ -127,13 +113,6 @@ class ModmailController extends Controller {
         if ($data && Yii::$app->request->post('preview')) {
             $file = file_get_contents("VvvebJs/tmp-email-$templateId.html");
 
-            function set_strings($body, $templateFields){
-                foreach ($templateFields as $field) {
-                    $body = str_replace("{{".$field."}}", Yii::$app->request->post($field), $body);
-                }
-                return $body;
-            }
-
             $txt = set_strings($file, $templateFields);
 
             return var_dump($txt);
@@ -142,7 +121,6 @@ class ModmailController extends Controller {
         return $this->render('send', [
             'model' => $model,
             'data' => $data,
-            'template' => $template,
             'templateFields' => $templateFields
         ]);
     }

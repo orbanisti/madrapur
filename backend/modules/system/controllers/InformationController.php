@@ -2,6 +2,7 @@
 /**
  * Author: Eugine Terentev <eugine@terentev.net>
  */
+
 namespace backend\modules\system\controllers;
 
 use Probe\ProviderFactory;

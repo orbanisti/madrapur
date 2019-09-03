@@ -48,6 +48,26 @@ class Reservations extends MadActiveRecord {
         return $reservation->all();
     }
 
+    public static function getProductTimeshours($id) {
+        $model = new ProductTime();
+        $query = ($model->select('name', ProductTime::tableName(), ['=', 'product_id', $id]));
+        //Thats how you query---^_-
+        $mytimes = $query->all();
+
+        $onlyHours = [];
+        foreach ($mytimes as $time) {
+            $onlyHours[] = $time['name'];
+        }
+
+        return $onlyHours;
+    }
+
+    public static function getProductTimes($id) {
+        $query = ProductTime::aSelect(ProductTime::class, '*', ProductTime::tableName(), 'product_id=' . $id);
+        $mytimes = $query->all();
+        return $mytimes;
+    }
+
     public function rules() {
         return [
             [['id'], 'integer'],
@@ -221,24 +241,24 @@ class Reservations extends MadActiveRecord {
                 case 'firstName':
                     $mystuff = Yii::$app->request->post('Reservations');
                     Yii::error($myjson);
-                    $arraykey=array_key_first($mystuff);
+                    $arraykey = array_key_first($mystuff);
                     $myjson->orderDetails->edited_first_name = $mystuff[$arraykey]['firstName'];
                     break;
                 case 'lastName':
                     $mystuff = Yii::$app->request->post('Reservations');
-                    $arraykey=array_key_first($mystuff);
+                    $arraykey = array_key_first($mystuff);
                     $myjson->orderDetails->edited_last_name = $mystuff[$arraykey]['lastName'];
                     break;
                 case 'bookedChairsCount':
                     $mystuff = Yii::$app->request->post('Reservations');
-                    $arraykey=array_key_first($mystuff);
+                    $arraykey = array_key_first($mystuff);
                     $myjson->orderDetails->edited_AllPersons = $mystuff[$arraykey]['bookedChairsCount'];
 
                     break;
                 case 'bookingCost':
                     $mystuff = Yii::$app->request->post('Reservations');
-                    if(isset($myjson->boookingDetails->edited_booking_cost)){
-                        $arraykey=array_key_first($mystuff);
+                    if (isset($myjson->boookingDetails->edited_booking_cost)) {
+                        $arraykey = array_key_first($mystuff);
                         $myjson->boookingDetails->edited_booking_cost = $mystuff[$arraykey]['bookingCost'];
                     }
 
@@ -274,19 +294,16 @@ class Reservations extends MadActiveRecord {
         return $this->data;
     }
 
-
-    public function search($params)
-    {
+    public function search($params) {
         $invoiceDate = '2016-02-05';
         $bookingDate = '2020-08-20';
 
         $what = ['*'];
         $from = self::tableName();
 
+        $query = Reservations::find()->indexBy('id');;
 
-       $query = Reservations::find()->indexBy('id');;
-
-       $query->andFilterWhere((['>=','invoiceDate', '2011-12-12']));
+        $query->andFilterWhere((['>=', 'invoiceDate', '2011-12-12']));
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -300,30 +317,23 @@ class Reservations extends MadActiveRecord {
         $query->andFilterWhere((['like', 'source', $this->source]));
         $query->andFilterWhere((['=', 'bookingDate', $this->bookingDate]));
 
-
         return $dataProvider;
-
-
     }
 
-
-    public function searchMyreservations($params)
-    {
+    public function searchMyreservations($params) {
 
         $what = ['*'];
         $from = self::tableName();
-        $currentUserId=\Yii::$app->user->getId();
+        $currentUserId = \Yii::$app->user->getId();
 
         $where = self::andWhereFilter([
             # ['invoiceDate', '>=', $invoiceDate],
             # ['bookingDate', '<=', $bookingDate],
             # ['source', '=', 'Street'],
-            ['sellerId', '=',strval($currentUserId) ],
+            ['sellerId', '=', strval($currentUserId)],
         ]);
 
         $rows = self::aSelect(Reservations::class, $what, $from, $where);
-
-
 
         $dataProvider = new ActiveDataProvider([
             'query' => $rows,
@@ -337,29 +347,25 @@ class Reservations extends MadActiveRecord {
         return $dataProvider;
     }
 
-
-
-    public function searchAllreservations($params)
-    {
+    public function searchAllreservations($params) {
 
         $what = ['*'];
         $from = self::tableName();
 
-        $searchParams = isset($params['Reservations']) ? $params['Reservations'] : [] ;
+        $searchParams = isset($params['Reservations']) ? $params['Reservations'] : [];
         $filters = [];
         $filters[] = ['source', 'IN', ['Street', 'Hotel']];
 
         foreach ($searchParams as $paramName => $paramValue) {
-            if ($paramValue)
+            if ($paramValue) {
                 $filters[] = [$paramName, 'LIKE', $paramValue];
+            }
         }
 
         $where = self::andWhereFilter($filters);
 
         $rows = self::aSelect(Reservations::class, $what, $from, $where, ['invoiceMonth' => SORT_ASC, 'source' => SORT_ASC, 'sellerName' => SORT_ASC, 'bookingId' => SORT_ASC]);
 
-
-
         $dataProvider = new ActiveDataProvider([
             'query' => $rows,
             'pagination' => [
@@ -372,19 +378,18 @@ class Reservations extends MadActiveRecord {
         return $dataProvider;
     }
 
-
     public function searchMonthlyStatistics($params) {
         $what = ['*'];
         $from = self::tableName();
 
-        $searchParams = isset($params['Reservations']) ? $params['Reservations'] : [] ;
+        $searchParams = isset($params['Reservations']) ? $params['Reservations'] : [];
         $filters = [];
 
         foreach ($searchParams as $paramName => $paramValue) {
-            if ($paramValue)
+            if ($paramValue) {
                 $filters[] = [$paramName, 'LIKE', $paramValue];
+            }
         }
-
 
         $filters[] = ['order_currency', '=', 'EUR'];
 
@@ -419,7 +424,6 @@ class Reservations extends MadActiveRecord {
 
         $where = self::andWhereFilter($filters);
 
-
         $rows = self::aSelect(
             Reservations::class,
             $what, $from, $where
@@ -443,8 +447,7 @@ class Reservations extends MadActiveRecord {
 
         $where = self::andWhereFilter($filters);
 
-
-        $rows = self::aSelect(            Reservations::class,
+        $rows = self::aSelect(Reservations::class,
             $what, $from, $where
         )->all();
 
@@ -474,22 +477,19 @@ class Reservations extends MadActiveRecord {
             $what, $from, $where
         )->one();
 
-
-
         return $row;
     }
 
+    //TODO unused params
 
-    public function searchDay($params,$selectedDate,$sources,$prodId)
-    {
-
+    public function searchDay($params, $selectedDate, $sources, $prodId) {
 
         $what = ['*'];
         $from = self::tableName();
-        $wheres=[];
-        $wheres[]=['bookingDate', '=', $selectedDate];
-        $sources[]=$prodId;
-        $wheres[]=['productId', 'IN', $sources];
+        $wheres = [];
+        $wheres[] = ['bookingDate', '=', $selectedDate];
+        $sources[] = $prodId;
+        $wheres[] = ['productId', 'IN', $sources];
         $where = self::andWhereFilter($wheres);
         $rows = self::aSelect(Reservations::class, $what, $from, $where);
         $dataProvider = new ActiveDataProvider([
@@ -501,15 +501,15 @@ class Reservations extends MadActiveRecord {
 
         return $dataProvider;
     }
-    public function searchDayTime($params,$selectedDate,$sources,$prodId,$time)
-    {
+
+    public function searchDayTime($params, $selectedDate, $sources, $prodId, $time) {
         $what = ['*'];
         $from = self::tableName();
-        $wheres=[];
-        $wheres[]=['bookingDate', '=', $selectedDate];
-        $sources[]=$prodId;
-        $wheres[]=['productId', 'IN', $sources];
-        $wheres[]=['booking_start', '=', $selectedDate.' '.$time.':00'];
+        $wheres = [];
+        $wheres[] = ['bookingDate', '=', $selectedDate];
+        $sources[] = $prodId;
+        $wheres[] = ['productId', 'IN', $sources];
+        $wheres[] = ['booking_start', '=', $selectedDate . ' ' . $time . ':00'];
         $where = self::andWhereFilter($wheres);
         $rows = self::aSelect(Reservations::class, $what, $from, $where);
         $dataProvider = new ActiveDataProvider([
@@ -522,45 +522,20 @@ class Reservations extends MadActiveRecord {
         return $dataProvider;
     }
 
-    //TODO unused params
-    public function countTakenChairsOnDay($selectedDate,$sources)
-    {
+    public function countTakenChairsOnDay($selectedDate, $sources) {
 
         $what = ['*'];
         $from = self::tableName();
-        $wheres=[];
-        $wheres[]=['bookingDate', '=', $selectedDate];
-        $wheres[]=['productId', 'IN', $sources];
+        $wheres = [];
+        $wheres[] = ['bookingDate', '=', $selectedDate];
+        $wheres[] = ['productId', 'IN', $sources];
         $where = self::andWhereFilter($wheres);
         $rows = self::aSelect(Reservations::class, $what, $from, $where);
-        $bookigsFromThatDay=$rows->all();
-        $counter=0;
-        foreach ($bookigsFromThatDay as $reservation){
-            if(isset($reservation->bookedChairsCount)){
-                $counter=$counter+$reservation->bookedChairsCount;
-                if ($reservation->bookedChairsCount % 2 === 1) {
-                    $counter += 1;
-                }
-            }
-        }
-        return $counter;
-    }
-    public function countTakenChairsOnDayTime($selectedDate,$sources,$time)
-    {
-
-        $what = ['*'];
-        $from = self::tableName();
-        $wheres=[];
-        $wheres[]=['bookingDate', '=', $selectedDate];
-        $wheres[]=['productId', 'IN', $sources];
-        $wheres[]=['booking_start', '=', $selectedDate.' '.$time.':00'];
-        $where = self::andWhereFilter($wheres);
-        $rows = self::aSelect(Reservations::class, $what, $from, $where);
-        $bookigsFromThatDay=$rows->all();
-        $counter=0;
-        foreach ($bookigsFromThatDay as $reservation){
-            if(isset($reservation->bookedChairsCount)){
-                $counter=$counter+$reservation->bookedChairsCount;
+        $bookigsFromThatDay = $rows->all();
+        $counter = 0;
+        foreach ($bookigsFromThatDay as $reservation) {
+            if (isset($reservation->bookedChairsCount)) {
+                $counter = $counter + $reservation->bookedChairsCount;
                 if ($reservation->bookedChairsCount % 2 === 1) {
                     $counter += 1;
                 }
@@ -569,39 +544,57 @@ class Reservations extends MadActiveRecord {
         return $counter;
     }
 
-
-    public function availableChairsOnDay($params,$selectedDate,$sources,$prodId)
-    {
+    public function countTakenChairsOnDayTime($selectedDate, $sources, $time) {
 
         $what = ['*'];
         $from = self::tableName();
-        $wheres=[];
-        $wheres[]=['bookingDate', '=', $selectedDate];
-        $wheres[]=['productId', 'IN', $sources];
+        $wheres = [];
+        $wheres[] = ['bookingDate', '=', $selectedDate];
+        $wheres[] = ['productId', 'IN', $sources];
+        $wheres[] = ['booking_start', '=', $selectedDate . ' ' . $time . ':00'];
         $where = self::andWhereFilter($wheres);
         $rows = self::aSelect(Reservations::class, $what, $from, $where);
-        $bookigsFromThatDay=$rows->all();
-        $counter=0;
-        foreach ($bookigsFromThatDay as $reservation){
-            if(isset($reservation->bookedChairsCount)){
-                $counter=$counter+$reservation->bookedChairsCount;
+        $bookigsFromThatDay = $rows->all();
+        $counter = 0;
+        foreach ($bookigsFromThatDay as $reservation) {
+            if (isset($reservation->bookedChairsCount)) {
+                $counter = $counter + $reservation->bookedChairsCount;
                 if ($reservation->bookedChairsCount % 2 === 1) {
                     $counter += 1;
                 }
             }
         }
-        $currentProduct=Product::getProdById($prodId);
-        $placesleft=$currentProduct->capacity-$counter;
-        if($placesleft%2!=0){
-            $placesleft-=1;
+        return $counter;
+    }
+
+    public function availableChairsOnDay($params, $selectedDate, $sources, $prodId) {
+
+        $what = ['*'];
+        $from = self::tableName();
+        $wheres = [];
+        $wheres[] = ['bookingDate', '=', $selectedDate];
+        $wheres[] = ['productId', 'IN', $sources];
+        $where = self::andWhereFilter($wheres);
+        $rows = self::aSelect(Reservations::class, $what, $from, $where);
+        $bookigsFromThatDay = $rows->all();
+        $counter = 0;
+        foreach ($bookigsFromThatDay as $reservation) {
+            if (isset($reservation->bookedChairsCount)) {
+                $counter = $counter + $reservation->bookedChairsCount;
+                if ($reservation->bookedChairsCount % 2 === 1) {
+                    $counter += 1;
+                }
+            }
+        }
+        $currentProduct = Product::getProdById($prodId);
+        $placesleft = $currentProduct->capacity - $counter;
+        if ($placesleft % 2 != 0) {
+            $placesleft -= 1;
         }
         return $placesleft;
     }
 
-
-
-    public function searchChart($params)
-    {
+    public function searchChart($params) {
         $invoiceDate = '2016-02-05';
         $bookingDate = '2020-08-20';
 
@@ -612,8 +605,6 @@ class Reservations extends MadActiveRecord {
             ['bookingDate', '<=', $bookingDate]
             # ['source', 'LIKE', 'utca']
         ]);
-
-
 
         $rows = self::aSelect(Reservations::class, $what, $from, $where);
 
@@ -635,8 +626,6 @@ class Reservations extends MadActiveRecord {
             # ['source', 'LIKE', 'utca']
         ]);
 
-
-
         $rows = self::aSelect(Reservations::class, $what, $from, $where);
 
         $dataProvider = new ActiveDataProvider([
@@ -653,27 +642,5 @@ class Reservations extends MadActiveRecord {
     public function returnId() {
         return $this['id'];
     }
-    public static function getProductTimeshours($id){
-        $model= new ProductTime();
-        $query = ($model->select('name',ProductTime::tableName(),['=','product_id',$id]));
-        //Thats how you query---^_-
-        $mytimes = $query->all();
-
-        $onlyHours=[];
-        foreach ($mytimes as $time){
-            $onlyHours[]=$time['name'];
-        }
-
-        return $onlyHours;
-
-
-
-    }
-    public static function getProductTimes($id){
-        $query = ProductTime::aSelect(ProductTime::class, '*', ProductTime::tableName(), 'product_id=' . $id);
-        $mytimes = $query->all();
-        return $mytimes;
-    }
-
 
 }

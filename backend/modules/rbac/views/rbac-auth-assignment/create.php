@@ -1,5 +1,4 @@
 <?php
-use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\rbac\models\RbacAuthAssignment */
@@ -19,8 +18,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php
 
-echo $this->render('_form', [
+    echo $this->render('_form', [
         'model' => $model,
-    ])?>
+    ]) ?>
 
 </div>

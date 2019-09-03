@@ -93,6 +93,9 @@ use kartik\icons\Icon;
     ]);
     // $prodInfo=Product::getProdById(43); //With this method you get every information about a product with $id
 
+        $response = $client->yell($selectedDate,$currentProduct);
+        echo $response;
+    */
 
     ?>
     </p>

@@ -6,27 +6,23 @@
  * Time: 20:38
  */
 
+use backend\components\extra;
 use backend\modules\Product\models\Product;
 use backend\modules\Product\models\ProductAdminSearchModel;
-
 use kartik\helpers\Html;
-use backend\components\extra;
 use kartik\select2\Select2;
 use yii\web\JsExpression;
 use yii\web\View;
-
-use kartik\grid\EditableColumn;
 use yii\widgets\ActiveForm;
-
 
 ?>
 
 
 
 
-           <?php
+<?php
 
-           $format = <<< SCRIPT
+$format = <<< SCRIPT
 
 function format(state) {
     if (!state.id) return state.text; // optgroup
@@ -36,206 +32,181 @@ function format(state) {
 
 SCRIPT;
 
-
-           $escape = new JsExpression("function(m) { return m; }");
-           $this->registerJs($format, View::POS_HEAD);
-
+$escape = new JsExpression("function(m) { return m; }");
+$this->registerJs($format, View::POS_HEAD);
 
 ?>
 <?php
 
-
-
 ?>
 <!--suppress ALL -->
 <div class="reservations-info-index">
-<style>
-    td{
-        border:1px solid black;
-        padding:3px;
-    }
+    <style>
+        td {
+            border: 1px solid black;
+            padding: 3px;
+        }
 
-        select{
+        select {
 
-            display:block !important;
+            display: block !important;
         }
     </style>
-<div class="panel">
-    <div class="panel-body">
+    <div class="panel">
+        <div class="panel-body">
 
-        <?php
+            <?php
 
-        $form = ActiveForm::begin([
-            'id' => 'assign-reservation-form'.rand()%10,
-            'options' => ['class' => 'form-horizontal'.rand()%10],
-        ]) ?>
+            $form = ActiveForm::begin([
+                'id' => 'assign-reservation-form' . rand() % 10,
+                'options' => ['class' => 'form-horizontal' . rand() % 10],
+            ]) ?>
 
-        <?php
-        $productmodel = new Product();
-        $searchModel = new ProductAdminSearchModel();
+            <?php
+            $productModel = new Product();
+            $searchModel = new ProductAdminSearchModel();
 
-        $usermodel=new \common\models\User();
-        $allusers = $usermodel->find()->all();
-        $streetsellers=[];
-        $hotelsellers=[];
+            $userModel = new \common\models\User();
+            $allUsers = $userModel->find()->all();
+            $streetSellers = [];
+            $hotelSellers = [];
 
-        foreach($allusers as $user){
-            $authManager = \Yii::$app->getAuthManager();
-            $hasstreetbool= $authManager->getAssignment('streetSeller', $user->id) ? true : false;
-            if($hasstreetbool){
-                $streetsellers[]=$user;
-            };
-
-
-        }
-        $data=[];
-        $images=[];
-        foreach($streetsellers as $user){
-            $data[$user->id]=$user->username;
-            $images[$user->id]=$user->userProfile->avatar;
-        }
-
-        foreach($hotelsellers as $user){
-            $data2[$user->id]=$user->username;
-            $images[$user->id]=$user->userProfile->avatar;
-        }
-
-        ?>
-
-
-
-
-
-
-        <?php
-        echo Html::hiddenInput('reservation', $model->id);
-        echo $form->field($usermodel, 'id')->widget(Select2::classname(), [
-            'name' => 'users'.rand(),
-            'data' => $data,
-            'id'=>rand(),
-            'pluginOptions' => [
-                'escapeMarkup' => $escape,
-                'allowClear' => true
-            ],
-        ])->label('Assing reservation to a street seller');
-
-
-
-
-        ?>
-
-
-        <div class="form-group">
-            <div class="col-lg-offset-1 col-lg-11">
-                <?= Html::submitButton('Assign to this user', ['class' => 'btn btn-primary']) ?>
-            </div>
-        </div>
-        <?php ActiveForm::end() ?>
-
-        <?php
-
-        $form = ActiveForm::begin([
-            'id' => 'assign-reservation-form'.rand()%10,
-            'options' => ['class' => 'form-horizontal'.rand()%10],
-        ]) ?>
-
-        <?php
-        $productmodel = new Product();
-        $searchModel = new ProductAdminSearchModel();
-
-        $usermodel=new \common\models\User();
-        $allusers = $usermodel->find()->all();
-        $hotelsellers=[];
-
-        foreach($allusers as $user){
-            $authManager = \Yii::$app->getAuthManager();
-            $hashotelbool= $authManager->getAssignment('hotelEditor', $user->id) ? true : false;
-            if($hashotelbool){
-                $hotelsellers[]=$user;
-
-            };
-
-        }
-
-
-        $data=[];
-        $data2=[];
-        $images=[];
-        foreach($streetsellers as $user){
-
-            $data[$user->id]=$user->username;
-            $images[$user->id]=$user->userProfile->avatar;
-
-        }
-        foreach($hotelsellers as $user){
-
-            $data2[$user->id]=$user->username;
-            $images[$user->id]=$user->userProfile->avatar;
-
-        }
-        ?>
-
-
-
-        <?php
-        echo Html::hiddenInput('reservation', $model->id);
-
-        echo $form->field($usermodel, 'id')->widget(Select2::classname(), [
-            'name' => 'users'.rand(),
-
-            'data' => $data2,
-
-            'pluginOptions' => [
-                'escapeMarkup' => $escape,
-                'allowClear' => true
-            ],
-        ])->label('Assing reservation to a hotelSeller');
-
-
-
-
-        ?>
-
-
-        <div class="form-group">
-            <div class="col-lg-offset-1 col-lg-11">
-                <?= Html::submitButton('Assign to this user', ['class' => 'btn btn-primary']) ?>
-            </div>
-        </div>
-
-        <?php ActiveForm::end() ?>
-
-
-        <?php
-            $reservationData=$model->data;
-            if($assignLog=json_decode($reservationData)){
-               if(isset($assignLog->assignments)){
-                   echo '<table>';
-                   echo '<th><tr><td>Timestamp</td><td>From</td><td>To</td><td>By <b>user</b></td></tr></th>';
-                   foreach($assignLog->assignments as $i=>$log){
-
-                       echo '<tr>'
-                           .'<td>'.$log->time.'</td>'
-                           .'<td>'.$log->from.'</td>'
-                           .'<td>'.$log->to.'</td>'
-                           .'<td>'.$log->by.'</td>'
-
-
-
-
-                           .'</tr>';
-
-
-                   }
-                   echo '</table>';
-               }
-
+            foreach ($allUsers as $user) {
+                $authManager = \Yii::$app->getAuthManager();
+                $hasStreetBool = $authManager->getAssignment('streetSeller', $user->id) ? true : false;
+                if ($hasStreetBool) {
+                    $streetSellers[] = $user;
+                };
+            }
+            $data = [];
+            $images = [];
+            foreach ($streetSellers as $user) {
+                $data[$user->id] = $user->username;
+                $images[$user->id] = $user->userProfile->avatar;
             }
 
+            foreach ($hotelSellers as $user) {
+                $data2[$user->id] = $user->username;
+                $images[$user->id] = $user->userProfile->avatar;
+            }
 
-        ?>
+            ?>
 
 
 
+
+
+
+            <?php
+            echo Html::hiddenInput('reservation', $model->id);
+            echo $form->field($userModel, 'id')->widget(Select2::classname(), [
+                'name' => 'users' . rand(),
+                'data' => $data,
+                'id' => rand(),
+                'pluginOptions' => [
+                    'escapeMarkup' => $escape,
+                    'allowClear' => true
+                ],
+            ])->label('Assing reservation to a street seller');
+
+            ?>
+
+
+            <div class="form-group">
+                <div class="col-lg-offset-1 col-lg-11">
+                    <?= Html::submitButton('Assign to this user', ['class' => 'btn btn-primary']) ?>
+                </div>
+            </div>
+            <?php ActiveForm::end() ?>
+
+            <?php
+
+            $form = ActiveForm::begin([
+                'id' => 'assign-reservation-form' . rand() % 10,
+                'options' => ['class' => 'form-horizontal' . rand() % 10],
+            ]) ?>
+
+            <?php
+            $productModel = new Product();
+            $searchModel = new ProductAdminSearchModel();
+
+            $userModel = new \common\models\User();
+            $allUsers = $userModel->find()->all();
+            $hotelSellers = [];
+
+            foreach ($allUsers as $user) {
+                $authManager = \Yii::$app->getAuthManager();
+                $hasHotelBool = $authManager->getAssignment('hotelEditor', $user->id) ? true : false;
+                if ($hasHotelBool) {
+                    $hotelSellers[] = $user;
+                };
+            }
+
+            $data = [];
+            $data2 = [];
+            $images = [];
+            foreach ($streetSellers as $user) {
+
+                $data[$user->id] = $user->username;
+                $images[$user->id] = $user->userProfile->avatar;
+            }
+            foreach ($hotelSellers as $user) {
+
+                $data2[$user->id] = $user->username;
+                $images[$user->id] = $user->userProfile->avatar;
+            }
+            ?>
+
+
+
+            <?php
+            echo Html::hiddenInput('reservation', $model->id);
+
+            echo $form->field($userModel, 'id')->widget(Select2::classname(), [
+                'name' => 'users' . rand(),
+
+                'data' => $data2,
+
+                'pluginOptions' => [
+                    'escapeMarkup' => $escape,
+                    'allowClear' => true
+                ],
+            ])->label('Assing reservation to a hotelSeller');
+
+            ?>
+
+
+            <div class="form-group">
+                <div class="col-lg-offset-1 col-lg-11">
+                    <?= Html::submitButton('Assign to this user', ['class' => 'btn btn-primary']) ?>
+                </div>
+            </div>
+
+            <?php ActiveForm::end() ?>
+
+
+            <?php
+            $reservationData = $model->data;
+            if ($assignLog = json_decode($reservationData)) {
+                if (isset($assignLog->assignments)) {
+                    echo '<table>';
+                    echo '<th><tr><td>Timestamp</td><td>From</td><td>To</td><td>By <b>user</b></td></tr></th>';
+                    foreach ($assignLog->assignments as $i => $log) {
+
+                        echo '<tr>'
+                            . '<td>' . $log->time . '</td>'
+                            . '<td>' . $log->from . '</td>'
+                            . '<td>' . $log->to . '</td>'
+                            . '<td>' . $log->by . '</td>'
+
+                            . '</tr>';
+                    }
+                    echo '</table>';
+                }
+            }
+
+            ?>
+
+
+        </div>
     </div>
-</div>

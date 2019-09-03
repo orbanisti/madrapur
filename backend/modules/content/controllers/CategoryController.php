@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\content\controllers;
 
 use backend\modules\content\models\search\ArticleCategorySearch;
@@ -51,12 +52,12 @@ class CategoryController extends Controller {
         $categories = ArrayHelper::map($categories, 'id', 'title');
 
         return $this->render('index',
-                [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
-                    'model' => $category,
-                    'categories' => $categories,
-                ]);
+            [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'model' => $category,
+                'categories' => $categories,
+            ]);
     }
 
     /**
@@ -77,31 +78,17 @@ class CategoryController extends Controller {
         }
         $categories = ArticleCategory::find()->noParents()
             ->andWhere([
-            'not',
-            [
-                'id' => $id
-            ]
-        ])
+                'not',
+                [
+                    'id' => $id
+                ]
+            ])
             ->all();
         $categories = ArrayHelper::map($categories, 'id', 'title');
 
         return $this->render('update', [
             'model' => $category,
             'categories' => $categories,
-        ]);
-    }
-
-    /**
-     *
-     * @param integer $id
-     *
-     * @return mixed
-     */
-    public function actionDelete($id) {
-        $this->findModel($id)->delete();
-
-        return $this->redirect([
-            'index'
         ]);
     }
 
@@ -117,5 +104,19 @@ class CategoryController extends Controller {
             return $model;
         }
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     *
+     * @param integer $id
+     *
+     * @return mixed
+     */
+    public function actionDelete($id) {
+        $this->findModel($id)->delete();
+
+        return $this->redirect([
+            'index'
+        ]);
     }
 }

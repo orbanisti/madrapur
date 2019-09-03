@@ -13,6 +13,10 @@ use yii\data\ActiveDataProvider;
 
 class TicketBlockDummySearchModel extends MadActiveRecord {
 
+    public static function primaryKey() {
+        return ['ticketId'];
+    }
+
     public function search($params) {
         $query = self::find();
 
@@ -25,10 +29,6 @@ class TicketBlockDummySearchModel extends MadActiveRecord {
         }
 
         return $dataProvider;
-    }
-
-    public static function primaryKey() {
-        return ['ticketId'];
     }
 
 }

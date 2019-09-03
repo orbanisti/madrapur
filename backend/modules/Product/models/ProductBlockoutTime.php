@@ -5,20 +5,13 @@ namespace backend\modules\Product\models;
 use backend\modules\MadActiveRecord\models\MadActiveRecord;
 use Yii;
 use yii\data\ActiveDataProvider;
-use yii\db\ActiveRecord;
 
 /**
  * Default model for the `Product` module
  */
-class ProductBlockoutTime extends MadActiveRecord{
+class ProductBlockoutTime extends MadActiveRecord {
 
-    public static function tableName()
-    {
-        return 'modulusProductBlockedTimes';
-    }
-
-    public function rules()
-    {
+    public function rules() {
         return [
 
             [['date', 'product_id'], 'required'],
@@ -32,9 +25,7 @@ class ProductBlockoutTime extends MadActiveRecord{
         ];
     }
 
-    public function attributeLabels()
-
-    {
+    public function attributeLabels() {
 
         return [
 
@@ -45,11 +36,9 @@ class ProductBlockoutTime extends MadActiveRecord{
             'product_id' => Yii::t('app', 'ProductId'),
 
         ];
-
     }
 
-    public function search($params,$productId)
-    {
+    public function search($params, $productId) {
         #  $invoiceDate = '2016-02-05';
         # $bookingDate = '2020-08-20';
 
@@ -59,8 +48,7 @@ class ProductBlockoutTime extends MadActiveRecord{
             ['product_id', '=', $productId],
         ]);
 
-
-        $rows = self::aSelect(ProductBlockoutTime::class, $what, $from,$where);
+        $rows = self::aSelect(ProductBlockoutTime::class, $what, $from, $where);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $rows,
@@ -74,21 +62,18 @@ class ProductBlockoutTime extends MadActiveRecord{
         return $dataProvider;
     }
 
+    public static function tableName() {
+        return 'modulusProductBlockedTimes';
+    }
 
     public function init() {
         parent::init();
 
-
-
         return true;
     }
 
-
-    public function getProduct()
-    {
+    public function getProduct() {
         return $this->hasOne(Product::class, ['id' => 'product_id']);
     }
-
-
 
 }

@@ -3,7 +3,6 @@
 namespace backend\modules\Tickets\models;
 
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * Default model for the `TicketBlock` module

@@ -4,7 +4,6 @@ namespace backend\modules\Tickets\models;
 
 use backend\modules\MadActiveRecord\models\MadActiveRecord;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * Default model for the `Tickets` module

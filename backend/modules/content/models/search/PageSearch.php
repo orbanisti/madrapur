@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\content\models\search;
 
 use common\models\Page;
@@ -55,7 +56,7 @@ class PageSearch extends Page {
             'query' => $query,
         ]);
 
-        if (! ($this->load($params) && $this->validate())) {
+        if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 
@@ -70,15 +71,15 @@ class PageSearch extends Page {
             $this->slug
         ])
             ->andFilterWhere([
-            'like',
-            'title',
-            $this->title
-        ])
+                'like',
+                'title',
+                $this->title
+            ])
             ->andFilterWhere([
-            'like',
-            'body',
-            $this->body
-        ]);
+                'like',
+                'body',
+                $this->body
+            ]);
 
         return $dataProvider;
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\rbac\models;
 
 use backend\modules\MadActiveRecord\models\MadActiveRecord;

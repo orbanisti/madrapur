@@ -876,6 +876,7 @@
 
 <!-- components-->
 <?php $this->registerJsFile('VvvebJs/libs/builder/components-bootstrap4.js', ['depends' => [yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('VvvebJs/libs/builder/components-email.js', ['depends' => [yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('VvvebJs/libs/builder/components-widgets.js', ['depends' => [yii\web\JqueryAsset::className()]]); ?>
 
 <!-- blocks-->
@@ -896,7 +897,7 @@
 
 
 <script>
-$(document).ready(function() 
+$(document).ready(function()
 {
 	//if url has #no-right-panel set one panel demo
 	if (window.location.hash.indexOf("no-right-panel") != -1)
@@ -926,9 +927,9 @@ $(document).ready(function()
 		{name:"pricing", title:"Pricing",  url: "demo/pricing/index.html", assets: ['demo/pricing/pricing.css']},
 		{name:"product", title:"Product",  url: "demo/product/index.html", assets: ['demo/product/product.css']},
 		{name:"ecommerce", title:"eCommerce homepage",  url: "ecommerce_demo/index.html"},
-	
+
 	]);
-	
+
 	Vvveb.FileManager.loadPage("narrow-jumbotron");
 });
 </script>

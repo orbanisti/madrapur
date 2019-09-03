@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\widget\models\search;
 
 use common\models\WidgetMenu;
@@ -55,7 +56,7 @@ class MenuSearch extends WidgetMenu {
             'query' => $query,
         ]);
 
-        if (! ($this->load($params) && $this->validate())) {
+        if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 
@@ -70,15 +71,15 @@ class MenuSearch extends WidgetMenu {
             $this->key
         ])
             ->andFilterWhere([
-            'like',
-            'title',
-            $this->title
-        ])
+                'like',
+                'title',
+                $this->title
+            ])
             ->andFilterWhere([
-            'like',
-            'items',
-            $this->items
-        ]);
+                'like',
+                'items',
+                $this->items
+            ]);
 
         return $dataProvider;
     }

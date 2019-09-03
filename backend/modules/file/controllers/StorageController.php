@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\file\controllers;
 
 use backend\modules\file\models\search\FileStorageItemSearch;
@@ -74,12 +75,12 @@ class StorageController extends Controller {
         $totalSize = FileStorageItem::find()->sum('size') ?: 0;
 
         return $this->render('index',
-                [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
-                    'components' => $components,
-                    'totalSize' => $totalSize,
-                ]);
+            [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'components' => $components,
+                'totalSize' => $totalSize,
+            ]);
     }
 
     /**
@@ -98,20 +99,6 @@ class StorageController extends Controller {
      *
      * @param integer $id
      *
-     * @return mixed
-     */
-    public function actionDelete($id) {
-        $this->findModel($id)->delete();
-
-        return $this->redirect([
-            'index'
-        ]);
-    }
-
-    /**
-     *
-     * @param integer $id
-     *
      * @return FileStorageItem the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -121,5 +108,19 @@ class StorageController extends Controller {
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    /**
+     *
+     * @param integer $id
+     *
+     * @return mixed
+     */
+    public function actionDelete($id) {
+        $this->findModel($id)->delete();
+
+        return $this->redirect([
+            'index'
+        ]);
     }
 }

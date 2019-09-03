@@ -9,7 +9,7 @@ use yii\db\ActiveRecord;
  * Default model for the `Payment` module
  */
 class Payment extends ActiveRecord {
- 
+
     public static function tableName() {
         return 'modulusorders';
     }

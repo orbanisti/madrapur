@@ -1,25 +1,25 @@
 <div class="tickets-admin">
     <?php
-        echo \kartik\grid\GridView::widget([
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'columns' => $gridColumns,
-            'toolbar' =>  [
-                [
-                    'options' => ['class' => 'btn-group mr-2']
-                ],
-                '{export}',
-                '{toggleData}',
+    echo \kartik\grid\GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => $gridColumns,
+        'toolbar' => [
+            [
+                'options' => ['class' => 'btn-group mr-2']
             ],
-            'toggleDataContainer' => ['class' => 'btn-group mr-2'],
-            'export' => [
-                'fontAwesome' => true,
-            ],
-            'bordered' => true,
-            'striped'=>true,
-            'panel' => [
-                'heading' => '<i class="fa fa-summary-alt"></i>',
-            ],
-        ]);
+            '{export}',
+            '{toggleData}',
+        ],
+        'toggleDataContainer' => ['class' => 'btn-group mr-2'],
+        'export' => [
+            'fontAwesome' => true,
+        ],
+        'bordered' => true,
+        'striped' => true,
+        'panel' => [
+            'heading' => '<i class="fa fa-summary-alt"></i>',
+        ],
+    ]);
     ?>
 </div>

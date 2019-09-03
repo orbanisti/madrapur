@@ -6,18 +6,11 @@
  * Time: 20:38
  */
 
-use backend\modules\Reservations\models\Reservations;
-use backend\modules\Reservations\models\ReservationsAdminSearchModel;
-use insolita\wgadminlte\LteBox;
+use backend\components\extra;
 use insolita\wgadminlte\LteConst;
 use insolita\wgadminlte\LteSmallBox;
-use kartik\grid\GridView;
 use kartik\helpers\Html;
-use backend\components\extra;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
-use yii\widgets\ActiveForm;
-
 
 ?>
 
@@ -32,30 +25,30 @@ use yii\widgets\ActiveForm;
             LteSmallBox::begin([
                 'type' => LteConst::COLOR_AQUA,
                 'title' => $monthlySold . 'EUR',
-                'icon'=>'fa fa-list-alt',
-                'text'=>'Monthly sold'
-            ])?>
-            <?php LteSmallBox::end()?>
+                'icon' => 'fa fa-list-alt',
+                'text' => 'Monthly sold'
+            ]) ?>
+            <?php LteSmallBox::end() ?>
         </div>
         <div class="col-xs-12 col-md-3">
             <?php
             LteSmallBox::begin([
                 'type' => LteConst::COLOR_BLUE,
                 'title' => $todaySold . ' EUR',
-                'text'=>'Today Sold',
-                'icon'=>'fa fa-list-alt',
-            ])?>
-            <?php LteSmallBox::end()?>
+                'text' => 'Today Sold',
+                'icon' => 'fa fa-list-alt',
+            ]) ?>
+            <?php LteSmallBox::end() ?>
         </div>
         <div class="col-xs-12 col-md-3">
             <?php
             LteSmallBox::begin([
                 'type' => LteConst::COLOR_OLIVE,
                 'title' => "Batthyány tér",
-                'text'=>'Current assigned location',
-                'icon'=>'fa fa-map-marker',
-            ])?>
-            <?php LteSmallBox::end()?>
+                'text' => 'Current assigned location',
+                'icon' => 'fa fa-map-marker',
+            ]) ?>
+            <?php LteSmallBox::end() ?>
         </div>
         <div class="col-xs-12 col-md-3">
             <?php
@@ -66,46 +59,41 @@ use yii\widgets\ActiveForm;
                 'text' => 'Next ticked ID',
                 'footer' => 'View ticket block',
                 'link' => Url::to("/Tickets/tickets/admin")
-            ])?>
-            <?php LteSmallBox::end()?>
+            ]) ?>
+            <?php LteSmallBox::end() ?>
         </div>
     </div>
     <?php
     $gridColumns = [
         'id',
         'updateDate',
-       # 'bookingId',
+        # 'bookingId',
 
         'bookedChairsCount',
-       # 'source',
-       # 'sellerName',
-       # 'invoiceDate',
+        # 'source',
+        # 'sellerName',
+        # 'invoiceDate',
 
         'bookingCost',
         'orderCurrency',
-       # 'bookingDate',
-       /* [
-            'label' => 'Edit Booking',
-            'format'=>'html',
-            'value' => function ($model) {
-                return '<a href="/Reservations/reservations/bookingedit?id='.$model->returnId().'">Edit'.'</a>';
-            }
-        ],*/
-
-
-
+        # 'bookingDate',
+        /* [
+             'label' => 'Edit Booking',
+             'format'=>'html',
+             'value' => function ($model) {
+                 return '<a href="/Reservations/reservations/bookingedit?id='.$model->returnId().'">Edit'.'</a>';
+             }
+         ],*/
 
     ];
 
     echo \kartik\grid\GridView::widget([
 
-
-
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => $gridColumns,
-        'pjax'=>true,
-        'toolbar' =>  [
+        'pjax' => true,
+        'toolbar' => [
             [
 
                 'options' => ['class' => 'btn-group mr-2']
@@ -120,16 +108,13 @@ use yii\widgets\ActiveForm;
 
         ],
         'bordered' => true,
-        'striped'=>true,
+        'striped' => true,
         'panel' => [
             'heading' => '<i class="fa fa-calendar"></i>',
 
         ],
 
-
-
     ]);
-
 
     ?>
 </div>

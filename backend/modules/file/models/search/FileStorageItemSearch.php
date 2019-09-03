@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\file\models\search;
 
 use common\models\FileStorageItem;
@@ -75,7 +76,7 @@ class FileStorageItemSearch extends FileStorageItem {
             'query' => $query,
         ]);
 
-        if (! ($this->load($params) && $this->validate())) {
+        if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 
@@ -99,30 +100,30 @@ class FileStorageItemSearch extends FileStorageItem {
             $this->component
         ])
             ->andFilterWhere([
-            'like',
-            'base_url',
-            $this->base_url
-        ])
+                'like',
+                'base_url',
+                $this->base_url
+            ])
             ->andFilterWhere([
-            'like',
-            'path',
-            $this->path
-        ])
+                'like',
+                'path',
+                $this->path
+            ])
             ->andFilterWhere([
-            'like',
-            'type',
-            $this->type
-        ])
+                'like',
+                'type',
+                $this->type
+            ])
             ->andFilterWhere([
-            'like',
-            'name',
-            $this->name
-        ])
+                'like',
+                'name',
+                $this->name
+            ])
             ->andFilterWhere([
-            'like',
-            'upload_ip',
-            $this->upload_ip
-        ]);
+                'like',
+                'upload_ip',
+                $this->upload_ip
+            ]);
 
         return $dataProvider;
     }

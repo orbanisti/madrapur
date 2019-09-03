@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\system\controllers;
 
 use common\components\keyStorage\FormModel;
@@ -66,12 +67,12 @@ class SettingsController extends Controller {
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('alert',
-                    [
-                        'body' => Yii::t('backend', 'Settings was successfully saved'),
-                        'options' => [
-                            'class' => 'alert alert-success'
-                        ],
-                    ]);
+                [
+                    'body' => Yii::t('backend', 'Settings was successfully saved'),
+                    'options' => [
+                        'class' => 'alert alert-success'
+                    ],
+                ]);
 
             return $this->refresh();
         }

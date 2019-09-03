@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\widget\models\search;
 
 use common\models\WidgetCarousel;
@@ -53,7 +54,7 @@ class CarouselSearch extends WidgetCarousel {
             'query' => $query,
         ]);
 
-        if (! ($this->load($params) && $this->validate())) {
+        if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 

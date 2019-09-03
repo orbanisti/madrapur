@@ -27,9 +27,9 @@ use kartik\select2\Select2;
 
         <div class="form-group">
             <?= $form->field($model, 'startId', [
-                    'template' => '{beginLabel}{labelTitle}{endLabel}<div class="input-group"><span class="input-group-addon">ID</span>{input}</div>{error}{hint}',
-                    'hintType' => \kartik\form\ActiveField::HINT_DEFAULT,
-                    'hintSettings' => ['onLabelClick' => false, 'onLabelHover' => true, 'onIconHover' => true,]
+                'template' => '{beginLabel}{labelTitle}{endLabel}<div class="input-group"><span class="input-group-addon">ID</span>{input}</div>{error}{hint}',
+                'hintType' => \kartik\form\ActiveField::HINT_DEFAULT,
+                'hintSettings' => ['onLabelClick' => false, 'onLabelHover' => true, 'onIconHover' => true,]
             ])->textInput(['placeholder' => 'First ID.', 'name' => 'startId', 'id' =>
                 'startId', 'maxlength' => 8, 'pattern' => '\d*', 'required' => true])->hint
             ('Entering the full ticket ID is mandatory. In case of voucher ticket block include the initial letter, too.') ?>

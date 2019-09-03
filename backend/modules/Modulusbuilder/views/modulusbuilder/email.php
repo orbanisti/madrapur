@@ -1,6 +1,5 @@
 <?php
-use common\grid\EnumColumn;
-use common\models\Page;
+
 use yii\grid\GridView;
 use yii\helpers\Html;
 
@@ -32,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         echo $this->render('_form', [
             'model' => $model,
-        ])?>
+        ]) ?>
     </div>
 </div>
 
