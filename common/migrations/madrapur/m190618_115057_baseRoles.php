@@ -9,6 +9,7 @@ use yii\db\Migration;
 class m190618_115057_baseRoles extends Migration {
     public $tableName = "tableName";
     public $tableOptions = "";
+
     private $_roles = [
         User::ROLE_ADMINISTRATOR => 'Administrator role.',
         User::ROLE_USER => 'User role.',
@@ -20,6 +21,7 @@ class m190618_115057_baseRoles extends Migration {
         User::ROLE_STREET_SELLER => 'Street Seller role.',
         User::ROLE_HOTLINE => 'Hotline role.',
     ];
+
     private $_permissions = [
         'loginToBackend' => 'Group can log in to backend.',
         'accessUsers' => 'Group can access Users module.',
@@ -89,11 +91,33 @@ class m190618_115057_baseRoles extends Migration {
             // webmaster user
             Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_ADMINISTRATOR), 1);
 
-            // officeAdmin user
-            Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_OFFICE_ADMIN), 13);
+            if (isLocalhost()) {
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_OFFICE_ADMIN), 13);
 
-            // streetAdmin user
-            Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_ADMIN), 17);
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_ADMIN), 17);
+            } else {
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_OFFICE_ADMIN), 13);
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_OFFICE_ADMIN), 19);
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_OFFICE_ADMIN), 21);
+
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_ADMIN), 17);
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_ADMIN), 20);
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_ADMIN), 22);
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_ADMIN), 23);
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_ADMIN), 25);
+
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_SELLER), 28);
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_SELLER), 31);
+
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_TICKET_EDITOR), 24);
+
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_HOTEL_EDITOR), 26);
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_HOTEL_EDITOR), 30);
+
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_HOTLINE), 24);
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_HOTLINE), 27);
+                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_HOTLINE), 29);
+            }
         } catch (Exception $e) {
             Yii::error($e->getMessage(), '_assignPermission');
         }
