@@ -8,7 +8,6 @@ use common\models\query\UserQuery;
 use Yii;
 use yii\behaviors\AttributeBehavior;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 
@@ -29,6 +28,7 @@ use yii\web\IdentityInterface;
  * @property integer $updated_at
  * @property integer $logged_at
  * @property string $password write-only password
+ * @property string $isHotel [varchar(3)]
  *
  * @property \common\models\UserProfile $userProfile
  */
@@ -84,7 +84,6 @@ class User extends MadActiveRecord implements IdentityInterface {
             ])
             ->one();
     }
-
 
     /**
      *
@@ -152,14 +151,16 @@ class User extends MadActiveRecord implements IdentityInterface {
             'auth_key' => [
                 'class' => AttributeBehavior::class,
                 'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => 'auth_key'
+                    MadActiveRecord::EVENT_BEFORE_INSERT => 'auth_key'
                 ],
-                'value' => Yii::$app->getSecurity()->generateRandomString()
+                'value' => function () {
+                    return Yii::$app->getSecurity()->generateRandomString();
+                }
             ],
             'access_token' => [
                 'class' => AttributeBehavior::class,
                 'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => 'access_token'
+                    MadActiveRecord::EVENT_BEFORE_INSERT => 'access_token'
                 ],
                 'value' => function () {
                     return Yii::$app->getSecurity()->generateRandomString(40);
