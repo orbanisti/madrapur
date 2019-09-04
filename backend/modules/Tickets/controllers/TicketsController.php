@@ -84,59 +84,57 @@ class TicketsController extends Controller {
             throw new ForbiddenHttpException('userCan');
         }
 
-        Yii::error(Yii::$app->request->post());
-        Yii::error((int)Yii::$app->user->id);
-//            Yii::error((int)Yii::$app->request->post('startId'));
-//            Yii::error(sprintf('%08d', (int)Yii::$app->request->post('startId')));
-        $saved = false;
-
         if (Yii::$app->request->post('startId') && Yii::$app->request->post('TicketBlock')) {
             $startId = Yii::$app->request->post('startId');
-            $currentId = (int)$startId;
-            $values = '(\'' . sprintf('%08d', $currentId) . '\')';
-            $notAllowed = false;
-            $idToCheck = $currentId - 50;
 
-            do {
-                $idToCheck++;
-
-                if ($idToCheck - 49 < 0) {
-                    continue;
-                }
-            } while ($idToCheck !== (int)$startId);
-
-            do {
-                $values .= ',(\'' . sprintf('%08d', ++$currentId) . '\')';
-            } while ($currentId < ((int)$startId + 49));
-
-            if (Yii::$app->db->getTableSchema(Yii::$app->db->tablePrefix . 'modulus_tb_' . $startId, true) === null
-                || $notAllowed) {
-
-                $sql = "CALL createTicketBlockTable(:tableName, :startId, :values)";
-                $params = [
-                    ':tableName' => Yii::$app->request->post('startId'),
-                    ':startId' => Yii::$app->request->post('startId'),
-                    ':values' => $values
-                ];
-                Yii::$app->db->createCommand($sql, $params)->execute();
-
-                $ticketBlock = new TicketBlock();
-                $ticketBlock->startId = $startId;
-                $ticketBlock->assignedTo = (int)Yii::$app->request->post('TicketBlock')['assignedTo'];
-                $ticketBlock->assignedBy = (int)Yii::$app->user->id;
-                $saved = $ticketBlock->save(false);
+            if (8 !== strlen($startId)) {
+                sessionSetFlashAlert('error', 'Ticket ID must be 8 characters long!');
             } else {
-                Yii::$app->session->setFlash(
-                    'alert',
-                    [
-                        'options' => [
-                            'class' => 'alert-warning'
-                        ],
-                        'body' => Yii::t('backend', "Ticket block ($startId) already exists!")
-                    ]
-                );
+                $currentId = (int)$startId;
+                $values = '(\'' . sprintf('%08d', $currentId) . '\')';
+                $idToCheck = $currentId - 50;
+
+                do {
+                    $idToCheck++;
+                    $allowed = !table_exists('modulus_tb_' . sprintf('%08d', $idToCheck));
+                } while (($idToCheck !== ((int)$startId + 49)) && $allowed);
+
+                if (!$allowed) {
+                    sessionSetFlashAlert(
+                        'error',
+                        'Specified start ID would conflict with block #' . sprintf('%08d', $idToCheck) . '.'
+                    );
+                } else {
+                    do {
+                        $values .= ',(\'' . sprintf('%08d', ++$currentId) . '\')';
+                    } while ($currentId < ((int)$startId + 49));
+
+                    $sql = "CALL createTicketBlockTable(:tableName, :startId, :values)";
+                    $params = [
+                        ':tableName' => Yii::$app->request->post('startId'),
+                        ':startId' => Yii::$app->request->post('startId'),
+                        ':values' => $values
+                    ];
+                    Yii::$app->db->createCommand($sql, $params)->execute();
+
+                    $ticketBlock = new TicketBlock();
+                    $ticketBlock->startId = $startId;
+                    $ticketBlock->assignedTo = (int)Yii::$app->request->post('TicketBlock')['assignedTo'];
+                    $ticketBlock->assignedBy = (int)Yii::$app->user->id;
+
+                    if ($ticketBlock->save(false)) {
+                        sessionSetFlashAlert(
+                            'success',
+                            'Ticket block created and assigned!'
+                        );
+                    } else {
+                        sessionSetFlashAlert(
+                            'error',
+                            'Something went wrong...'
+                        );
+                    }
+                }
             }
-            //return $this->render('addBlockSuccess');
         }
 
         $model = new TicketBlock();
@@ -150,48 +148,23 @@ class TicketsController extends Controller {
 
         $users = User::aSelect(User::class, 'id, username', User::tableName(), '1')->all();
 
-        /**
-         * Remove this.
-         */
-        foreach ($users as $idx => $user) {
-            //TODO remove query from foreach
-            $assignments = RbacAuthAssignment::aSelect(
-                RbacAuthAssignment::class,
-                '*',
-                RbacAuthAssignment::tableName(),
-                'user_id = ' . $user->id,
-                'user_id',
-                'user_id'
-            )->one();
+        $assignments = RbacAuthAssignment::aSelect(
+            RbacAuthAssignment::class,
+            '*',
+            RbacAuthAssignment::tableName(),
+            '1' ,
+            'user_id',
+            'user_id'
+        )->all();
 
-            if (!Yii::$app->user->can("assign_" . $assignments["item_name"])) {
-                unset($users[$idx]);
+        foreach ($users as $idx => $user) {
+            foreach ($assignments as $idx => $assignment) {
+                if($assignment->user_id === $user->id)
+                    if (!Yii::$app->user->can($assignment->item_name))
+                        unset($users[$idx]);
+
             }
         }
-        /**
-         * Remove end.
-         */
-
-        /**
-         * Test this.
-         */
-//            $assignments = RbacAuthAssignment::aSelect(
-//                RbacAuthAssignment::class,
-//                '*',
-//                RbacAuthAssignment::tableName(),
-//                '1' ,
-//                'user_id',
-//                'user_id'
-//            )->all();
-//
-//            foreach ($users as $idx => $user) {
-//                foreach ($assignments as $idx => $assignment) {
-//                    if($assignment->user_id === $user->id)
-//                        if (!Yii::$app->user->can($assignment->item_name))
-//                            unset($users[$idx]);
-//
-//                }
-//            }
 
         $users = ArrayHelper::map($users, 'id', 'username');
 
@@ -200,7 +173,6 @@ class TicketsController extends Controller {
             [
                 'model' => $model,
                 'users' => $users,
-                'saved' => $saved,
             ]
         );
     }
@@ -285,8 +257,49 @@ class TicketsController extends Controller {
      * @return string
      */
     public function actionViewAssignedBlocks() {
-        return $this->render('viewAssignedBlocks', [
+        $searchModel = new TicketBlockSearchModel();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $gridColumns = [
+            [
+                'label' => 'Start ID',
+                'format' => 'html',
+                'value' => function (TicketBlockSearchModel $model) {
+                    return '<a href="/Tickets/tickets/view-assigned-blocks?id=' . $model->returnStartId() . '&blockId=' . $model->returnStartId() . '">'
+                        . $model->returnStartId() . '</a>';
+                },
+                'filter' => Html::textInput("startId", Yii::$app->request->getQueryParam('startId', null)),
+            ],
+            [
+                'label' => 'Current ID',
+                'format' => 'html',
+                'value' => function (TicketBlockSearchModel $model) {
+                    return '<a href="/Tickets/tickets/view-assigned-blocks?id=' . $model->returnStartId() . '&blockId=' . $model->returnCurrentId() . '">'
+                        . $model->returnCurrentId() . '</a>';
+                },
+//                'filter' => Html::textInput("currentId"),
+            ],
+            [
+                'label' => 'assignedTo',
+                'format' => 'html',
+                'value' => function (TicketBlockSearchModel $model) {
+                    $user = User::findIdentity($model->assignedTo)->username;
+                    return '<a href="/user/view?id=' . $model->assignedTo . '">' . $user . '</a>';
+                },
+                'filter' => Html::textInput("assignedTo", Yii::$app->request->getQueryParam('assignedTo', null)),
+            ],
+            [
+                'label' => 'View Ticket Block',
+                'format' => 'html',
+                'value' => function (TicketBlockSearchModel $model) {
+                    return '<a href="/Tickets/tickets/view-assigned-blocks?id=' . $model->returnId() . '">Edit' . '</a>';
+                }
+            ],
+        ];
 
+        return $this->render('admin', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'gridColumns' => $gridColumns,
         ]);
     }
 

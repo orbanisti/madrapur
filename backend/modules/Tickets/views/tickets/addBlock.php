@@ -6,12 +6,6 @@ use kartik\select2\Select2;
 
 ?>
 
-<?php if ($saved) { ?>
-    <div class="alert alert-success" role="alert">
-        Ticket block created and assigned!
-    </div>
-<?php } ?>
-
 <h1>Add ticket block</h1>
 
 <div class="panel">

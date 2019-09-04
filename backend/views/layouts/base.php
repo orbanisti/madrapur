@@ -36,6 +36,7 @@ echo Html::beginTag('body',
                         Yii::$app->keyStorage->get('backend.layout-fixed') ? 'fixed' : null,
                         Yii::$app->keyStorage->get('backend.layout-boxed') ? 'layout-boxed' : null,
                         Yii::$app->keyStorage->get('backend.layout-collapsed-sidebar') ? 'sidebar-collapse' : null,
+                        'sidebar-mini'
                     ])
         ])?>
     <?php $this->beginBody() ?>
