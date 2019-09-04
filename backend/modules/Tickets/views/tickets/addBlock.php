@@ -3,6 +3,8 @@
 use kartik\form\ActiveForm;
 use kartik\helpers\Html;
 use kartik\select2\Select2;
+use yii\web\JsExpression;
+use yii\web\View;
 
 ?>
 
@@ -30,6 +32,23 @@ use kartik\select2\Select2;
         </div>
 
         <div class="form-group">
+            <script type='text/javascript'>
+                var avatars = <?= $avatars ?>;
+            </script>
+
+            <?php
+            $format = <<< SCRIPT
+
+function format(state) {
+    if (!state.id) return state.text;
+    src = avatars[state.id.toLowerCase()];
+    return '<img class="flag" style="width: 20px; height: 20px;" src="' + src + '"/>' + state.text;
+}
+
+SCRIPT;
+            $this->registerJs($format, View::POS_HEAD);
+            ?>
+
             <?= $form->field($model, 'assignedTo')->widget(Select2::class, [
                 'name' => 'assignedTo',
                 'data' => $users,
@@ -37,14 +56,16 @@ use kartik\select2\Select2;
                     'placeholder' => 'Select a user.',
                     'required' => true
                 ],
+                'pluginOptions' => [
+                    'templateResult' => new JsExpression('format'),
+                    'templateSelection' => new JsExpression('format'),
+                    'escapeMarkup' => new JsExpression("function escape(m) { return m; }"),
+                    'allowClear' => true
+                ],
             ]) ?>
-            <?php
-
-            ?>
         </div>
 
-        <?php
-        echo Html::submitButton(
+        <?= Html::submitButton(
             Yii::t('backend', 'Add ticket block'),
             [
                 'class' => 'btn btn-primary btn-flat btn-block',

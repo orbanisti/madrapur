@@ -13,10 +13,18 @@ use yii\data\ActiveDataProvider;
 
 class TicketBlockDummySearchModel extends MadActiveRecord {
 
+    /**
+     * @return array|string[]
+     */
     public static function primaryKey() {
         return ['ticketId'];
     }
 
+    /**
+     * @param $params
+     *
+     * @return ActiveDataProvider
+     */
     public function search($params) {
         $query = self::find();
 

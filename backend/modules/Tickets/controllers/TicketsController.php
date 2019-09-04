@@ -8,9 +8,11 @@ use backend\modules\Tickets\models\TicketBlock;
 use backend\modules\Tickets\models\TicketBlockDummySearchModel;
 use backend\modules\Tickets\models\TicketBlockSearchModel;
 use common\models\User;
+use common\models\UserProfile;
 use kartik\helpers\Html;
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\web\ForbiddenHttpException;
 
 /**
@@ -45,7 +47,6 @@ class TicketsController extends Controller {
                     return '<a href="/Tickets/tickets/view-ticket?id=' . $model->returnStartId() . '&blockId=' . $model->returnCurrentId() . '">'
                         . $model->returnCurrentId() . '</a>';
                 },
-//                'filter' => Html::textInput("currentId"),
             ],
             [
                 'label' => 'assignedTo',
@@ -166,6 +167,13 @@ class TicketsController extends Controller {
             }
         }
 
+        $avatars = [];
+
+        foreach ($users as $idx => $user) {
+            $avatarURL = UserProfile::findOne(['=', 'id', $user->id])->getAvatar();
+            $avatars[$user->id] = $avatarURL ?: "/img/anonymous.jpg";
+        }
+
         $users = ArrayHelper::map($users, 'id', 'username');
 
         return $this->render(
@@ -173,6 +181,7 @@ class TicketsController extends Controller {
             [
                 'model' => $model,
                 'users' => $users,
+                'avatars' => Json::encode($avatars)
             ]
         );
     }
@@ -213,7 +222,6 @@ class TicketsController extends Controller {
         $ticketBlockStartId = TicketBlockSearchModel::getStartId($id);
 
         $searchModel = TicketBlockDummySearchModel::useTable("modulus_tb_$ticketBlockStartId");
-        Yii::error($searchModel::tableName());
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $gridColumns = [

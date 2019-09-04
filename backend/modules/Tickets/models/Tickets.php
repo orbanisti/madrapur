@@ -7,6 +7,13 @@ use Yii;
 
 /**
  * Default model for the `Tickets` module
+ *
+ * @property int $id [int(11)]
+ * @property string $startId [varchar(8)]
+ * @property int $assignedBy [int(11)]
+ * @property int $assignedTo [int(11)]
+ * @property bool $frozen [tinyint(1)]
+ * @property int $timestamp [timestamp]
  */
 class Tickets extends MadActiveRecord {
 
