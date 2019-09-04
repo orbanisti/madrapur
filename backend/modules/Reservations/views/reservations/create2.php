@@ -11,6 +11,10 @@
     use dosamigos\datepicker\DatePicker;
     use kartik\helpers\Html;
     use kartik\icons\Icon;
+    use kartik\switchinput\SwitchInput;
+    use kartik\touchspin\TouchSpin;
+    use yii\web\JsExpression;
+    use yii\web\View;
     use yii\widgets\ActiveForm;
 
     $this->title = Yii::t('app', 'New Reservation');
@@ -131,7 +135,7 @@
                         echo $price->name;
 
                         $currentProdId = (Yii::$app->request->post('Product'))['title'];
-                        echo $form->field($model, "description[$i]")->widget(\kartik\touchspin\TouchSpin::class,
+                        echo $form->field($model, "description[$i]")->widget(TouchSpin::class,
                             ['options' =>
                                 [
 
@@ -169,6 +173,73 @@
 
                     ]);
                     echo'</div>';
+                    ?>
+
+            <div class="col-lg-2">
+                <?php
+                    echo SwitchInput::widget([
+                        'name' => 'cPriceChecker',
+                        'class' => 'cPriceChecker',
+                        'pluginOptions' => [
+                            'onText' => 'Yes',
+                            'offText' => 'No',
+
+                        ]
+                    ]);
+                ?>
+
+            </div>
+
+
+
+
+            <div class="col-lg-8 customPrice">
+                <div class="panel panel-collapse">
+
+                </div>
+                <?php
+                    echo TouchSpin::widget(
+                        [   'name'=>'customPrice',
+                                'options' =>
+                            [
+
+                                'placeholder' => 'Adjust ...',
+                                'data-priceid' => $price->id,
+                                'autocomplete' => 'off',
+                                'type'   => 'number'
+                            ],
+                            'pluginOptions' => [
+                                'buttonup_txt'=>Icon::show('plus-circle', ['class'=>'fa-lg','framework'
+                                =>Icon::FA]),
+                                'buttondown_txt'=>Icon::show('minus-circle', ['class'=>'fa-lg','framework'
+                                =>Icon::FA]) ,
+                                'buttonup_class'=>'btn bg-aqua btn-2x',
+                                'buttondown_class'=>'btn bg-aqua'
+                            ]
+                        ]   );
+                ?>
+                <div class="box box-warning box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Collapsable</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                        <!-- /.box-tools -->
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        The body of the box
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+
+            </div>
+
+
+
+                    <?php
                     echo'<div class="col-lg-12">';
                     echo Html::submitButton('Create Reservation', ['class' => 'btn btn-block bg-aqua btn-lg btn-primary prodUpdateBtn']);
                     echo'</div>';
@@ -182,6 +253,44 @@
         </div>
     </div>
 
+
+<script type="text/javascript">
+
+
+</script>
+
+
+
+<?php
+    $toggledisplay = <<< SCRIPT
+
+         function toggleshowcPrice(){
+        if($('.customPrice').css('display')!='none'){
+            $('.customPrice').hide();
+        }
+        else{
+            $('.customPrice').show();
+        }
+
+    }
+    
+     $().ready(() => {
+     
+        $('.bootstrap-switch-label').on('click',toggleshowcPrice);
+        $('.bootstrap-switch-handle-on').on('click',toggleshowcPrice);
+        console.log('megy');
+     })
+
+
+
+SCRIPT;
+
+
+    $this->registerJs($toggledisplay, View::POS_HEAD);
+
+?>
+
+
     <script>
         var countPrices =<?=$countPrices?>;
 
@@ -191,6 +300,7 @@
             $('#product-times').html($('#product-times').html() + '<option>' + item['name'] + '</option>');
             $('#product-times option:eq(2)').attr('selected', 'selected');
             $('#product-times option:eq(1)').attr('selected', 'selected');
+
 
         }
 
@@ -207,10 +317,15 @@
 
         }
 
+
         $().ready(() => {
 
-            $('#product-title'
-        ).change(function () {
+
+
+
+
+
+        $('#product-title').change(function () {
             $.ajax({
                 url: '<?php echo Yii::$app->request->baseUrl . '/Reservations/reservations/gettimes' ?>',
                 type: 'post',
