@@ -94,22 +94,35 @@ class TicketBlockSearchModel extends TicketBlock {
         return $this['id'];
     }
 
-    /**
-     * @return string
-     */
-    public function returnCurrentId() {
+    public function returnCurrentTicket() {
         $tableName = 'modulus_tb_' . $this['startId'];
 
         if (!table_exists($tableName)) {
             return "N/A";
         }
 
-        $ticketBlock = self::useTable($tableName)::aSelect(
-            TicketBlockDummySearchModel::class,
-            '*', $tableName, 'sellerId IS NULL',
+        $ticket = self::useTable($tableName)::aSelect(
+            TicketSearchModel::class,
+            '*', $tableName, 'sellerId IS NULL AND status = \'open\'',
             'ticketId', 'ticketId'
         )->one();
 
-        return $ticketBlock->ticketId;
+        return $ticket;
+    }
+
+    /**
+     * @return string
+     */
+    public function returnCurrentId() {
+        return $this->returnCurrentTicket()->ticketId;
+    }
+
+    public function skipCurrentTicket() {
+        $ticket = $this->returnCurrentTicket();
+        $ticket->sellerId = Yii::$app->user->id;
+        $ticket->status = 'skipped';
+        $ticket->timestamp = date('Y-m-d H:i:s',time());
+
+        return $ticket->save(false);
     }
 }

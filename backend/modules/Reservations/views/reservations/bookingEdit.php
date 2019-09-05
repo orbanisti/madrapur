@@ -8,6 +8,8 @@ use yii\widgets\ActiveForm;
 /* @var $form ActiveForm */
 ?>
 <div class="bookingEdit">
+    <?php echo \yii\helpers\Html::a( 'Back', Yii::$app->request->referrer); ?>
+
     <?php
 
     foreach (array_keys($model->attributes) as $attribute) {

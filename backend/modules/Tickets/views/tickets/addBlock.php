@@ -22,13 +22,24 @@ use yii\web\View;
         ?>
 
         <div class="form-group">
-            <?= $form->field($model, 'startId', [
+            <?=
+            $form->field($model, 'startId', [
                 'template' => '{beginLabel}{labelTitle}{endLabel}<div class="input-group"><span class="input-group-addon">ID</span>{input}</div>{error}{hint}',
                 'hintType' => \kartik\form\ActiveField::HINT_DEFAULT,
-                'hintSettings' => ['onLabelClick' => false, 'onLabelHover' => true, 'onIconHover' => true,]
-            ])->textInput(['placeholder' => 'First ID.', 'name' => 'startId', 'id' =>
-                'startId', 'maxlength' => 8, 'pattern' => '\d*', 'required' => true])->hint
-            ('Entering the full ticket ID is mandatory. In case of voucher ticket block include the initial letter, too.') ?>
+                'hintSettings' => [
+                    'onLabelClick' => false,
+                    'onLabelHover' => true,
+                    'onIconHover' => true,
+                ]
+            ])->textInput([
+                'placeholder' => 'First ID.',
+                'name' => 'startId',
+                'id' => 'startId',
+                'maxlength' => 8,
+                'pattern' => '\d*',
+                'required' => true
+            ])->hint('Entering the full ticket ID is mandatory. In case of voucher ticket block include the initial letter, too.')
+            ?>
         </div>
 
         <div class="form-group">
@@ -37,7 +48,7 @@ use yii\web\View;
             </script>
 
             <?php
-            $format = <<< SCRIPT
+            $this->registerJs(<<< SCRIPT
 
 function format(state) {
     if (!state.id) return state.text;
@@ -45,8 +56,8 @@ function format(state) {
     return '<img class="flag" style="width: 20px; height: 20px;" src="' + src + '"/>' + state.text;
 }
 
-SCRIPT;
-            $this->registerJs($format, View::POS_HEAD);
+SCRIPT
+                , View::POS_HEAD);
             ?>
 
             <?= $form->field($model, 'assignedTo')->widget(Select2::class, [

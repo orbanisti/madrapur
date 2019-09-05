@@ -309,7 +309,7 @@ class ReservationsController extends Controller {
                 'ticketId' => 'V0000001'
             ];
             $insertReservation = Reservations::insertOne($newReservarion, $values);
-            Yii::error($insertReservation);
+
             if ($insertReservation) {
                 $findBooking = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'bookingId="tmpMad1"');
                 $booking = $findBooking->one();
@@ -336,7 +336,7 @@ class ReservationsController extends Controller {
                     new AddTicketToReservationCommand(
                         [
                             'sellerId' => Yii::$app->user->getId(),
-                            'timestamp' => time(),
+                            'timestamp' => date('Y-m-d H:i:s',time()),
                             'bookingId' => $booking->id,
                         ]
                     )
@@ -444,19 +444,21 @@ class ReservationsController extends Controller {
      * @throws ForbiddenHttpException
      */
     public function actionBookingedit() {
-        if (!Yii::$app->user->can(Reservations::EDIT_BOOKING) || !Yii::$app->user->can(Reservations::EDIT_OWN_BOOKING)) {
+        if (!Yii::$app->user->can(Reservations::VIEW_BOOKINGS) && !Yii::$app->user->can(Reservations::VIEW_OWN_BOOKINGS)) {
             throw new ForbiddenHttpException('userCan\'t');
         }
 
         $model = new DateImport();
-        $request = Yii::$app->request;
-        $id = $request->get('id');
+        $id = Yii::$app->request->get('id');
         $query = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'id=' . $id);
 
         $bookingInfo = $query->one();
 
-        $backendData = $bookingInfo;
-        return $this->render('bookingEdit', ['model' => $model, 'backenddata' => $backendData]);
+        if (Yii::$app->user->id != $bookingInfo->sellerId) {
+            throw new ForbiddenHttpException('userCan\'t');
+        }
+
+        return $this->render('bookingEdit', ['model' => $model, 'backenddata' => $bookingInfo]);
     }
 
     /**
@@ -499,8 +501,7 @@ class ReservationsController extends Controller {
      * @throws ForbiddenHttpException
      */
     public function actionAllreservations() {
-        if (!Yii::$app->user->can(Reservations::VIEW_BOOKINGS) && !Yii::$app->user->can
-            (Reservations::VIEW_OWN_BOOKINGS)) {
+        if (!Yii::$app->user->can(Reservations::VIEW_BOOKINGS) && !Yii::$app->user->can(Reservations::VIEW_OWN_BOOKINGS)) {
             throw new ForbiddenHttpException('userCan\'t');
         }
 

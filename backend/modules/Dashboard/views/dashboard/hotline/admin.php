@@ -11,7 +11,7 @@ use yii\helpers\Url;
     <?php
     LteSmallBox::begin([
         'type' => LteConst::COLOR_TEAL,
-        'title' => "$nextTicketId",
+        'title' => "",
         'text' => ' ',
         'icon' => 'fa fa-ticket',
         'text' => 'Next ticked ID',

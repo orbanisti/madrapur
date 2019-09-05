@@ -5,7 +5,7 @@ namespace backend\modules\Tickets\controllers;
 use backend\controllers\Controller;
 use backend\modules\rbac\models\RbacAuthAssignment;
 use backend\modules\Tickets\models\TicketBlock;
-use backend\modules\Tickets\models\TicketBlockDummySearchModel;
+use backend\modules\Tickets\models\TicketSearchModel;
 use backend\modules\Tickets\models\TicketBlockSearchModel;
 use common\models\User;
 use common\models\UserProfile;
@@ -194,7 +194,7 @@ class TicketsController extends Controller {
      * @return string
      */
     public function actionViewTicket($id, $blockId) {
-        $model = TicketBlockDummySearchModel::useTable("modulus_tb_" . $id);
+        $model = TicketSearchModel::useTable("modulus_tb_" . $id);
 
         $model = $model::find();
 
@@ -221,7 +221,7 @@ class TicketsController extends Controller {
 
         $ticketBlockStartId = TicketBlockSearchModel::getStartId($id);
 
-        $searchModel = TicketBlockDummySearchModel::useTable("modulus_tb_$ticketBlockStartId");
+        $searchModel = TicketSearchModel::useTable("modulus_tb_$ticketBlockStartId");
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $gridColumns = [
@@ -240,15 +240,42 @@ class TicketsController extends Controller {
             [
                 'label' => 'ticketId',
                 'format' => 'html',
-                'value' => function (TicketBlockDummySearchModel $model) use ($ticketBlockStartId) {
+                'value' => function (TicketSearchModel $model) use ($ticketBlockStartId) {
                     return '<a href="/Tickets/tickets/view-ticket?id=' . $ticketBlockStartId . '&blockId=' . $model->ticketId . '">'
                         . $model->ticketId . '</a>';
                 },
-                'filter' => Html::textInput("startId", Yii::$app->request->getQueryParam('startId', null)),
+                'filter' => Html::textInput("ticketId", Yii::$app->request->getQueryParam('ticketId', null)),
             ],
-            'timestamp',
-            'reservationId',
+            [
+                'label' => 'timestamp',
+                'format' => 'html',
+                'value' => function (TicketSearchModel $model) use ($ticketBlockStartId) {
+                    return $model->timestamp;
+                },
+                'filter' => Html::textInput("timestamp", Yii::$app->request->getQueryParam('timestamp', null)),
+            ],
+            [
+                'label' => 'reservationId',
+                'format' => 'html',
+                'value' => function (TicketSearchModel $model) use ($ticketBlockStartId) {
+                    $value = $model->reservationId;
 
+                    if (is_numeric($model->reservationId)) {
+                        $value = '<a href="/Reservations/reservations/bookingedit?id=' . $model->reservationId . '">' . $model->reservationId . '</a>';
+                    }
+
+                    return $value;
+                },
+                'filter' => Html::textInput("reservationId", Yii::$app->request->getQueryParam('reservationId', null)),
+            ],
+            [
+                'label' => 'status',
+                'format' => 'html',
+                'value' => function (TicketSearchModel $model) {
+                    return $model->status;
+                },
+                'filter' => Html::textInput("status", Yii::$app->request->getQueryParam('status', null)),
+            ],
         ];
 
         return $this->render('viewBlock', [

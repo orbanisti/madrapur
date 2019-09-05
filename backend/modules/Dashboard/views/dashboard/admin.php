@@ -8,12 +8,35 @@
 
     LteSmallBox::begin([
         'type' => LteConst::COLOR_TEAL,
-        'title' => "$nextTicketId",
+        'title' => "",
+        'text' => ' ',
+        'icon' => 'fa fa-ticket',
+        'footer' => 'View ticket block',
+        'link' => Url::to('Tickets/tickets/admin')
+    ]) ?>
+    <?php LteSmallBox::end() ?>
+
+    <?php
+    LteSmallBox::begin([
+        'type' => LteConst::COLOR_TEAL,
+        'title' => "",
         'text' => ' ',
         'icon' => 'fa fa-ticket',
         'text' => 'Next ticked ID',
         'footer' => 'View ticket block',
-        'link' => Url::to("/Tickets/tickets/admin")
+        'link' => Url::to('Tickets/tickets/admin')
+    ]) ?>
+    <?php LteSmallBox::end() ?>
+
+    <?php
+    LteSmallBox::begin([
+        'type' => LteConst::COLOR_TEAL,
+        'title' => "",
+        'text' => ' ',
+        'icon' => 'fa fa-ticket',
+        'text' => 'Next ticked ID',
+        'footer' => 'View ticket block',
+        'link' => Url::to('Tickets/tickets/admin')
     ]) ?>
     <?php LteSmallBox::end() ?>
 </div>
