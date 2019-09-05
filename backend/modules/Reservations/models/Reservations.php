@@ -94,6 +94,7 @@ class Reservations extends MadActiveRecord {
             [['billing_phone'], 'string', 'max' => 255],
             [['order_currency'], 'string', 'max' => 255],
             [['personInfo'], 'string'],
+            [['paid_method'], 'string'],
         ];
     }
 

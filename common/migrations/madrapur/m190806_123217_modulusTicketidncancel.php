@@ -10,7 +10,7 @@ class m190806_123217_modulusTicketidncancel extends Migration {
     public $columnName2 = "isCancelled";
     public $columnName3 = "isCancelled";
 
-    public $newColumns=['ticketId','isCancelled','paid_method','iSellerId','iSellerName'];
+    public $newColumns=['ticketId','isCancelled','paidMethod','iSellerId','iSellerName'];
 
 
 
