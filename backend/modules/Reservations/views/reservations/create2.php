@@ -8,11 +8,13 @@
 
     use backend\modules\Product\models\Product;
     use backend\modules\Product\models\ProductPrice;
+    use backend\modules\Reservations\models\Reservations;
     use dosamigos\datepicker\DatePicker;
     use kartik\helpers\Html;
     use kartik\icons\Icon;
     use kartik\switchinput\SwitchInput;
     use kartik\touchspin\TouchSpin;
+    use lo\widgets\Toggle;
     use yii\web\JsExpression;
     use yii\web\View;
     use yii\widgets\ActiveForm;
@@ -88,6 +90,44 @@
                     ?>
 
                     <div class="panel">
+                        <?=Toggle::widget(
+                            [
+                                'name' => 'paid_status', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
+                                'checked' => false,
+                                'options' => [
+                                    'data-on'=>'Paid',
+                                    'data-off'=>'Unpaid',
+                                    'data-width'=>'100px'
+                                ],
+                                // checkbox options. More data html options [see here](http://www.bootstraptoggle.com)
+                            ]
+                        );?>
+
+
+                        <?=Toggle::widget(
+                            [
+                                'name' => 'paid_method', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
+                                'checked' => false,
+                                'options' => [
+                                    'data-on'=>'Card',
+                                    'data-off'=>'Cash',
+                                    'data-width'=>'100px'
+                                ],
+                                // checkbox options. More data html options [see here](http://www.bootstraptoggle.com)
+                            ]
+                        );?>
+                        <?=   Toggle::widget(
+                            [
+                                'name' => 'paid_currency', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
+                                'checked' => true,
+                                'options' => [
+                                    'data-on'=>'EUR',
+                                    'data-off'=>'HUF',
+                                    'data-width'=>'100px'
+                                ],
+                                // checkbox options. More data html options [see here](http://www.bootstraptoggle.com)
+                            ]
+                        );?>
 
 
                     </div>
@@ -102,6 +142,7 @@
                 } else {
                     if (isset($_POST['paid_status'])) {
                         $paid_status = 'paid';
+
                     } else {
                         $paid_status = 'unpaid';
                     }
@@ -123,6 +164,15 @@
                     echo '</br>';
 
                     // TODO fix this nonsense másmodelenátpushingolni egy Reservation
+                    ?>
+                    <?=Html::hiddenInput('paid_currency', $paid_currency);?>
+                    <?=Html::hiddenInput('paid_status', $paid_status);?>
+                    <?=Html::hiddenInput('paid_method', $paid_method);?>
+
+
+                    <?php
+
+
                     echo'<div class="row">';
 
 
@@ -160,81 +210,83 @@
                     echo $form->field($model, 'time_name')->hiddeninput(['value' => (Yii::$app->request->post('Product'))['times']])->label(false);
 
                     echo $form->field($model, 'discount')->hiddeninput()->label(false);
-                    echo'<div class="col-lg-12">';
-                    echo \insolita\wgadminlte\LteInfoBox::widget([
-                        'bgIconColor' => \insolita\wgadminlte\LteConst::COLOR_BLUE,
-                        'bgColor' => 'aqua',
-                        'number' => "<h4><div id=\"total_price\">0</div></h4>",
-                        'text' => 'Total Price' . ' <strong>(' . $paid_currency . ')</strong>',
-                        'icon' => 'fa fa-cart-plus',
-                        'showProgress' => true,
-                        'progressNumber' => 100,
-
-
-                    ]);
-                    echo'</div>';
-                    ?>
-
-            <div class="col-lg-2">
-                <?php
-                    echo SwitchInput::widget([
-                        'name' => 'cPriceChecker',
-                        'class' => 'cPriceChecker',
-                        'pluginOptions' => [
-                            'onText' => 'Yes',
-                            'offText' => 'No',
-
-                        ]
-                    ]);
-                ?>
-
-            </div>
+                  ?>
 
 
 
 
-            <div class="col-lg-8 customPrice">
-                <div class="panel panel-collapse">
 
-                </div>
-                <?php
-                    echo TouchSpin::widget(
-                        [   'name'=>'customPrice',
-                                'options' =>
-                            [
 
-                                'placeholder' => 'Adjust ...',
-                                'data-priceid' => $price->id,
-                                'autocomplete' => 'off',
-                                'type'   => 'number'
-                            ],
-                            'pluginOptions' => [
-                                'buttonup_txt'=>Icon::show('plus-circle', ['class'=>'fa-lg','framework'
-                                =>Icon::FA]),
-                                'buttondown_txt'=>Icon::show('minus-circle', ['class'=>'fa-lg','framework'
-                                =>Icon::FA]) ,
-                                'buttonup_class'=>'btn bg-aqua btn-2x',
-                                'buttondown_class'=>'btn bg-aqua'
-                            ]
-                        ]   );
-                ?>
-                <div class="box box-warning box-solid">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Collapsable</h3>
-
+            <div class="col-lg-12 customPrice">
+                <div class="box  box-solid collapsed-box">
+                    <div class="box-header  bg-blue-gradient with-border">
+                        <h3 class="box-title">Seller Tools</h3>
                         <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <?=Icon::show('plus-circle', ['class'=>'fa-lg','framework'=>Icon::FA
+                                ,'style'=>'color:white'
+                                ])?>
                             </button>
                         </div>
                         <!-- /.box-tools -->
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        The body of the box
+                       <div class="panel">
+                           <div class="col-lg-12">
+                               Custom Price
+                               <?= TouchSpin::widget(
+                                   [   'name'=>'customPrice',
+                                       'options' =>
+                                           [
+
+                                               'placeholder' => 'Adjust ...',
+                                               'data-priceid' => $price->id,
+                                               'autocomplete' => 'off',
+                                               'type'   => 'number',
+
+                                           ],
+                                       'pluginOptions' => [
+                                           'buttonup_txt'=>Icon::show('plus-circle', ['class'=>'fa-lg','framework'
+                                           =>Icon::FA]),
+                                           'buttondown_txt'=>Icon::show('minus-circle', ['class'=>'fa-lg','framework'
+                                           =>Icon::FA]) ,
+                                           'buttonup_class'=>'btn bg-aqua btn-2x',
+                                           'buttondown_class'=>'btn bg-aqua',
+                                           'max'=>'9999999'
+                                       ]
+                                   ]   );
+                               ?>
+
+                           </div>
+                       <div class="col-lg-12">
+                           <?php
+                              // echo Yii::$app->runAction('Reservations/assigner');
+                               echo $this->render('assingui',['model'=>new Reservations()]);
+
+                           ?>
+                       </div>
+
+
+                       </div>
                     </div>
                     <!-- /.box-body -->
                 </div>
+                <div class="col-lg-12">
+                <?= \insolita\wgadminlte\LteInfoBox::widget([
+                        'bgIconColor' => \insolita\wgadminlte\LteConst::COLOR_BLUE,
+                        'bgColor' => 'aqua',
+                        'number' => "<h4><div id=\"total_price\">0</div></h4>",
+                        'text' => 'Total Price' . ' <strong>(' . $paid_currency . ')</strong>',
+//                        'description'=>'asd',
+                        'icon' => 'fa fa-cart-plus',
+                        'showProgress' => true,
+                        'progressNumber' => 100,
 
+
+                    ]);
+                ?>
+                </div>'
             </div>
 
 
@@ -399,12 +451,22 @@ SCRIPT;
                     date: $('#product-start_date').val(),
                     time: $('#product-times').val(),
                     prodid: <?=(Yii::$app->request->post('Product'))['title'] ? (Yii::$app->request->post('Product'))['title'] : 999 ?>,
-                    currency: '<?=isset($paid_currency) ? $paid_currency : 0 ?>'
+                    currency: '<?=isset($paid_currency) ? $paid_currency : 0 ?>',
+                    customPrice:$('input[name=customPrice]').val(),
                 },
                 success: function (data) {
-                    console.log(data.search);
-                    mytimes = data.search
-                    $('#total_price').html(mytimes);
+
+                    mytimes = data.search;
+
+                    if(data.customPrice){
+
+                        $('#total_price').html(data.customPrice);
+                        mytimes = data.customPrice
+                    }
+                        $('#total_price').html( $('#total_price').html()+mytimes);
+                        $('#total_price').html(mytimes);
+
+                        // To be continued
                     $('#productprice-discount').val(mytimes);
                     if (data.response == 'places') {
                         $('#myPrices').html(mytimes);

@@ -50,7 +50,7 @@ echo \insolita\wgadminlte\FlashAlerts::widget([
             // uncomment below and comment detail if you need to render via ajax
             // 'detailUrl'=>Url::to(['/site/book-details']),
             'detail' => function ($model, $key, $index, $column) {
-                return Yii::$app->controller->renderPartial('assingui', ['model' => $model]);
+                return Yii::$app->controller->renderPartial('assignui', ['model' => $model]);
             },
             'headerOptions' => ['class' => 'kartik-sheet-style'],
             'expandOneOnly' => true,]

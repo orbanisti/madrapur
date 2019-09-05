@@ -396,23 +396,13 @@ class ReservationsController extends Controller {
             $countPrices = 0;
         }
         if ($productPrice) {
-            if(isset($_POST['paid_status'])){
-                $paid_status='paid';
-            }else{
-                $paid_status='unpaid';
-            }
 
-            if(isset($_POST['paid_method'])){
-                $paid_method='card';
-            }else{
-                $paid_method='cash';
-            }
-            if(isset($_POST['paid_currency'])){
-                $paid_currency='EUR';
-            }else{
-                $paid_currency='HUF';
+            $paid_status=$_POST['paid_status'];
 
-            }
+            $paid_method=$_POST['paid_method'];
+
+            $paid_currency=$_POST['paid_currency'];
+
 
             $newReservarion = new Reservations();
 
@@ -480,7 +470,9 @@ class ReservationsController extends Controller {
                 'data' => json_encode($data),
                 'sellerId' => Yii::$app->user->getId(),
                 'sellerName' => Yii::$app->user->identity->username,
-                'ticketId' => 'V0000001'
+                'ticketId' => 'V0000001',
+                'paid_status'=>$paid_status,
+                'paid_method'=>$paid_method
             ];
             $insertReservation = Reservations::insertOne($newReservarion, $values);
             Yii::error($insertReservation);
@@ -523,15 +515,20 @@ class ReservationsController extends Controller {
         if (!isset($updateResponse)) {
             $updateResponse = '';
         }
+
         return $this->render('create2', [
             'model' => new Product(),
             'disableForm' => $disableForm,
             'myPrices' => $myprices,
             'countPrices' => $countPrices,
             'newReservation' => $updateResponse,
+            'subView'=>$this->renderPartial(  'assingui',['model'=>new Reservations()])
+            ]);
 
-        ]);
+
     }
+
+
 
     /**
      * @return array
@@ -565,6 +562,7 @@ class ReservationsController extends Controller {
             $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $currID);
             $myprices = $query->all();
             $postedCurrency=$data['currency'];
+            $postedCustomPrice=$data['customPrice'];
 
             \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $productsBought = [];
@@ -594,6 +592,7 @@ class ReservationsController extends Controller {
 
             return [
                 'search' => $fullTotal,
+                'customPrice'=>(int)$postedCustomPrice,
                 'response'=>'price'
             ];
             }
