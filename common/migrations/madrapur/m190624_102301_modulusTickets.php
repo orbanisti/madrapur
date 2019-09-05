@@ -20,6 +20,7 @@ class m190624_102301_modulusTickets extends Migration {
                 'assignedTo' => $this->integer()->null(),
                 'frozen' => $this->boolean()->notNull()->defaultValue(0),
                 'timestamp' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+                'status' => $this->string(8)->notNull()
             ], $this->tableOptions
         );
 
@@ -49,7 +50,8 @@ class m190624_102301_modulusTickets extends Migration {
                         `ticketId` VARCHAR(255),
                         `sellerId` INT,
                         `timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        `reservationId` VARCHAR(255)
+                        `reservationId` VARCHAR(255),
+                        `status` VARCHAR(255) NOT NULL DEFAULT \'open\'
                      );'
                    );
                 PREPARE statement FROM @CreateTableSQL;
