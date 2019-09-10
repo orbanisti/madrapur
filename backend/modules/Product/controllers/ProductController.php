@@ -693,7 +693,7 @@ class ProductController extends Controller {
             $assigneduser = User::findIdentity($passignedId);
 
             $assignData = [];
-            $assignData['time'] = date('Y-m-d h:i:s', time());
+            $assignData['time'] = date('Y-m-d H:i:s', time());
             $assignData['by'] = Yii::$app->getUser()->identity->username;
             $assignData['from'] = $foundReservation->sellerName;
             $assignData['to'] = $assigneduser->username;

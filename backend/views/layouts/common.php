@@ -7,7 +7,8 @@ use backend\assets\BackendAsset;
 use backend\modules\system\models\SystemLog;
 use backend\widgets\Menu;
 use common\models\TimelineEvent;
-use yii\bootstrap\Alert;
+    use kartik\icons\Icon;
+    use yii\bootstrap\Alert;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -530,11 +531,11 @@ echo Menu::widget(
                                             Yii::$app->controller->action->id === 'myreservations'),
                                     ],
                                     [
-                                        'label' => Yii::t('backend', 'allReservations'),
+                                        'label' => Yii::t('backend', 'my Transactions'),
                                         'url' => [
-                                            '/Reservations/reservations/allreservations'
+                                            '/Reservations/reservations/mytransactions'
                                         ],
-                                        'icon' => '<i class="fa fa-calendar"></i>',
+                                        'icon' => '<i class="fa fa-dollar"></i>',
                                         'active' => (Yii::$app->controller->id == 'reservations' &&
                                             Yii::$app->controller->action->id === 'allreservations'),
                                     ],

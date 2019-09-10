@@ -14,6 +14,7 @@ use backend\modules\Reservations\models\ReservationsAdminSearchModel;
 use common\commands\AddTicketToReservationCommand;
 use common\commands\AddToTimelineCommand;
 use common\commands\SendEmailCommand;
+use common\models\User;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
@@ -66,6 +67,24 @@ class ReservationsController extends Controller {
         return $this->render('createReact', [
             'data' => Json::encode($dataArray),
         ]);
+    }
+
+
+
+    public function actionMytransactions(){
+
+
+
+        $searchModel=new Reservations();
+        $dataProvider=$searchModel->searchMytransactions(Yii::$app->request->queryParams);
+
+        return $this->render('mytransactions', [
+            'dataProvider'=>$dataProvider
+
+        ]);
+
+
+
     }
 
     /**
@@ -249,7 +268,7 @@ class ReservationsController extends Controller {
             $data->orderDetails = new \stdClass();
 
             $data->personInfo = [];
-            $data->updateDate = date('Y-m-d h:m:s');
+            $data->updateDate = date('Y-m-d H:i:s');
 
             $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $productPrice["product_id"]);
             $myprices = $query->all();
@@ -404,6 +423,8 @@ class ReservationsController extends Controller {
             $paid_currency=$_POST['paid_currency'];
 
 
+
+
             $newReservarion = new Reservations();
 
             $data = new \stdClass();
@@ -411,7 +432,7 @@ class ReservationsController extends Controller {
             $data->orderDetails = new \stdClass();
 
             $data->personInfo = [];
-            $data->updateDate = date('Y-m-d h:m:s');
+            $data->updateDate = date('Y-m-d H:i:s');
 
             $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $productPrice["product_id"]);
             $myprices = $query->all();
@@ -458,6 +479,9 @@ class ReservationsController extends Controller {
             }
 
 
+
+
+
             $values = [
                 'booking_cost' => $productPrice["discount"],
                 'invoiceMonth' => date('m'),
@@ -471,10 +495,31 @@ class ReservationsController extends Controller {
                 'sellerId' => Yii::$app->user->getId(),
                 'sellerName' => Yii::$app->user->identity->username,
                 'ticketId' => 'V0000001',
-                'paid_status'=>$paid_status,
-                'paid_method'=>$paid_method
+                'status'=>$paid_status,
+                'paidMethod'=>$paid_method
             ];
+
+            if($_POST['anotherSeller']){
+                $originSellerId=$_POST['anotherSeller'];
+                $originSellerName=User::findIdentity($originSellerId)->username;
+                $foolSellerId=Yii::$app->user->id;
+                $foolSellerName=Yii::$app->user->getIdentity()->username;
+
+
+                $values['sellerId']=$originSellerId;
+                $values['sellerName']=$originSellerName;
+                $values['iSellerId']=$foolSellerId;
+                $values['iSellerName']=$foolSellerName;
+
+
+
+
+            }
+
+
+
             $insertReservation = Reservations::insertOne($newReservarion, $values);
+
             Yii::error($insertReservation);
             if ($insertReservation) {
                 $findBooking = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'bookingId="tmpMad1"');
@@ -703,6 +748,18 @@ class ReservationsController extends Controller {
 
         $backendData = $bookingInfo;
         return $this->render('bookingEdit', ['model' => $model, 'backenddata' => $backendData]);
+    }
+    public function actionBookingview() {
+
+//        $model = new DateImport();
+//        $request = Yii::$app->request;
+//        $id = $request->get('id');
+//        $query = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'id=' . $id);
+//
+//        $bookingInfo = $query->one();
+//
+//        $backendData = $bookingInfo;
+        return $this->render('bookingView' );
     }
 
     /**

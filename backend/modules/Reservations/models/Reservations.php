@@ -94,7 +94,10 @@ class Reservations extends MadActiveRecord {
             [['billing_phone'], 'string', 'max' => 255],
             [['order_currency'], 'string', 'max' => 255],
             [['personInfo'], 'string'],
-            [['paid_method'], 'string'],
+            [['paidMethod'], 'string', 'max' => 30],
+            [['status'], 'string'],
+            [['iSellerId'], 'string'],
+            [['iSellerName'], 'string'],
         ];
     }
 
@@ -120,7 +123,6 @@ class Reservations extends MadActiveRecord {
             "billing_email",
             "billing_phone",
             "order_currency",
-            "personInfo",
         ];
     }
 
@@ -338,6 +340,40 @@ class Reservations extends MadActiveRecord {
 
         $dataProvider = new ActiveDataProvider([
             'query' => $rows,
+            'pagination' => [
+                'pageSize' => 15,
+            ],
+        ]);
+
+        $this->load($params);
+
+        return $dataProvider;
+    }
+    public function searchMytransactions($params) {
+        $searchModel= new Reservations();
+        $what = ['*'];
+        $from = self::tableName();
+        $currentUserId = \Yii::$app->user->getId();
+
+        $where = self::andWhereFilter([
+            # ['invoiceDate', '>=', $invoiceDate],
+            # ['bookingDate', '<=', $bookingDate],
+            # ['source', '=', 'Street'],
+            ['sellerId', '=', strval($currentUserId)],
+        ]);
+        $orwhere = self::orWhereFilter([
+
+            ['iSellerId', '=', strval($currentUserId)],
+
+        ]);
+        $query = Reservations::find();
+
+        $query->andFilterWhere(['or',
+            ['=','sellerId', strval($currentUserId)],
+            ['=','iSellerId', strval($currentUserId)]]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
             'pagination' => [
                 'pageSize' => 15,
             ],

@@ -95,7 +95,7 @@ $this->registerJs($format, View::POS_HEAD);
             echo Html::hiddenInput('reservation', $model->id);
 
             echo Select2::widget( [
-                'name' => 'anotherseller',
+                'name' => 'anotherSeller',
                 'data' => $data,
                 'id' => rand(),
                 'options' => ['placeholder' => 'Select a seller...'],
