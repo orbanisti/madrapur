@@ -24,4 +24,6 @@
     ?>
 
     <a href="<?= Url::to("/Dashboard/dashboard/admin?skip-ticket=$nextTicketId") ?>" class="btn btn-block btn-primary btn-lg">Skip current ticket</a>
+
+    <a href="<?= Url::to("/Dashboard/dashboard/admin?change-ticket-block=$startTicketId") ?>" class="btn btn-block btn-primary btn-lg">Change Ticket Block</a>
 </div>

@@ -5,7 +5,7 @@
 ?>
 
 <h1>SelectTicket</h1>
-<div class="col-xs-12 col-md-3">
+<div class="col-xs-12">
     <?php
 
 

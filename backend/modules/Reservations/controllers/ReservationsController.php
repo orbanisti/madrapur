@@ -11,6 +11,8 @@ use backend\modules\Product\models\ProductTime;
 use backend\modules\Reservations\models\DateImport;
 use backend\modules\Reservations\models\Reservations;
 use backend\modules\Reservations\models\ReservationsAdminSearchModel;
+use backend\modules\Tickets\models\TicketBlockSearchModel;
+use backend\modules\Tickets\models\TicketSearchModel;
 use common\commands\AddTicketToReservationCommand;
 use common\commands\AddToTimelineCommand;
 use common\commands\SendEmailCommand;
@@ -249,7 +251,7 @@ class ReservationsController extends Controller {
             $data->orderDetails = new \stdClass();
 
             $data->personInfo = [];
-            $data->updateDate = date('Y-m-d h:m:s');
+            $data->updateDate = date('Y-m-d H:i:s');
 
             $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $productPrice["product_id"]);
             $myprices = $query->all();
@@ -295,6 +297,9 @@ class ReservationsController extends Controller {
                 $source = 'Hotel';
             }
 
+            $ticketBlock = TicketBlockSearchModel::aSelect(TicketBlockSearchModel::class, '*', TicketBlockSearchModel::tableName(), 'assignedTo = ' . Yii::$app->user->id . ' AND isActive IS TRUE')->one();
+            $ticket = TicketSearchModel::useTable('modulus_tb_'.$ticketBlock->returnStartId())::findOne(['reservationId' => null, 'status' => 'open']);
+
             $values = [
                 'booking_cost' => $productPrice["discount"],
                 'invoiceMonth' => date('m'),
@@ -306,7 +311,7 @@ class ReservationsController extends Controller {
                 'data' => $data,
                 'sellerId' => Yii::$app->user->getId(),
                 'sellerName' => Yii::$app->user->identity->username,
-                'ticketId' => 'V0000001'
+                'ticketId' => $ticket->ticketId,
             ];
             $insertReservation = Reservations::insertOne($newReservarion, $values);
 

@@ -4,15 +4,19 @@ namespace backend\modules\Tickets\controllers;
 
 use backend\controllers\Controller;
 use backend\modules\rbac\models\RbacAuthAssignment;
+use backend\modules\Reservations\models\Reservations;
 use backend\modules\Tickets\models\TicketBlock;
 use backend\modules\Tickets\models\TicketSearchModel;
 use backend\modules\Tickets\models\TicketBlockSearchModel;
 use common\models\User;
 use common\models\UserProfile;
+use kartik\grid\EditableColumn;
 use kartik\helpers\Html;
 use Yii;
+use yii\db\conditions\InCondition;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
+use yii\helpers\Url;
 use yii\web\ForbiddenHttpException;
 
 /**
@@ -91,6 +95,8 @@ class TicketsController extends Controller {
             if (8 !== strlen($startId)) {
                 sessionSetFlashAlert('error', 'Ticket ID must be 8 characters long!');
             } else {
+                
+
                 $currentId = (int)$startId;
                 $values = '(\'' . sprintf('%08d', $currentId) . '\')';
                 $idToCheck = $currentId - 50;
@@ -217,10 +223,7 @@ class TicketsController extends Controller {
      *
      * @return string
      */
-    public function actionViewBlock($id) {
-
-        $ticketBlockStartId = TicketBlockSearchModel::getStartId($id);
-
+    public function actionViewBlock($ticketBlockStartId) {
         $searchModel = TicketSearchModel::useTable("modulus_tb_$ticketBlockStartId");
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -231,11 +234,66 @@ class TicketsController extends Controller {
                 'value' => function ($model, $key, $index, $column) {
                     return \kartik\grid\GridView::ROW_COLLAPSED;
                 },
-                'detail' => function ($model, $key, $index, $column) {
-                    return Yii::$app->controller->renderPartial('viewTicketInfo', ['model' => $model]);
-                },
+                'enableCache' => false,
                 'headerOptions' => ['class' => 'kartik-sheet-style'],
                 'expandOneOnly' => true,
+                'detail' => function (TicketSearchModel $model, $key, $index, $column) {
+                    $searchModel = Reservations::findOne(['=', 'ticketId', $key]);
+                    $dataProvider = $searchModel->search(['ticketId' => $key]);
+
+                    $gridColumns = [
+                        [
+                            'class' => EditableColumn::class,
+                            'attribute' => 'firstName',
+
+                            'label' => 'First Name',
+                            'refreshGrid' => false,
+
+                            'editableOptions' => function ($model, $key, $index) {
+                                return [
+                                    'formOptions' => [
+                                        'id' => 'gv1_' . $model->id . '_form_first_name',
+                                        'action' => \yii\helpers\Url::to(['/Product/product/editbook'])
+                                    ],
+                                    'options' => [
+                                        'id' => 'gv1_' . $model->id . '_first_name',
+                                    ],
+                                ];
+                            },
+                        ],
+                        [
+                            'class' => EditableColumn::class,
+                            'attribute' => 'lastName',
+                            'label' => 'Last Name',
+                            'refreshGrid' => false,
+                            'editableOptions' => function ($model, $key, $index) {
+                                return [
+                                    'formOptions' => [
+                                        'id' => 'gv1_' . $model->id . '_form_last_name',
+                                        'action' => \yii\helpers\Url::to(['/Product/product/editbook'])
+                                    ],
+                                    'options' => [
+                                        'id' => 'gv1_' . $model->id . '_last_name',
+                                    ],
+                                ];
+                            },
+
+                        ],
+                    ];
+
+                    if ($dataProvider->count) {
+                        return $this->renderPartial(
+                            'partial/editDetails',
+                            [
+                                'searchModel' => $searchModel,
+                                'dataProvider' => $dataProvider,
+                                'gridColumns' => $gridColumns
+                            ]
+                        );
+                    } else {
+                        return '<div class="alert alert-danger">No data found</div>';
+                    }
+                },
             ],
             [
                 'label' => 'ticketId',
@@ -282,7 +340,6 @@ class TicketsController extends Controller {
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'gridColumns' => $gridColumns,
-            'id' => $id,
         ]);
     }
 

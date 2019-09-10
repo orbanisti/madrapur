@@ -13,7 +13,7 @@ class m190806_123217_modulusTicketidncancel extends Migration {
         $this->addColumn(
             $this->tableName,
             $this->columnName1,
-            'varchar(3)'
+            'varchar(255)'
         );
         $this->addColumn(
             $this->tableName,

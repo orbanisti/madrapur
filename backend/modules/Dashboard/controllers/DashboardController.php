@@ -28,6 +28,20 @@ class DashboardController extends Controller {
             $viewType = 'seller/';
             $viewName = 'admin';
 
+            if ($cb = Yii::$app->request->get('change-ticket-block')) {
+                $block = TicketBlockSearchModel::find()
+                    ->andFilterWhere(['=', 'assignedTo', Yii::$app->user->id])
+                    ->andWhere('isActive IS TRUE')
+                    ->one();
+
+                if ($block && $block->returnStartId() !== $cb) {
+                    $block->isActive = false;
+                    $block->save(false);
+                }
+
+                $block = null;
+            }
+
             if ($id = Yii::$app->request->get('id')) {
                 $ticketBlockSearchModel = TicketBlockSearchModel::findOne(['=', 'id', $id]);
                 $alreadyActive = false;
@@ -93,7 +107,7 @@ class DashboardController extends Controller {
                     }
                 }
 
-                if ($skipTicket = Yii::$app->request->get('skip-ticket') === $assignedBlock->returnCurrentId()) {
+                if ($assignedBlock && $skipTicket = Yii::$app->request->get('skip-ticket') === $assignedBlock->returnCurrentId()) {
                     sessionSetFlashAlert('warning', 'Ticket skipped.');
 
                     $assignedBlock->skipCurrentTicket();

@@ -39,7 +39,6 @@ class AddTicketToReservationCommand extends BaseObject implements SelfHandlingCo
             $model->timestamp = $command->timestamp;
             $model->reservationId = $command->bookingId;
             $model->status = 'sold';
-            Yii::error($model);
 
             return $model->save(false);
         }

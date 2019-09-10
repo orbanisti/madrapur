@@ -36,7 +36,7 @@ use yii\web\View;
                 'name' => 'startId',
                 'id' => 'startId',
                 'maxlength' => 8,
-                'pattern' => '\d*',
+                //'pattern' => '\d*',
                 'required' => true
             ])->hint('Entering the full ticket ID is mandatory. In case of voucher ticket block include the initial letter, too.')
             ?>

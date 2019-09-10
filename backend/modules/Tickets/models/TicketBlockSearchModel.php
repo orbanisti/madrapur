@@ -18,18 +18,6 @@ use yii\data\ActiveDataProvider;
 class TicketBlockSearchModel extends TicketBlock {
 
     protected static $startId;
-
-    /**
-     * @param $id
-     *
-     * @return string
-     */
-    public static function getStartId($id) {
-        $ticketBlock = static::find()->where(['=', 'id', $id])->one();
-
-        return $ticketBlock->returnStartId();
-    }
-
     /**
      * @return string
      */
@@ -94,6 +82,13 @@ class TicketBlockSearchModel extends TicketBlock {
         return $this['id'];
     }
 
+    /**
+     * @return string
+     */
+    public function returnCurrentId() {
+        return $this->returnCurrentTicket()->ticketId;
+    }
+
     public function returnCurrentTicket() {
         $tableName = 'modulus_tb_' . $this['startId'];
 
@@ -108,13 +103,6 @@ class TicketBlockSearchModel extends TicketBlock {
         )->one();
 
         return $ticket;
-    }
-
-    /**
-     * @return string
-     */
-    public function returnCurrentId() {
-        return $this->returnCurrentTicket()->ticketId;
     }
 
     public function skipCurrentTicket() {
