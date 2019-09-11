@@ -162,7 +162,7 @@ echo Menu::widget(
                                         'label' => Yii::t('backend', 'Db editor'),
                                         'icon' => '<i class="fa fa-table"></i>',
                                         'url' => [
-                                            '/Modmail/modmail/dbeditor'
+                                            '/dbeditor.php'
                                         ],
 
                                     ],
