@@ -601,30 +601,8 @@
     $searchModel = new ProductAdminSearchModel();
 
     $users = User::find()->all();
-    $assignments = RbacAuthAssignment::aSelect(
-        RbacAuthAssignment::class,
-        '*',
-        RbacAuthAssignment::tableName(),
-        '1',
-        'user_id',
-        'user_id'
-    )->all();
-
-    foreach ($users as $idx => $user) {
-        foreach ($assignments as $idx => $assignment) {
-            if ($assignment->user_id === $user->id) {
-                if (!Yii::$app->user->can($assignment->item_name)) {
-                    unset($users[$idx]);
-                }
-            }
-        }
-    }
 
     $today = date('Y-m-d');
-
-
-
-
 
         $gridColumns = [
             [
@@ -662,25 +640,6 @@
 
         ];
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     $reservationmodel = new Reservations();
 
     $userList=[];
@@ -716,8 +675,7 @@
 
         ]);
 
-
-        if($userDataProvider->getCount()>0)
+      if($user->hasRole('streetSeller'))
         {
             $userList[]="  <li><a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse".$in."\" 
         aria-expanded=\"false\"
