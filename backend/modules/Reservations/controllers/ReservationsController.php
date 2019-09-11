@@ -1,31 +1,33 @@
 <?php
 
-namespace backend\modules\Reservations\controllers;
+    namespace backend\modules\Reservations\controllers;
 
-use backend\controllers\Controller;
-use backend\modules\Product\models\Product;
-use backend\modules\Product\models\ProductAdminSearchModel;
-use backend\modules\Product\models\ProductPrice;
-use backend\modules\Product\models\ProductSource;
-use backend\modules\Product\models\ProductTime;
-use backend\modules\Reservations\models\DateImport;
-use backend\modules\Reservations\models\Reservations;
-use backend\modules\Reservations\models\ReservationsAdminSearchModel;
-use backend\modules\Tickets\models\TicketBlockSearchModel;
-use backend\modules\Tickets\models\TicketSearchModel;
-use common\commands\AddTicketToReservationCommand;
-use common\commands\AddToTimelineCommand;
-use common\commands\SendEmailCommand;
-use common\models\User;
-use Yii;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Json;
-use yii\web\ForbiddenHttpException;
+    use backend\controllers\Controller;
+    use backend\modules\Product\models\Product;
+    use backend\modules\Product\models\ProductAdminSearchModel;
+    use backend\modules\Product\models\ProductPrice;
+    use backend\modules\Product\models\ProductSource;
+    use backend\modules\Product\models\ProductTime;
+    use backend\modules\rbac\models\RbacAuthAssignment;
+    use backend\modules\Reservations\models\DateImport;
+    use backend\modules\Reservations\models\Reservations;
+    use backend\modules\Reservations\models\ReservationsAdminSearchModel;
+    use backend\modules\Tickets\models\TicketBlockSearchModel;
+    use backend\modules\Tickets\models\TicketSearchModel;
+    use common\commands\AddTicketToReservationCommand;
+    use common\commands\AddToTimelineCommand;
+    use common\commands\SendEmailCommand;
+    use common\models\User;
+    use kartik\icons\Icon;
+    use Yii;
+    use yii\helpers\ArrayHelper;
+    use yii\helpers\Json;
+    use yii\web\ForbiddenHttpException;
 
-/**
- * ReservationsController implements the CRUD actions for ReservationsModel.
- */
-class ReservationsController extends Controller {
+    /**
+     * ReservationsController implements the CRUD actions for ReservationsModel.
+     */
+    class ReservationsController extends Controller {
 
     /**
      * @param bool $id
@@ -73,31 +75,22 @@ class ReservationsController extends Controller {
 
 
 
-    public function actionMytransactions(){
+    public function actionMytransactions() {
 
-
-
-        $searchModel=new Reservations();
-        $dataProvider=$searchModel->searchMytransactions(Yii::$app->request->queryParams);
-        $today=date('Y-m-d');
-        $allTrans=$searchModel->searchMytransactions(Yii::$app->request->queryParams,$today);
-        $eurTrans=$searchModel->searchMytransactions(Yii::$app->request->queryParams,$today,'EUR');
-        $hufTrans=$searchModel->searchMytransactions(Yii::$app->request->queryParams,$today,'HUF');
-
-
-
-
+        $searchModel = new Reservations();
+        $dataProvider = $searchModel->searchMytransactions(Yii::$app->request->queryParams);
+        $today = date('Y-m-d');
+        $allTrans = $searchModel->searchMytransactions(Yii::$app->request->queryParams, $today);
+        $eurTrans = $searchModel->searchMytransactions(Yii::$app->request->queryParams, $today, 'EUR');
+        $hufTrans = $searchModel->searchMytransactions(Yii::$app->request->queryParams, $today, 'HUF');
 
         return $this->render('mytransactions', [
-            'dataProvider'=>$allTrans,
-            'allTransactionData'=>$allTrans,
-            'eurTransactionData'=>$eurTrans,
-            'hufTransactionData'=>$hufTrans,
+            'dataProvider' => $allTrans,
+            'allTransactionData' => $allTrans,
+            'eurTransactionData' => $eurTrans,
+            'hufTransactionData' => $hufTrans,
 
         ]);
-
-
-
     }
 
     /**
@@ -328,7 +321,7 @@ class ReservationsController extends Controller {
             }
 
             $ticketBlock = TicketBlockSearchModel::aSelect(TicketBlockSearchModel::class, '*', TicketBlockSearchModel::tableName(), 'assignedTo = ' . Yii::$app->user->id . ' AND isActive IS TRUE')->one();
-            $ticket = TicketSearchModel::useTable('modulus_tb_'.$ticketBlock->returnStartId())::findOne(['reservationId' => null, 'status' => 'open']);
+            $ticket = TicketSearchModel::useTable('modulus_tb_' . $ticketBlock->returnStartId())::findOne(['reservationId' => null, 'status' => 'open']);
 
             $values = [
                 'booking_cost' => $productPrice["discount"],
@@ -371,7 +364,7 @@ class ReservationsController extends Controller {
                     new AddTicketToReservationCommand(
                         [
                             'sellerId' => Yii::$app->user->getId(),
-                            'timestamp' => date('Y-m-d H:i:s',time()),
+                            'timestamp' => date('Y-m-d H:i:s', time()),
                             'bookingId' => $booking->id,
                         ]
                     )
@@ -432,14 +425,11 @@ class ReservationsController extends Controller {
         }
         if ($productPrice) {
 
-            $paid_status=$_POST['paid_status'];
+            $paid_status = $_POST['paid_status'];
 
-            $paid_method=$_POST['paid_method'];
+            $paid_method = $_POST['paid_method'];
 
-            $paid_currency=$_POST['paid_currency'];
-
-
-
+            $paid_currency = $_POST['paid_currency'];
 
             $newReservarion = new Reservations();
 
@@ -481,8 +471,6 @@ class ReservationsController extends Controller {
 
             # $data=['boookingDetails'=> $booking->bookingDetails,'orderDetails'=>$booking->orderDetails,'personInfo'=>$booking->personInfo,'updateDate'=>date("Y-m-d H:i:s")];
 
-
-
             $source = 'unset';
             $imaStreetSeller = Yii::$app->authManager->getAssignment('streetSeller', Yii::$app->user->getId());
             $imaHotelSeller = Yii::$app->authManager->getAssignment('hotelSeller', Yii::$app->user->getId());
@@ -495,9 +483,7 @@ class ReservationsController extends Controller {
             }
 
             $ticketBlock = TicketBlockSearchModel::aSelect(TicketBlockSearchModel::class, '*', TicketBlockSearchModel::tableName(), 'assignedTo = ' . Yii::$app->user->id . ' AND isActive IS TRUE')->one();
-            $ticket = TicketSearchModel::useTable('modulus_tb_'.$ticketBlock->returnStartId())::findOne(['reservationId' => null, 'status' => 'open']);
-
-
+            $ticket = TicketSearchModel::useTable('modulus_tb_' . $ticketBlock->returnStartId())::findOne(['reservationId' => null, 'status' => 'open']);
 
             $values = [
                 'booking_cost' => $productPrice["discount"],
@@ -512,30 +498,23 @@ class ReservationsController extends Controller {
                 'sellerId' => Yii::$app->user->getId(),
                 'sellerName' => Yii::$app->user->identity->username,
                 'ticketId' => $ticket->ticketId,
-                'status'=>$paid_status,
-                'paidMethod'=>$paid_method,
-                'order_currency'=>$paid_currency
+                'status' => $paid_status,
+                'paidMethod' => $paid_method,
+                'order_currency' => $paid_currency
 
             ];
 
-            if($_POST['anotherSeller']){
-                $originSellerId=$_POST['anotherSeller'];
-                $originSellerName=User::findIdentity($originSellerId)->username;
-                $foolSellerId=Yii::$app->user->id;
-                $foolSellerName=Yii::$app->user->getIdentity()->username;
+            if ($_POST['anotherSeller']) {
+                $originSellerId = $_POST['anotherSeller'];
+                $originSellerName = User::findIdentity($originSellerId)->username;
+                $foolSellerId = Yii::$app->user->id;
+                $foolSellerName = Yii::$app->user->getIdentity()->username;
 
-
-                $values['sellerId']=$originSellerId;
-                $values['sellerName']=$originSellerName;
-                $values['iSellerId']=$foolSellerId;
-                $values['iSellerName']=$foolSellerName;
-
-
-
-
+                $values['sellerId'] = $originSellerId;
+                $values['sellerName'] = $originSellerName;
+                $values['iSellerId'] = $foolSellerId;
+                $values['iSellerName'] = $foolSellerName;
             }
-
-
 
             $insertReservation = Reservations::insertOne($newReservarion, $values);
 
@@ -596,10 +575,8 @@ class ReservationsController extends Controller {
             'myPrices' => $myprices,
             'countPrices' => $countPrices,
             'newReservation' => $updateResponse,
-            'subView'=>$this->renderPartial(  'assingui',['model'=>new Reservations()])
-            ]);
-
-
+            'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
+        ]);
     }
 
 
@@ -620,95 +597,101 @@ class ReservationsController extends Controller {
         }
         return [];
     }
+    public function actionReporting(){
+    $searchModel = new ProductAdminSearchModel();
 
-    /**
-     * @return array
-     */
-    public function actionCalcprice() {
-        if (Yii::$app->request->isAjax) {
+    $users = User::find()->all();
 
-            $data = Yii::$app->request->post();
-            if(isset($data['prices'])){
+    $today = date('Y-m-d');
 
+        $gridColumns = [
+            [
+                'label' => 'Persons',
+                'attribute' => 'bookedChairsCount',
+                'format' => 'html',
+                'value' => function ($model) {
+                    $sellerBadge = '';
+                    if (isset($model->iSellerName)) {
 
-
-            $currID = $data['prodid'];
-            $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $currID);
-            $myprices = $query->all();
-            $postedCurrency=$data['currency'];
-            $postedCustomPrice=$data['customPrice'];
-
-            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            $productsBought = [];
-            Yii::error($data['prices']);
-            foreach ($data['prices'] as $priceId => $price) {
-                if ($price) {
-                    $productsBought[$priceId] = $price;
-                }
-            }
-
-            $fullTotal = 0;
-
-            foreach ($productsBought as $priceId => $priceAmount) {
-
-                foreach ($myprices as $remotePrice) {
-
-
-                    if ($remotePrice->id == $priceId) {
-                        if($postedCurrency=='HUF'){
-                            $remotePrice=ProductPrice::eurtohuf($remotePrice);
-                        }
-                        $currentPrice = (int)$remotePrice->price;
-                        (int)$fullTotal = (int)$fullTotal + (int)($currentPrice * $priceAmount);
+                        $sellerBadge = " <span class=\" badge bg-yellow\">" . $model->iSellerName . "</span>";
                     }
+
+                    return $model->bookedChairsCount . ' ' . Icon::show('users', ['class' => 'fa-lg', 'framework'
+                        => Icon::FA]) . $sellerBadge;
                 }
-            }
+            ],
+            [
+                'label' => 'Cost',
+                'attribute' => 'bookingCost',
 
-            return [
-                'search' => $fullTotal,
-                'customPrice'=>(int)$postedCustomPrice,
-                'response'=>'price'
-            ];
-            }
+                'format' => 'html',
+                'value' => function ($model) {
 
-            else if(isset($data['date'])&& isset($data['time'])){
-                \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                    if ($model->orderCurrency == 'EUR') {
+                        $currencySymbol = Icon::show('euro', ['class' => 'fa-lg', 'framework'
+                        => Icon::FA]);
+                    } else {
+                        $currencySymbol = 'Ft';
+                    }
 
-                $currID = $data['productId'];
-                $currDate=$data['date'];
-                $currTime=$data['time'];
-                $reservationModel=new Reservations();
-
-                $sources=ProductSource::getProductSourceIds($currID);
-                $currentProduct = Product::getProdById($currID);
-                $availableChairs=$currentProduct->capacity-$reservationModel->countTakenChairsOnDayTime($currDate,$sources,$currTime);
-                $progressBarlenght=round($availableChairs,-1);
-
-                $StreetHeader="<span class=\"info-box-text\">Available places left:</span>
-                                  <span class=\"info-box-number\">$availableChairs</span>";
-
-                $capPercentage=round($availableChairs*0.9,-1);
-                $HotelHeader="<span class=\"info-box-text\">Remaining capacity:</span>
-                                  <span class=\"info-box-number\">$capPercentage+ </span>";
-
-                if(Yii::$app->user->can('hotelEditor')){
-                    $BoxInfo=$HotelHeader;
-                } else if(Yii::$app->user->can('streetSeller')){
-                    $BoxInfo=$StreetHeader;
-                }else{
-
-                    $BoxInfo=$HotelHeader;
+                    return $model->bookingCost . ' ' . $currencySymbol;
                 }
-                $capcolor='bg-blue';
-                if($availableChairs<($currentProduct->capacity)*25/100){
-                    $capcolor='bg-red';
-                }
-                if($availableChairs>($currentProduct->capacity)*45/100){
-                    $capcolor='bg-yellow';
-                }
-                if($availableChairs>($currentProduct->capacity)*65/100){
-                    $capcolor='bg-blue';
-                }
+            ],
+
+        ];
+
+    $reservationmodel = new Reservations();
+
+    $userList=[];
+    foreach ($users as $in => $user) {
+        $userDataProvider = $reservationmodel->searchReservations(Yii::$app->request->queryParams,$user->id,$today);
+        $userDataHuf=$reservationmodel->searchReservations(Yii::$app->request->queryParams,$user->id,$today,'HUF');
+        $userDataEur=$reservationmodel->searchReservations(Yii::$app->request->queryParams,$user->id,$today,'EUR');
+        $hufToday=Reservations::sumDataProvider($userDataHuf->models, 'bookingCost');
+        $eurToday=Reservations::sumDataProvider($userDataEur->models, 'bookingCost');
+
+
+
+
+        $userGrid = \kartik\grid\GridView::widget([
+            'dataProvider' => $userDataProvider,
+            'columns' => $gridColumns,
+            'pjax' => false,
+            'layout' => '{items}',
+            'toolbar' => [
+                [
+
+                    'options' => ['class' => 'btn-group mr-2']
+                ],
+                '{export}',
+                '{toggleData}',
+            ],
+            'toggleDataContainer' => ['class' => 'btn-group mr-2'],
+            // set export properties
+            'export' => [
+                'fontAwesome' => true,
+
+            ],
+
+        ]);
+
+      if($user->hasRole('streetSeller'))
+        {
+            $userList[]="  <li><a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse".$in."\" 
+        aria-expanded=\"false\"
+               class=\"collapsed\"
+               href=\"#\">
+                <span class=\"btn bg-aqua\"> ".$user->username."</span>
+                <span class=\"pull-right badge bg-green\">".Icon::show('euro', ['class' => 'fa-lg', 'framework'
+            => Icon::FA]).$eurToday."</span>
+                <span class=\"pull-right badge bg-green\">".$hufToday."</span>
+                <span class=\"pull-right badge bg-red\">".$userDataProvider->getCount()."</span></a></li>
+        <div id=\"collapse".$in."\" class=\"panel-collapse collapse\" aria-expanded=\"false\" style=\"height: 0px;\">
+            <div class=\"box-body\">
+                ".$userGrid."
+            </div>
+        </div>";
+        }
 
 
 
@@ -716,71 +699,175 @@ class ReservationsController extends Controller {
 
 
 
-                $AvailableSpacesHtml="<div class=\"info-box $capcolor\">
-            <span class=\"info-box-icon\"><i class=\"fa fa-clock-o\"></i></span>
+    }
 
-            <div class=\"info-box-content\">
-           ".$BoxInfo."
 
-              <div class=\"progress\">
-                <div class=\"progress-bar\" style=\"width:$progressBarlenght%\"></div>
-              </div>
-                 <span class=\"progress-description\">
+
+
+
+
+
+
+    return $this->render('reporting', ['userList' => $userList, 'searchModel' => $searchModel,'today'=>$today]);
+
+
+}
+
+/**
+* @return array
+*/
+public function actionCalcprice() {
+if (Yii::$app->request->isAjax) {
+
+$data = Yii::$app->request->post();
+if(isset($data['prices'])){
+
+
+$currID = $data['prodid'];
+$query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $currID);
+$myprices = $query->all();
+$postedCurrency=$data['currency'];
+$postedCustomPrice=$data['customPrice'];
+
+\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+$productsBought = [];
+Yii::error($data['prices']);
+foreach ($data['prices'] as $priceId => $price) {
+if ($price) {
+$productsBought[$priceId] = $price;
+}
+}
+
+$fullTotal = 0;
+
+foreach ($productsBought as $priceId => $priceAmount) {
+
+foreach ($myprices as $remotePrice) {
+
+
+if ($remotePrice->id == $priceId) {
+if($postedCurrency=='HUF'){
+$remotePrice=ProductPrice::eurtohuf($remotePrice);
+}
+$currentPrice = (int)$remotePrice->price;
+(int)$fullTotal = (int)$fullTotal + (int)($currentPrice * $priceAmount);
+}
+}
+}
+
+return [
+'search' => $fullTotal,
+'customPrice'=>(int)$postedCustomPrice,
+'response'=>'price'
+];
+}
+
+else if(isset($data['date'])&& isset($data['time'])){
+\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+$currID = $data['productId'];
+$currDate=$data['date'];
+$currTime=$data['time'];
+$reservationModel=new Reservations();
+
+$sources=ProductSource::getProductSourceIds($currID);
+$currentProduct = Product::getProdById($currID);
+$availableChairs=$currentProduct->capacity-$reservationModel->countTakenChairsOnDayTime($currDate,$sources,$currTime);
+$progressBarlenght=round($availableChairs,-1);
+
+$StreetHeader="<span class=\"info-box-text\">Available places left:</span>
+<span class=\"info-box-number\">$availableChairs</span>";
+
+$capPercentage=round($availableChairs*0.9,-1);
+$HotelHeader="<span class=\"info-box-text\">Remaining capacity:</span>
+<span class=\"info-box-number\">$capPercentage+ </span>";
+
+if(Yii::$app->user->can('hotelEditor')){
+$BoxInfo=$HotelHeader;
+} else if(Yii::$app->user->can('streetSeller')){
+$BoxInfo=$StreetHeader;
+}else{
+
+$BoxInfo=$HotelHeader;
+}
+$capcolor='bg-blue';
+if($availableChairs<($currentProduct->capacity)*25/100){
+$capcolor='bg-red';
+}
+if($availableChairs>($currentProduct->capacity)*45/100){
+$capcolor='bg-yellow';
+}
+if($availableChairs>($currentProduct->capacity)*65/100){
+$capcolor='bg-blue';
+}
+
+
+$AvailableSpacesHtml="
+<div class=\"info-box $capcolor\">
+<span class=\"info-box-icon\"><i class=\"fa fa-clock-o\"></i></span>
+
+<div class=\"info-box-content\">
+    ".$BoxInfo."
+
+    <div class=\"progress\">
+        <div class=\"progress-bar\" style=\"width:$progressBarlenght%\"></div>
+    </div>
+    <span class=\"progress-description\">
                     for <strong>$currTime</strong>
                  </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>";
+</div>
+<!-- /.info-box-content -->
+</div>";
 
 
-                return [
-                    'search'=>"$AvailableSpacesHtml",
-                    'response'=>'places'
+return [
+'search'=>"$AvailableSpacesHtml",
+'response'=>'places'
 
-                ];
-            }
+];
+}
 
-        }
-        return [];
-    }
+}
+return [];
+}
 
-    /**
-     * @return array|string
-     */
-    public function actionGetprices() {
-        if (Yii::$app->request->isAjax) {
-            $data = Yii::$app->request->post();
-            $id = $data['id'];
-            $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $id);
-            $myprices = $query->all();
-            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            return $this->renderPartial('prices');
-        }
-        return [];
-    }
+/**
+* @return array|string
+*/
+public function actionGetprices() {
+if (Yii::$app->request->isAjax) {
+$data = Yii::$app->request->post();
+$id = $data['id'];
+$query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $id);
+$myprices = $query->all();
+\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+return $this->renderPartial('prices');
+}
+return [];
+}
 
-    /**
-     * @return string
-     * @throws ForbiddenHttpException
-     */
-    public function actionBookingedit() {
-        if (!Yii::$app->user->can(Reservations::VIEW_BOOKINGS) && !Yii::$app->user->can(Reservations::VIEW_OWN_BOOKINGS)) {
-            throw new ForbiddenHttpException('userCan\'t');
-        }
+/**
+* @return string
+* @throws ForbiddenHttpException
+*/
+public function actionBookingedit() {
+if (!Yii::$app->user->can(Reservations::VIEW_BOOKINGS) && !Yii::$app->user->can(Reservations::VIEW_OWN_BOOKINGS)) {
+throw new ForbiddenHttpException('userCan\'t');
+}
 
-        $model = new DateImport();
-        $id = Yii::$app->request->get('id');
-        $query = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'id=' . $id);
+$model = new DateImport();
+$id = Yii::$app->request->get('id');
+$query = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'id=' . $id);
 
-        $bookingInfo = $query->one();
+$bookingInfo = $query->one();
 
-        if (Yii::$app->user->id != $bookingInfo->sellerId) {
-            throw new ForbiddenHttpException('userCan\'t');
-        }
+if (Yii::$app->user->id != $bookingInfo->sellerId) {
+throw new ForbiddenHttpException('userCan\'t');
+}
 
-        return $this->render('bookingEdit', ['model' => $model, 'backenddata' => $bookingInfo]);
-    }
-    public function actionBookingview() {
+return $this->render('bookingEdit', ['model' => $model, 'backenddata' => $bookingInfo]);
+}
+public function actionBookingview() {
 
 //        $model = new DateImport();
 //        $request = Yii::$app->request;
@@ -790,70 +877,70 @@ class ReservationsController extends Controller {
 //        $bookingInfo = $query->one();
 //
 //        $backendData = $bookingInfo;
-        return $this->render('bookingView' );
-    }
+return $this->render('bookingView' );
+}
 
-    /**
-     * @return string
-     * @throws ForbiddenHttpException
-     */
-    public function actionMyreservations() {
-        if (!Yii::$app->user->can(Reservations::VIEW_OWN_BOOKINGS)) {
-            throw new ForbiddenHttpException('userCan\'t');
-        }
+/**
+* @return string
+* @throws ForbiddenHttpException
+*/
+public function actionMyreservations() {
+if (!Yii::$app->user->can(Reservations::VIEW_OWN_BOOKINGS)) {
+throw new ForbiddenHttpException('userCan\'t');
+}
 
-        $searchModel = new ReservationsAdminSearchModel();
-        $dataProvider = $searchModel->searchMyreservations(Yii::$app->request->queryParams);
-        $dataProvider->setSort([
+$searchModel = new ReservationsAdminSearchModel();
+$dataProvider = $searchModel->searchMyreservations(Yii::$app->request->queryParams);
+$dataProvider->setSort([
 
-            'defaultOrder' => [
-                'id' => SORT_DESC
-            ]
-        ]);
+'defaultOrder' => [
+'id' => SORT_DESC
+]
+]);
 
-        $monthlySold = $searchModel->getMonthlyBySeller(Yii::$app->user->identity->username);
-        $todaySold = $searchModel->getTodayBySeller(Yii::$app->user->identity->username);
-        $myTicketBook = $searchModel->getTicketBookBySeller();
+$monthlySold = $searchModel->getMonthlyBySeller(Yii::$app->user->identity->username);
+$todaySold = $searchModel->getTodayBySeller(Yii::$app->user->identity->username);
+$myTicketBook = $searchModel->getTicketBookBySeller();
 
-        return $this->render(
-            'myreservations',
-            [
-                'dataProvider' => $dataProvider,
-                'searchModel' => $searchModel,
-                'monthlySold' => $monthlySold,
-                'todaySold' => $todaySold,
-                'nextTicketId' => isset($myTicketBook->startId) ? $myTicketBook->startId : 'unset',
-                'startTicketId' => isset($myTicketBook->startId) ? $myTicketBook->startId : null,
-            ]
-        );
-    }
+return $this->render(
+'myreservations',
+[
+'dataProvider' => $dataProvider,
+'searchModel' => $searchModel,
+'monthlySold' => $monthlySold,
+'todaySold' => $todaySold,
+'nextTicketId' => isset($myTicketBook->startId) ? $myTicketBook->startId : 'unset',
+'startTicketId' => isset($myTicketBook->startId) ? $myTicketBook->startId : null,
+]
+);
+}
 
-    /**
-     * @return string
-     * @throws ForbiddenHttpException
-     */
-    public function actionAllreservations() {
-        if (!Yii::$app->user->can(Reservations::VIEW_BOOKINGS) && !Yii::$app->user->can(Reservations::VIEW_OWN_BOOKINGS)) {
-            throw new ForbiddenHttpException('userCan\'t');
-        }
+/**
+* @return string
+* @throws ForbiddenHttpException
+*/
+public function actionAllreservations() {
+if (!Yii::$app->user->can(Reservations::VIEW_BOOKINGS) && !Yii::$app->user->can(Reservations::VIEW_OWN_BOOKINGS)) {
+throw new ForbiddenHttpException('userCan\'t');
+}
 
-        $searchModel = new ReservationsAdminSearchModel();
-        $dataProvider = $searchModel->searchAllreservations(Yii::$app->request->queryParams);
-        $chartDataProvider = $searchModel->searchChart(Yii::$app->request->queryParams);
+$searchModel = new ReservationsAdminSearchModel();
+$dataProvider = $searchModel->searchAllreservations(Yii::$app->request->queryParams);
+$chartDataProvider = $searchModel->searchChart(Yii::$app->request->queryParams);
 
-        $dataProvider->setSort([
-            'defaultOrder' => [
-                'id' => SORT_DESC
-            ]
-        ]);
+$dataProvider->setSort([
+'defaultOrder' => [
+'id' => SORT_DESC
+]
+]);
 
-        return $this->render(
-            'allreservations',
-            [
-                'dataProvider' => $dataProvider,
-                'searchModel' => $searchModel,
-                'chartDataProvider' => $chartDataProvider,
-            ]
-        );
-    }
+return $this->render(
+'allreservations',
+[
+'dataProvider' => $dataProvider,
+'searchModel' => $searchModel,
+'chartDataProvider' => $chartDataProvider,
+]
+);
+}
 }
