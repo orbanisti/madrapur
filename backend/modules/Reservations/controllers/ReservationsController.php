@@ -77,9 +77,20 @@ class ReservationsController extends Controller {
 
         $searchModel=new Reservations();
         $dataProvider=$searchModel->searchMytransactions(Yii::$app->request->queryParams);
+        $today=date('Y-m-d');
+        $allTrans=$searchModel->searchMytransactions(Yii::$app->request->queryParams,$today);
+        $eurTrans=$searchModel->searchMytransactions(Yii::$app->request->queryParams,$today,'EUR');
+        $hufTrans=$searchModel->searchMytransactions(Yii::$app->request->queryParams,$today,'HUF');
+
+
+
+
 
         return $this->render('mytransactions', [
-            'dataProvider'=>$dataProvider
+            'dataProvider'=>$allTrans,
+            'allTransactionData'=>$allTrans,
+            'eurTransactionData'=>$eurTrans,
+            'hufTransactionData'=>$hufTrans,
 
         ]);
 
@@ -496,7 +507,9 @@ class ReservationsController extends Controller {
                 'sellerName' => Yii::$app->user->identity->username,
                 'ticketId' => 'V0000001',
                 'status'=>$paid_status,
-                'paidMethod'=>$paid_method
+                'paidMethod'=>$paid_method,
+                'order_currency'=>$paid_currency
+
             ];
 
             if($_POST['anotherSeller']){
