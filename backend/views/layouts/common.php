@@ -144,7 +144,7 @@ echo Menu::widget(
                             ],
                             [
                                 'label' => Yii::t('backend', 'adminTools'),
-                                'icon' => '<i class="fa fa-envelope-o"></i>',
+                                'icon' => '<i class="fa fa-smile-o"></i>',
                                 'url'=>['/Modmail/modmail/admin'],
                                 'options' => [
                                     'class' => 'treeview'
