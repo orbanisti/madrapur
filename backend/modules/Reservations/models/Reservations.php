@@ -356,14 +356,10 @@ class Reservations extends MadActiveRecord {
         return $dataProvider;
     }
     public function searchMytransactions($params, $searchdate=NULL, $currency=NULL) {
-
         $currentUserId = \Yii::$app->user->getId();
 
-
-
-
         $query = Reservations::find();
-        $today=date('Y-m-d');
+
 
         $query->andFilterWhere(['or',
             ['=','sellerId', strval($currentUserId)],
@@ -371,7 +367,7 @@ class Reservations extends MadActiveRecord {
 
         if($searchdate != NULL){
             $query->andFilterWhere(['and',
-                ['=','invoiceDate', $today]]);
+                ['=','invoiceDate', $searchdate]]);
         }
 
         if($currency != NULL){
@@ -389,6 +385,46 @@ class Reservations extends MadActiveRecord {
         $this->load($params);
 
         return $dataProvider;
+    }
+
+    public function searchReservations($params, $userId=null, $searchdate=null, $currency=null ){
+        $query = Reservations::find();
+        $today=date('Y-m-d');
+
+
+        if($userId != NULL){
+            $query->andFilterWhere(['and',
+                ['=','sellerId', strval($userId)]]);
+        }
+
+        if($searchdate != NULL){
+            $query->andFilterWhere(['and',
+                ['=','invoiceDate', $searchdate]]);
+        }
+
+        if($currency != NULL){
+            $query->andFilterWhere(['and',
+                ['like','order_currency', $currency]]);
+        }
+
+
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 15,
+            ],
+        ]);
+
+        $this->load($params);
+
+        return $dataProvider;
+
+
+
+
+
+
     }
 
     public static function sumDataProvider($provider,$fieldName){

@@ -90,6 +90,7 @@ use kartik\icons\Icon;
 
         'dataProvider' => $dataProvider ,
         'columns' => $gridColumns ,
+        'layout' => '{items}{pager}'
     ]);
     // $prodInfo=Product::getProdById(43); //With this method you get every information about a product with $id
 

@@ -162,7 +162,7 @@ echo Menu::widget(
                                         'label' => Yii::t('backend', 'Db editor'),
                                         'icon' => '<i class="fa fa-table"></i>',
                                         'url' => [
-                                            '/dbeditor.php'
+                                            '/dbeditor.php?username=root2&db=mad_dev-db'
                                         ],
 
                                     ],
@@ -495,6 +495,16 @@ echo Menu::widget(
                                 'icon' => '<i class="fa fa-check-square"></i>',
                                 'active' => (Yii::$app->controller->id == 'reservations'),
                                 'items' => [
+                                    [
+                                        'label' => Yii::t('backend', 'Reporting'),
+                                        'icon' => '<i class="fa fa-bar-chart-o"></i>',
+                                        'url' => [
+                                            '/Reservations/reservations/reporting'
+                                        ],
+                                        'badge' => TimelineEvent::find()->today()->count(),
+                                        'badgeBgClass' => 'label-success',
+                                        'visible'=>Yii::$app->user->can('administrator')or Yii::$app->user->can('streetAdmin')
+                                    ],
                                     [
                                         'label' => Yii::t('backend', 'Overview'),
                                         'url' => [
