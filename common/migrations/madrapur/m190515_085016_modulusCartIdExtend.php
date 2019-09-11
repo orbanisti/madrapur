@@ -24,13 +24,8 @@ class m190515_085016_modulusCartIdExtend extends Migration {
 
 
     public function safeDown() {
-        foreach ($this->fields as $field) {
-            $this->alterColumn(
-                $this->tableName,
-                $field,
-                $this->integer(20)
-            );
-        }
+
+     //TODO
 
     }
 }

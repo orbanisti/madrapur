@@ -34,9 +34,9 @@ function render($view, $params = []) {
  * @param int $statusCode
  * @return \yii\web\Response
  */
-function redirect($url, $statusCode = 302) {
-    return Yii::$app->controller->redirect($url, $statusCode);
-}
+//function redirect($url, $statusCode = 302) {
+//    return Yii::$app->controller->redirect($url, $statusCode);
+//}
 
 /**
  *
