@@ -494,7 +494,8 @@ class ReservationsController extends Controller {
                 $source = 'Hotel';
             }
 
-
+            $ticketBlock = TicketBlockSearchModel::aSelect(TicketBlockSearchModel::class, '*', TicketBlockSearchModel::tableName(), 'assignedTo = ' . Yii::$app->user->id . ' AND isActive IS TRUE')->one();
+            $ticket = TicketSearchModel::useTable('modulus_tb_'.$ticketBlock->returnStartId())::findOne(['reservationId' => null, 'status' => 'open']);
 
 
 
@@ -510,7 +511,7 @@ class ReservationsController extends Controller {
                 'data' => json_encode($data),
                 'sellerId' => Yii::$app->user->getId(),
                 'sellerName' => Yii::$app->user->identity->username,
-                'ticketId' => 'V0000001',
+                'ticketId' => $ticket->ticketId,
                 'status'=>$paid_status,
                 'paidMethod'=>$paid_method,
                 'order_currency'=>$paid_currency
@@ -567,6 +568,16 @@ class ReservationsController extends Controller {
                             'sellerId' => Yii::$app->user->getId(),
                             'timestamp' => time(),
                             'bookingId' => $booking->id,
+                        ]
+                    )
+                );
+                Yii::$app->commandBus->handle(
+                    new SendEmailCommand(
+                        [
+                            'to' => 'alpe15.1992@gmail.com',
+                            'from' => 'alpe15.1992@gmail.com',
+                            'subject' => 'New reservation',
+                            'type' => 'newReservation'
                         ]
                     )
                 );
