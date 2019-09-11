@@ -78,6 +78,13 @@ class ModmailController extends Controller {
         ]);
     }
 
+    public function actionDbeditor() {
+        $mailID = Yii::$app->request->get('id');
+        $mail = Modmail::findOne($mailID);
+
+        return $this->render('dbeditor');
+    }
+
     public function actionSend() {
         $data = Yii::$app->request->post('Modmail');
         $templateId = $data['type'];

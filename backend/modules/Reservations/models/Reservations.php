@@ -306,7 +306,8 @@ class Reservations extends MadActiveRecord {
 
         $query->andFilterWhere((['>=', 'invoiceDate', '2011-12-12']));
 
-        if ($ticketId = $params['ticketId']) {
+        $ticketId = isset($params['ticketId']) ? $params['ticketId'] : null;
+        if ($ticketId) {
             $query->andFilterWhere((['=', 'ticketId', $ticketId]));
         }
 

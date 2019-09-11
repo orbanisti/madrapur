@@ -32,6 +32,10 @@ class m190612_091419_extractReservationsData extends Migration {
         $reservationsData = Reservations::getCustomList('data');
 
         foreach ($reservationsData as $id => $data) {
+            if(!is_array($data)){
+                continue;
+            }
+
             $dataObject = \yii\helpers\Json::decode($data);
             $update = [];
 

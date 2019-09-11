@@ -143,11 +143,31 @@ echo Menu::widget(
                                 'badgeBgClass' => 'label-success',
                             ],
                             [
-                                'label' => Yii::t('backend', 'modMail'),
+                                'label' => Yii::t('backend', 'adminTools'),
                                 'icon' => '<i class="fa fa-envelope-o"></i>',
-                                'url' => [
-                                    '/Modmail/modmail/admin'
+                                'url'=>['/Modmail/modmail/admin'],
+                                'options' => [
+                                    'class' => 'treeview'
                                 ],
+                                'items'=>[
+                                    [
+                                        'label' => Yii::t('backend', 'modMail'),
+                                        'icon' => '<i class="fa fa-envelope-o"></i>',
+                                        'url' => [
+                                            '/Modmail/modmail/admin'
+                                        ],
+
+                                    ],
+                                    [
+                                        'label' => Yii::t('backend', 'Db editor'),
+                                        'icon' => '<i class="fa fa-table"></i>',
+                                        'url' => [
+                                            '/Modmail/modmail/dbeditor'
+                                        ],
+
+                                    ],
+                                ],
+                                'visible'=>Yii::$app->user->can('administrator')
                             ],
                             [
                                 'label' => Yii::t('backend', 'Users'),
