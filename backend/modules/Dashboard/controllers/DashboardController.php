@@ -69,7 +69,12 @@ class DashboardController extends Controller {
                 if (!$assignedBlock) {
                     $ownBlocks = TicketBlockSearchModel::find()->andFilterWhere(['=', 'assignedTo', Yii::$app->user->id])->all();
 
-                    if (1 < count($ownBlocks)) {
+                    if (0 === count($ownBlocks)) {
+                        sessionSetFlashAlert(
+                            'warning',
+                            'No ticket block found. :(<br>Have a bright day!'
+                        );
+                    } else if (1 < count($ownBlocks)) {
                         $viewName = 'selectTicket';
 
                         $selectTicket = new \stdClass();

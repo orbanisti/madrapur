@@ -31,6 +31,9 @@ class TicketSearchModel extends MadActiveRecord {
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 25,
+            ],
         ]);
 
         $ticketId = Yii::$app->request->get('ticketId');

@@ -12,6 +12,7 @@ use common\models\User;
 use common\models\UserProfile;
 use kartik\grid\EditableColumn;
 use kartik\helpers\Html;
+use Project\Command\YourCustomCommand;
 use Yii;
 use yii\db\conditions\InCondition;
 use yii\helpers\ArrayHelper;
@@ -65,7 +66,7 @@ class TicketsController extends Controller {
                 'label' => 'View Ticket Block',
                 'format' => 'html',
                 'value' => function (TicketBlockSearchModel $model) {
-                    return '<a href="/Tickets/tickets/view-block?id=' . $model->returnId() . '">Edit' . '</a>';
+                    return '<a href="/Tickets/tickets/view-block?ticketBlockStartId=' . $model->returnStartId() . '">Edit' . '</a>';
                 }
             ],
         ];
@@ -95,25 +96,31 @@ class TicketsController extends Controller {
             if (8 !== strlen($startId)) {
                 sessionSetFlashAlert('error', 'Ticket ID must be 8 characters long!');
             } else {
-                
+                $prefix = "";
+
+                while (!is_numeric($startId)) {
+                    $prefix .= mb_substr($startId, 0, 1);
+                    $startId = mb_substr($startId, 1, mb_strlen($startId) - 1);
+                }
 
                 $currentId = (int)$startId;
-                $values = '(\'' . sprintf('%08d', $currentId) . '\')';
+                $length = mb_strlen($startId);
+                $values = '(\'' . $prefix . sprintf('%0' . mb_strlen($startId) . 'd', $currentId) . '\')';
                 $idToCheck = $currentId - 50;
 
                 do {
                     $idToCheck++;
-                    $allowed = !table_exists('modulus_tb_' . sprintf('%08d', $idToCheck));
+                    $allowed = !table_exists('modulus_tb_' . $prefix . sprintf('%0' . $length . 'd', $idToCheck));
                 } while (($idToCheck !== ((int)$startId + 49)) && $allowed);
 
                 if (!$allowed) {
                     sessionSetFlashAlert(
                         'error',
-                        'Specified start ID would conflict with block #' . sprintf('%08d', $idToCheck) . '.'
+                        'Specified start ID would conflict with block ' . $prefix . sprintf('%0' . $length . 'd', $idToCheck) . '.'
                     );
                 } else {
                     do {
-                        $values .= ',(\'' . sprintf('%08d', ++$currentId) . '\')';
+                        $values .= ',(\'' . $prefix . sprintf('%0' . $length . 'd', ++$currentId) . '\')';
                     } while ($currentId < ((int)$startId + 49));
 
                     $sql = "CALL createTicketBlockTable(:tableName, :startId, :values)";
@@ -125,7 +132,7 @@ class TicketsController extends Controller {
                     Yii::$app->db->createCommand($sql, $params)->execute();
 
                     $ticketBlock = new TicketBlock();
-                    $ticketBlock->startId = $startId;
+                    $ticketBlock->startId = $prefix . $startId;
                     $ticketBlock->assignedTo = (int)Yii::$app->request->post('TicketBlock')['assignedTo'];
                     $ticketBlock->assignedBy = (int)Yii::$app->user->id;
 
@@ -238,6 +245,10 @@ class TicketsController extends Controller {
                 'headerOptions' => ['class' => 'kartik-sheet-style'],
                 'expandOneOnly' => true,
                 'detail' => function (TicketSearchModel $model, $key, $index, $column) {
+                    if (!is_numeric($model->reservationId)) {
+                        return '<div class="alert">No data found.</div>';
+                    }
+
                     $searchModel = Reservations::findOne(['=', 'ticketId', $key]);
                     $dataProvider = $searchModel->search(['ticketId' => $key]);
 
@@ -291,7 +302,7 @@ class TicketsController extends Controller {
                             ]
                         );
                     } else {
-                        return '<div class="alert alert-danger">No data found</div>';
+                        return '<div class="alert alert-danger">No data found. Contact an Administrator.</div>';
                     }
                 },
             ],

@@ -33,7 +33,7 @@ class TicketBlockSearchModel extends TicketBlock {
     public function search($params) {
         $query = self::find();
 
-        if (!Yii::$app->user->can(Tickets::VIEW_TICKET_BLOCKS)) {
+        if (!Yii::$app->user->can(Tickets::VIEW_TICKET_BLOCKS) && !Yii::$app->user->can('streetAdmin')) {
             $query->andFilterWhere([
                 '=',
                 'assignedTo',
@@ -86,14 +86,14 @@ class TicketBlockSearchModel extends TicketBlock {
      * @return string
      */
     public function returnCurrentId() {
-        return $this->returnCurrentTicket()->ticketId;
+        return is_string($ticket = $this->returnCurrentTicket()) ? $ticket : $ticket->ticketId;
     }
 
     public function returnCurrentTicket() {
         $tableName = 'modulus_tb_' . $this['startId'];
 
         if (!table_exists($tableName)) {
-            return "N/A";
+            return $this['startId'];
         }
 
         $ticket = self::useTable($tableName)::aSelect(
