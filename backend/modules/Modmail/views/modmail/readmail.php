@@ -19,6 +19,14 @@ function htmlCompress($html) {
 $mailbody = htmlCompress($mailbody);
 
 ?>
+<style>
+    .halvedBoxes{
+        width:100%!important;
+        min-height:400px;
+        overflow:scroll;
+    }
+
+</style>
 
 <div class="modmail-default-index">
 
@@ -26,7 +34,7 @@ $mailbody = htmlCompress($mailbody);
 
     <div class="row">
         <div class="col-xs-6">
-            <iframe id="mailFrame" src="about:blank">
+            <iframe id="mailFrame" class="halvedBoxes" src="about:blank">
 
 
             </iframe>
@@ -38,10 +46,15 @@ $mailbody = htmlCompress($mailbody);
             </script>
         </div>
         <div class="col-xs-6">
-            s
+            <div id="" class="halvedBoxes" src="about:blank">
+
+                ( <?= htmlspecialchars($email->body); ?>);
+            </div>
         </div>
     </div>
 
 </div>
+
+
 
 

@@ -99,6 +99,7 @@ class ProductController extends Controller {
             'image' => $productUpdate['image'],
             'start_date' => $productUpdate['start_date'],
             'end_date' => $productUpdate['end_date'],
+            'isDeleted'=>'no'
         ];
         $updateResponse = '';
         if ($productUpdate) {
@@ -119,7 +120,7 @@ class ProductController extends Controller {
 
         $model = new ProductEdit();
         $request = Yii::$app->request;
-        $prodId = $request->get('prodId');
+        $prodId = $request->get('id');
 
         $query = Product::aSelect(Product::class, '*', Product::tableName(), 'id=' . $prodId);
 
@@ -692,7 +693,7 @@ class ProductController extends Controller {
             $assigneduser = User::findIdentity($passignedId);
 
             $assignData = [];
-            $assignData['time'] = date('Y-m-d h:i:s', time());
+            $assignData['time'] = date('Y-m-d H:i:s', time());
             $assignData['by'] = Yii::$app->getUser()->identity->username;
             $assignData['from'] = $foundReservation->sellerName;
             $assignData['to'] = $assigneduser->username;

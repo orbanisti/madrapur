@@ -1,16 +1,16 @@
 <?php
 
-namespace backend\modules\system\controllers;
+    namespace backend\modules\system\controllers;
 
-use common\components\keyStorage\FormModel;
-use Yii;
-use yii\web\Controller;
+    use common\components\keyStorage\FormModel;
+    use Yii;
+    use yii\web\Controller;
 
-class SettingsController extends Controller {
+    class SettingsController extends Controller {
 
-    public function actionIndex() {
-        $model = new FormModel(
-            [
+        public function actionIndex() {
+
+            $allOptions = [
                 'keys' => [
                     'frontend.maintenance' => [
                         'label' => Yii::t('backend', 'Frontend maintenance mode'),
@@ -44,23 +44,40 @@ class SettingsController extends Controller {
                         'label' => Yii::t('backend', 'Backend sidebar collapsed'),
                         'type' => FormModel::TYPE_CHECKBOX,
                     ],
+
                 ],
+            ];
+            if (Yii::$app->user->can('administrator')) {
+                $adminOptions = ['currency.huf-value' => [
+                    'label' => Yii::t('backend', 'Value of 1 EUR in HUF'),
+
+                ], 'currency.USD-value' => [
+                    'label' => Yii::t('backend', 'Value of 1 EUR in USD'),
+
+                ],];
+                $allOptions;
+                foreach ($adminOptions as $key => $option) {
+                    $allOptions['keys'][$key] = $option;
+                }
+            }
+
+            $model = new FormModel($allOptions
+            );
+
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                Yii::$app->session->setFlash('alert',
+                    [
+                        'body' => Yii::t('backend', 'Settings was successfully saved'),
+                        'options' => [
+                            'class' => 'alert alert-success'
+                        ],
+                    ]);
+
+                return $this->refresh();
+            }
+
+            return $this->render('index', [
+                'model' => $model
             ]);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('alert',
-                [
-                    'body' => Yii::t('backend', 'Settings was successfully saved'),
-                    'options' => [
-                        'class' => 'alert alert-success'
-                    ],
-                ]);
-
-            return $this->refresh();
         }
-
-        return $this->render('index', [
-            'model' => $model
-        ]);
     }
-}

@@ -11,7 +11,7 @@ class m190806_123413_modulusDeleteproducts extends Migration {
         $this->addColumn(
             $this->tableName,
             $this->columnName1,
-            'varchar(3)'
+            $this->char(4)->defaultValue('no')
         );
 
 

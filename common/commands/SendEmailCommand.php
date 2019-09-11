@@ -38,6 +38,7 @@ class SendEmailCommand extends BaseObject implements SelfHandlingCommand {
 
     /**
      *
+     *
      * @param \common\commands\SendEmailCommand $command
      * @return bool
      */

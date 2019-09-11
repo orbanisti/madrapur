@@ -7,7 +7,8 @@ use backend\assets\BackendAsset;
 use backend\modules\system\models\SystemLog;
 use backend\widgets\Menu;
 use common\models\TimelineEvent;
-use yii\bootstrap\Alert;
+    use kartik\icons\Icon;
+    use yii\bootstrap\Alert;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -112,7 +113,7 @@ echo Menu::widget(
                             'class' => 'sidebar-menu',
                             'data-widget' => 'tree'
                         ],
-                        'linkTemplate' => '<a href="{url}">{icon}<span>{label}</span>{right-icon}{badge}</a>',
+                        'linkTemplate' => '<a  href="{url}">{icon}<span>{label}</span>{right-icon}{badge}</a>',
                         'submenuTemplate' => "\n<ul class=\"treeview-menu\">\n{items}\n</ul>\n",
                         'activateParents' => true,
                         'items' => [
@@ -406,6 +407,9 @@ echo Menu::widget(
                             ],
                             [
                                 'label' => Yii::t('backend', 'Products'),
+                                'options' => [
+                                    'class' => 'treeview'
+                                ],
                                 'url' => [
 
                                     '/Product/product/admin'
@@ -459,6 +463,9 @@ echo Menu::widget(
                             ],
                             [
                                 'label' => Yii::t('backend', 'Bookings'),
+                                'options' => [
+                                    'class' => 'treeview'
+                                ],
                                 'url' => [
                                     '/Reservations/reservations/admin'
                                 ],
@@ -488,6 +495,16 @@ echo Menu::widget(
 
                                     ],
                                     [
+                                        'label' => Yii::t('backend', 'Create2'),
+                                        'url' => [
+                                            '/Reservations/reservations/create2'
+                                        ],
+                                        'icon' => '<i class="fa fa-font-awesome"></i>',
+                                        'active' => (Yii::$app->controller->id == 'reservations' &&
+                                            Yii::$app->controller->action->id === 'create'),
+
+                                    ],
+                                    [
                                         'label' => Yii::t('backend', 'Create (new)'),
                                         'url' => [
                                             '/Reservations/reservations/create-react'
@@ -507,11 +524,11 @@ echo Menu::widget(
                                             Yii::$app->controller->action->id === 'myreservations'),
                                     ],
                                     [
-                                        'label' => Yii::t('backend', 'allReservations'),
+                                        'label' => Yii::t('backend', 'my Transactions'),
                                         'url' => [
-                                            '/Reservations/reservations/allreservations'
+                                            '/Reservations/reservations/mytransactions'
                                         ],
-                                        'icon' => '<i class="fa fa-calendar"></i>',
+                                        'icon' => '<i class="fa fa-dollar"></i>',
                                         'active' => (Yii::$app->controller->id == 'reservations' &&
                                             Yii::$app->controller->action->id === 'allreservations'),
                                     ],

@@ -51,5 +51,13 @@ class ProductPrice extends MadActiveRecord {
         parent::afterFind();
         return true;
     }
+    public static function eurtohuf($price){
+        $pattern='/€\ * ([1-9])\d+/';
+        $hufprice=($price->price)*(int)Yii::$app->keyStorage->get('currency.huf-value');
+        $newname= preg_replace($pattern,'<strong>'.$hufprice.' Ft</strong>',$price->name);
+        $price->name=$newname;
+        $price->price=(int)$price->price*(int)Yii::$app->keyStorage->get('currency.huf-value');
+        return $price;
+    }
 
 }

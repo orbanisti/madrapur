@@ -95,6 +95,10 @@ class Reservations extends MadActiveRecord {
             [['order_currency'], 'string', 'max' => 255],
             [['ticketId'], 'string', 'max' => 255],
             [['personInfo'], 'string'],
+            [['paidMethod'], 'string', 'max' => 30],
+            [['status'], 'string'],
+            [['iSellerId'], 'string'],
+            [['iSellerName'], 'string'],
         ];
     }
 
@@ -349,6 +353,52 @@ class Reservations extends MadActiveRecord {
         $this->load($params);
 
         return $dataProvider;
+    }
+    public function searchMytransactions($params, $searchdate=NULL, $currency=NULL) {
+
+        $currentUserId = \Yii::$app->user->getId();
+
+
+
+
+        $query = Reservations::find();
+        $today=date('Y-m-d');
+
+        $query->andFilterWhere(['or',
+            ['=','sellerId', strval($currentUserId)],
+            ['=','iSellerId', strval($currentUserId)]]);
+
+        if($searchdate != NULL){
+            $query->andFilterWhere(['and',
+                ['=','invoiceDate', $today]]);
+        }
+
+        if($currency != NULL){
+            $query->andFilterWhere(['and',
+                ['like','order_currency', $currency]]);
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 15,
+            ],
+        ]);
+
+        $this->load($params);
+
+        return $dataProvider;
+    }
+
+    public static function sumDataProvider($provider,$fieldName){
+        $total = 0;
+
+        foreach ($provider as $item) {
+            $total += $item[$fieldName];
+        }
+
+        return $total;
+
     }
 
     public function searchAllreservations($params) {
