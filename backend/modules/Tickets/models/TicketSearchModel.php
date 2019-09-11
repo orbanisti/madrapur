@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: ROG
+ * Date: 7/31/2019
+ * Time: 11:02 AM
+ */
 
 namespace backend\modules\Tickets\models;
 
@@ -6,19 +12,17 @@ use backend\modules\MadActiveRecord\models\MadActiveRecord;
 use Yii;
 use yii\data\ActiveDataProvider;
 
-/**
- * Default model for the `TicketSearchModel` module
- */
 class TicketSearchModel extends MadActiveRecord {
 
-    public static function getTicket($tsm, $id) {
-        $a = $tsm::find()->where(['=', 'ticketId', $id])->one();
-
-        return $a;
+    /**
+     * @return array|string[]
+     */
+    public static function primaryKey() {
+        return ['ticketId'];
     }
 
     /**
-     * Creates data provider instance with search query applied
+     * @param $params
      *
      * @return ActiveDataProvider
      */
@@ -29,16 +33,47 @@ class TicketSearchModel extends MadActiveRecord {
             'query' => $query,
         ]);
 
-        if (!($this->load($params) && $this->validate())) {
-            return $dataProvider;
+        $ticketId = Yii::$app->request->get('ticketId');
+        if ($ticketId) {
+            $query->andFilterWhere([
+                'LIKE',
+                'ticketId',
+                $ticketId
+            ]);
         }
 
-        if (Yii::$app->user->can(Tickets::VIEW_TICKET_BLOCKS)) {
+        $timestamp = Yii::$app->request->get('timestamp');
+        if ($timestamp) {
             $query->andFilterWhere([
-
+                'LIKE',
+                'timestamp',
+                $timestamp
             ]);
+        }
+
+        $reservationId = Yii::$app->request->get('reservationId');
+        if ($reservationId) {
+            $query->andFilterWhere([
+                'LIKE',
+                'reservationId',
+                $reservationId
+            ]);
+        }
+
+        $status = Yii::$app->request->get('status');
+        if ($status) {
+            $query->andFilterWhere([
+                'LIKE',
+                'status',
+                $status
+            ]);
+        }
+
+        if (!($this->load($params)) && $this->validate()) {
+            return $dataProvider;
         }
 
         return $dataProvider;
     }
+
 }

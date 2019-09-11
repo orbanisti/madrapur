@@ -11,6 +11,8 @@ use backend\modules\Product\models\ProductTime;
 use backend\modules\Reservations\models\DateImport;
 use backend\modules\Reservations\models\Reservations;
 use backend\modules\Reservations\models\ReservationsAdminSearchModel;
+use backend\modules\Tickets\models\TicketBlockSearchModel;
+use backend\modules\Tickets\models\TicketSearchModel;
 use common\commands\AddTicketToReservationCommand;
 use common\commands\AddToTimelineCommand;
 use common\commands\SendEmailCommand;
@@ -325,6 +327,9 @@ class ReservationsController extends Controller {
                 $source = 'Hotel';
             }
 
+            $ticketBlock = TicketBlockSearchModel::aSelect(TicketBlockSearchModel::class, '*', TicketBlockSearchModel::tableName(), 'assignedTo = ' . Yii::$app->user->id . ' AND isActive IS TRUE')->one();
+            $ticket = TicketSearchModel::useTable('modulus_tb_'.$ticketBlock->returnStartId())::findOne(['reservationId' => null, 'status' => 'open']);
+
             $values = [
                 'booking_cost' => $productPrice["discount"],
                 'invoiceMonth' => date('m'),
@@ -336,10 +341,10 @@ class ReservationsController extends Controller {
                 'data' => $data,
                 'sellerId' => Yii::$app->user->getId(),
                 'sellerName' => Yii::$app->user->identity->username,
-                'ticketId' => 'V0000001'
+                'ticketId' => $ticket->ticketId,
             ];
             $insertReservation = Reservations::insertOne($newReservarion, $values);
-            Yii::error($insertReservation);
+
             if ($insertReservation) {
                 $findBooking = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'bookingId="tmpMad1"');
                 $booking = $findBooking->one();
@@ -366,7 +371,7 @@ class ReservationsController extends Controller {
                     new AddTicketToReservationCommand(
                         [
                             'sellerId' => Yii::$app->user->getId(),
-                            'timestamp' => time(),
+                            'timestamp' => date('Y-m-d H:i:s',time()),
                             'bookingId' => $booking->id,
                         ]
                     )
@@ -748,19 +753,21 @@ class ReservationsController extends Controller {
      * @throws ForbiddenHttpException
      */
     public function actionBookingedit() {
-        if (!Yii::$app->user->can(Reservations::EDIT_BOOKING) || !Yii::$app->user->can(Reservations::EDIT_OWN_BOOKING)) {
+        if (!Yii::$app->user->can(Reservations::VIEW_BOOKINGS) && !Yii::$app->user->can(Reservations::VIEW_OWN_BOOKINGS)) {
             throw new ForbiddenHttpException('userCan\'t');
         }
 
         $model = new DateImport();
-        $request = Yii::$app->request;
-        $id = $request->get('id');
+        $id = Yii::$app->request->get('id');
         $query = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'id=' . $id);
 
         $bookingInfo = $query->one();
 
-        $backendData = $bookingInfo;
-        return $this->render('bookingEdit', ['model' => $model, 'backenddata' => $backendData]);
+        if (Yii::$app->user->id != $bookingInfo->sellerId) {
+            throw new ForbiddenHttpException('userCan\'t');
+        }
+
+        return $this->render('bookingEdit', ['model' => $model, 'backenddata' => $bookingInfo]);
     }
     public function actionBookingview() {
 
@@ -815,8 +822,7 @@ class ReservationsController extends Controller {
      * @throws ForbiddenHttpException
      */
     public function actionAllreservations() {
-        if (!Yii::$app->user->can(Reservations::VIEW_BOOKINGS) && !Yii::$app->user->can
-            (Reservations::VIEW_OWN_BOOKINGS)) {
+        if (!Yii::$app->user->can(Reservations::VIEW_BOOKINGS) && !Yii::$app->user->can(Reservations::VIEW_OWN_BOOKINGS)) {
             throw new ForbiddenHttpException('userCan\'t');
         }
 

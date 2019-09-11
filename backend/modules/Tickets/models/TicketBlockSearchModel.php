@@ -8,17 +8,19 @@ use yii\data\ActiveDataProvider;
 
 /**
  * Default model for the `TicketBlockSearchModel` module
+ *
+ * @property int $id [int(11)]
+ * @property int $assignedBy [int(11)]
+ * @property int $assignedTo [int(11)]
+ * @property bool $frozen [tinyint(1)]
+ * @property int $timestamp [timestamp]
  */
 class TicketBlockSearchModel extends TicketBlock {
 
     protected static $startId;
-
-    public static function getStartId($id) {
-        $a = static::find()->where(['=', 'id', $id])->one();
-        Yii::error($id);
-        return $a->returnStartId();
-    }
-
+    /**
+     * @return string
+     */
     public function returnStartId() {
         return $this['startId'];
     }
@@ -31,12 +33,6 @@ class TicketBlockSearchModel extends TicketBlock {
     public function search($params) {
         $query = self::find();
 
-        $query->andFilterWhere([
-            '!=',
-            'startId',
-            'V0000000'
-        ]);
-
         if (!Yii::$app->user->can(Tickets::VIEW_TICKET_BLOCKS)) {
             $query->andFilterWhere([
                 '=',
@@ -45,15 +41,16 @@ class TicketBlockSearchModel extends TicketBlock {
             ]);
         } else {
             $assignedTo = Yii::$app->request->getQueryParam('assignedTo', null);
+
             if ($assignedTo) {
-                if ($user = User::findByUsername($assignedTo)) {
+                if (!($user = User::findByUsername($assignedTo))) {
+                    sessionSetFlashAlert('warning', 'You can only search with full username specified!');
+                } else {
                     $query->andFilterWhere([
                         'LIKE',
                         'assignedTo',
                         $user->id
                     ]);
-                } else {
-                    //TODO: add search for full username warning
                 }
             }
         }
@@ -78,21 +75,42 @@ class TicketBlockSearchModel extends TicketBlock {
         return $dataProvider;
     }
 
+    /**
+     * @return string
+     */
     public function returnId() {
         return $this['id'];
     }
 
+    /**
+     * @return string
+     */
     public function returnCurrentId() {
+        return $this->returnCurrentTicket()->ticketId;
+    }
+
+    public function returnCurrentTicket() {
         $tableName = 'modulus_tb_' . $this['startId'];
 
-        if (Yii::$app->db->schema->getTableSchema($tableName, true) !== null) {
-            $ticketBlock = TicketBlockDummySearchModel::useTable($tableName)::aSelect(TicketBlockDummySearchModel::class, '*',
-                $tableName, 'sellerId IS NULL', 'ticketId', 'ticketId')
-                ->one();
-
-            return $ticketBlock->ticketId;
+        if (!table_exists($tableName)) {
+            return "N/A";
         }
 
-        return "N/A";
+        $ticket = self::useTable($tableName)::aSelect(
+            TicketSearchModel::class,
+            '*', $tableName, 'sellerId IS NULL AND status = \'open\'',
+            'ticketId', 'ticketId'
+        )->one();
+
+        return $ticket;
+    }
+
+    public function skipCurrentTicket() {
+        $ticket = $this->returnCurrentTicket();
+        $ticket->sellerId = Yii::$app->user->id;
+        $ticket->status = 'skipped';
+        $ticket->timestamp = date('Y-m-d H:i:s',time());
+
+        return $ticket->save(false);
     }
 }

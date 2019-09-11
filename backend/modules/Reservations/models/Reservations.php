@@ -93,6 +93,7 @@ class Reservations extends MadActiveRecord {
             [['billing_email'], 'string', 'max' => 255],
             [['billing_phone'], 'string', 'max' => 255],
             [['order_currency'], 'string', 'max' => 255],
+            [['ticketId'], 'string', 'max' => 255],
             [['personInfo'], 'string'],
             [['paidMethod'], 'string', 'max' => 30],
             [['status'], 'string'],
@@ -123,6 +124,8 @@ class Reservations extends MadActiveRecord {
             "billing_email",
             "billing_phone",
             "order_currency",
+            "personInfo",
+            "ticketId",
         ];
     }
 
@@ -156,6 +159,7 @@ class Reservations extends MadActiveRecord {
             "billing_phone",
             "order_currency",
             "personInfo",
+            "ticketId",
         ]);
     }
 
@@ -298,15 +302,14 @@ class Reservations extends MadActiveRecord {
     }
 
     public function search($params) {
-        $invoiceDate = '2016-02-05';
-        $bookingDate = '2020-08-20';
-
-        $what = ['*'];
-        $from = self::tableName();
-
         $query = Reservations::find()->indexBy('id');;
 
         $query->andFilterWhere((['>=', 'invoiceDate', '2011-12-12']));
+
+        if ($ticketId = $params['ticketId']) {
+            $query->andFilterWhere((['=', 'ticketId', $ticketId]));
+        }
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -317,6 +320,8 @@ class Reservations extends MadActiveRecord {
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
+
+        $query->andFilterWhere((['=', 'ticketId', $this->ticketId]));
         $query->andFilterWhere((['like', 'source', $this->source]));
         $query->andFilterWhere((['=', 'bookingDate', $this->bookingDate]));
 

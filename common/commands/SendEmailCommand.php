@@ -44,7 +44,7 @@ class SendEmailCommand extends BaseObject implements SelfHandlingCommand {
      */
     public function handle($command) {
         $mailData = [
-            'to' => $command->to,
+            'to' => isLocalhost() ? 'admin@localhost' : $command->to,
             'from' => $command->from,
             'subject' => $command->subject,
             'type' => $command->type,

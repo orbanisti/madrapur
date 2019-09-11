@@ -418,23 +418,26 @@ echo Menu::widget(
                                     'class' => 'treeview'
                                 ],
                                 'icon' => '<i class="fa fa-apple"></i>',
-                                'active' => Yii::$app->controller->id === 'product',
+                                'active' => Yii::$app->controller->id === 'product' &&
+                                    Yii::$app->controller->action->id !== 'uiblock',
                                 'items' => [
                                     [
-                                        'label' => Yii::t('backend', 'Manager'),
+                                        'label' => Yii::t('backend', 'Overview'),
                                         'url' => [
                                             '/Product/product/admin'
                                         ],
-                                        'icon' => '<i class="fa fa-apple"></i>',
-                                        'active' => (Yii::$app->controller->id == 'create'),
-                                    ],[
+                                        'icon' => '<i class="fa fa-list-alt"></i>',
+                                        'active' => (Yii::$app->controller->id == 'product') &&
+                                            Yii::$app->controller->action->id === 'admin',
+                                    ],
+                                    [
                                         'label' => Yii::t('backend', 'Create'),
                                         'url' => [
                                             '/Product/product/create'
                                         ],
                                         'icon' => '<i class="fa fa-database"></i>',
                                         'active' => (Yii::$app->controller->id == 'product') &&
-                                            Yii::$app->controller->action->id !== 'create',
+                                            Yii::$app->controller->action->id === 'create',
                                     ],
 
                                 ],
@@ -479,7 +482,7 @@ echo Menu::widget(
                                         ],
                                         'icon' => '<i class="fa fa-list-alt"></i>',
                                         'active' => (Yii::$app->controller->id == 'reservations') &&
-                                            Yii::$app->controller->action->id !== 'admin',
+                                            Yii::$app->controller->action->id === 'admin',
                                     ],
                                     [
                                         'label' => Yii::t('backend', 'Create'),
@@ -487,16 +490,6 @@ echo Menu::widget(
                                             '/Reservations/reservations/create'
                                         ],
                                         'icon' => '<i class="fa fa-database"></i>',
-                                        'active' => (Yii::$app->controller->id == 'reservations' &&
-                                            Yii::$app->controller->action->id === 'create'),
-
-                                    ],
-                                    [
-                                        'label' => Yii::t('backend', 'Admin'),
-                                        'url' => [
-                                            '/Reservations/reservations/admin'
-                                        ],
-                                        'icon' => '<i class="fa fa-flag"></i>',
                                         'active' => (Yii::$app->controller->id == 'reservations' &&
                                             Yii::$app->controller->action->id === 'create'),
 

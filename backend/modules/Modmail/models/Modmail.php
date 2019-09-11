@@ -34,7 +34,7 @@ class Modmail extends MadActiveRecord {
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
-        if (mail("alpe15.1992@gmail.com", $subject, $txt, $headers)) {
+        if (mail($to, $subject, $txt, $headers)) {
             $postedData['status'] = 'sent';
             Modmail::insertOne(new Modmail(), $postedData);
         } else {

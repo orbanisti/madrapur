@@ -96,3 +96,24 @@ function set_strings($body, $templateFields){
     }
     return $body;
 }
+
+/**
+ * @param $type
+ * @param $message
+ * @param string $category
+ */
+function sessionSetFlashAlert($type, $message, $category = 'backend') {
+    Yii::$app->session->setFlash(
+        'alert',
+        [
+            'options' => [
+                'class' => 'alert-' . $type
+            ],
+            'body' => Yii::t($category, $message)
+        ]
+    );
+}
+
+function table_exists($tableName) {
+    return !(Yii::$app->db->getTableSchema(Yii::$app->db->tablePrefix . $tableName, true) === null);
+}

@@ -3,14 +3,10 @@
 use kartik\form\ActiveForm;
 use kartik\helpers\Html;
 use kartik\select2\Select2;
+use yii\web\JsExpression;
+use yii\web\View;
 
 ?>
-
-<?php if ($saved) { ?>
-    <div class="alert alert-success" role="alert">
-        Ticket block created and assigned!
-    </div>
-<?php } ?>
 
 <h1>Add ticket block</h1>
 
@@ -26,16 +22,44 @@ use kartik\select2\Select2;
         ?>
 
         <div class="form-group">
-            <?= $form->field($model, 'startId', [
+            <?=
+            $form->field($model, 'startId', [
                 'template' => '{beginLabel}{labelTitle}{endLabel}<div class="input-group"><span class="input-group-addon">ID</span>{input}</div>{error}{hint}',
                 'hintType' => \kartik\form\ActiveField::HINT_DEFAULT,
-                'hintSettings' => ['onLabelClick' => false, 'onLabelHover' => true, 'onIconHover' => true,]
-            ])->textInput(['placeholder' => 'First ID.', 'name' => 'startId', 'id' =>
-                'startId', 'maxlength' => 8, 'pattern' => '\d*', 'required' => true])->hint
-            ('Entering the full ticket ID is mandatory. In case of voucher ticket block include the initial letter, too.') ?>
+                'hintSettings' => [
+                    'onLabelClick' => false,
+                    'onLabelHover' => true,
+                    'onIconHover' => true,
+                ]
+            ])->textInput([
+                'placeholder' => 'First ID.',
+                'name' => 'startId',
+                'id' => 'startId',
+                'maxlength' => 8,
+                //'pattern' => '\d*',
+                'required' => true
+            ])->hint('Entering the full ticket ID is mandatory. In case of voucher ticket block include the initial letter, too.')
+            ?>
         </div>
 
         <div class="form-group">
+            <script type='text/javascript'>
+                var avatars = <?= $avatars ?>;
+            </script>
+
+            <?php
+            $this->registerJs(<<< SCRIPT
+
+function format(state) {
+    if (!state.id) return state.text;
+    src = avatars[state.id.toLowerCase()];
+    return '<img class="flag" style="width: 20px; height: 20px;" src="' + src + '"/>' + state.text;
+}
+
+SCRIPT
+                , View::POS_HEAD);
+            ?>
+
             <?= $form->field($model, 'assignedTo')->widget(Select2::class, [
                 'name' => 'assignedTo',
                 'data' => $users,
@@ -43,14 +67,16 @@ use kartik\select2\Select2;
                     'placeholder' => 'Select a user.',
                     'required' => true
                 ],
+                'pluginOptions' => [
+                    'templateResult' => new JsExpression('format'),
+                    'templateSelection' => new JsExpression('format'),
+                    'escapeMarkup' => new JsExpression("function escape(m) { return m; }"),
+                    'allowClear' => true
+                ],
             ]) ?>
-            <?php
-
-            ?>
         </div>
 
-        <?php
-        echo Html::submitButton(
+        <?= Html::submitButton(
             Yii::t('backend', 'Add ticket block'),
             [
                 'class' => 'btn btn-primary btn-flat btn-block',

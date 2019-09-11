@@ -33,7 +33,23 @@
             'fontAwesome' => true,
         ],
         'bordered' => true,
-        'striped' => true,
+        'striped' => false,
+        'rowOptions'=>function(\backend\modules\Tickets\models\TicketSearchModel $model){
+            switch ($model->status) {
+                case 'skipped':
+                    $rowClass = 'warning';
+                    break;
+                case 'sold':
+                    $rowClass = 'success';
+                    break;
+                case 'open':
+                default:
+                    $rowClass = '';
+                    break;
+            }
+
+            return ['class' => $rowClass];
+        },
         'panel' => [
             'heading' => '<i class="fa fa-summary-alt"></i>',
         ],

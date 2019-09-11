@@ -4,7 +4,7 @@ $config = [
     'homeUrl' => Yii::getAlias('@backendUrl'),
     'controllerNamespace' => 'backend\controllers',
 
-    'defaultRoute' => 'timeline-event/index',
+    'defaultRoute' => 'Dashboard/dashboard/admin',
     'components' => [
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -59,9 +59,6 @@ $config = [
         ],
         'Order' => [
             'class' => backend\modules\Order\Module::class,
-        ],
-        'Products' => [
-            'class' => backend\modules\Products\Module::class,
         ],
         'Product' => [
             'class' => backend\modules\Product\Module::class,

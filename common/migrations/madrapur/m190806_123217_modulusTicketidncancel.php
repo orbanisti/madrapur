@@ -12,6 +12,17 @@ class m190806_123217_modulusTicketidncancel extends Migration {
 
     public $newColumns=['ticketId','isCancelled','paidMethod','iSellerId','iSellerName'];
 
+    public function safeUp() {
+        $this->addColumn(
+            $this->tableName,
+            $this->columnName1,
+            'varchar(255)'
+        );
+        $this->addColumn(
+            $this->tableName,
+            $this->columnName2,
+            'varchar(3)'
+        );
 
 
     public function safeUp() {
