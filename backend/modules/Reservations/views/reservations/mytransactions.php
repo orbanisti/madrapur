@@ -74,7 +74,7 @@ use backend\components\extra;
             $sellerBadge='';
             if(isset($model->iSellerName)){
 
-                $sellerBadge=" <span class=\" badge bg-yellow\">".  $model->iSellerName."</span>";
+                $sellerBadge=" <span class=\" badge bg-yellow\">".  $model->sellerName."</span>";
             }
 
             return $model->bookedChairsCount.' '.Icon::show('users', ['class'=>'fa-lg','framework'

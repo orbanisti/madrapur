@@ -94,6 +94,9 @@ class m190618_115057_baseRoles extends Migration {
             Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_ADMINISTRATOR), 1);
             Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_ADMINISTRATOR), 28);
 
+
+
+
             Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_OFFICE_ADMIN), 13);
             Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_OFFICE_ADMIN), 19);
             Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_OFFICE_ADMIN), 21);
@@ -105,6 +108,7 @@ class m190618_115057_baseRoles extends Migration {
             Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_ADMIN), 25);
 
             Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_SELLER), 31);
+
 
             Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_TICKET_EDITOR), 24);
 

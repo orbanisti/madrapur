@@ -8,10 +8,11 @@
 
 use backend\components\extra;
 use backend\models\Product\Product;
-use kartik\helpers\Html;
+    use kartik\datetime\DateTimePicker;
+    use kartik\helpers\Html;
 use yii\widgets\ActiveForm;
 
-$title = 'Block Booking Days of ' . '<u>' . $currentProduct->title . '</u>';/*
+$title = 'Block Booking Times of ' . '<u>' . $currentProduct->title . '</u>';/*
 $this->title=$title;
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -37,8 +38,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
             ]);
 
-            echo $form->field($model, 'date')->widget(\kartik\datetime\DateTimePicker::class, [
+            echo $form->field($model, 'date')->widget(DateTimePicker::class, [
                 //'id' => 'products-blockoutsdates',
+
+                'type' => DateTimePicker::TYPE_INLINE,
                 'pluginOptions' => [
                     'format' => 'yyyy-mm-dd hh:ii',
                     'autoclose' => true,
