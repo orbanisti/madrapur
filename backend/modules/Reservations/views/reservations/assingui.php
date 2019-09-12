@@ -65,6 +65,8 @@ $this->registerJs($format, View::POS_HEAD);
             $streetSellers = [];
             $hotelSellers = [];
 
+            $hotelSellers = $userModel->find()->andFilterWhere(['=', 'isHotel', '1'])->all();
+
             foreach ($allUsers as $user) {
                 $authManager = \Yii::$app->getAuthManager();
                 $hasStreetBool = $authManager->getAssignment('streetSeller', $user->id) ? true : false;
@@ -83,6 +85,8 @@ $this->registerJs($format, View::POS_HEAD);
                 $data2[$user->id] = $user->username;
                 $images[$user->id] = $user->userProfile->avatar;
             }
+
+            $data = array_merge($data, $data2);
 
             ?>
 
