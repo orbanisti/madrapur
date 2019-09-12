@@ -103,10 +103,12 @@ $bundle = BackendAsset::register($this);
 			</div>
 			<!-- sidebar menu: : style can be found in sidebar.less -->
             <?php
+        $imaStreetAdmin=Yii::$app->authManager-> getAssignment('streetAdmin',Yii::$app->user->getId()) ;
+        $imaOfficeAdmin=Yii::$app->authManager-> getAssignment('officeAdmin',Yii::$app->user->getId()) ;
         $imaStreetSeller=Yii::$app->authManager-> getAssignment('streetSeller',Yii::$app->user->getId()) ;
     $imaHotelSeller=Yii::$app->authManager-> getAssignment('hotelSeller',Yii::$app->user->getId()) ;
     $imaBookKeeper=Yii::$app->authManager-> getAssignment('bookKeeper',Yii::$app->user->getId()) ;
-//if(!$imaStreetSeller && !$imaHotelSeller && !$imaBookKeeper)
+    $imaHotline=Yii::$app->authManager-> getAssignment('hotline',Yii::$app->user->getId()) ;
 echo Menu::widget(
                     [
                         'options' => [
@@ -141,6 +143,7 @@ echo Menu::widget(
                                 ],
                                 'badge' => TimelineEvent::find()->today()->count(),
                                 'badgeBgClass' => 'label-success',
+                                'visible'=>Yii::$app->user->can('administrator')
                             ],
                             [
                                 'label' => Yii::t('backend', 'adminTools'),
@@ -217,7 +220,7 @@ echo Menu::widget(
                                         'icon' => '<i class="fa fa-"></i>',
                                         'active' => Yii::$app->controller->id === 'tickets' &&
                                             Yii::$app->controller->action->id === 'view-assigned-blocks',
-//                                        'visible' => Yii::$app->user->can('assignTicketBlock'),
+                                        'visible' => Yii::$app->user->can('assignTicketBlock') && Yii::$app->user->can('administrator'),
                                     ],
                                 ],
                                 'active' => Yii::$app->controller->id === 'tickets',
@@ -230,7 +233,7 @@ echo Menu::widget(
                                 'options' => [
                                     'class' => 'header'
                                 ],
-                                'visible' => Yii::$app->user->can('accessContent'),
+                                'visible' => Yii::$app->user->can('accessContent') && Yii::$app->user->can('administrator'),
                             ],
                             [
                                 'label' => Yii::t('backend', 'Email templates'),
@@ -239,7 +242,8 @@ echo Menu::widget(
                                 ],
                                 'icon' => '<i class="fa fa-envelope"></i>',
                                 'active' => Yii::$app->controller->id === 'modulusbuilder' &&
-                                    Yii::$app->controller->action === 'email',
+                                    Yii::$app->controller->action === 'email' && Yii::$app->user->can('administrator'),
+                                'visible' => !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller'),
                             ],
                             [
                                 'label' => Yii::t('backend', 'Static pages'),
@@ -248,7 +252,7 @@ echo Menu::widget(
                                 ],
                                 'icon' => '<i class="fa fa-thumb-tack"></i>',
                                 'active' => Yii::$app->controller->id === 'page',
-                                'visible' => Yii::$app->user->can('accessContent'),
+                                'visible' => Yii::$app->user->can('accessContent') && Yii::$app->user->can('administrator'),
                             ],
                             [
                                 'label' => Yii::t('backend', 'Articles'),
@@ -462,6 +466,7 @@ echo Menu::widget(
 
                                 ],
 //                                'visible' => Yii::$app->user->can('accessProducts'),
+                                'visible' => !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller'),
                             ],
                             [
                                 'label' => Yii::t('backend', 'Blocking'),
@@ -471,6 +476,17 @@ echo Menu::widget(
                                 'icon' => '<i class="fa fa-hand-stop-o"></i>',
                                 'active' => (Yii::$app->controller->id == 'product') &&
                                     Yii::$app->controller->action->id === 'uiblock',
+                                'visible' => !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller'),
+                            ],
+                            [
+                                'label' => Yii::t('backend', 'Time table'),
+                                'url' => [
+                                    '/Product/product/accesstimetable'
+                                ],
+                                'icon' => '<i class="fa fa-hand-stop-o"></i>',
+                                'active' => (Yii::$app->controller->id == 'product') &&
+                                    Yii::$app->controller->action->id === 'accesstimetable',
+                                'visible' => !Yii::$app->user->can('streetSeller')
                             ],
                             [
                                 'label' => Yii::t('backend', 'Payments'),
@@ -513,6 +529,7 @@ echo Menu::widget(
                                         'icon' => '<i class="fa fa-list-alt"></i>',
                                         'active' => (Yii::$app->controller->id == 'reservations') &&
                                             Yii::$app->controller->action->id === 'admin',
+                                        'visible' => !Yii::$app->user->can('streetSeller'),
                                     ],
                                     [
                                         'label' => Yii::t('backend', 'Create'),
@@ -523,15 +540,16 @@ echo Menu::widget(
                                         'active' => (Yii::$app->controller->id == 'reservations' &&
                                             Yii::$app->controller->action->id === 'create'),
 
+                                        'visible' => !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller'),
                                     ],
                                     [
-                                        'label' => Yii::t('backend', 'Create2'),
+                                        'label' => Yii::t('backend', 'Create'),
                                         'url' => [
                                             '/Reservations/reservations/create2'
                                         ],
                                         'icon' => '<i class="fa fa-font-awesome"></i>',
                                         'active' => (Yii::$app->controller->id == 'reservations' &&
-                                            Yii::$app->controller->action->id === 'create'),
+                                            Yii::$app->controller->action->id === 'create2'),
 
                                     ],
                                     [
@@ -543,6 +561,7 @@ echo Menu::widget(
                                         'active' => (Yii::$app->controller->id == 'reservations' &&
                                             Yii::$app->controller->action->id === 'create-react'),
 
+                                        'visible' => !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller'),
                                     ],
                                     [
                                         'label' => Yii::t('backend', 'myReservations'),
@@ -560,7 +579,7 @@ echo Menu::widget(
                                         ],
                                         'icon' => '<i class="fa fa-dollar"></i>',
                                         'active' => (Yii::$app->controller->id == 'reservations' &&
-                                            Yii::$app->controller->action->id === 'allreservations'),
+                                            Yii::$app->controller->action->id === 'mytransactions'),
                                     ],
                                 ],
                                 'visible' => Yii::$app->user->can('accessBookings'),
@@ -572,7 +591,7 @@ echo Menu::widget(
                                 ],
                                 'icon' => '<i class="fa fa-line-chart"></i>',
                                 'active' => (Yii::$app->controller->id == 'statistics'),
-                                'visible' => Yii::$app->user->can('accessStatistics'),
+                                'visible' => Yii::$app->user->can('accessStatistics') && Yii::$app->user->can('viewStatisticsAdmin') && !Yii::$app->user->can('streetSeller') && !Yii::$app->user->can('streetAdmin'),
                             ],
 
                             [

@@ -81,6 +81,35 @@ class ProductController extends Controller {
         return $this->render('uiblock', ['data' => $data, 'searchModel' => $searchModel, 'model' => $model, 'images' => $images]);
     }
 
+    public function actionAccesstimetable() {
+
+        $postedID = (Yii::$app->request->post('Product'))['id'];
+        $postedAction = Yii::$app->request->post('blocking-button');
+        if ($postedID && $postedAction) {
+            if ($postedAction == 'timeBlocking') {
+                $this->redirect('/Product/product/blockedtimes?prodId=' . $postedID);
+            }
+            if ($postedAction == 'dayBlocking') {
+                $this->redirect('/Product/product/blocked?prodId=' . $postedID);
+            }
+            if ($postedAction == 'timeTable') {
+                $this->redirect('/Product/product/timetable?prodId=' . $postedID);
+            }
+        }
+
+        $searchModel = new ProductAdminSearchModel();
+        $model = new Product();
+        $allproducts = $searchModel->searchAllProducts(Yii::$app->request->queryParams);
+        $data = [];
+        $images = [];
+        foreach ($allproducts as $product) {
+            $data[$product->id] = $product->title;
+            $images[$product->id] = $product->thumbnail;
+        }
+
+        return $this->render('accesstimetable', ['data' => $data, 'searchModel' => $searchModel, 'model' => $model, 'images' => $images]);
+    }
+
     public function actionCreate() {
         $model = new ProductUpdate();
         $request = YII::$app->request;

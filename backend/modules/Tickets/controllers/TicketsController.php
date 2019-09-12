@@ -173,9 +173,10 @@ class TicketsController extends Controller {
 
         foreach ($users as $idx => $user) {
             foreach ($assignments as $idx => $assignment) {
-                if($assignment->user_id === $user->id)
+                if($assignment->user_id === $user->id) {
                     if (!Yii::$app->user->can($assignment->item_name))
                         unset($users[$idx]);
+                }
 
             }
         }
