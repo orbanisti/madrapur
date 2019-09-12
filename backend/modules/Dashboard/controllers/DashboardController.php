@@ -46,7 +46,7 @@ class DashboardController extends Controller {
                 $ticketBlockSearchModel = TicketBlockSearchModel::findOne(['=', 'id', $id]);
                 $alreadyActive = false;
 
-                if ($ticketBlockSearchModel->isActive) {
+                if ($ticketBlockSearchModel && $ticketBlockSearchModel->isActive) {
                     $alreadyActive = true;
                 } else {
                     $ticketBlockSearchModel->isActive = true;

@@ -65,7 +65,7 @@ function env($key, $default = null) {
 }
 
 function isLocalhost() {
-    return in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']);
+    return isset($_SERVER['REMOTE_ADDR']) ? in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']) : true;
 }
 
 /**

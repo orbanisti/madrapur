@@ -223,17 +223,6 @@ HTML;
                             'editableOptions' => ['formOptions' => ['action' => ['/Product/product/editbook']]],
 
                         ],
-                        ['class' => EditableColumn::class,
-                            'attribute' => 'bookingCost',
-                            'refreshGrid' => true,
-                            'editableOptions' => ['formOptions' => ['action' => ['/Product/product/editbook']]],
-
-                        ],
-                        ['class' => EditableColumn::class,
-                            'attribute' => 'orderCurrency',
-                            'refreshGrid' => true,
-                            'editableOptions' => ['formOptions' => ['action' => ['/Product/product/editbook']]],
-                        ],
 
                         /*   'productId',*/
                         ['class' => EditableColumn::class,
@@ -241,7 +230,13 @@ HTML;
                             'refreshGrid' => true,
                             'editableOptions' => ['formOptions' => ['action' => ['/Product/product/editbook']]],
                         ],
-                        'sellerName',
+                        [
+                            'attribute' => 'sellerName',
+                            'format' => 'html',
+                            'value' => function ($model) {
+                                return $model->sellerName . "<br/>" .'<a class="badge bg-aqua ">'.$model->iSellerName.'</a>';
+                            }
+                        ],
                         'invoiceDate',
                         'bookingDate',
                         [

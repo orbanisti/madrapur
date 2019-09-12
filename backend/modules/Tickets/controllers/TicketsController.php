@@ -249,7 +249,7 @@ class TicketsController extends Controller {
                         return '<div class="alert">No data found.</div>';
                     }
 
-                    $searchModel = Reservations::findOne(['=', 'ticketId', $key]);
+                    $searchModel = Reservations::findOne(['ticketId' => $key]);
                     $dataProvider = $searchModel->search(['ticketId' => $key]);
 
                     $gridColumns = [
