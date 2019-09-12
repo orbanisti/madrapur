@@ -402,6 +402,16 @@
             throw new ForbiddenHttpException('userCan\'t');
         }
 
+        $block = TicketBlockSearchModel::find()
+            ->andFilterWhere(['=', 'assignedTo', Yii::$app->user->id])
+            ->andWhere('isActive IS TRUE')
+            ->one();
+        if(!$block){
+
+            throw new ForbiddenHttpException('Sorry you dont have an active Ticket Block');
+        }
+
+
         $allProduct = Product::getAllProducts();
 
         $searchModel = new ReservationsAdminSearchModel();
