@@ -173,9 +173,10 @@ class TicketsController extends Controller {
 
         foreach ($users as $idx => $user) {
             foreach ($assignments as $idx => $assignment) {
-                if($assignment->user_id === $user->id)
+                if($assignment->user_id === $user->id) {
                     if (!Yii::$app->user->can($assignment->item_name))
                         unset($users[$idx]);
+                }
 
             }
         }
@@ -249,7 +250,7 @@ class TicketsController extends Controller {
                         return '<div class="alert">No data found.</div>';
                     }
 
-                    $searchModel = Reservations::findOne(['=', 'ticketId', $key]);
+                    $searchModel = Reservations::findOne(['ticketId' => $key]);
                     $dataProvider = $searchModel->search(['ticketId' => $key]);
 
                     $gridColumns = [

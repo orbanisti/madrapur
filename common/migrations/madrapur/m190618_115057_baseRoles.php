@@ -33,6 +33,8 @@ class m190618_115057_baseRoles extends Migration {
         User::ASSIGN_STREET_SELLER => 'Group can assign street sellers.',
         User::ASSIGN_HOTLINE => 'Group can assign hotline users.',
 
+        'sellHotel' => 'Group can sell as Hotel.',
+
         'accessContent' => 'Group can access Content module.',
         'accessTranslation' => 'Group can access Translation module.',
         'accessSystem' => 'Group can access Translation module.',
@@ -90,38 +92,28 @@ class m190618_115057_baseRoles extends Migration {
         try {
             // webmaster user
             Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_ADMINISTRATOR), 1);
+            Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_ADMINISTRATOR), 28);
 
-            if (isLocalhost()) {
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_OFFICE_ADMIN), 19);
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_OFFICE_ADMIN), 21);
+            Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_OFFICE_ADMIN), 13);
+            Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_OFFICE_ADMIN), 19);
+            Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_OFFICE_ADMIN), 21);
 
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_ADMIN), 20);
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_SELLER), 31);
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_SELLER), 33);
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_HOTEL_EDITOR), 32);
-            } else {
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_OFFICE_ADMIN), 13);
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_OFFICE_ADMIN), 19);
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_OFFICE_ADMIN), 21);
+            Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_ADMIN), 17);
+            Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_ADMIN), 20);
+            Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_ADMIN), 22);
+            Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_ADMIN), 23);
+            Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_ADMIN), 25);
 
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_ADMIN), 17);
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_ADMIN), 20);
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_ADMIN), 22);
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_ADMIN), 23);
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_ADMIN), 25);
+            Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_SELLER), 31);
 
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_SELLER), 28);
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_STREET_SELLER), 31);
+            Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_TICKET_EDITOR), 24);
 
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_TICKET_EDITOR), 24);
+            Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_HOTEL_EDITOR), 26);
+            Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_HOTEL_EDITOR), 30);
 
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_HOTEL_EDITOR), 26);
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_HOTEL_EDITOR), 30);
-
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_HOTLINE), 24);
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_HOTLINE), 27);
-                Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_HOTLINE), 29);
-            }
+            Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_HOTLINE), 24);
+            Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_HOTLINE), 27);
+            Yii::$app->authManager->assign(Yii::$app->authManager->getRole(User::ROLE_HOTLINE), 29);
         } catch (Exception $e) {
             Yii::error($e->getMessage(), '_assignPermission');
         }
@@ -199,6 +191,7 @@ class m190618_115057_baseRoles extends Migration {
             Reservations::EDIT_BOOKING,
             Reservations::EDIT_OWN_BOOKING,
             'accessTickets',
+            'sellHotel',
             Tickets::ACCESS_TICKETS_ADMIN,
             Tickets::ADD_TICKET_BLOCK,
             Tickets::ASSIGN_TICKET_BLOCK,
@@ -219,6 +212,7 @@ class m190618_115057_baseRoles extends Migration {
             Reservations::CREATE_BOOKING,
             Reservations::VIEW_OWN_BOOKINGS,
             Reservations::EDIT_OWN_BOOKING,
+            'sellHotel',
             'accessStatistics',
             'viewStatisticsAdmin',
         ];
@@ -248,8 +242,10 @@ class m190618_115057_baseRoles extends Migration {
             Reservations::VIEW_BOOKINGS,
             Reservations::EDIT_OWN_BOOKING,
             Reservations::VIEW_OWN_BOOKINGS,
+            'sellHotel',
             'accessTickets',
             Tickets::ACCESS_TICKETS_ADMIN,
+            Tickets::ADD_TICKET_BLOCK,
             Tickets::ASSIGN_TICKET_BLOCK,
             Tickets::VIEW_OWN_TICKET_BLOCKS,
             'accessStatistics',
@@ -284,6 +280,7 @@ class m190618_115057_baseRoles extends Migration {
             Reservations::CREATE_BOOKING,
             Reservations::EDIT_OWN_BOOKING,
             Reservations::VIEW_OWN_BOOKINGS,
+            'sellHotel',
             'accessStatistics',
             'viewStatisticsAdmin',
         ];
