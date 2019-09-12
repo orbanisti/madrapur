@@ -243,7 +243,7 @@ echo Menu::widget(
                                 'icon' => '<i class="fa fa-envelope"></i>',
                                 'active' => Yii::$app->controller->id === 'modulusbuilder' &&
                                     Yii::$app->controller->action === 'email' && Yii::$app->user->can('administrator'),
-                                'visible' => !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller'),
+                                'visible' => !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller') && !Yii::$app->user->can('hotline'),
                             ],
                             [
                                 'label' => Yii::t('backend', 'Static pages'),
@@ -466,7 +466,7 @@ echo Menu::widget(
 
                                 ],
 //                                'visible' => Yii::$app->user->can('accessProducts'),
-                                'visible' => !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller'),
+                                'visible' => !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller') && !Yii::$app->user->can('hotline'),
                             ],
                             [
                                 'label' => Yii::t('backend', 'Blocking'),
@@ -540,7 +540,7 @@ echo Menu::widget(
                                         'active' => (Yii::$app->controller->id == 'reservations' &&
                                             Yii::$app->controller->action->id === 'create'),
 
-                                        'visible' => !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller'),
+                                        'visible' => !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller') && !Yii::$app->user->can('hotline'),
                                     ],
                                     [
                                         'label' => Yii::t('backend', 'Create'),
@@ -561,7 +561,7 @@ echo Menu::widget(
                                         'active' => (Yii::$app->controller->id == 'reservations' &&
                                             Yii::$app->controller->action->id === 'create-react'),
 
-                                        'visible' => !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller'),
+                                        'visible' => !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller') && !Yii::$app->user->can('hotline'),
                                     ],
                                     [
                                         'label' => Yii::t('backend', 'myReservations'),
@@ -591,7 +591,7 @@ echo Menu::widget(
                                 ],
                                 'icon' => '<i class="fa fa-line-chart"></i>',
                                 'active' => (Yii::$app->controller->id == 'statistics'),
-                                'visible' => Yii::$app->user->can('accessStatistics') && Yii::$app->user->can('viewStatisticsAdmin') && !Yii::$app->user->can('streetSeller') && !Yii::$app->user->can('streetAdmin'),
+                                'visible' => Yii::$app->user->can('accessStatistics') && Yii::$app->user->can('viewStatisticsAdmin') && !Yii::$app->user->can('streetSeller') && !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller') && !Yii::$app->user->can('hotline'),
                             ],
 
                             [
