@@ -193,6 +193,75 @@ HTML;
                             'refreshGrid' => true,
 
                             'editableOptions' => function ($model, $key, $index) {
+                            $currentdate = Yii::$app->request->get('date');
+                            $ctime = $model->booking_start;
+                            $firstpart = str_replace(':', '_', $ctime);
+                            $secondpart = str_replace(' ', '_', $firstpart);
+
+                            return [
+                                'formOptions' => [
+                                    'id' => 'gv1_' . $model->id . '_form_name',
+                                    'action' => \yii\helpers\Url::to(['/Product/product/editbook'])
+                                ],
+                                'options' => [
+                                    'id' => 'gv1_' . $secondpart . '_' . $model->id . rand() % 10000,
+                                ],
+                            ];
+                        },
+                        ],
+                        ['class' => EditableColumn::class,
+                            'attribute' => 'lastName',
+                            'label' => 'Last Name',
+                            'refreshGrid' => true,
+
+                            'editableOptions' => function ($model, $key, $index) {
+                                $currentdate = Yii::$app->request->get('date');
+                                $ctime = $model->booking_start;
+                                $firstpart = str_replace(':', '_', $ctime);
+                                $secondpart = str_replace(' ', '_', $firstpart);
+
+                                return [
+                                    'formOptions' => [
+                                        'id' => 'gv1_' . $model->id . '_form_name',
+                                        'action' => \yii\helpers\Url::to(['/Product/product/editbook'])
+                                    ],
+                                    'options' => [
+                                        'id' => 'gv1_' . $secondpart . '_' . $model->id . rand() % 10000,
+                                    ],
+                                ];
+                            },
+
+                        ],
+                        ['class' => EditableColumn::class,
+                            'attribute' => 'bookedChairsCount',
+                            'label'=>'Number of tickets',
+                            'pageSummary' => true,
+                            'refreshGrid' => true,
+                            'editableOptions' => function ($model, $key, $index) {
+                                $currentdate = Yii::$app->request->get('date');
+                                $ctime = $model->booking_start;
+                                $firstpart = str_replace(':', '_', $ctime);
+                                $secondpart = str_replace(' ', '_', $firstpart);
+
+                                return [
+                                    'formOptions' => [
+                                        'id' => 'gv1_' . $model->id . '_form_name',
+                                        'action' => \yii\helpers\Url::to(['/Product/product/editbook'])
+                                    ],
+                                    'options' => [
+                                        'id' => 'gv1_' . $secondpart . '_' . $model->id . rand() % 10000,
+                                    ],
+                                ];
+                            },
+
+                        ],
+
+                        /*   'productId',*/
+                        ['class' => EditableColumn::class,
+                            'attribute' => 'sourceName',
+                            'label'=>'Seller Group Name',
+                            'refreshGrid' => true,
+                            'editableOptions' => function ($model, $key, $index) {
                                 $currentdate = Yii::$app->request->get('date');
                                 $ctime = $model->booking_start;
                                 $firstpart = str_replace(':', '_', $ctime);
@@ -209,27 +278,6 @@ HTML;
                                 ];
                             },
                         ],
-                        ['class' => EditableColumn::class,
-                            'attribute' => 'lastName',
-                            'label' => 'Last Name',
-                            'refreshGrid' => true,
-                            'editableOptions' => ['formOptions' => ['action' => ['/Product/product/editbook']]],
-
-                        ],
-                        ['class' => EditableColumn::class,
-                            'attribute' => 'bookedChairsCount',
-                            'pageSummary' => true,
-                            'refreshGrid' => true,
-                            'editableOptions' => ['formOptions' => ['action' => ['/Product/product/editbook']]],
-
-                        ],
-
-                        /*   'productId',*/
-                        ['class' => EditableColumn::class,
-                            'attribute' => 'sourceName',
-                            'refreshGrid' => true,
-                            'editableOptions' => ['formOptions' => ['action' => ['/Product/product/editbook']]],
-                        ],
                         [
                             'attribute' => 'sellerName',
                             'format' => 'html',
@@ -237,15 +285,15 @@ HTML;
                                 return $model->sellerName . "<br/>" .'<a class="badge bg-aqua ">'.$model->iSellerName.'</a>';
                             }
                         ],
-                        'invoiceDate',
-                        'bookingDate',
-                        [
-                            'label' => 'Edit Booking',
-                            'format' => 'html',
-                            'value' => function ($model) {
-                                return '<a href="/Reservations/reservations/bookingedit?id=' . $model->id . '">Edit' . '</a>';
-                            }
-                        ],
+//                        'invoiceDate',
+//                        'bookingDate',
+//                        [
+//                            'label' => 'Edit Booking',
+//                            'format' => 'html',
+//                            'value' => function ($model) {
+//                                return '<a href="/Reservations/reservations/bookingedit?id=' . $model->id . '">Edit' . '</a>';
+//                            }
+//                        ],
 
                     ];
 
@@ -254,7 +302,7 @@ HTML;
                     echo GridView::widget([
 
                         'dataProvider' => $allDataProviders[$time],
-                        'filterModel' => $searchModel,
+//                        'filterModel' => $searchModel,
                         'columns' => $gridColumns,
                         'layout' => $layout,
                         'pjax' => true,
@@ -304,7 +352,6 @@ HTML;
                 echo GridView::widget([
                     'id' => 'wholeday',
                     'dataProvider' => $dataProvider,
-                    'filterModel' => $searchModel,
                     'columns' => $gridColumns,
                     'layout' => $layout,
                     'pjax' => true,
@@ -338,9 +385,7 @@ HTML;
                         'heading' => '<i class="fa fa-ticket"></i>' . $title . ' ',
                         'logo' => 'fa fa-ticket',
                         'footer' => "
-                            <h3>Total capacity left for this day: $availableChairs</br></h3>
-                            <h4>Total places bought for this day: $takenChairsCount</br></h4>
-                            <h5>Total capacity for this product: $currentProduct->capacity</br></h5>
+   
                 ",
                     ],
 
