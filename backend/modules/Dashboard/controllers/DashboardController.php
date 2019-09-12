@@ -18,10 +18,12 @@ class DashboardController extends Controller {
     public function actionAdmin() {
         $viewType = '';
         $viewName = 'admin';
+        sessionSetFlashAlert('warning', "Screen under construction");
 
         if (Yii::$app->user->can("hotline")) {
             $viewType = 'hotline/';
             $viewName = 'admin';
+            sessionSetFlashAlert('warning', "Screen under construction");
         }
 
         if (Yii::$app->user->can("streetSeller")) {
