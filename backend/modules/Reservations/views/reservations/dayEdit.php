@@ -363,24 +363,7 @@ HTML;
                             var elementId = $(this).closest('tr').data('key');
                         }
                     </script>
-                <?php
-                    yii\bootstrap\Modal::begin([
-                        'id' =>'modal',
-                        //'headerOptions' => ['id' => 'modalHeader'],
-                        'header' => 'Create a new reservation',
 
-                    ]);
-                    
-                    yii\bootstrap\Modal::end();
-
-                    $this->registerJs("$(function() {
-   $('#popupModal').click(function(e) {
-     e.preventDefault();
-     $('#modal').modal('show').find('.modal-content')
-     .load($(this).attr('href'));
-   });
-});");
-                ?>
 
                 <?php
 
@@ -393,12 +376,12 @@ HTML;
                     'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-all']],
                     'toolbar' => [
                         [
-
-
                             'content' =>
-                              Html::a(Yii::t('app', ' {modelClass}', [
-                          'modelClass' => '<i class="fa fa-ticket"></i>',
-                          ]), ['#'], ['class' => 'btn btn-success', 'id' => 'popupModal']),
+                                Html::button('<i class="fa fa-ticket fa-1x"></i><i class="fa fa-plus fa-1x"></i>', [
+                                    'class' => ' btn btn-outline-secondary activity-view-link',
+                                    'title' => Yii::t('kvgrid', 'Add Book'),
+                                    'onclick' => 'alert("This will launch new booking creation!");',
+                                ]) ,
 
                             'options' => ['class' => 'btn-group mr-2']
                         ],
