@@ -16,8 +16,10 @@ use yii\helpers\Url;
 use yii\log\Logger;
 use yii\widgets\Breadcrumbs;
 
+\kartik\dialog\DialogBootstrapAsset::register($this);
 
 $bundle = BackendAsset::register($this);
+
 
     $sidemenu=   [
         'options' => [
@@ -370,7 +372,7 @@ $bundle = BackendAsset::register($this);
                 'options' => [
                  'class' => 'nav-item has-treeview'
                 ],
-                'icon' => '<i class="fa nav-icon fa-apple"></i>',
+                'icon' =>  Icon::show('boxes', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
                 'active' => Yii::$app->controller->id === 'product' &&
                     Yii::$app->controller->action->id !== 'uiblock',
                 'items' => [
@@ -402,7 +404,8 @@ $bundle = BackendAsset::register($this);
                 'url' => [
                     '/Product/product/uiblock'
                 ],
-                'icon' => '<i class="fa nav-icon fa-hand-stop-o"></i>',
+
+                'icon' =>  Icon::show('hand-spock', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
                 'active' => (Yii::$app->controller->id == 'product') &&
                     Yii::$app->controller->action->id === 'uiblock',
                 'visible' => !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller'),
@@ -412,7 +415,7 @@ $bundle = BackendAsset::register($this);
                 'url' => [
                     '/Product/product/accesstimetable'
                 ],
-                'icon' => '<i class="fa nav-icon fa-hand-stop-o"></i>',
+                'icon' =>  Icon::show('clipboard-list', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
                 'active' => (Yii::$app->controller->id == 'product') &&
                     Yii::$app->controller->action->id === 'accesstimetable',
                 'visible' => !Yii::$app->user->can('streetSeller')
@@ -422,7 +425,7 @@ $bundle = BackendAsset::register($this);
                 'url' => [
                     '/Payment/payment/admin'
                 ],
-                'icon' => '<i class="fa nav-icon fa-money"></i>',
+                'icon' =>  Icon::show('money-bill', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
                 'active' => (Yii::$app->controller->id == 'payment'),
                 'visible' => Yii::$app->user->can('accessPayments'),
             ],
@@ -437,7 +440,7 @@ $bundle = BackendAsset::register($this);
                 'options' => [
                  'class' => 'nav-item has-treeview'
                 ],
-                'icon' => '<i class="fa nav-icon fa-check-square"></i>',
+                'icon' => Icon::show('chair') ,
                 'active' => (Yii::$app->controller->id == 'reservations'),
                 'items' => [
                     [
@@ -462,11 +465,11 @@ $bundle = BackendAsset::register($this);
                     ],
 
                     [
-                        'label' => Yii::t('backend', 'Create'),
+                        'label' => Yii::t('backend', 'Create Booking'),
                         'url' => [
                             '/Reservations/reservations/create2'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-font-awesome"></i>',
+                        'icon' =>  Icon::show('buysellads', [ 'class'=>'nav-icon','framework'=> Icon::FAB]),
                         'active' => (Yii::$app->controller->id == 'reservations' &&
                             Yii::$app->controller->action->id === 'create2'),
 
@@ -508,7 +511,7 @@ $bundle = BackendAsset::register($this);
                 'url' => [
                     '/Statistics/statistics/admin'
                 ],
-                'icon' => '<i class="fa nav-icon fa-line-chart"></i>',
+                'icon' =>  Icon::show('chart-line', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
                 'active' => (Yii::$app->controller->id == 'statistics'),
                 'visible' => Yii::$app->user->can('accessStatistics') && Yii::$app->user->can('viewStatisticsAdmin') && !Yii::$app->user->can('streetSeller') && !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller') && !Yii::$app->user->can('hotline'),
             ],
@@ -564,34 +567,63 @@ $bundle = BackendAsset::register($this);
             <li class="nav-item">
                 <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
             </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="index3.html" class="nav-link">Home</a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">Contact</a>
-            </li>
+
         </ul>
 
         <!-- SEARCH FORM -->
-        <form class="form-inline ml-3">
-            <div class="input-group input-group-sm">
-                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-navbar" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-        </form>
+
 
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
             <!-- Messages Dropdown Menu -->
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-comments"></i>
-                    <span class="badge badge-danger navbar-badge">3</span>
+                    <i class="fas fa-user-cog"></i>
+                    <span class="badge badge-info navbar-badge"><?=Icon::show('level-down-alt')?></span>
                 </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <a href="/sign-in/profile" class="dropdown-item">
+                        <!-- Message Start -->
+                        <div class="media">
+                            <?=Icon::show('user-circle')?>
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    View Profile
+                                </h3>
+                            </div>
+                        </div>
+                        <!-- Message End -->
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="/sign-in/account" class="dropdown-item">
+                        <!-- Message Start -->
+                        <div class="media">
+                            <?=Icon::show('cogs')?>   <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    Account config
+                                </h3>
+                            </div>
+                        </div>
+                        <!-- Message End -->
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="/sign-in/logout" class="dropdown-item" data-method="post">
+                        <!-- Message Start -->
+                        <div class="media">
+                            <?=Icon::show('sign-out-alt')?>
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    Log out
+                                </h3>
+                            </div>
+                        </div>
+                        <!-- Message End -->
+                    </a>
+                    <div class="dropdown-divider"></div>
+
+
+
+                </div>
 
             </li>
             <!-- Notifications Dropdown Menu -->

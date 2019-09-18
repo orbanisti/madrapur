@@ -9,6 +9,7 @@ namespace backend\assets;
 
 use common\assets\AdminLte;
 use common\assets\Html5shiv;
+use kartik\bs4dropdown\DropdownAsset;
 use yii\bootstrap4\BootstrapPluginAsset;
 use yii\web\AssetBundle;
 use yii\web\YiiAsset;

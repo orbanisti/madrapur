@@ -17,9 +17,6 @@ use yii\web\JsExpression;
  * @var $dataProvider yii\data\ActiveDataProvider
  */
 
-$this->title = Yii::t('backend', 'Articles');
-
-$this->params['breadcrumbs'][] = $this->title;
 
 ?>
 

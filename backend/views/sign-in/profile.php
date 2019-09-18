@@ -7,40 +7,70 @@ use yii\bootstrap4\ActiveForm;
 /* @var $model common\models\UserProfile */
 /* @var $form yii\bootstrap\ActiveForm */
 
-$this->title = Yii::t('backend', 'Edit profile')?>
+?>
 
-<div class="user-profile-form">
+<div class="row">
+    <div class="col-12">
+        <!-- interactive chart -->
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-user-circle  "></i>
+                    <?=Yii::t('backend', 'Edit profile')?>
+                </h3>
 
-    <?php $form = ActiveForm::begin() ?>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
 
-    <?php
+                </div>
+            </div>
+            <div class="card-body">
 
-echo $form->field($model, 'picture')->widget(\trntv\filekit\widget\Upload::class, [
-        'url' => [
-            'avatar-upload'
-        ]
-    ])?>
+                <div class="user-profile-form">
 
-    <?php echo $form->field($model, 'firstname')->textInput(['maxlength' => 255]) ?>
+                    <?php $form = ActiveForm::begin() ?>
 
-    <?php echo $form->field($model, 'middlename')->textInput(['maxlength' => 255]) ?>
+                    <?php
 
-    <?php echo $form->field($model, 'lastname')->textInput(['maxlength' => 255]) ?>
+                        echo $form->field($model, 'picture')->widget(\trntv\filekit\widget\Upload::class, [
+                            'url' => [
+                                'avatar-upload'
+                            ]
+                        ])?>
 
-    <?php echo $form->field($model, 'locale')->dropDownlist(Yii::$app->params['availableLocales']) ?>
+                    <?php echo $form->field($model, 'firstname')->textInput(['maxlength' => 255]) ?>
 
-    <?php
+                    <?php echo $form->field($model, 'middlename')->textInput(['maxlength' => 255]) ?>
 
-echo $form->field($model, 'gender')->dropDownlist(
-            [
-                UserProfile::GENDER_FEMALE => Yii::t('backend', 'Female'),
-                UserProfile::GENDER_MALE => Yii::t('backend', 'Male')
-            ])?>
+                    <?php echo $form->field($model, 'lastname')->textInput(['maxlength' => 255]) ?>
 
-    <div class="form-group">
-        <?php echo Html::submitButton(Yii::t('backend', 'Update'), ['class' => 'btn btn-primary']) ?>
+                    <?php echo $form->field($model, 'locale')->dropDownlist(Yii::$app->params['availableLocales']) ?>
+
+                    <?php
+
+                        echo $form->field($model, 'gender')->dropDownlist(
+                            [
+                                UserProfile::GENDER_FEMALE => Yii::t('backend', 'Female'),
+                                UserProfile::GENDER_MALE => Yii::t('backend', 'Male')
+                            ])?>
+
+                    <div class="form-group">
+                        <?php echo Html::submitButton(Yii::t('backend', 'Update'), ['class' => 'btn btn-primary ']) ?>
+                    </div>
+
+                    <?php ActiveForm::end() ?>
+
+                </div>
+
+
+            </div>
+            <!-- /.card-body-->
+        </div>
+        <!-- /.card -->
+
     </div>
 
-    <?php ActiveForm::end() ?>
-
+    <!-- /.col -->
 </div>
+
