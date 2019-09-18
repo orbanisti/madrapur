@@ -683,7 +683,7 @@ $bundle = BackendAsset::register($this);
 
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-             <?=Menu::widget($sidemenu);?>
+             <?=\common\widgets\MadMenu::widget($sidemenu);?>
                 <?php
 
 
