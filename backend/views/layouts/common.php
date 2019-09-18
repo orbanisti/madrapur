@@ -4,7 +4,10 @@
  * @var $content string
  */
 use backend\assets\BackendAsset;
+use backend\controllers\SiteController;
 use backend\modules\system\models\SystemLog;
+use backend\modules\Tickets\controllers\TicketsController;
+use backend\modules\Tickets\models\Tickets;
 use backend\widgets\Menu;
 use common\models\TimelineEvent;
     use kartik\icons\Icon;
@@ -123,7 +126,6 @@ $bundle = BackendAsset::register($this);
                         'icon' => '<i class="fa nav-icon fa-list-alt"></i>',
                         'active' => Yii::$app->controller->id === 'tickets' &&
                             Yii::$app->controller->action->id === 'admin',
-                        'visible' => Yii::$app->user->can('accessTicketsAdmin'),
                     ],
                     [
                         'label' => Yii::t('backend', 'Add ticket block'),
@@ -133,7 +135,6 @@ $bundle = BackendAsset::register($this);
                         'icon' => '<i class="fa nav-icon fa-plus"></i>',
                         'active' => Yii::$app->controller->id === 'tickets' &&
                             Yii::$app->controller->action->id === 'add-block',
-                        'visible' => Yii::$app->user->can('addTicketBlock'),
                     ],
                     [
                         'label' => Yii::t('backend', 'View assigned blocks'),
@@ -143,11 +144,9 @@ $bundle = BackendAsset::register($this);
                         'icon' => '<i class="fa nav-icon fa-"></i>',
                         'active' => Yii::$app->controller->id === 'tickets' &&
                             Yii::$app->controller->action->id === 'view-assigned-blocks',
-                        'visible' => Yii::$app->user->can('assignTicketBlock') && Yii::$app->user->can('administrator'),
                     ],
                 ],
                 'active' => Yii::$app->controller->id === 'tickets',
-                'visible' => Yii::$app->user->can('accessTickets'),
             ],
 
             // CONTENT

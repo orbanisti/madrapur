@@ -65,7 +65,7 @@ use kartik\icons\Icon;
 
                     return Html::a('<span class="fa fa-lg fa-pencil"></span>' ,
                         Url::to(['product/update' ,
-                            'id' => $model->id]) ,
+                            'prodId' => $model->id]) ,
                         [
                             'title' => Yii::t('app' , 'Delete') ,
                             'data-pjax' => '1' ,

@@ -149,7 +149,7 @@ class ProductController extends Controller {
 
         $model = new ProductEdit();
         $request = Yii::$app->request;
-        $prodId = $request->get('id');
+        $prodId = $request->get('prodId');
 
         $query = Product::aSelect(Product::class, '*', Product::tableName(), 'id=' . $prodId);
 
@@ -1157,4 +1157,38 @@ class ProductController extends Controller {
         ]);
     }
 
+    public function actionAddOnsSummary() {
+        $model = new ProductUpdate();
+        $request = YII::$app->request;
+
+        $productUpdate = $request->post('ProductUpdate');
+        $values = [
+            'currency' => $productUpdate['currency'],
+            'status' => $productUpdate['status'],
+            'title' => $productUpdate['title'],
+
+            'short_description' => $productUpdate['short_description'],
+            'desctiption' => $productUpdate['description'],
+            'category' => $productUpdate['category'],
+            'capacity' => $productUpdate['capacity'],
+            'duration' => $productUpdate['duration'],
+            'image' => $productUpdate['image'],
+            'start_date' => $productUpdate['start_date'],
+            'end_date' => $productUpdate['end_date'],
+            'isDeleted'=>'no'
+        ];
+        $updateResponse = '';
+        if ($productUpdate) {
+            $newProduct = new Product();
+
+            if (Product::insertOne($newProduct, $values)) {
+
+                $updateResponse = '<span style="color:green">Product Update Successful</span>';
+            } else {
+                $updateResponse = '<span style="color:red">Product Update Failed</span>';
+                //show an error message
+            }
+        }
+        return $this->render('create', ['model' => $model, 'updateResponse' => $updateResponse]);
+    }
 }
