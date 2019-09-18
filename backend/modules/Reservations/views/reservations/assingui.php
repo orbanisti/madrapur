@@ -75,7 +75,9 @@ $this->registerJs($format, View::POS_HEAD);
                 };
             }
             $data = [];
+            $data2 = [];
             $images = [];
+
             foreach ($streetSellers as $user) {
                 $data[$user->id] = $user->username;
                 $images[$user->id] = $user->userProfile->avatar;

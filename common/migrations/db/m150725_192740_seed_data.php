@@ -103,7 +103,7 @@ class m150725_192740_seed_data extends Migration {
                                     'options' => [
                                         'tag' => 'span'
                                     ],
-                                    'template' => '<a href="{url}" class="btn btn-lg btn-success">{label}</a>'
+                                    'template' => '<a href="{url}" class="btn btn-lg btn-info">{label}</a>'
                                 ],
                                 [
                                     'label' => 'Yii2 Starter Kit on GitHub',

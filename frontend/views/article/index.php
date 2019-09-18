@@ -2,7 +2,7 @@
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $searchModel frontend\models\search\ArticleSearch */
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 use yii\helpers\Html;
 
 $this->title = Yii::t('frontend', 'Articles')?>

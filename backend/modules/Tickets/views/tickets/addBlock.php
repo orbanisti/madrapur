@@ -8,47 +8,61 @@ use yii\web\View;
 
 ?>
 
-<h1>Add ticket block</h1>
 
-<div class="panel">
-    <div class="panel-body">
-        <?php
+<div class="card card-primary card-outline">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="far fa-chart-bar"></i>
+            Add ticket block
+        </h3>
 
-        $form = ActiveForm::begin([
-            'id' => 'add-ticket-block',
-            'class' => 'form-inline'
-        ]);
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+            </button>
 
-        ?>
-
-        <div class="form-group">
-            <?=
-            $form->field($model, 'startId', [
-                'template' => '{beginLabel}{labelTitle}{endLabel}<div class="input-group"><span class="input-group-addon">ID</span>{input}</div>{error}{hint}',
-                'hintType' => \kartik\form\ActiveField::HINT_DEFAULT,
-                'hintSettings' => [
-                    'onLabelClick' => false,
-                    'onLabelHover' => true,
-                    'onIconHover' => true,
-                ]
-            ])->textInput([
-                'placeholder' => 'First ID.',
-                'name' => 'startId',
-                'id' => 'startId',
-                'maxlength' => 8,
-                //'pattern' => '\d*',
-                'required' => true
-            ])->hint('Entering the full ticket ID is mandatory. In case of voucher ticket block include the initial letter, too.')
-            ?>
         </div>
+    </div>
+    <div class="card-body">
 
-        <div class="form-group">
-            <script type='text/javascript'>
-                var avatars = <?= $avatars ?>;
-            </script>
+        <div class="panel">
+            <div class="panel-body">
+                <?php
 
-            <?php
-            $this->registerJs(<<< SCRIPT
+                    $form = ActiveForm::begin([
+                        'id' => 'add-ticket-block',
+                        'class' => 'form-inline'
+                    ]);
+
+                ?>
+
+                <div class="form-group">
+                    <?=
+                        $form->field($model, 'startId', [
+                            'template' => '{beginLabel}{labelTitle}{endLabel}<div class="input-group"><span class="input-group-text">ID</span>{input}</div>{error}{hint}',
+                            'hintType' => \kartik\form\ActiveField::HINT_DEFAULT,
+                            'hintSettings' => [
+                                'onLabelClick' => false,
+                                'onLabelHover' => true,
+                                'onIconHover' => true,
+                            ]
+                        ])->textInput([
+                            'placeholder' => 'First ID.',
+                            'name' => 'startId',
+                            'id' => 'startId',
+                            'maxlength' => 8,
+                            //'pattern' => '\d*',
+                            'required' => true
+                        ])->hint('Entering the full ticket ID is mandatory. In case of voucher ticket block include the initial letter, too.')
+                    ?>
+                </div>
+
+                <div class="form-group">
+                    <script type='text/javascript'>
+                        var avatars = <?= $avatars ?>;
+                    </script>
+
+                    <?php
+                        $this->registerJs(<<< SCRIPT
 
 function format(state) {
     if (!state.id) return state.text;
@@ -57,35 +71,40 @@ function format(state) {
 }
 
 SCRIPT
-                , View::POS_HEAD);
-            ?>
+                            , View::POS_HEAD);
+                    ?>
 
-            <?= $form->field($model, 'assignedTo')->widget(Select2::class, [
-                'name' => 'assignedTo',
-                'data' => $users,
-                'options' => [
-                    'placeholder' => 'Select a user.',
-                    'required' => true
-                ],
-                'pluginOptions' => [
-                    'templateResult' => new JsExpression('format'),
-                    'templateSelection' => new JsExpression('format'),
-                    'escapeMarkup' => new JsExpression("function escape(m) { return m; }"),
-                    'allowClear' => true
-                ],
-            ]) ?>
+                    <?= $form->field($model, 'assignedTo')->widget(Select2::class, [
+                        'name' => 'assignedTo',
+                        'data' => $users,
+                        'options' => [
+                            'placeholder' => 'Select a user.',
+                            'required' => true
+                        ],
+                        'pluginOptions' => [
+                            'templateResult' => new JsExpression('format'),
+                            'templateSelection' => new JsExpression('format'),
+                            'escapeMarkup' => new JsExpression("function escape(m) { return m; }"),
+                            'allowClear' => true
+                        ],
+                    ]) ?>
+                </div>
+
+                <?= Html::submitButton(
+                    Yii::t('backend', 'Add ticket block'),
+                    [
+                        'class' => 'btn btn-primary btn-flat btn-block',
+                        'name' => 'add-ticket-block-button'
+                    ]
+                );
+
+                ?>
+
+                <?php ActiveForm::end() ?>
+            </div>
         </div>
 
-        <?= Html::submitButton(
-            Yii::t('backend', 'Add ticket block'),
-            [
-                'class' => 'btn btn-primary btn-flat btn-block',
-                'name' => 'add-ticket-block-button'
-            ]
-        );
-
-        ?>
-
-        <?php ActiveForm::end() ?>
     </div>
+    <!-- /.card-body-->
 </div>
+

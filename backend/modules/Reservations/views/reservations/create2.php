@@ -18,9 +18,10 @@
     use yii\web\JsExpression;
     use yii\web\View;
     use yii\widgets\ActiveForm;
+    use yii\widgets\Pjax;
 
     $this->title = Yii::t('app', 'New Reservation');
-    $this->params['breadcrumbs'][] = $this->title;
+    //$this->params['breadcrumbs'][] = $this->title;
 
     $huf = Yii::$app->keyStorage->get('currency.huf-value') ? Yii::$app->keyStorage->get('currency.huf-value') : null;
 
@@ -33,23 +34,15 @@
     }
 </style>
 <div class="products-index">
-    <div class="panel">
-        <div class="panel-heading">
-
-        </div>
-        <div class="panel">
-        </div>
-
-
-        <div class="panel-body">
 
             <?php
+          Pjax::begin();
                 if ($disableForm != 1) {
                     if ($newReservation) {
 
                         echo $newReservation;
                     }
-                    $form = ActiveForm::begin(['id' => 'product-form']);
+                    $form = ActiveForm::begin(['id' => 'product-form','options' => ['data-pjax' => true ]]);
 
                     ?>
 
@@ -58,7 +51,7 @@
                     $allMyProducts = Product::getAllProducts();
                     echo $form->field($model, 'title')
                         ->dropDownList(\yii\helpers\ArrayHelper::map($allMyProducts, 'id', 'title'),
-                            ['prompt' => 'Please select a product']);
+                            ['prompt' => 'Please select a product'])->label(false);
 
 
                     ?>
@@ -139,6 +132,8 @@
 
 
                     <?php ActiveForm::end();
+
+                    Pjax::end();
                 } else {
                     if (isset($_POST['paid_status'])) {
                         $paid_status = 'paid';
@@ -218,7 +213,7 @@
 
 
             <div class="col-lg-12 customPrice">
-                <div class="box  box-solid collapsed-box">
+                <div class="box box-default box-solid ">
                     <div class="box-header  bg-blue-gradient with-border">
                         <h3 class="box-title">Seller Tools</h3>
                         <div class="box-tools pull-right">

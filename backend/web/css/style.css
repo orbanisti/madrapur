@@ -1,3 +1,11 @@
+/**
+        Fixes EditableColumn popover bug
+        2019.09.27 // orbanisti & Aekan
+
+ */
+.popover{display:none}
+
+
 body {
 	/* add sorting icons to gridview sort links */
 	
