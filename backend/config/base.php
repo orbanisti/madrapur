@@ -1,16 +1,63 @@
 <?php
-return [
+
+    use yii\web\View;
+
+    return [
     'id' => 'backend',
     'basePath' => dirname(__DIR__),
     'components' => [
+        'assetManager'=>[    'bundles' => [
+
+            'yii\bootstrap\BootstrapAsset' => [
+                'sourcePath'=>'@npm/bootstrap/dist',
+
+                'css' => [
+
+                    YII_ENV_DEV ? 'css/bootstrap.min.css' : 'css/bootstrap.min.css',
+
+                ],
+
+            ],
+
+            'yii\bootstrap\BootstrapPluginAsset' => [
+                'sourcePath'=>'@npm/bootstrap/dist',
+
+
+                'js' => [
+
+                    YII_ENV_DEV ? 'js/bootstrap.bundle.js' : 'js/bootstrap.bundle.js',
+                    'js/bootstrap.js'
+
+                ],
+                'jsOptions' => [
+                    'position' => View::POS_HEAD
+                ]
+
+            ],
+
+
+            'yii\web\JqueryAsset' => [
+
+                'js' => [
+
+                    YII_ENV_DEV ? 'jquery.js' : 'jquery.min.js'
+
+                ]
+
+            ],
+
+        ],
+
+        ],
+
         'urlManager' => require __DIR__ . '/_urlManager.php',
         'frontendCache' => require Yii::getAlias('@frontend/config/_cache.php')
     ],
 
     'params' => [
         'icon-framework' => \kartik\icons\Icon::FAS,  // Font Awesome Icon framework
-
-//        'bsVersion' => '4.x', // this will set globally `bsVersion` to Bootstrap 4.x for all Krajee Extensions
+        'bsDependencyEnabled' => true,
+        'bsVersion' => '4.x', // this will set globally `bsVersion` to Bootstrap 4.x for all Krajee Extensions
         // other settings
         // 'adminEmail' => 'admin@example.com'
     ]

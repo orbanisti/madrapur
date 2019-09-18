@@ -406,7 +406,7 @@
             ->andFilterWhere(['=', 'assignedTo', Yii::$app->user->id])
             ->andWhere('isActive IS TRUE')
             ->one();
-        if(!$block){
+        if(!$block && !Yii::$app->user->can('administrator')){
 
             throw new ForbiddenHttpException('Sorry you dont have an active Ticket Block');
         }
@@ -578,6 +578,16 @@
         if (!isset($updateResponse)) {
             $updateResponse = '';
         }
+        if(Yii::$app->request->isAjax){
+            return $this->renderAjax('create2', [
+                'model' => new Product(),
+                'disableForm' => $disableForm,
+                'myPrices' => $myprices,
+                'countPrices' => $countPrices,
+                'newReservation' => $updateResponse,
+                'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
+            ]);
+        }
 
         return $this->render('create2', [
             'model' => new Product(),
@@ -722,6 +732,79 @@
 
 
 }
+        public function actionDaye() {
+
+            $currentProductId = Yii::$app->request->get('prodId');
+
+            $searchModel = new Reservations();
+
+            if ($currentProductId) {
+
+                $currentProduct = Product::getProdById($currentProductId);
+                $sourcesRows = ProductSource::getProductSourceIds($currentProductId);
+
+                $selectedDate = \Yii::$app->request->get("date");
+                $dataProvider = $searchModel->searchDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
+                $timeHours = Reservations::getProductTimeshours($currentProductId);
+
+                $allDataproviders = [];
+
+                foreach ($timeHours as $time) {
+
+                    $tmpdataProvider = $searchModel->searchDayTime(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId, $time);
+                    $allDataproviders[$time] = $tmpdataProvider;
+                }
+
+                $takenChairsCount = Reservations::countTakenChairsOnDay($selectedDate, $sourcesRows);
+                $availableChairsOnDay = $searchModel->availableChairsOnDay(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId);
+            }
+
+            $passignedId = (Yii::$app->request->post('User'))['id'];
+            $preservatinId = Yii::$app->request->post('reservation');
+            if ($passignedId && $preservatinId) {
+                $foundReservation = Reservations::find()->where(['id' => $preservatinId])->one();
+
+                $assignedUser = User::find()->where(['id' => $preservatinId])->one();
+                $assigneduser = User::findIdentity($passignedId);
+
+                $assignData = [];
+                $assignData['time'] = date('Y-m-d H:i:s', time());
+                $assignData['by'] = Yii::$app->getUser()->identity->username;
+                $assignData['from'] = $foundReservation->sellerName;
+                $assignData['to'] = $assigneduser->username;
+
+                if ($foundReservation) {
+                    $Reservationobject = json_decode($foundReservation->data);
+                    if (isset($Reservationobject->assignments) && is_array($Reservationobject->assignments)) {
+
+                        array_unshift($Reservationobject->assignments, $assignData);
+                    } else {
+                        $Reservationobject->assignments[] = $assignData;
+                    }
+
+                    $foundReservation->data = json_encode($Reservationobject);
+                    $foundReservation->sellerName = $assigneduser->username;
+                    $foundReservation->save(false);
+//                echo \GuzzleHttp\json_encode($foundReservation->data);
+                    Yii::$app->session->setFlash('success', Yii::t('app', 'Successful assignment<u>' . $preservatinId . '</u> reservation to ' . $foundReservation->sellerName));
+                }
+            }
+
+            return $this->render('dayEdit', [
+                'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
+                'model' => Reservations::class,
+                'currentProduct' => $currentProduct,
+                'currentDay' => Yii::$app->request->get('date'),
+                'takenChairsCount' => $takenChairsCount,
+                'availableChairs' => $availableChairsOnDay,
+                'timesHours' => $timeHours,
+                'allDataProviders' => $allDataproviders,
+                'sources' => $sourcesRows,
+                'selectedDate' => $selectedDate
+
+            ]);
+        }
 
 /**
 * @return array

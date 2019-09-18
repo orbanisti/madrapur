@@ -2,8 +2,8 @@
 <div class="col-xs-12 col-md-3">
     <?php
 
-    use insolita\wgadminlte\LteConst;
-    use insolita\wgadminlte\LteSmallBox;
+        use insolita\adminlte3\LteSmallBox;
+        use insolita\wgadminlte\LteConst;
     use yii\helpers\Url;
 
     LteSmallBox::begin([

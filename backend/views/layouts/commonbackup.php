@@ -8,7 +8,6 @@ use backend\modules\system\models\SystemLog;
 use backend\widgets\Menu;
 use common\models\TimelineEvent;
     use kartik\icons\Icon;
-    use kartik\popover\PopoverXAsset;
     use yii\bootstrap4\Alert;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -16,32 +15,120 @@ use yii\helpers\Url;
 use yii\log\Logger;
 use yii\widgets\Breadcrumbs;
 
-
 $bundle = BackendAsset::register($this);
 
+?>
+
+<?php $this->beginContent('@backend/views/layouts/base.php'); ?>
+
+<div class="wrapper">
+	<!-- header logo: style can be found in header.less -->
+	<header class="main-header main-header navbar navbar-expand navbar-white navbar-light">
+
+		<!-- Header Navbar: style can be found in header.less -->
+		<nav class="navbar navbar-static-top" role="navigation">
+			<!-- Sidebar toggle button-->
+			<a href="#" class="sidebar-toggle" data-toggle="push-menu"
+				role="button"> <span class="sr-only"><?php echo Yii::t('backend', 'Toggle navigation') ?></span>
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+				class="icon-bar"></span>
+			</a>
+			<div class="navbar-custom-menu">
+				<ul class="nav navbar-nav">
+					<li id="timeline-notifications" class="notifications-menu"><a
+						href="<?php echo Url::to(['/timeline-event/index']) ?>"> <i
+							class="fa fa-bell"></i> <span class="label label-success">
+                                <?php echo TimelineEvent::find()->today()->count() ?>
+                            </span>
+					</a></li>
+					<!-- User Account: style can be found in dropdown.less -->
+					<li class="dropdown user user-menu"><a href="#"
+						class="dropdown-toggle" data-toggle="dropdown"> <img
+							src="<?php echo Yii::$app->user->identity->userProfile->getAvatar($this->assetManager->getAssetUrl($bundle, 'img/anonymous.jpg')) ?>"
+							class="user-image"> <span><?php echo Yii::$app->user->identity->username ?> <i
+								class="caret"></i></span>
+					</a>
+						<ul class="dropdown-menu">
+							<!-- User image -->
+							<li class="user-header light-blue"><img
+								src="<?php echo Yii::$app->user->identity->userProfile->getAvatar($this->assetManager->getAssetUrl($bundle, 'img/anonymous.jpg')) ?>"
+								class="img-circle" alt="User Image" />
+								<p>
+                                    <?php echo Yii::$app->user->identity->username ?>
+                                    <small>
+                                        <?php echo Yii::t('backend', 'Member since {0, date, short}', Yii::$app->user->identity->created_at) ?>
+                                    </small></li>
+							<!-- Menu Footer-->
+							<li class="user-footer">
+								<div class="pull-left">
+                                    <?php echo Html::a(Yii::t('backend', 'Profile'), ['/sign-in/profile'], ['class' => 'btn btn-default btn-flat']) ?>
+                                </div>
+								<div class="pull-left">
+                                    <?php echo Html::a(Yii::t('backend', 'Account'), ['/sign-in/account'], ['class' => 'btn btn-default btn-flat']) ?>
+                                </div>
+								<div class="pull-right">
+                                    <?php echo Html::a(Yii::t('backend', 'Logout'), ['/sign-in/logout'], ['class' => 'btn btn-default btn-flat', 'data-method' => 'post']) ?>
+                                </div>
+							</li>
+						</ul></li>
+					<li>
+                        <?php echo Html::a('<i class="fa fa-cogs"></i>', ['/system/settings']) ?>
+                    </li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+	<!-- Left side column. contains the logo and sidebar -->
+	<aside class="main-sidebar main-sidebar sidebar-dark-primary elevation-4">
+
+        <a href="<?php echo Yii::$app->urlManagerFrontend->createAbsoluteUrl('/') ?>" class="brand-link">
+            <!--img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"-->
+            <span class="brand-text font-weight-light">  <?= Yii::$app->name ?></span>
+        </a>
+		<!-- sidebar: style can be found in sidebar.less -->
+		<div class="sidebar os-host os-theme-light os-host-overflow os-host-overflow-y os-host-resize-disabled os-host-scrollbar-horizontal-hidden os-host-transition">
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <img src="<?= Yii::$app->user->identity->userProfile->getAvatar($this->assetManager->getAssetUrl($bundle, 'img/anonymous.jpg')) ?>" class="img-circle elevation-2" alt="User Image">
+                </div>
+                <div class="info">
+                    <a href="#" class="d-block">	<p><?php echo Yii::t('backend', 'Hello, {username}', ['username' => Yii::$app->user->identity->getPublicIdentity()]) ?></p>
+                        <a href="<?php echo Url::to(['/sign-in/profile']) ?>"> <i
+                                    class="fa fa-circle text-success"></i>
+                            <?php echo Yii::$app->formatter->asDatetime(time()) ?>
+                        </a></a>
+                </div>
+            </div>
+			<!-- Sidebar user panel -->
+
+			<!-- sidebar menu: : style can be found in sidebar.less -->
+            <?php
+        $imaStreetAdmin=Yii::$app->authManager-> getAssignment('streetAdmin',Yii::$app->user->getId()) ;
+        $imaOfficeAdmin=Yii::$app->authManager-> getAssignment('officeAdmin',Yii::$app->user->getId()) ;
+        $imaStreetSeller=Yii::$app->authManager-> getAssignment('streetSeller',Yii::$app->user->getId()) ;
+    $imaHotelSeller=Yii::$app->authManager-> getAssignment('hotelSeller',Yii::$app->user->getId()) ;
+    $imaBookKeeper=Yii::$app->authManager-> getAssignment('bookKeeper',Yii::$app->user->getId()) ;
+    $imaHotline=Yii::$app->authManager-> getAssignment('hotline',Yii::$app->user->getId()) ;
     $sidemenu=   [
         'options' => [
             'class' => 'nav nav-pills nav-sidebar flex-column',
-            'data-widget' => 'treeview',
-            'role'=>'menu',
-            'data-accordion'=>false
+            'data-widget' => 'tree'
         ],
-        'linkTemplate' => '<a class="nav-link" href="{url}">{icon}<span>{label}</span>{badge}{right-icon}</a>',
-        'submenuTemplate' => "\n<ul class=\"nav nav-treeview \">\n{items}\n</ul>\n",
+        'linkTemplate' => '<a  href="{url}">{icon}<span>{label}</span>{right-icon}{badge}</a>',
+        'submenuTemplate' => "\n<ul class=\"treeview-menu\">\n{items}\n</ul>\n",
         'activateParents' => true,
-        'itemOptions'=>['class'=>'nav-item'],
         'items' => [
             // MAIN
             [
                 'label' => Yii::t('backend', 'Main'),
                 'options' => [
-                    'class' => 'nav-header'
+                    'class' => 'header'
                 ],
             ],
 
             [
                 'label' => Yii::t('backend', 'Dashboard'),
-                'icon' => Icon::show('columns', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
+                'icon' => '<i class="fa fa-bar-chart-o"></i>',
                 'url' => [
                     '/Dashboard/dashboard/admin'
                 ],
@@ -51,29 +138,29 @@ $bundle = BackendAsset::register($this);
             ],
             [
                 'label' => Yii::t('backend', 'Timeline'),
-                'icon' => Icon::show('chart-bar', ['class'=>'nav-icon', 'framework'=> Icon::FAS]),
+                'icon' => '<i class="fa fa-bar-chart-o"></i>',
                 'url' => [
                     '/timeline-event/index'
                 ],
                 'badge' => TimelineEvent::find()->today()->count(),
-                'badgeClass' => 'badge badge-info right',
+                'badgeBgClass' => 'label-success',
                 'visible'=>Yii::$app->user->can('administrator'),
                 'options' => [
-                    'class' => 'nav-item'
+                    'class' => 'header'
                 ],
 
             ],
             [
                 'label' => Yii::t('backend', 'adminTools'),
-                'icon' => Icon::show('smile', ['class'=>'nav-icon', 'framework'=> Icon::FAS]),
-                'url'=>['#'],
+                'icon' => '<i class="fa fa-smile-o"></i>',
+                'url'=>['/Modmail/modmail/admin'],
                 'options' => [
                     'class' => 'nav-item has-treeview'
                 ],
                 'items'=>[
                     [
                         'label' => Yii::t('backend', 'modMail'),
-                        'icon' => '<i class="fa nav-icon fa-envelope-o"></i>',
+                        'icon' => '<i class="fa fa-envelope-o"></i>',
                         'url' => [
                             '/Modmail/modmail/admin'
                         ],
@@ -81,7 +168,7 @@ $bundle = BackendAsset::register($this);
                     ],
                     [
                         'label' => Yii::t('backend', 'Db editor'),
-                        'icon' => '<i class="fa nav-icon fa-table"></i>',
+                        'icon' => '<i class="fa fa-table"></i>',
                         'url' => [
                             '/dbeditor.php?username=root2&db=mad_dev-db'
                         ],
@@ -92,12 +179,9 @@ $bundle = BackendAsset::register($this);
             ],
             [
                 'label' => Yii::t('backend', 'Users'),
-                'icon' => Icon::show('users', ['class'=>'nav-icon', 'framework'=> Icon::FAS]),
+                'icon' => '<i class="fa fa-users"></i>',
                 'url' => [
                     '/user/index'
-                ],
-                'options' => [
-                    'class' => 'nav-item'
                 ],
                 'active' => Yii::$app->controller->id === 'user',
                 'visible' => Yii::$app->user->can('accessUsers'),
@@ -109,16 +193,16 @@ $bundle = BackendAsset::register($this);
                     '/Tickets/tickets/admin'
                 ],
                 'options' => [
-                 'class' => 'nav-item has-treeview'
+                    'class' => 'treeview'
                 ],
-                'icon' => Icon::show('ticket-alt', ['class'=>'nav-icon', 'framework'=> Icon::FAS]),
+                'icon' => '<i class="fa fa-ticket"></i>',
                 'items' => [
                     [
                         'label' => Yii::t('backend', 'Summary'),
                         'url' => [
                             '/Tickets/tickets/admin'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-list-alt"></i>',
+                        'icon' => '<i class="fa fa-list-alt"></i>',
                         'active' => Yii::$app->controller->id === 'tickets' &&
                             Yii::$app->controller->action->id === 'admin',
                         'visible' => Yii::$app->user->can('accessTicketsAdmin'),
@@ -128,7 +212,7 @@ $bundle = BackendAsset::register($this);
                         'url' => [
                             '/Tickets/tickets/add-block'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-plus"></i>',
+                        'icon' => '<i class="fa fa-plus"></i>',
                         'active' => Yii::$app->controller->id === 'tickets' &&
                             Yii::$app->controller->action->id === 'add-block',
                         'visible' => Yii::$app->user->can('addTicketBlock'),
@@ -138,7 +222,7 @@ $bundle = BackendAsset::register($this);
                         'url' => [
                             '/Tickets/tickets/view-assigned-blocks'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-"></i>',
+                        'icon' => '<i class="fa fa-"></i>',
                         'active' => Yii::$app->controller->id === 'tickets' &&
                             Yii::$app->controller->action->id === 'view-assigned-blocks',
                         'visible' => Yii::$app->user->can('assignTicketBlock') && Yii::$app->user->can('administrator'),
@@ -152,7 +236,7 @@ $bundle = BackendAsset::register($this);
             [
                 'label' => Yii::t('backend', 'Content'),
                 'options' => [
-                    'class' => 'nav-header'
+                    'class' => 'header'
                 ],
                 'visible' => Yii::$app->user->can('accessContent') && Yii::$app->user->can('administrator'),
             ],
@@ -161,10 +245,7 @@ $bundle = BackendAsset::register($this);
                 'url' => [
                     '/Modulusbuilder/modulusbuilder/email'
                 ],
-                'options' => [
-                    'class' => 'nav-item '
-                ],
-                'icon' => '<i class="fa nav-icon fa-envelope"></i>',
+                'icon' => '<i class="fa fa-envelope"></i>',
                 'active' => Yii::$app->controller->id === 'modulusbuilder' &&
                     Yii::$app->controller->action === 'email' && Yii::$app->user->can('administrator'),
                 'visible' => !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller') && !Yii::$app->user->can('hotline'),
@@ -174,41 +255,36 @@ $bundle = BackendAsset::register($this);
                 'url' => [
                     '/content/page/index'
                 ],
-                'icon' => Icon::show('pager', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
+                'icon' => '<i class="fa fa-thumb-tack"></i>',
                 'active' => Yii::$app->controller->id === 'page',
                 'visible' => Yii::$app->user->can('accessContent') && Yii::$app->user->can('administrator'),
-                'options' => [
-                    'class' => 'nav-item'
-                ],
             ],
             [
                 'label' => Yii::t('backend', 'Articles'),
                 'url' => [
                     '/content/article/index'
                 ],
-                'icon' => Icon::show('newspaper', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
+                'icon' => '<i class="fa fa-files-o"></i>',
                 'options' => [
-                 'class' => 'nav-item has-treeview'
+                    'class' => 'treeview'
                 ],
                 'active' => 'content' === Yii::$app->controller->module->id &&
                     ('article' === Yii::$app->controller->id || 'category' === Yii::$app->controller->id),
                 'items' => [
                     [
-                        'label' => Yii::t('backend', 'View Articles'),
+                        'label' => Yii::t('backend', 'Articles'),
                         'url' => [
                             '/content/article/index'
                         ],
-//                        'icon' => Icon::showStack('newspaper nav-icon', 'edit  nav-icon'),
-
-                        'icon' => Icon::show('newspaper', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
+                        'icon' => '<i class="fa fa-file-o"></i>',
                         'active' => Yii::$app->controller->id === 'article',
                     ],
                     [
-                        'label' => Yii::t('backend', 'Article Categories'),
+                        'label' => Yii::t('backend', 'Categories'),
                         'url' => [
                             '/content/category/index'
                         ],
-                        'icon' => Icon::show('newspaper', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
+                        'icon' => '<i class="fa fa-folder-open-o"></i>',
                         'active' => Yii::$app->controller->id === 'category',
                     ],
                 ],
@@ -219,9 +295,9 @@ $bundle = BackendAsset::register($this);
                 'url' => [
                     '/content/page/index'
                 ],
-                'icon' => '<i class="fa nav-icon fa-code"></i>',
+                'icon' => '<i class="fa fa-code"></i>',
                 'options' => [
-                 'class' => 'nav-item has-treeview'
+                    'class' => 'treeview'
                 ],
                 'active' => Yii::$app->controller->module->id === 'widget',
                 'items' => [
@@ -230,7 +306,7 @@ $bundle = BackendAsset::register($this);
                         'url' => [
                             '/widget/text/index'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-circle-o"></i>',
+                        'icon' => '<i class="fa fa-circle-o"></i>',
                         'active' => Yii::$app->controller->id === 'text',
                     ],
                     [
@@ -238,7 +314,7 @@ $bundle = BackendAsset::register($this);
                         'url' => [
                             '/widget/menu/index'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-circle-o"></i>',
+                        'icon' => '<i class="fa fa-circle-o"></i>',
                         'active' => Yii::$app->controller->id === 'menu',
                     ],
                     [
@@ -246,7 +322,7 @@ $bundle = BackendAsset::register($this);
                         'url' => [
                             '/widget/carousel/index'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-circle-o"></i>',
+                        'icon' => '<i class="fa fa-circle-o"></i>',
                         'active' => in_array(Yii::$app->controller->id, [
                             'carousel',
                             'carousel-item'
@@ -260,7 +336,7 @@ $bundle = BackendAsset::register($this);
             [
                 'label' => Yii::t('backend', 'Translation'),
                 'options' => [
-                    'class' => 'nav-header'
+                    'class' => 'header'
                 ],
                 'visible' => Yii::$app->user->can('accessTranslation'),
             ],
@@ -269,7 +345,7 @@ $bundle = BackendAsset::register($this);
                 'url' => [
                     '/translation/default/index'
                 ],
-                'icon' => '<i class="fa nav-icon fa-language"></i>',
+                'icon' => '<i class="fa fa-language"></i>',
                 'active' => (Yii::$app->controller->module->id == 'translation'),
                 'visible' => Yii::$app->user->can('accessTranslation'),
             ],
@@ -278,7 +354,7 @@ $bundle = BackendAsset::register($this);
             [
                 'label' => Yii::t('backend', 'System'),
                 'options' => [
-                    'class' => 'nav-header'
+                    'class' => 'header'
                 ],
                 'visible' => Yii::$app->user->can('accessSystem'),
             ],
@@ -287,9 +363,9 @@ $bundle = BackendAsset::register($this);
                 'url' => [
                     '/rbac/rbac-auth-rule/index'
                 ],
-                'icon' => '<i class="fa nav-icon fa-flag"></i>',
+                'icon' => '<i class="fa fa-flag"></i>',
                 'options' => [
-                 'class' => 'nav-item has-treeview'
+                    'class' => 'treeview'
                 ],
                 'active' => in_array(Yii::$app->controller->id,
                     [
@@ -304,28 +380,28 @@ $bundle = BackendAsset::register($this);
                         'url' => [
                             '/rbac/rbac-auth-assignment/index'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-circle-o"></i>',
+                        'icon' => '<i class="fa fa-circle-o"></i>',
                     ],
                     [
                         'label' => Yii::t('backend', 'Auth Items'),
                         'url' => [
                             '/rbac/rbac-auth-item/index'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-circle-o"></i>',
+                        'icon' => '<i class="fa fa-circle-o"></i>',
                     ],
                     [
                         'label' => Yii::t('backend', 'Auth Item Child'),
                         'url' => [
                             '/rbac/rbac-auth-item-child/index'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-circle-o"></i>',
+                        'icon' => '<i class="fa fa-circle-o"></i>',
                     ],
                     [
                         'label' => Yii::t('backend', 'Auth Rules'),
                         'url' => [
                             '/rbac/rbac-auth-rule/index'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-circle-o"></i>',
+                        'icon' => '<i class="fa fa-circle-o"></i>',
                     ],
                 ],
                 'visible' => Yii::$app->user->can('accessRBAC'),
@@ -333,9 +409,9 @@ $bundle = BackendAsset::register($this);
             [
                 'label' => Yii::t('backend', 'Files'),
                 'url' => '#',
-                'icon' => '<i class="fa nav-icon fa-th-large"></i>',
+                'icon' => '<i class="fa fa-th-large"></i>',
                 'options' => [
-                 'class' => 'nav-item has-treeview'
+                    'class' => 'treeview'
                 ],
                 'active' => (Yii::$app->controller->module->id == 'file'),
                 'items' => [
@@ -344,7 +420,7 @@ $bundle = BackendAsset::register($this);
                         'url' => [
                             '/file/storage/index'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-database"></i>',
+                        'icon' => '<i class="fa fa-database"></i>',
                         'active' => (Yii::$app->controller->id == 'storage'),
                     ],
                     [
@@ -352,7 +428,7 @@ $bundle = BackendAsset::register($this);
                         'url' => [
                             '/file/manager/index'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-television"></i>',
+                        'icon' => '<i class="fa fa-television"></i>',
                         'active' => (Yii::$app->controller->id == 'manager'),
                     ],
                 ],
@@ -361,16 +437,16 @@ $bundle = BackendAsset::register($this);
             [
                 'label' => Yii::t('backend', 'Products'),
                 'options' => [
-                 'class' => 'nav-item has-treeview'
+                    'class' => 'treeview'
                 ],
                 'url' => [
 
                     '/Product/product/admin'
                 ],
                 'options' => [
-                 'class' => 'nav-item has-treeview'
+                    'class' => 'treeview'
                 ],
-                'icon' => '<i class="fa nav-icon fa-apple"></i>',
+                'icon' => '<i class="fa fa-apple"></i>',
                 'active' => Yii::$app->controller->id === 'product' &&
                     Yii::$app->controller->action->id !== 'uiblock',
                 'items' => [
@@ -379,7 +455,7 @@ $bundle = BackendAsset::register($this);
                         'url' => [
                             '/Product/product/admin'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-list-alt"></i>',
+                        'icon' => '<i class="fa fa-list-alt"></i>',
                         'active' => (Yii::$app->controller->id == 'product') &&
                             Yii::$app->controller->action->id === 'admin',
                     ],
@@ -388,7 +464,7 @@ $bundle = BackendAsset::register($this);
                         'url' => [
                             '/Product/product/create'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-database"></i>',
+                        'icon' => '<i class="fa fa-database"></i>',
                         'active' => (Yii::$app->controller->id == 'product') &&
                             Yii::$app->controller->action->id === 'create',
                     ],
@@ -402,7 +478,7 @@ $bundle = BackendAsset::register($this);
                 'url' => [
                     '/Product/product/uiblock'
                 ],
-                'icon' => '<i class="fa nav-icon fa-hand-stop-o"></i>',
+                'icon' => '<i class="fa fa-hand-stop-o"></i>',
                 'active' => (Yii::$app->controller->id == 'product') &&
                     Yii::$app->controller->action->id === 'uiblock',
                 'visible' => !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller'),
@@ -412,7 +488,7 @@ $bundle = BackendAsset::register($this);
                 'url' => [
                     '/Product/product/accesstimetable'
                 ],
-                'icon' => '<i class="fa nav-icon fa-hand-stop-o"></i>',
+                'icon' => '<i class="fa fa-hand-stop-o"></i>',
                 'active' => (Yii::$app->controller->id == 'product') &&
                     Yii::$app->controller->action->id === 'accesstimetable',
                 'visible' => !Yii::$app->user->can('streetSeller')
@@ -422,27 +498,27 @@ $bundle = BackendAsset::register($this);
                 'url' => [
                     '/Payment/payment/admin'
                 ],
-                'icon' => '<i class="fa nav-icon fa-money"></i>',
+                'icon' => '<i class="fa fa-money"></i>',
                 'active' => (Yii::$app->controller->id == 'payment'),
                 'visible' => Yii::$app->user->can('accessPayments'),
             ],
             [
                 'label' => Yii::t('backend', 'Bookings'),
                 'options' => [
-                 'class' => 'nav-item has-treeview'
+                    'class' => 'treeview'
                 ],
                 'url' => [
                     '/Reservations/reservations/admin'
                 ],
                 'options' => [
-                 'class' => 'nav-item has-treeview'
+                    'class' => 'treeview'
                 ],
-                'icon' => '<i class="fa nav-icon fa-check-square"></i>',
+                'icon' => '<i class="fa fa-check-square"></i>',
                 'active' => (Yii::$app->controller->id == 'reservations'),
                 'items' => [
                     [
                         'label' => Yii::t('backend', 'Reporting'),
-                        'icon' => '<i class="fa nav-icon fa-bar-chart-o"></i>',
+                        'icon' => '<i class="fa fa-bar-chart-o"></i>',
                         'url' => [
                             '/Reservations/reservations/reporting'
                         ],
@@ -455,7 +531,7 @@ $bundle = BackendAsset::register($this);
                         'url' => [
                             '/Reservations/reservations/admin'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-list-alt"></i>',
+                        'icon' => '<i class="fa fa-list-alt"></i>',
                         'active' => (Yii::$app->controller->id == 'reservations') &&
                             Yii::$app->controller->action->id === 'admin',
                         'visible' => !Yii::$app->user->can('streetSeller'),
@@ -466,7 +542,7 @@ $bundle = BackendAsset::register($this);
                         'url' => [
                             '/Reservations/reservations/create2'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-font-awesome"></i>',
+                        'icon' => '<i class="fa fa-font-awesome"></i>',
                         'active' => (Yii::$app->controller->id == 'reservations' &&
                             Yii::$app->controller->action->id === 'create2'),
 
@@ -476,7 +552,7 @@ $bundle = BackendAsset::register($this);
                         'url' => [
                             '/Reservations/reservations/create-react'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-database"></i>',
+                        'icon' => '<i class="fa fa-database"></i>',
                         'active' => (Yii::$app->controller->id == 'reservations' &&
                             Yii::$app->controller->action->id === 'create-react'),
 
@@ -487,7 +563,7 @@ $bundle = BackendAsset::register($this);
                         'url' => [
                             '/Reservations/reservations/myreservations'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-calendar"></i>',
+                        'icon' => '<i class="fa fa-calendar"></i>',
                         'active' => (Yii::$app->controller->id == 'reservations' &&
                             Yii::$app->controller->action->id === 'myreservations'),
                     ],
@@ -496,7 +572,7 @@ $bundle = BackendAsset::register($this);
                         'url' => [
                             '/Reservations/reservations/mytransactions'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-dollar"></i>',
+                        'icon' => '<i class="fa fa-dollar"></i>',
                         'active' => (Yii::$app->controller->id == 'reservations' &&
                             Yii::$app->controller->action->id === 'mytransactions'),
                     ],
@@ -508,7 +584,7 @@ $bundle = BackendAsset::register($this);
                 'url' => [
                     '/Statistics/statistics/admin'
                 ],
-                'icon' => '<i class="fa nav-icon fa-line-chart"></i>',
+                'icon' => '<i class="fa fa-line-chart"></i>',
                 'active' => (Yii::$app->controller->id == 'statistics'),
                 'visible' => Yii::$app->user->can('accessStatistics') && Yii::$app->user->can('viewStatisticsAdmin') && !Yii::$app->user->can('streetSeller') && !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller') && !Yii::$app->user->can('hotline'),
             ],
@@ -518,7 +594,7 @@ $bundle = BackendAsset::register($this);
                 'url' => [
                     '/system/key-storage/index'
                 ],
-                'icon' => '<i class="fa nav-icon fa-arrows-h"></i>',
+                'icon' => '<i class="fa fa-arrows-h"></i>',
                 'active' => (Yii::$app->controller->id == 'key-storage'),
                 'visible' => Yii::$app->user->can('accessKeyValueStorage'),
             ],
@@ -527,7 +603,7 @@ $bundle = BackendAsset::register($this);
                 'url' => [
                     '/system/cache/index'
                 ],
-                'icon' => '<i class="fa nav-icon fa-refresh"></i>',
+                'icon' => '<i class="fa fa-refresh"></i>',
                 'visible' => Yii::$app->user->can('accessSystemCache'),
             ],
             [
@@ -535,7 +611,7 @@ $bundle = BackendAsset::register($this);
                 'url' => [
                     '/system/information/index'
                 ],
-                'icon' => '<i class="fa nav-icon fa-dashboard"></i>',
+                'icon' => '<i class="fa fa-dashboard"></i>',
                 'visible' => Yii::$app->user->can('accessSystemInformation'),
             ],
             [
@@ -543,196 +619,57 @@ $bundle = BackendAsset::register($this);
                 'url' => [
                     '/system/log/index'
                 ],
-                'icon' => '<i class="fa nav-icon fa-warning"></i>',
+                'icon' => '<i class="fa fa-warning"></i>',
                 'badge' => SystemLog::find()->count(),
                 'badgeBgClass' => 'label-danger',
                 'visible' => Yii::$app->user->can('accessSystemLogs'),
             ],
         ],
     ];
-
 ?>
-
-<?php $this->beginContent('@backend/views/layouts/base.php'); ?>
-
-
-<div class="wrapper">
-    <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-        <!-- Left navbar links -->
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="index3.html" class="nav-link">Home</a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">Contact</a>
-            </li>
-        </ul>
-
-        <!-- SEARCH FORM -->
-        <form class="form-inline ml-3">
-            <div class="input-group input-group-sm">
-                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-navbar" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-        </form>
-
-        <!-- Right navbar links -->
-        <ul class="navbar-nav ml-auto">
-            <!-- Messages Dropdown Menu -->
-            <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-comments"></i>
-                    <span class="badge badge-danger navbar-badge">3</span>
-                </a>
-
-            </li>
-            <!-- Notifications Dropdown Menu -->
-            <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-bell"></i>
-                    <span class="badge badge-warning navbar-badge">15</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-item dropdown-header">15 Notifications</span>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-envelope mr-2"></i> 4 new messages
-                        <span class="float-right text-muted text-sm">3 mins</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-users mr-2"></i> 8 friend requests
-                        <span class="float-right text-muted text-sm">12 hours</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-file mr-2"></i> 3 new reports
-                        <span class="float-right text-muted text-sm">2 days</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
-                            class="fas fa-th-large"></i></a>
-            </li>
-        </ul>
-    </nav>
-    <!-- /.navbar -->
-
-    <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <!-- Brand Logo -->
-        <a href="index3.html" class="brand-link">
-            <!--img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-                 style="opacity: .8"-->
-            <span class="brand-text font-weight-light">Madrapur</span>
-        </a>
-
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <!-- Sidebar user panel (optional) -->
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <img src="<?php echo Yii::$app->user->identity->userProfile->getAvatar($this->assetManager->getAssetUrl($bundle, 'img/anonymous.jpg')) ?>" class="img-circle elevation-2" alt="User Image">
-                </div>
-                <div class="info">
-                    <a href="#" class="d-block">   <?php echo Yii::$app->user->identity->username ?></a>
-                </div>
-            </div>
-
-            <!-- Sidebar Menu -->
             <nav class="mt-2">
-             <?=Menu::widget($sidemenu);?>
+  <?=Menu::widget($sidemenu);
+            ?>
+            </nav>
+        </div>
+		<!-- /.sidebar -->
+	</aside>
+
+	<!-- Right side column. Contains the navbar and content of the page -->
+	<aside class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<h1>
+                <?php echo $this->title ?>
+                <?php if (isset($this->params['subtitle'])): ?>
+                    <small><?php echo $this->params['subtitle'] ?></small>
+                <?php endif; ?>
+            </h1>
+            <?php
+echo Breadcrumbs::widget(
+                    [
+                        'tag' => 'ol',
+                        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                    ])?>
+        </section>
+
+		<!-- Main content -->
+		<section class="content">
+            <?php if (Yii::$app->session->hasFlash('alert')): ?>
                 <?php
 
-
-                ?>
-
-
-
-            </nav>
-            <!-- /.sidebar-menu -->
-        </div>
-        <!-- /.sidebar -->
-    </aside>
-
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">
-                            <?php echo $this->title ?>
-                            <?php if (isset($this->params['subtitle'])): ?>
-                                <small><?php echo $this->params['subtitle'] ?></small>
-                            <?php endif; ?>
-                        </h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-
-                        <?php
-                            echo Breadcrumbs::widget(
-                                [
-                                    'tag' => 'ol',
-                                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                                ])?>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
-
-        <!-- Main content -->
-        <section class="content">
-            <div class="container-fluid">
-                <?php if (Yii::$app->session->hasFlash('alert')): ?>
-                    <?php
-
-                    echo Alert::widget(
+echo Alert::widget(
                         [
                             'body' => ArrayHelper::getValue(Yii::$app->session->getFlash('alert'), 'body'),
                             'options' => ArrayHelper::getValue(Yii::$app->session->getFlash('alert'), 'options'),
                         ])?>
-                <?php endif; ?>
-                <?php echo $content ?>
-
-            </div>
-
+            <?php endif; ?>
+            <?php echo $content ?>
         </section>
-
-        <!-- /.content -->
-    </div>
-    <!-- /.content-wrapper -->
-
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
-
-    <!-- Main Footer -->
-    <footer class="main-footer">
-        <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
-        All rights reserved.
-        <div class="float-right d-none d-sm-inline-block">
-            <b>Version</b> 3.0.0-rc.1
-        </div>
-    </footer>
+		<!-- /.content -->
+	</aside>
+	<!-- /.right-side -->
 </div>
-
-
 <!-- ./wrapper -->
 
 <?php $this->endContent(); ?>

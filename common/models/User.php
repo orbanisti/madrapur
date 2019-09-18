@@ -50,6 +50,9 @@
         const ROLE_HOTEL_EDITOR = 'hotelEditor';
         const ASSIGN_HOTEL_EDITOR = 'assign_hotelEditor';
 
+        const ROLE_HOTEL_SELLER = 'hotelSeller';
+        const ASSIGN_HOTEL_SELLER = 'assign_hotelSeller';
+
         const ROLE_OFFICE_VISITOR = 'officeVisitor';
         const ASSIGN_OFFICE_VISITOR = 'assign_officeVisitor';
 

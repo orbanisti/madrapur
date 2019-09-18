@@ -1,7 +1,9 @@
 <div class="tickets-view-block">
     <?php
 
-    use kartik\helpers\Html;
+        use yii\bootstrap4\Html;
+
+
 
     ?>
     <?php
