@@ -32,7 +32,7 @@ $bundle = BackendAsset::register($this);
             'data-accordion'=>false
         ],
         'linkTemplate' => '<a class="nav-link {active}" href="{url}">{icon}<span>{label}</span>{badge}{right-icon}</a>',
-        'submenuTemplate' => "\n<ul class=\"nav nav-treeview \">\n{items}\n</ul>\n",
+        'submenuTemplate' => "\n<ul class=\"nav nav-treeview bg-secondary \" >\n{items}\n</ul>\n",
         'activateParents' => true,
         'itemOptions'=>['class'=>'nav-item'],
         'items' => [
