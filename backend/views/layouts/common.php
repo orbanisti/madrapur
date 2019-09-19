@@ -468,7 +468,7 @@ $bundle = BackendAsset::register($this);
                         'url' => [
                             '/Reservations/reservations/create2'
                         ],
-                        'icon' =>  Icon::show('buysellads', [ 'class'=>'nav-icon','framework'=> Icon::FAB]),
+                        'icon' =>  Icon::show('check-square', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
                         'active' => (Yii::$app->controller->id == 'reservations' &&
                             Yii::$app->controller->action->id === 'create2'),
 
@@ -755,11 +755,7 @@ $bundle = BackendAsset::register($this);
 
     <!-- Main Footer -->
     <footer class="main-footer">
-        <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
-        All rights reserved.
-        <div class="float-right d-none d-sm-inline-block">
-            <b>Version</b> 3.0.0-rc.1
-        </div>
+       
     </footer>
 </div>
 

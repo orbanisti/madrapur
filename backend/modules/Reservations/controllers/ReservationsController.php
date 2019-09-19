@@ -518,7 +518,8 @@
                 $originSellerId = $_POST['anotherSeller'];
                 $originSellerName = User::findIdentity($originSellerId)->username;
                 $foolSellerId = Yii::$app->user->id;
-                $foolSellerName = Yii::$app->user->getIdentity()->username;
+                $foolSellerName = (Yii::$app->user->getIdentity($foolSellerId))->username;
+
 
                 $values['sellerId'] = $originSellerId;
                 $values['sellerName'] = $originSellerName;
@@ -868,6 +869,9 @@ $currentProduct = Product::getProdById($currID);
 $availableChairs=$currentProduct->capacity-$reservationModel->countTakenChairsOnDayTime($currDate,$sources,$currTime);
 $progressBarlenght=round($availableChairs,-1);
 
+
+
+
 $StreetHeader="<span class=\"info-box-text\">Available places left:</span>
 <span class=\"info-box-number\">$availableChairs</span>";
 
@@ -883,6 +887,11 @@ $BoxInfo=$StreetHeader;
 
 $BoxInfo=$HotelHeader;
 }
+
+
+
+
+
 $capcolor='bg-blue';
 if($availableChairs<($currentProduct->capacity)*25/100){
 $capcolor='bg-red';
@@ -897,7 +906,8 @@ $capcolor='bg-blue';
 
 $AvailableSpacesHtml="
 <div class=\"info-box $capcolor\">
-<span class=\"info-box-icon\"><i class=\"fa fa-clock-o\"></i></span>
+
+<span class=\"info-box-icon\"><i class=\"fa fa-clock\"></i></span>
 
 <div class=\"info-box-content\">
     ".$BoxInfo."

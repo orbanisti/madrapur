@@ -9,6 +9,7 @@ use yii\bootstrap4\ActiveForm;
 $this->title = Yii::t('backend', 'Sign In');
 $this->params['breadcrumbs'][] = $this->title;
 $this->params['body-class'] = 'login-page';
+
 ?>
 <div class="login-box">
 	<div class="login-logo">
@@ -34,7 +35,15 @@ $this->params['body-class'] = 'login-page';
                         <div class="body">
                             <?php echo $form->field($model, 'username') ?>
                             <?php echo $form->field($model, 'password')->passwordInput() ?>
-                            <?php echo $form->field($model, 'rememberMe')->checkbox(['class'=>'simple']) ?>
+                                <div class="icheck-primary">
+                                    <?php echo $form->field($model, 'rememberMe')->checkbox(['class'=>'simple']) ?></div>
+
+                            <p>
+                                <label>
+                                    <input type="checkbox" class="filled-in" checked="checked" />
+                                    <span>Filled in</span>
+                                </label>
+                            </p>
                         </div>
                         <div class="footer">
                             <?php

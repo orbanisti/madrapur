@@ -1,9 +1,10 @@
 <?php
 use common\grid\EnumColumn;
 use common\models\User;
-use trntv\yii\datetime\DateTimeWidget;
+    use kartik\grid\GridView;
+    use trntv\yii\datetime\DateTimeWidget;
 use yii\helpers\Html;
-use yii\grid\GridView;
+
 use yii\web\JsExpression;
 
 /* @var $this yii\web\View */
@@ -41,7 +42,7 @@ use yii\web\JsExpression;
                     ]), [
                         'create'
                     ], [
-                        'class' => 'btn btn-success'
+                        'class' => 'btn btn-info'
                     ])?>
             </p>
 
@@ -97,11 +98,12 @@ use yii\web\JsExpression;
                             // 'updated_at',
 
                             [
-                                'class' => 'yii\grid\ActionColumn',
+                                'class' => 'kartik\grid\ActionColumn',
                                 'template' => '{login} {view} {update} {delete}',
                                 'buttons' => [
                                     'login' => function ($url) {
-                                        return Html::a('<i class="fa fa-sign-in" aria-hidden="true"></i>', $url,
+                                        return Html::a('<i class="fas fa-sign-in-alt  " aria-atomic="hidden"></i>',
+                                                       $url,
                                             [
                                                 'title' => Yii::t('backend', 'Login')
                                             ]);
