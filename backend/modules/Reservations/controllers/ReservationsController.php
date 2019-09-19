@@ -541,7 +541,7 @@
                 $values = ['bookingId' => $booking->id];
                 Reservations::insertOne($booking, $values);
 
-                $updateResponse =  sessionSetFlashAlert('info', '<i class="fas fa-check-square  "></i>'.'Successful Reservation');
+                $updateResponse =  sessionSetFlashAlert('success', '<i class="fas fa-check-square fa-lg   "></i> '.'Successful Reservation');
                 ;
 
 

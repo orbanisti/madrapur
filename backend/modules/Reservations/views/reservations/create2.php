@@ -327,7 +327,7 @@
                                                        aria-describedby="helpId">
                                                 <textarea name="orderNote" id="orderNote" class="form-control"
                                                        placeholder="orderNote"
-                                                          aria-describedby="helpId"></textarea>
+                                                          aria-describedby="helpId" form="product-form"></textarea>
 
 
                                     </div>
@@ -343,7 +343,7 @@
 
 
 
-                            <div class="col-lg-12 customPrice">
+                            <div class="col-lg-12 customPrice " contentEditable="true" editable="true">
                                 <div class="box box-default box-solid ">
                                     <div class="box-header  bg-blue-gradient with-border">
                                         <h3 class="box-title"></h3>
