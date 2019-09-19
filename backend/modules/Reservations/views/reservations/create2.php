@@ -243,7 +243,7 @@
 
 
                                     <!-- interactive chart -->
-                                    <div class="card card-primary card-outline">
+                                    <div class="card card-primary card-outline collapsed-card">
                                         <div class="card-header">
                                             <h3 class="card-title">
                                                 <i class="far fa-chart-bar"></i>
@@ -252,7 +252,7 @@
 
                                             <div class="card-tools">
                                                 <button type="button" class="btn btn-tool"
-                                                        data-card-widget="collapsed"><i class="fas fa-minus"></i>
+                                                        data-card-widget="collapse"><i class="fas fa-minus"></i>
                                                 </button>
 
                                             </div>
@@ -313,7 +313,7 @@
                                 <div class="col-lg-12">
                                     <?= \insolita\adminlte3\LteInfoBox::widget([
 
-                                                                                   'bgColor' => 'info',
+                                                                                   'bgColor' => 'white',
                                                                                    'number' => "<h4><div id=\"total_price\">0</div></h4>",
                                                                                    'text' => 'Total Price' . ' <strong>(' . $paid_currency . ')</strong>',
                                                                                    //                        'description'=>'asd',
