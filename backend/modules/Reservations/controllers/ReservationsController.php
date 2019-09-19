@@ -406,8 +406,7 @@
             ->andFilterWhere(['=', 'assignedTo', Yii::$app->user->id])
             ->andWhere('isActive IS TRUE')
             ->one();
-        if(!$block && !Yii::$app->user->can('administrator')){
-
+        if(!$block){
             throw new ForbiddenHttpException('Sorry you dont have an active Ticket Block');
         }
 
@@ -422,7 +421,7 @@
 
         $disableForm = 0;
         $myprices = [];
-        Yii::error($_POST);
+
         if ($product) {
             $disableForm = 1;
             $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $product['title']);
@@ -492,8 +491,7 @@
                 $source = 'Hotel';
             }
 
-            $ticketBlock = TicketBlockSearchModel::aSelect(TicketBlockSearchModel::class, '*', TicketBlockSearchModel::tableName(), 'assignedTo = ' . Yii::$app->user->id . ' AND isActive IS TRUE')->one();
-            $ticket = TicketSearchModel::useTable('modulus_tb_' . $ticketBlock->returnStartId())::findOne(['reservationId' => null, 'status' => 'open']);
+            $ticket = TicketSearchModel::useTable('modulus_tb_' . $block->returnStartId())::findOne(['reservationId' => null, 'status' => 'open']);
 
             $values = [
                 'booking_cost' => $productPrice["discount"],
