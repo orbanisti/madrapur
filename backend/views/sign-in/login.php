@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap4\ActiveForm;
-
+\backend\assets\MaterializeAsset::register($this);
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \backend\models\LoginForm */
@@ -35,13 +35,12 @@ $this->params['body-class'] = 'login-page';
                         <div class="body">
                             <?php echo $form->field($model, 'username') ?>
                             <?php echo $form->field($model, 'password')->passwordInput() ?>
-                                <div class="icheck-primary">
-                                    <?php echo $form->field($model, 'rememberMe')->checkbox(['class'=>'simple']) ?></div>
+
 
                             <p>
                                 <label>
-                                    <input type="checkbox" class="filled-in" checked="checked" />
-                                    <span>Filled in</span>
+                                    <input name="LoginForm[rememberMe]" type="checkbox" class="filled-in" checked="checked" />
+                                    <span>Remember me</span>
                                 </label>
                             </p>
                         </div>
@@ -50,7 +49,7 @@ $this->params['body-class'] = 'login-page';
 
                                 echo Html::submitButton(Yii::t('backend', 'Sign me in'),
                                     [
-                                        'class' => 'btn btn-primary btn-flat btn-block',
+                                        'class' => 'btn btn-info btn-flat btn-block',
                                         'name' => 'login-button'
                                     ])?>
                         </div>
