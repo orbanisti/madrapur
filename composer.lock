@@ -967,16 +967,16 @@
         },
         {
             "name": "fortawesome/font-awesome",
-            "version": "5.10.2",
+            "version": "5.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FortAwesome/Font-Awesome.git",
-                "reference": "090e6148d3f63a45b40e7cd8679bd4d64e58d75d"
+                "reference": "89fdc36835577d7884637aa56e6cbf167f758095"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/090e6148d3f63a45b40e7cd8679bd4d64e58d75d",
-                "reference": "090e6148d3f63a45b40e7cd8679bd4d64e58d75d",
+                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/89fdc36835577d7884637aa56e6cbf167f758095",
+                "reference": "89fdc36835577d7884637aa56e6cbf167f758095",
                 "shasum": ""
             },
             "type": "library",
@@ -1026,7 +1026,7 @@
                 "icon",
                 "svg"
             ],
-            "time": "2019-08-22T20:37:41+00:00"
+            "time": "2019-09-18T23:02:29+00:00"
         },
         {
             "name": "froala/wysiwyg-editor",
@@ -7607,16 +7607,16 @@
         },
         {
             "name": "yiisoft/yii2",
-            "version": "2.0.26",
+            "version": "2.0.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "5ca9036dd6eb75354fbd287cc57f79ca861fb7f1"
+                "reference": "6793f8f9b4cd891dbf475cfbb88cf480f74eaa85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/5ca9036dd6eb75354fbd287cc57f79ca861fb7f1",
-                "reference": "5ca9036dd6eb75354fbd287cc57f79ca861fb7f1",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/6793f8f9b4cd891dbf475cfbb88cf480f74eaa85",
+                "reference": "6793f8f9b4cd891dbf475cfbb88cf480f74eaa85",
                 "shasum": ""
             },
             "require": {
@@ -7703,7 +7703,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2019-09-03T21:38:33+00:00"
+            "time": "2019-09-18T13:04:16+00:00"
         },
         {
             "name": "yiisoft/yii2-authclient",

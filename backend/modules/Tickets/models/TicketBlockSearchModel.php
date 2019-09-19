@@ -33,7 +33,7 @@ class TicketBlockSearchModel extends TicketBlock {
     public function search($params) {
         $query = self::find();
 
-        if (!Yii::$app->user->can(Tickets::VIEW_TICKET_BLOCKS) && !Yii::$app->user->can('streetAdmin')) {
+        if (!Yii::$app->user->can('streetAdmin')) {
             $query->andFilterWhere([
                 '=',
                 'assignedTo',
