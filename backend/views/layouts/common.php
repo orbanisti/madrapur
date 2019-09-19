@@ -31,7 +31,7 @@ $bundle = BackendAsset::register($this);
             'role'=>'menu',
             'data-accordion'=>false
         ],
-        'linkTemplate' => '<a class="nav-link" href="{url}">{icon}<span>{label}</span>{badge}{right-icon}</a>',
+        'linkTemplate' => '<a class="nav-link {active}" href="{url}">{icon}<span>{label}</span>{badge}{right-icon}</a>',
         'submenuTemplate' => "\n<ul class=\"nav nav-treeview \">\n{items}\n</ul>\n",
         'activateParents' => true,
         'itemOptions'=>['class'=>'nav-item'],
