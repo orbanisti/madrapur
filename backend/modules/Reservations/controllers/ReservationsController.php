@@ -518,7 +518,8 @@
                 $originSellerId = $_POST['anotherSeller'];
                 $originSellerName = User::findIdentity($originSellerId)->username;
                 $foolSellerId = Yii::$app->user->id;
-                $foolSellerName = Yii::$app->user->getIdentity()->username;
+                $foolSellerName = (Yii::$app->user->getIdentity($foolSellerId))->username;
+
 
                 $values['sellerId'] = $originSellerId;
                 $values['sellerName'] = $originSellerName;

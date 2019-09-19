@@ -7,36 +7,32 @@
  */
 namespace common\assets;
 
+use backend\assets\BackendAsset;
 use yii\bootstrap4\BootstrapPluginAsset;
 use yii\jui\JuiAsset;
 use yii\web\AssetBundle;
 use yii\web\JqueryAsset;
 
-class AdminLte extends AssetBundle {
+class BS4PluginAsset extends AssetBundle {
 
     /**
      *
      * @var string
      */
-    public $sourcePath = '@vendor/almasaeed2010/adminlte/dist';
+    public $sourcePath = '@vendor/almasaeed2010/adminlte/plugins';
 
     /**
      *
      * @var array
      */
-    public $js = [
-        'js/adminlte.js',
 
-
-    ];
 
     /**
      *
      * @var array
      */
     public $css = [
-        'css/adminlte.css',
-        'css/adminlte.css.map',
+        'icheck-bootstrap/icheck-bootstrap.css',
 
     ];
 
@@ -44,10 +40,4 @@ class AdminLte extends AssetBundle {
      *
      * @var array
      */
-    public $depends = [
-        JqueryAsset::class,
-        JuiAsset::class,
-        FontAwesome::class,
-        JquerySlimScroll::class
-    ];
 }

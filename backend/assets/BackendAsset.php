@@ -8,6 +8,7 @@
 namespace backend\assets;
 
 use common\assets\AdminLte;
+use common\assets\BS4PluginAsset;
 use common\assets\Html5shiv;
 use kartik\bs4dropdown\DropdownAsset;
 use yii\bootstrap4\BootstrapPluginAsset;
@@ -57,8 +58,9 @@ class BackendAsset extends AssetBundle {
      * @var array
      */
     public $depends = [
+        BootstrapPluginAsset::class,
         YiiAsset::class,
         AdminLte::class,
-        Html5shiv::class
+        Html5shiv::class,
     ];
 }

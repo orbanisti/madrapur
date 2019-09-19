@@ -37,12 +37,13 @@ $this->params['body-class'] = 'login-page';
                             <?php echo $form->field($model, 'password')->passwordInput() ?>
                                 <div class="icheck-primary">
                                     <?php echo $form->field($model, 'rememberMe')->checkbox(['class'=>'simple']) ?></div>
-                            <div class="icheck-primary">
-                                <input type="checkbox" id="remember">
-                                <label for="remember">
-                                    Remember Me
+
+                            <p>
+                                <label>
+                                    <input type="checkbox" class="filled-in" checked="checked" />
+                                    <span>Filled in</span>
                                 </label>
-                            </div>
+                            </p>
                         </div>
                         <div class="footer">
                             <?php

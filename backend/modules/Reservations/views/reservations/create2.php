@@ -1,3 +1,4 @@
+
 <?php
     /**
      * Created by PhpStorm.
@@ -223,12 +224,14 @@
                                                                                               'type'   => 'number'
                                                                                           ],
                                                                                       'pluginOptions' => [
-                                                                                          'buttonup_txt'=>Icon::show('plus-circle', ['class'=>'fa-lg','framework'
-                                                                                          =>Icon::FA]),
-                                                                                          'buttondown_txt'=>Icon::show('minus-circle', ['class'=>'fa-lg','framework'
-                                                                                          =>Icon::FA]) ,
-                                                                                          'buttonup_class'=>'btn bg-aqua btn-2x',
-                                                                                          'buttondown_class'=>'btn bg-aqua'
+                                                                                          'buttonup_txt'=>Icon::show('caret-square-up', ['class'=>'fa-lg
+                                                    bg-info','framework'
+                                                                                          =>Icon::FAS]),
+                                                                                          'buttondown_txt'=>Icon::show('caret-square-down',
+                                                                                                                       ['class'=>'fa-lg  bg-info','framework'
+                                                                                                                       =>Icon::FAS]) ,
+
+                                                                                          'max'=>'9999999'
                                                                                       ]
                                                                                      ]   );
 
@@ -242,53 +245,118 @@
 
 
 
-                                    <!-- interactive chart -->
-                                    <div class="card card-primary card-outline collapsed-card">
-                                        <div class="card-header">
-                                            <h3 class="card-title">
-                                                <i class="far fa-chart-bar"></i>
-                                                Seller Tools
-                                            </h3>
+                            <!-- interactive chart -->
+                            <div class="card bg-primary  card-outline collapsed-card">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        Seller Tools
+                                    </h3>
 
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool"
-                                                        data-card-widget="collapse"><i class="fas fa-minus"></i>
-                                                </button>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool"
+                                                data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                        </button>
 
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="col-lg-12">
-                                                Custom Price
-                                                <?= TouchSpin::widget(
-                                                    [   'name'=>'customPrice',
-                                                        'options' =>
-                                                            [
-
-                                                                'placeholder' => 'Adjust ...',
-                                                                'data-priceid' => $price->id,
-                                                                'autocomplete' => 'off',
-                                                                'type'   => 'number',
-
-                                                            ],
-                                                        'pluginOptions' => [
-                                                            'buttonup_txt'=>Icon::show('plus-circle', ['class'=>'fa-lg','framework'
-                                                            =>Icon::FA]),
-                                                            'buttondown_txt'=>Icon::show('minus-circle', ['class'=>'fa-lg','framework'
-                                                            =>Icon::FA]) ,
-                                                            'buttonup_class'=>'btn bg-aqua btn-2x',
-                                                            'buttondown_class'=>'btn bg-aqua',
-                                                            'max'=>'9999999'
-                                                        ]
-                                                    ]   );
-                                                ?>
-
-                                            </div>
-
-                                        </div>
-                                        <!-- /.card-body-->
                                     </div>
-                                    <!-- /.card -->
+                                </div>
+                                <div class="card-body bg-gradient-white">
+                                    <div class="col-lg-12">
+                                        Custom Price
+                                        <?= TouchSpin::widget(
+                                            [   'name'=>'customPrice',
+                                                'options' =>
+                                                    [
+
+                                                        'placeholder' => 'Adjust ...',
+                                                        'data-priceid' => $price->id,
+                                                        'autocomplete' => 'off',
+                                                        'type'   => 'number',
+
+                                                    ],
+                                                'pluginOptions' => [
+                                                    'buttonup_txt'=>Icon::show('caret-square-up', ['class'=>'fa-lg 
+                                                    bg-info','framework'
+                                                    =>Icon::FAS]),
+                                                    'buttondown_txt'=>Icon::show('caret-square-down',
+                                                                                 ['class'=>'fa-lg fa-lg bg-info','framework'
+                                                    =>Icon::FAS]) ,
+
+                                                    'max'=>'9999999'
+                                                ]
+                                            ]   );
+                                        ?>
+
+                                    </div>
+
+                                    <div class="col-lg-12">
+
+                                        <?php
+                                            // echo Yii::$app->runAction('Reservations/assigner');
+
+                                            echo $this->render('assingui',['model'=>new Reservations()]);
+
+                                        ?>
+                                    </div>
+
+                                </div>
+                                <!-- /.card-body-->
+                            </div>    <div class="card bg-primary  card-outline collapsed-card">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        Seller Tools
+                                    </h3>
+
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool"
+                                                data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                        </button>
+
+                                    </div>
+                                </div>
+                                <div class="card-body bg-gradient-white">
+                                    <div class="col-lg-12">
+                                        <i class="fas fa-user-friends  "></i>
+                                        Customer Details
+                                        <?= TouchSpin::widget(
+                                            [   'name'=>'customPrice',
+                                                'options' =>
+                                                    [
+
+                                                        'placeholder' => 'Adjust ...',
+                                                        'data-priceid' => $price->id,
+                                                        'autocomplete' => 'off',
+                                                        'type'   => 'number',
+
+                                                    ],
+                                                'pluginOptions' => [
+                                                    'buttonup_txt'=>Icon::show('caret-square-up', ['class'=>'fa-lg 
+                                                    bg-info','framework'
+                                                    =>Icon::FAS]),
+                                                    'buttondown_txt'=>Icon::show('caret-square-down',
+                                                                                 ['class'=>'fa-lg fa-lg bg-info','framework'
+                                                    =>Icon::FAS]) ,
+
+                                                    'max'=>'9999999'
+                                                ]
+                                            ]   );
+                                        ?>
+
+                                    </div>
+
+                                    <div class="col-lg-12">
+
+                                        <?php
+                                            // echo Yii::$app->runAction('Reservations/assigner');
+
+                                            echo $this->render('assingui',['model'=>new Reservations()]);
+
+                                        ?>
+                                    </div>
+
+                                </div>
+                                <!-- /.card-body-->
+                            </div>
+                            <!-- /.card -->
 
 
 
@@ -394,34 +462,34 @@ SCRIPT;
 ?>
 
 
-    <script>
-        var countPrices =<?=$countPrices?>;
+<script>
+    var countPrices =<?=$countPrices?>;
 
-        function myFunction(item, index) {
-
-
-            $('#product-times').html($('#product-times').html() + '<option>' + item['name'] + '</option>');
-            $('#product-times option:eq(2)').attr('selected', 'selected');
-            $('#product-times option:eq(1)').attr('selected', 'selected');
+    function myFunction(item, index) {
 
 
+        $('#product-times').html($('#product-times').html() + '<option>' + item['name'] + '</option>');
+        $('#product-times option:eq(2)').attr('selected', 'selected');
+        $('#product-times option:eq(1)').attr('selected', 'selected');
+
+
+    }
+
+
+    function gatherPrices() {
+        var PricesObj = {}; // note this
+        var i = 0;
+        while (i < countPrices) {
+            PricesObj[$('#productprice-description-' + i).attr('data-priceid')] = $('#productprice-description-' + i).val();
+            i = i + 1
         }
 
+        return PricesObj;
 
-        function gatherPrices() {
-            var PricesObj = {}; // note this
-            var i = 0;
-            while (i < countPrices) {
-                PricesObj[$('#productprice-description-' + i).attr('data-priceid')] = $('#productprice-description-' + i).val();
-                i = i + 1
-            }
-
-            return PricesObj;
-
-        }
+    }
 
 
-        $().ready(() => {
+    $().ready(() => {
 
 
 
@@ -429,125 +497,126 @@ SCRIPT;
 
 
         $('#product-title').change(function () {
-            $.ajax({
-                url: '<?php echo Yii::$app->request->baseUrl . '/Reservations/reservations/gettimes' ?>',
-                type: 'post',
-                data: {
-                    id: $(this).val(),
+        $.ajax({
+            url: '<?php echo Yii::$app->request->baseUrl . '/Reservations/reservations/gettimes' ?>',
+            type: 'post',
+            data: {
+                id: $(this).val(),
 
-                },
-                success: function (data) {
-                    console.log(data.search);
-                    mytimes = data.search
-                    $('#myTimes').html('');
-                    $('#product-times').html('<option>Please select a time</option>')
-                    mytimes.forEach(myFunction)
-
-
-                }
-            });
-            $.ajax({
-                url: '<?php echo Yii::$app->request->baseUrl . '/Reservations/reservations/getprices' ?>',
-                type: 'post',
-                data: {
-                    id: $(this).val(),
-
-                },
-                success: function (data) {
-                    console.log(data.search);
-                    mytimes = data.search
-                    $('#myPrices').html(mytimes);
+            },
+            success: function (data) {
+                console.log(data.search);
+                mytimes = data.search
+                $('#myTimes').html('');
+                $('#product-times').html('<option>Please select a time</option>')
+                mytimes.forEach(myFunction)
 
 
-                }
-            });
-        });
-        })
-        ;
-
-        function myFunction(item, index) {
-
-
-            $('#product-times').html($('#product-times').html() + '<option>' + item['name'] + '</option>');
-
-        }
-        <?php
-
-        $currentProdId = (Yii::$app->request->post('Product'))['title'];
-        if (!$currentProdId) {
-            $currentProdId = 0;
-        }
-        ?>
-
-        function gatherPrices() {
-            var PricesObj = {}; // note this
-            var i = 0;
-            while (i < countPrices) {
-                PricesObj[$('#productprice-description-' + i).attr('data-priceid')] = $('#productprice-description-' + i).val();
-                i = i + 1
             }
-
-            return PricesObj;
-
-        }
-
-        var Total = 0;
-        $('#product-form').change(function () {
-            $.ajax({
-                url: '<?php echo Yii::$app->request->baseUrl . '/Reservations/reservations/calcprice' ?>',
-                type: 'post',
-                data: {
-                    prices: gatherPrices(),
-                    productId: $('#product-title').val(),
-                    date: $('#product-start_date').val(),
-                    time: $('#product-times').val(),
-                    prodid: <?=(Yii::$app->request->post('Product'))['title'] ? (Yii::$app->request->post('Product'))['title'] : 999 ?>,
-                    currency: '<?=isset($paid_currency) ? $paid_currency : 0 ?>',
-                    customPrice:$('input[name=customPrice]').val(),
-                },
-                success: function (data) {
-
-                    mytimes = data.search;
-
-                    if(data.customPrice){
-
-                        $('#total_price').html(data.customPrice);
-                        mytimes = data.customPrice
-                    }
-                        $('#total_price').html( $('#total_price').html()+mytimes);
-                        $('#total_price').html(mytimes);
-
-                        // To be continued
-                    $('#productprice-discount').val(mytimes);
-                    if (data.response == 'places') {
-                        $('#myPrices').html(mytimes);
-                    }
-
-
-                }
-            });
         });
+        $.ajax({
+            url: '<?php echo Yii::$app->request->baseUrl . '/Reservations/reservations/getprices' ?>',
+            type: 'post',
+            data: {
+                id: $(this).val(),
 
-        $().ready(() => {
-            $('#product-start_date'
-        ).attr('autocomplete', 'off');
-        })
-        ;
+            },
+            success: function (data) {
+                console.log(data.search);
+                mytimes = data.search
+                $('#myPrices').html(mytimes);
 
 
-    </script>
+            }
+        });
+    });
+    })
+    ;
 
-    <style>
-        #product-form {
-            -webkit-touch-callout: none; /* iOS Safari */
-            -webkit-user-select: none; /* Safari */
-            -khtml-user-select: none; /* Konqueror HTML */
-            -moz-user-select: none; /* Firefox */
-            -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none;
-            /* Non-prefixed version, currently
-                                             supported by Chrome and Opera */
+    function myFunction(item, index) {
+
+
+        $('#product-times').html($('#product-times').html() + '<option>' + item['name'] + '</option>');
+
+    }
+    <?php
+
+    $currentProdId = (Yii::$app->request->post('Product'))['title'];
+    if (!$currentProdId) {
+        $currentProdId = 0;
+    }
+    ?>
+
+    function gatherPrices() {
+        var PricesObj = {}; // note this
+        var i = 0;
+        while (i < countPrices) {
+            PricesObj[$('#productprice-description-' + i).attr('data-priceid')] = $('#productprice-description-' + i).val();
+            i = i + 1
         }
-    </style>
+
+        return PricesObj;
+
+    }
+
+    var Total = 0;
+    $('#product-form').change(function () {
+        $.ajax({
+            url: '<?php echo Yii::$app->request->baseUrl . '/Reservations/reservations/calcprice' ?>',
+            type: 'post',
+            data: {
+                prices: gatherPrices(),
+                productId: $('#product-title').val(),
+                date: $('#product-start_date').val(),
+                time: $('#product-times').val(),
+                prodid: <?=(Yii::$app->request->post('Product'))['title'] ? (Yii::$app->request->post('Product'))['title'] : 999 ?>,
+                currency: '<?=isset($paid_currency) ? $paid_currency : 0 ?>',
+                customPrice:$('input[name=customPrice]').val(),
+            },
+            success: function (data) {
+
+                mytimes = data.search;
+
+                if(data.customPrice){
+
+                    $('#total_price').html(data.customPrice);
+                    mytimes = data.customPrice
+                }
+                $('#total_price').html( $('#total_price').html()+mytimes);
+                $('#total_price').html(mytimes);
+
+                // To be continued
+                $('#productprice-discount').val(mytimes);
+                if (data.response == 'places') {
+                    $('#myPrices').html(mytimes);
+                }
+
+
+            }
+        });
+    });
+
+    $().ready(() => {
+        $('#product-start_date'
+    ).attr('autocomplete', 'off');
+    })
+    ;
+
+
+</script>
+
+<style>
+    #product-form {
+        -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none;
+        /* Non-prefixed version, currently
+                                         supported by Chrome and Opera */
+    }
+</style>
 
 </div>
+
