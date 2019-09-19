@@ -212,75 +212,99 @@ use backend\components\extra;
 <!--suppress ALL -->
 <div class="products-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="row">
+    <div class="col-12">
+        <!-- interactive chart -->
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="far fa-chart-bar"></i>
+                    my Transactions
+                </h3>
 
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
 
-
-
-    <div class="row">
-
-        <div class="col-lg-12">
-
-            <div class="box box-widget widget-user">
-                <!-- Add the bg color to the header using any of the bg-* classes -->
-                <div class="widget-user-header bg-aqua">
-                    <!-- /.widget-user-image -->
-
-                    <h3 class="widget-user-username">Transaction Center</h3>
-                    <h5 class="widget-user-desc">Daily Income <?=$today?></h5>
-
-                </div>
-
-                <div class="box-footer no-padding">
-                    <ul class="nav nav-stacked">
-                        <li><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" class="collapsed" href="#">
-                                <span class="btn bg-aqua">ALL</span>  income today
-                                <span class="pull-right badge bg-green"><?=Icon::show('euro', ['class'=>'fa-lg','framework'
-                                    =>Icon::FA])?><?=$eurToday?></span>
-                                <span class="pull-right badge bg-green"><?=$hufToday?> Ft</span></a></li>
-                        <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                            <div class="box-body">
-                                <?=$gridAlltransactions?>
-                            </div>
-                        </div>
-
-                        <li><a data-toggle="collapse" data-parent="#accordion" href="#collapseEur" aria-expanded="false" class="collapsed" href="#">
-                                <span class="btn bg-aqua">EUR</span>  income today <span class="pull-right badge bg-green"><?=Icon::show('euro', ['class'=>'fa-lg','framework'
-                                    =>Icon::FA])?><?=$eurToday?></span></a></li>
-                        <div id="collapseEur" class="panel-collapse collapse" aria-expanded="false" style="height:
-                        0px;">
-                            <div class="box-body">
-                                <?=$gridEurtransactions?>
-                            </div>
-                        </div>
-
-                        <li><a data-toggle="collapse" data-parent="#accordion" href="#collapseHuf" aria-expanded="false" class="collapsed" href="#">
-                                <span class="btn bg-aqua">HUF</span> income today     <span class="pull-right badge bg-green"><?=$hufToday?> Ft</span></a></li>
-                        <div id="collapseHuf" class="panel-collapse collapse" aria-expanded="false" style="height:
-                        0px;">
-                            <div class="box-body">
-                                <?=$gridHuftransactions?>
-                            </div>
-                        </div>
-
-
-
-
-
-                    </ul>
                 </div>
             </div>
+            <div class="card-body">
+
+
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <div class="box box-widget widget-user">
+                            <!-- Add the bg color to the header using any of the bg-* classes -->
 
 
 
 
+                            <div class="card card-widget widget-user-2">
+                                <!-- Add the bg color to the header using any of the bg-* classes -->
+
+                                <div class="card-footer p-0">
+                                    <ul class="nav flex-column">
+                                        <li><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" class="collapsed" href="#">
+                                                <span class="btn bg-aqua">ALL</span>  income today
+                                                <span class="float-right badge bg-green"><?=Icon::show('euro', ['class'=>'fa-lg','framework'
+                                                    =>Icon::FA])?><?=$eurToday?></span>
+                                                <span class="float-right badge bg-green"><?=$hufToday?> Ft</span></a></li>
+                                        <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                            <div class="box-body">
+                                                <?=$gridAlltransactions?>
+                                            </div>
+                                        </div>
+
+                                        <li><a data-toggle="collapse" data-parent="#accordion" href="#collapseEur" aria-expanded="false" class="collapsed" href="#">
+                                                <span class="btn bg-info">EUR</span>  income today <span
+                                                        class="float-right badge bg-green"><?=Icon::show('euro', ['class'=>'fa-lg','framework'
+                                                    =>Icon::FA])?><?=$eurToday?></span></a></li>
+                                        <div id="collapseEur" class="panel-collapse collapse" aria-expanded="false" style="height:
+                        0px;">
+                                            <div class="box-body">
+                                                <?=$gridEurtransactions?>
+                                            </div>
+                                        </div>
+
+                                        <li><a data-toggle="collapse" data-parent="#accordion" href="#collapseHuf" aria-expanded="false" class="collapsed" href="#">
+                                                <span class="btn bg-aqua">HUF</span> income today     <span class="float-right badge bg-green"><?=$hufToday?> Ft</span></a></li>
+                                        <div id="collapseHuf" class="panel-collapse collapse" aria-expanded="false" style="height:
+                        0px;">
+                                            <div class="box-body">
+                                                <?=$gridHuftransactions?>
+                                            </div>
+                                        </div>
+
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+
+                    </div>
+                    <div class="col-lg-8 col-sm-12 hidden"><?=$grid?></div>
+
+
+
+
+                </div>
+
+               
+            </div>
+            <!-- /.card-body-->
         </div>
-        <div class="col-lg-8 col-sm-12 hidden"><?=$grid?></div>
+        <!-- /.card -->
 
+    </div>   
+ 
+    <!-- /.col -->
+</div>
 
-
-
-    </div>
 
 
 

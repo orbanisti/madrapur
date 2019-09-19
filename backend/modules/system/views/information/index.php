@@ -259,7 +259,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . 'js/system-information/index
                     <h3 class="box-title">
                         <?php echo Yii::t('backend', 'CPU Usage') ?>
                     </h3>
-                    <div class="box-tools pull-right">
+                    <div class="box-tools float-right">
                         <?php echo Yii::t('backend', 'Real time') ?>
                         <div class="realtime btn-group"
                              data-toggle="btn-toggle">
@@ -288,7 +288,7 @@ $this->registerJsFile(Yii::$app->request->baseUrl . 'js/system-information/index
                     <h3 class="box-title">
                         <?php echo Yii::t('backend', 'Memory Usage') ?>
                     </h3>
-                    <div class="box-tools pull-right">
+                    <div class="box-tools float-right">
                         <?php echo Yii::t('backend', 'Real time') ?>
                         <div class="btn-group realtime"
                              data-toggle="btn-toggle">

@@ -112,7 +112,7 @@ $this->registerJs($format, View::POS_HEAD);
             ]);
 
             ?>
-        </div></div>
+        </div>
 
         </div>
     </div>

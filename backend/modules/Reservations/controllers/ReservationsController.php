@@ -434,6 +434,9 @@
             $countPrices = 0;
         }
         if ($productPrice) {
+            /**
+             * Booking form step 2
+             */
 
             $paid_status = $_POST['paid_status'];
 
@@ -510,7 +513,9 @@
                 'ticketId' => $ticket->ticketId,
                 'status' => $paid_status,
                 'paidMethod' => $paid_method,
-                'order_currency' => $paid_currency
+                'order_currency' => $paid_currency,
+                'billing_first_name'=>Yii::$app->request->post('firstName'),
+                'billing_last_name'=>Yii::$app->request->post('lastName'),
 
             ];
 
@@ -536,7 +541,9 @@
                 $values = ['bookingId' => $booking->id];
                 Reservations::insertOne($booking, $values);
 
-                $updateResponse = '<span style="color:green">Reservation Successful</span>';
+                $updateResponse =  sessionSetFlashAlert('info', '<i class="fas fa-check-square  "></i>'.'Successful Reservation');
+                ;
+
 
                 Yii::$app->commandBus->handle(
                     new AddToTimelineCommand(
@@ -703,10 +710,10 @@
                class=\"collapsed\"
                href=\"#\">
                 <span class=\"btn bg-aqua\"> ".$user->username."</span>
-                <span class=\"pull-right badge bg-green\">".Icon::show('euro', ['class' => 'fa-lg', 'framework'
+                <span class=\"float-right badge bg-green\">".Icon::show('euro', ['class' => 'fa-lg', 'framework'
             => Icon::FA]).$eurToday."</span>
-                <span class=\"pull-right badge bg-green\">".$hufToday."</span>
-                <span class=\"pull-right badge bg-red\">".$userDataProvider->getCount()."</span></a></li>
+                <span class=\"float-right badge bg-green\">".$hufToday."</span>
+                <span class=\"float-right badge bg-red\">".$userDataProvider->getCount()."</span></a></li>
         <div id=\"collapse".$in."\" class=\"panel-collapse collapse\" aria-expanded=\"false\" style=\"height: 0px;\">
             <div class=\"box-body\">
                 ".$userGrid."

@@ -36,7 +36,7 @@ $form = ActiveForm::begin([
         <div class="panel-heading">
             <h4>
                 <i class="glyphicon glyphicon-euro"></i> <?= Yii::t('app', 'TimeTable') ?>    <?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
-                <button type="button" class="add-item btn btn-info btn-sm pull-right"><i
+                <button type="button" class="add-item btn btn-info btn-sm float-right"><i
                             class="glyphicon glyphicon-plus"></i> <?= Yii::t('app', 'Új') ?></button>
             </h4>
         </div>

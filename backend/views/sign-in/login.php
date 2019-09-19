@@ -42,6 +42,7 @@ $this->params['body-class'] = 'login-page';
                                     <input name="LoginForm[rememberMe]" type="checkbox" class="filled-in" checked="checked" />
                                     <span>Remember me</span>
                                 </label>
+
                             </p>
                         </div>
                         <div class="footer">

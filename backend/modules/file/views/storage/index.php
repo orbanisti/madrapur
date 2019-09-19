@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="row text-right">
-    <div class="pull-right">
+    <div class="float-right">
         <div class="col-xs-12">
             <dl>
                 <dt>
@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </dl>
         </div>
     </div>
-    <div class="pull-right">
+    <div class="float-right">
         <div class="row">
             <div class="col-xs-12">
                 <dl>

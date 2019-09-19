@@ -206,7 +206,7 @@
 
 
                             foreach ($myPrices as $i => $price) {
-                                echo'<div class="col-lg-12">';
+
                                 if ($paid_currency == 'HUF') {
                                     $price = ProductPrice::eurtohuf($price);
                                 }
@@ -254,7 +254,7 @@
 
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool"
-                                                data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                                data-card-widget="collapse"><i class="fas fa-plus"></i>
                                         </button>
 
                                     </div>
@@ -300,58 +300,39 @@
 
                                 </div>
                                 <!-- /.card-body-->
-                            </div>    <div class="card bg-primary  card-outline collapsed-card">
+                            </div>
+
+                            <div class="card bg-primary  card-outline collapsed-card">
                                 <div class="card-header">
                                     <h3 class="card-title">
-                                        Seller Tools
+                                        <i class="fas fa-user-friends  "></i>
+                                        Customer Details
                                     </h3>
 
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool"
-                                                data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                                data-card-widget="collapse"><i class="fas fa-plus"></i>
                                         </button>
 
                                     </div>
                                 </div>
                                 <div class="card-body bg-gradient-white">
                                     <div class="col-lg-12">
-                                        <i class="fas fa-user-friends  "></i>
-                                        Customer Details
-                                        <?= TouchSpin::widget(
-                                            [   'name'=>'customPrice',
-                                                'options' =>
-                                                    [
 
-                                                        'placeholder' => 'Adjust ...',
-                                                        'data-priceid' => $price->id,
-                                                        'autocomplete' => 'off',
-                                                        'type'   => 'number',
+                                                <input type="text" name="firstName" id="" class="form-control"
+                                                       placeholder="First Name"
+                                                       aria-describedby="helpId">
+                                                <input type="text" name="lastName" id="" class="form-control"
+                                                       placeholder="Last Name"
+                                                       aria-describedby="helpId">
+                                                <textarea name="orderNote" id="orderNote" class="form-control"
+                                                       placeholder="orderNote"
+                                                          aria-describedby="helpId"></textarea>
 
-                                                    ],
-                                                'pluginOptions' => [
-                                                    'buttonup_txt'=>Icon::show('caret-square-up', ['class'=>'fa-lg 
-                                                    bg-info','framework'
-                                                    =>Icon::FAS]),
-                                                    'buttondown_txt'=>Icon::show('caret-square-down',
-                                                                                 ['class'=>'fa-lg fa-lg bg-info','framework'
-                                                    =>Icon::FAS]) ,
-
-                                                    'max'=>'9999999'
-                                                ]
-                                            ]   );
-                                        ?>
 
                                     </div>
 
-                                    <div class="col-lg-12">
 
-                                        <?php
-                                            // echo Yii::$app->runAction('Reservations/assigner');
-
-                                            echo $this->render('assingui',['model'=>new Reservations()]);
-
-                                        ?>
-                                    </div>
 
                                 </div>
                                 <!-- /.card-body-->
@@ -366,7 +347,7 @@
                                 <div class="box box-default box-solid ">
                                     <div class="box-header  bg-blue-gradient with-border">
                                         <h3 class="box-title"></h3>
-                                        <div class="box-tools pull-right">
+                                        <div class="box-tools float-right">
                                             <button type="button" class="btn btn-box-tool" data-widget="collapse">
                                                 <?=Icon::show('plus-circle', ['class'=>'fa-lg','framework'=>Icon::FA
                                                                               ,'style'=>'color:white'
