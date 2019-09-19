@@ -71,7 +71,7 @@ $bundle = BackendAsset::register($this);
             [
                 'label' => Yii::t('backend', 'adminTools'),
                 'icon' => Icon::show('smile', ['class'=>'nav-icon', 'framework'=> Icon::FAS]),
-                'url'=>['#'],
+                'url'=>['/'],
                 'options' => [
                     'class' => 'nav-item has-treeview'
                 ],
@@ -111,7 +111,7 @@ $bundle = BackendAsset::register($this);
             [
                 'label' => Yii::t('backend', 'Tickets'),
                 'url' => [
-                    '/Tickets/tickets/admin'
+                    '/'
                 ],
                 'options' => [
                  'class' => 'nav-item has-treeview'
@@ -185,7 +185,7 @@ $bundle = BackendAsset::register($this);
             [
                 'label' => Yii::t('backend', 'Articles'),
                 'url' => [
-                    '/content/article/index'
+                    '/'
                 ],
                 'icon' => Icon::show('newspaper', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
                 'options' => [
@@ -218,7 +218,7 @@ $bundle = BackendAsset::register($this);
             [
                 'label' => Yii::t('backend', 'Widgets'),
                 'url' => [
-                    '/content/page/index'
+                    '/'
                 ],
                 'icon' => '<i class="fa nav-icon fa-code"></i>',
                 'options' => [
@@ -286,7 +286,7 @@ $bundle = BackendAsset::register($this);
             [
                 'label' => Yii::t('backend', 'RBAC Rules'),
                 'url' => [
-                    '/rbac/rbac-auth-rule/index'
+                    '/'
                 ],
                 'icon' => '<i class="fa nav-icon fa-flag"></i>',
                 'options' => [
@@ -333,7 +333,7 @@ $bundle = BackendAsset::register($this);
             ],
             [
                 'label' => Yii::t('backend', 'Files'),
-                'url' => '#',
+                'url' => '/',
                 'icon' => '<i class="fa nav-icon fa-th-large"></i>',
                 'options' => [
                  'class' => 'nav-item has-treeview'
@@ -362,18 +362,14 @@ $bundle = BackendAsset::register($this);
             [
                 'label' => Yii::t('backend', 'Products'),
                 'options' => [
-                 'class' => 'nav-item has-treeview'
+                    'class' => 'nav-item has-treeview'
                 ],
                 'url' => [
-
-                    '/Product/product/admin'
-                ],
-                'options' => [
-                 'class' => 'nav-item has-treeview'
+                    '/'
                 ],
                 'icon' =>  Icon::show('boxes', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
-                'active' => Yii::$app->controller->id === 'product' &&
-                    Yii::$app->controller->action->id !== 'uiblock',
+                'active' => in_array(Yii::$app->controller->id, ['product', 'add-ons']) &&
+                    !in_array(Yii::$app->controller->action->id, ['uiblock', 'accesstimetable']),
                 'items' => [
                     [
                         'label' => Yii::t('backend', 'Overview'),
@@ -393,7 +389,15 @@ $bundle = BackendAsset::register($this);
                         'active' => (Yii::$app->controller->id == 'product') &&
                             Yii::$app->controller->action->id === 'create',
                     ],
-
+                    [
+                        'label' => Yii::t('backend', 'Add-ons'),
+                        'url' => [
+                            '/Product/add-ons/admin'
+                        ],
+                        'icon' => '<i class="fa nav-icon fa-plug"></i>',
+                        'active' => (Yii::$app->controller->id == 'add-ons') &&
+                            Yii::$app->controller->action->id === 'admin',
+                    ],
                 ],
 //                                'visible' => Yii::$app->user->can('accessProducts'),
                 'visible' => !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller') && !Yii::$app->user->can('hotline'),
@@ -434,7 +438,7 @@ $bundle = BackendAsset::register($this);
                  'class' => 'nav-item has-treeview'
                 ],
                 'url' => [
-                    '/Reservations/reservations/admin'
+                    '/'
                 ],
                 'options' => [
                  'class' => 'nav-item has-treeview'
