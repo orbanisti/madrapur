@@ -215,7 +215,7 @@ class TicketsController extends Controller {
      * @return string
      */
     public function actionViewTicket($id, $blockId) {
-        $model = TicketSearchModel::useTable("modulus_tb_" . $id);
+        $model = TicketSearchModel::useTable("modulus_tb_" . $blockId);
 
         $model = $model::find();
 

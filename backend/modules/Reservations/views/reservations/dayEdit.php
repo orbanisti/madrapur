@@ -299,7 +299,23 @@ HTML;
 //                                return '<a href="/Reservations/reservations/bookingedit?id=' . $model->id . '">Edit' . '</a>';
 //                            }
 //                        ],
+                            [
+                                'class' => 'kartik\grid\ActionColumn',
+                                'template' => '{view}',
+                                'buttons' => [
+                                    'view' => function ($url) {
 
+                                        return Html::a('<i class="fas fa-eye fa-lg "></i>',
+                                                       $url,
+                                                       [
+                                                           'title' => Yii::t('backend', 'View'),'id'=>'popRes'
+                                                       ]);
+                                    },
+                                ],
+                                'visibleButtons' => [
+                                    'login' => Yii::$app->user->can('administrator')
+                                ]
+                            ],
                         ];
 
 
@@ -381,6 +397,8 @@ HTML;
      .load($(this).attr('href'));
    });
 });");
+
+
                 ?>
 
                 <?php

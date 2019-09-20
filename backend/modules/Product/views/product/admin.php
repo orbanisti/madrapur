@@ -32,8 +32,8 @@ use kartik\icons\Icon;
         <h3 class="box-title">Product Manager</h3>
     </div>
     <?php
-    $gridColumns = [
 
+    $gridColumns = [
         'id' ,
         'title' ,
         'capacity' ,
@@ -63,7 +63,7 @@ use kartik\icons\Icon;
                 } ,
                 'update' => function ($url , $model , $key) {
 
-                    return Html::a('<span class="fa fa-lg fa-pencil"></span>' ,
+                    return Html::a('<i class="fas fa-lg fa-pencil-alt "></i>' ,
                         Url::to(['product/update' ,
                             'prodId' => $model->id]) ,
                         [

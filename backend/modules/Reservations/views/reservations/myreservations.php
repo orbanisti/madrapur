@@ -76,6 +76,22 @@ use yii\helpers\Url;
 
         'bookingCost',
         'orderCurrency',
+        [
+            'class' => 'kartik\grid\ActionColumn',
+            'template' => '{view}',
+            'buttons' => [
+                'view' => function ($url) {
+                    return Html::a('<i class="fas fa-eye fa-lg "></i>',
+                                   $url,
+                                   [
+                                       'title' => Yii::t('backend', 'Login')
+                                   ]);
+                },
+            ],
+            'visibleButtons' => [
+                'login' => Yii::$app->user->can('administrator')
+            ]
+        ],
         # 'bookingDate',
         /* [
              'label' => 'Edit Booking',

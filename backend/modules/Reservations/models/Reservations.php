@@ -99,6 +99,7 @@ class Reservations extends MadActiveRecord {
             [['status'], 'string'],
             [['iSellerId'], 'string'],
             [['iSellerName'], 'string'],
+            [['notes'], 'string'],
         ];
     }
 

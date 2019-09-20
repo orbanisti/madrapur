@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "884e710ce5d51dd93e5e91591b98e0dc",
+    "content-hash": "df3312649de497533c2a1e5d01238e1d",
     "packages": [
         {
             "name": "2amigos/yii2-date-picker-widget",
@@ -1550,6 +1550,56 @@
                 "issues": "https://github.com/Insolita/yii2-adminlte3-widgets/issues"
             },
             "time": "2018-05-17T15:40:42+00:00"
+        },
+        {
+            "name": "insolita/yii2-migration-generator",
+            "version": "3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Insolita/yii2-migrik.git",
+                "reference": "17e79a78d8a5b4abd0e1f88fa03b861b0ef37f3a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Insolita/yii2-migrik/zipball/17e79a78d8a5b4abd0e1f88fa03b861b0ef37f3a",
+                "reference": "17e79a78d8a5b4abd0e1f88fa03b861b0ef37f3a",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": ">=2.0.14"
+            },
+            "require-dev": {
+                "yiisoft/yii2-gii": "*"
+            },
+            "suggest": {
+                "nesbot/carbon": "for testing ",
+                "vlucas/phpdotenv": "for testing"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "bootstrap": "insolita\\migrik\\Bootstrap"
+            },
+            "autoload": {
+                "psr-4": {
+                    "insolita\\migrik\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "insolita",
+                    "email": "donnainsolita@gmail.com"
+                }
+            ],
+            "description": "Set of gii tools for generating  files for migration by schema of table , phpdoc or table data",
+            "keywords": [
+                "extension",
+                "yii2"
+            ],
+            "time": "2018-12-20T00:11:12+00:00"
         },
         {
             "name": "intervention/image",
