@@ -393,14 +393,13 @@
             }
             return $this->render(
                 'create', [
-                'model' => new Product(),
-                'disableForm' => $disableForm,
-                'myPrices' => $myprices,
-                'countPrices' => $countPrices,
-                'newReservation' => $updateResponse,
+                    'model' => new Product(),
+                    'disableForm' => $disableForm,
+                    'myPrices' => $myprices,
+                    'countPrices' => $countPrices,
+                    'newReservation' => $updateResponse,
 
-            ]
-            );
+            ]);
         }
 
         public function actionCreate2() {

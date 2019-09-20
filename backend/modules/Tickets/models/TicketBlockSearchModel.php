@@ -33,7 +33,7 @@ class TicketBlockSearchModel extends TicketBlock {
     public function search($params) {
         $query = self::find();
 
-        if (!Yii::$app->user->can('streetAdmin')) {
+        if (Yii::$app->user->can('streetSeller')) {
             $query->andFilterWhere([
                 '=',
                 'assignedTo',
@@ -42,12 +42,16 @@ class TicketBlockSearchModel extends TicketBlock {
         } else {
             $assignedTo = Yii::$app->request->getQueryParam('assignedTo', null);
 
+            if (!$assignedTo && isset($params['assignedTo'])) {
+                $assignedTo = $params['assignedTo'];
+            }
+
             if ($assignedTo) {
                 if (!($user = User::findByUsername($assignedTo))) {
                     sessionSetFlashAlert('warning', 'You can only search with full username specified!');
                 } else {
                     $query->andFilterWhere([
-                        'LIKE',
+                        '=',
                         'assignedTo',
                         $user->id
                     ]);

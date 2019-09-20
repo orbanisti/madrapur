@@ -17,10 +17,14 @@ namespace common\widgets;
 use backend\controllers\SiteController;
 use backend\widgets\Menu;
 use Closure;
-use Yii;
 use yii\helpers\Html;
 
 class MadMenu extends Menu {
+
+    /**
+     * @var string
+     */
+    public $activeCssClass = "active menu-open";
 
     /**
      * @param array $items
