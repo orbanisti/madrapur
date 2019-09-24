@@ -2,6 +2,7 @@
 
 namespace backend\modules\MadActiveRecord\models;
 
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\conditions\AndCondition;
@@ -127,6 +128,44 @@ class MadActiveRecord extends ActiveRecord {
         $model->setAttributes($values);
 
         return $model->save(false);
+    }
+
+    /**
+     * @param MadActiveRecord $model
+     * @param $message
+     * @param null $from
+     * @param null $to
+     */
+    public static function log(MadActiveRecord $model, $message, $from = null, $to = null){
+
+        $assignData = [];
+        $assignData['time'] = date('Y-m-d H:i:s', time());
+        $assignData['by'] = Yii::$app->user->identity->username;
+        $assignData['from'] = $from;
+        $assignData['to'] = $to;
+        $assignData['message']= $message;
+
+        $foundReservation=$model;
+
+        if ($foundReservation) {
+            $Reservationobject = json_decode($foundReservation->data);
+            if (isset($Reservationobject->assignments) && is_array($Reservationobject->assignments)) {
+
+                array_unshift($Reservationobject->assignments, $assignData);
+            } else {
+                $Reservationobject->assignments[] = $assignData;
+            }
+
+            $foundReservation->data = json_encode($Reservationobject);
+            $foundReservation->save(false);
+//                echo \GuzzleHttp\json_encode($foundReservation->data);
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Successful assignment<u>' .
+                                                                $foundReservation->id . '</u> reservation to ' .
+                                                                $foundReservation->sellerName));
+
+
+    }
+
     }
 
     /**

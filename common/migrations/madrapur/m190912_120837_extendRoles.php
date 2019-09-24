@@ -1,6 +1,8 @@
 <?php
 
-use yii\db\Schema;
+    use backend\modules\Reservations\models\Reservations;
+    use backend\modules\Tickets\models\Tickets;
+    use yii\db\Schema;
 use yii\db\Migration;
 use common\models\User;
 
@@ -16,15 +18,20 @@ class m190912_120837_extendRoles extends Migration {
     ];
 
     private $_permissions = [
-        User::ASSIGN_HOTEL_SELLER=> 'Assign Hotel seller role'
+        User::ASSIGN_HOTEL_SELLER=> 'Assign Hotel seller role',
+
 
     ];
 
-    private $_additionalpermissions = [
-        User::ASSIGN_HOTEL_SELLER,
-        'loginToBackend'
+    private $hotelSellerPermissions = [
+            'loginToBackend',
 
-    ];
+            Reservations::CREATE_BOOKING,
+            Reservations::EDIT_OWN_BOOKING,
+            Reservations::VIEW_OWN_BOOKINGS,
+
+
+        ];
 
     protected function createPermissions() {
         foreach ($this->_permissions as $permissionName => $permissionDescription) {
@@ -48,7 +55,7 @@ class m190912_120837_extendRoles extends Migration {
     }
 
     protected function assignNewRolePermissions() {
-            $this->assignPermissionsToRole(User::ROLE_ADMINISTRATOR, array_keys($this->_permissions));
+            $this->assignPermissionsToRole(User::ROLE_HOTEL_SELLER, $this->hotelSellerPermissions);
         }
 
 
@@ -113,6 +120,7 @@ class m190912_120837_extendRoles extends Migration {
         $this->createRoles();
         $this->createPermissions();
         $this->assignAdminPermissions();
+        $this->assignNewRolePermissions();
     }
 
     public function safeDown() {

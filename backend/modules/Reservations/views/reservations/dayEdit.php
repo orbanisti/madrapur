@@ -12,6 +12,8 @@
     use kartik\grid\EditableColumn;
     use kartik\grid\GridView;
     use kartik\helpers\Html;
+    use yii\widgets\ActiveForm;
+    use yii\widgets\Pjax;
 
     $title = 'Bookings of ' . '<u>' . $currentProduct->title . '</u>' . ' on ' . $currentDay;/*
 $this->title=$title;
@@ -21,18 +23,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-<!--suppress ALL -->
-<?php
 
-    echo \insolita\wgadminlte\FlashAlerts::widget([
-        'errorIcon' => '<i class="fa fa-warning"></i>',
-        'successIcon' => '<i class="fa fa-check"></i>',
-        'successTitle' => 'Done!', //for non-titled type like 'success-first'
-        'closable' => true,
-        'encode' => false,
-        'bold' => false,
-    ]);
-?>
+
 
 <div class="products-index">
 
@@ -50,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 // uncomment below and comment detail if you need to render via ajax
                 // 'detailUrl'=>Url::to(['/site/book-details']),
                 'detail' => function ($model, $key, $index, $column) {
-                    return Yii::$app->controller->renderPartial('assignui', ['model' => $model]);
+                    return Yii::$app->controller->renderPartial('assinguitimetable', ['model' => $model]);
                 },
                 'headerOptions' => ['class' => 'kartik-sheet-style'],
                 'expandOneOnly' => true,]
@@ -111,7 +103,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'bookingDate',
             [
                 'label' => 'Edit Booking',
-                'format' => 'html',
+                'format' => 'raw',
                 'value' => function ($model) {
                     return '<a href="/Reservations/reservations/bookingedit?id=' . $model->id . '">Edit' . '</a>';
                 }
@@ -146,7 +138,7 @@ HTML;
                     </li>";
 
                         ++$i;
-                        $allGrids[] = $gridColumns;
+                        $allGrids[$time] = $gridColumns;
                     }
                     echo "       <li class=\"nav-item active\">
                         <a class=\"nav-link \" id=\"times-all-tab\" data-toggle=\"tab\" href='#times-all' role=\"tab\" aria-controls=\"times-all\">Whole Day</a>
@@ -180,7 +172,7 @@ HTML;
                                 // uncomment below and comment detail if you need to render via ajax
                                 // 'detailUrl'=>Url::to(['/site/book-details']),
                                 'detail' => function ($model, $key, $index, $column) {
-                                    return Yii::$app->controller->renderPartial('assingui', ['model' => $model]);
+                                    return Yii::$app->controller->renderPartial('assinguitimetable', ['model' => $model]);
                                 },
                                 'headerOptions' => ['class' => 'kartik-sheet-style'],
                                 'expandOneOnly' => true,]
@@ -390,6 +382,14 @@ HTML;
                     ]);
                     yii\bootstrap4\Modal::end();
 
+                    yii\bootstrap4\Modal::begin([
+                                                    'id' =>'modal2',
+                                                    //'headerOptions' => ['id' => 'modalHeader'],
+                                                    'title' => 'View Reservation',
+
+                                                ]);
+                    yii\bootstrap4\Modal::end();
+
                     $this->registerJs("$(function() {
    $('#popupModal').click(function(e) {
      e.preventDefault();
@@ -397,25 +397,48 @@ HTML;
      .load($(this).attr('href'));
    });
 });");
-
+                    $this->registerJs("$(function() {
+   $('a#popRes').click(function(e) {
+     e.preventDefault();
+     $('#modal2').modal('show').find('.modal-content')
+     .load($(this).attr('href'));
+   });
+});");
 
                 ?>
 
-                <?php
+                <!--suppress ALL -->
 
+                <?php
+                    Pjax::begin();
+                    $timingbutton=Yii::$app->request->post('timing-button') ?  Yii::$app->request->post('timing-button') : null;
+
+                    if($timingbutton){
+                        echo 'a';
+                      $dataProvider=$allGrids[$timingbutton];
+
+                        Yii::error($dataProvider);
+                    }
+                    $form = ActiveForm::begin(['id' => 'day-widget','options' => ['data-pjax' => true ]]);
+                    echo Html::submitButton(Yii::t('backend', '11:00'),
+                                            [
+                                                'class' => 'btn btn-info btn-flat',
+                                                'name' => 'timing-button',
+                                                'value' => '11:00'
+                                            ]);
                     echo GridView::widget([
                         'id' => 'wholeday',
                         'dataProvider' => $dataProvider,
                         'columns' => $gridColumns,
                         'layout' => $layout,
-                        'pjax' => true,
-                        'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-all']],
+//                        'pjax' => true,
+//                        'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-all']],
                         'toolbar' => [
                             [
                                 'content' =>
                                     Html::a(Yii::t('app', ' {modelClass}', [
                                         'modelClass' => '<i class="fa fa-ticket"></i>',
-                                    ]), ['/Reservations/reservations/create2'], ['class' => 'btn btn-info', 'id' => 'popupModal']),
+                                    ]), ['/Reservations/reservations/create3'], ['class' => 'btn btn-info', 'id' => 'popupModal']),
 
                                 'options' => ['class' => 'btn-group mr-2']
                             ],
@@ -438,6 +461,9 @@ HTML;
                         ],
 
                     ]);
+                    ActiveForm::end();
+
+                   Pjax::end();
 
                     echo '</div>';
 

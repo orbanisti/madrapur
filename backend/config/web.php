@@ -190,6 +190,7 @@ $config = [
                     'streetAdmin',
                     'streetSeller',
                     'hotline',
+                    'hotelSeller',
                 ],
             ],
         ],

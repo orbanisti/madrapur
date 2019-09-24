@@ -102,9 +102,15 @@ EOF;
                         <div class="card-body">
                             <?= \yii2fullcalendar\yii2fullcalendar::widget(array(
                                                                                'events' => $modelEvents,
+
                                                                                'clientOptions' => [
                                                                                    'locale' => 'hu',
-                                                                                   'eventClick' => new \yii\web\JsExpression($JSEventClick),
+
+
+                                                                                   'themeSystem'=>'standard',
+                                                                                   'eventClick' => new 
+                                                                                   \yii\web\JsExpression
+                                                                                   ($JSEventClick),
 
                                                                                ]
                                                                            ));

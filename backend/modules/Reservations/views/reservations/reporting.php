@@ -9,41 +9,63 @@
 
 ?>
 
-<div class="box box-widget widget-user">
-    <?php
-        /**
-         * Json RPC Communication TODO Close this hole asap
-         */
-        /*
-         * Example of Yell function of Api Rester returns free spaces of productId on selecetedDate in Int
-            $client = new \nizsheanez\jsonRpc\Client('http://www.api.localhost.com/v1/worker');
-            $currentProduct=44;
 
-            $selectedDate=date("Y-m-d");
+<div class="row">
+    <div class="col-12">
+        <!-- interactive chart -->
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-table  "></i>
+                    Reporting Center <?=$today?>
+                </h3>
 
-            $response = $client->yell($selectedDate,$currentProduct);
-            echo $response;
-        */
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
+
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="box box-widget widget-user">
+                    <?php
+                        /**
+                         * Json RPC Communication TODO Close this hole asap
+                         */
+                        /*
+                         * Example of Yell function of Api Rester returns free spaces of productId on selecetedDate in Int
+                            $client = new \nizsheanez\jsonRpc\Client('http://www.api.localhost.com/v1/worker');
+                            $currentProduct=44;
+
+                            $selectedDate=date("Y-m-d");
+
+                            $response = $client->yell($selectedDate,$currentProduct);
+                            echo $response;
+                        */
 
 
-    ?>
+                    ?>
 
-    <div class="box-header bg-aqua-gradient">
-        <!-- /.widget-user-image -->
 
-        <h3 class="widget-user-username">Reporting Center</h3>
-        <h5 class="widget-user-desc"><?=$today?> </h5>
+
+                        <?php
+                            foreach ($userList as $userblock){
+                                echo $userblock;
+                            }
+
+                        ?>
+
+
+
+
+                </div>
+
+            </div>
+            <!-- /.card-body-->
+        </div>
+        <!-- /.card -->
 
     </div>
-    <ul class="nav nav-stacked">
-        <?php
-            foreach ($userList as $userblock){
-                echo $userblock;
-            }
 
-        ?>
-
-    </ul>
-
-
+    <!-- /.col -->
 </div>

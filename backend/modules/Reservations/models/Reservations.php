@@ -438,6 +438,26 @@ class Reservations extends MadActiveRecord {
         return $total;
 
     }
+    public static function sumDataProviderCard($provider,$fieldName){
+        $total = 0;
+
+        foreach ($provider as $item) {
+            if($item->paidMethod=='card'){$total += $item[$fieldName];}
+        }
+
+        return $total;
+
+    }
+    public static function sumDataProviderCash($provider,$fieldName){
+        $total = 0;
+
+        foreach ($provider as $item) {
+            if($item->paidMethod=='cash'){$total += $item[$fieldName];}
+        }
+
+        return $total;
+
+    }
 
     public function searchAllreservations($params) {
 

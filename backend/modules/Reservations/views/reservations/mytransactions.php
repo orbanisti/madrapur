@@ -16,8 +16,8 @@
         <div class="card card-primary card-outline">
             <div class="card-header">
                 <h3 class="card-title">
-                    <i class="fas fa-table  "></i>
-                    Reporting Center <?=$today?>
+                    <i class="fas fa-hand-holding-usd  "></i>
+                    My Transactions <?=$today?>
                 </h3>
 
                 <div class="card-tools">

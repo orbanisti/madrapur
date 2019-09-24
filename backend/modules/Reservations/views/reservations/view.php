@@ -70,7 +70,8 @@
                                                          ['attribute'=>'booking_cost',
                                                           'format'=>'html',
                                                           'type'=>DetailView::INPUT_TEXTAREA,
-                                                          'value'=>$model->booking_cost.' '.'<span class="badge  badge-info">EUR</span>'
+                                                          'value'=>$model->booking_cost.' '.'<span class="badge  badge-info">EUR</span>'.'<span class="badge  badge-warning">
+'.$model->status.'</span>'
 
                                                          ],
                                                          ['attribute'=>'ticketId',
@@ -152,11 +153,49 @@
                                                          <i class="fab fa-dev direct-chat-img fa-2x  "></i>
 
                                                          <!-- /.direct-chat-img -->
-                                                         <div class="direct-chat-text">
-                                                            Reservation assigned from <?=$log->from?> to <?=$log->to?>
-                                                             (issued
-                                                             by user <?=$log->by?>
-                                                         </div>
+                                                         <?php
+
+
+                                                             if(isset($log->from)) {
+
+                                                                 ?>
+                                                                 <div class="direct-chat-text">
+                                                                     Reservation assigned from <?= $log->from ?>
+                                                                     to <?= $log->to ?>
+                                                                     (issued
+                                                                     by user <?= $log->by ?>
+                                                                     <?php
+
+
+
+
+
+
+                                                                         if(isset($log->from)&&isset($log->message)){
+                                                                             echo "<span class=\"badge badge-info\">"
+                                                                                 .$log->message
+                                                                                 ."</span>";
+                                                                         }
+                                                                     ?>
+                                                                 </div>
+                                                                 <?php
+                                                             }
+
+                                                                 ?>
+
+                                                         <?php
+                                                             if(!isset($log->from)) {
+
+                                                                 ?>
+                                                                 <div class="direct-chat-text">
+                                                                     <?=$log->message?>
+                                                                 </div>
+                                                                 <?php
+                                                             }
+
+                                                         ?>
+
+
                                                          <!-- /.direct-chat-text -->
                                                      </div>
 

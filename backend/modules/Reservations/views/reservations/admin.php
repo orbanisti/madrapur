@@ -251,6 +251,18 @@ use yii\widgets\ActiveForm;
                                                                'dataProvider' => $dataProvider,
                                                                'filterModel' => new \backend\modules\Reservations\models\Reservations(),
                                                                'columns' => $gridColumns,
+                                                               'toolbar' => [
+                                                                   [
+                                                                       'options' => ['class' => 'btn-group mr-2']
+                                                                   ],
+                                                                   '{export}',
+                                                                   '{toggleData}',
+                                                               ],
+                                                               'toggleDataContainer' => ['class' => 'btn-group mr-2'],
+
+                                                               'panel' => [
+                                                                   'heading' => '<i class="fa fa-summary-alt"></i>',
+                                                               ],
                                                            ]);
 
                     ?>

@@ -74,13 +74,14 @@
                                 DatePicker::class, [
                                 'type' => DatePicker::TYPE_INLINE
                                 , 'options' => [
-                                    'value' => date('Y-m-d', time()),
-                                    'class' => 'bg-gradient-info bordered'
+                                'value' => date('Y-m-d', time()),
+                                'class' => 'bg-gradient-info bordered'
 
                                 ],
                                 'pluginOptions' => [
 
                                     'autoclose' => true,
+
                                     'format' => 'yyyy-mm-dd',
                                     'startDate' => date(time()),
 

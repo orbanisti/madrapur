@@ -1,8 +1,9 @@
 <?php
 
 use common\grid\EnumColumn;
-use yii\grid\GridView;
-use yii\helpers\Html;
+
+    use kartik\grid\GridView;
+    use yii\helpers\Html;
 use yii\rbac\Item;
 
 /* @var $this yii\web\View */
@@ -10,6 +11,7 @@ use yii\rbac\Item;
 
 $this->title = Yii::t('frontend', 'Rbac Auth Items');
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="rbac-auth-item-index">
 
@@ -44,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 // 'updated_at',
 
                 [
-                    'class' => 'yii\grid\ActionColumn'
+                    'class' => \kartik\grid\ActionColumn::class
                 ],
             ],
         ]);
