@@ -36,10 +36,6 @@ class BS4PluginAsset extends AssetBundle {
 
     ];
 
-    public $js = [
-        'popper/popper.js',
-
-    ];
 
     /**
      *

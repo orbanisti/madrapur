@@ -110,6 +110,7 @@
                                         // properties must be specified.
 
                                         'checked' => false,
+                                        'id'=>'paid_status',
                                         'options' => [
                                             'data-on'=>'Paid',
                                             'data-off'=>'Unpaid',
@@ -122,19 +123,7 @@
                                 );?>
 
 
-                                <?=Toggle::widget(
-                                    [
-                                        'name' => 'paid_method', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
-                                        'checked' => false,
-                                        'options' => [
-                                            'data-on'=>'Card',
-                                            'data-off'=>'Cash',
-                                            'data-width'=>'100px',
-                                            'data-onstyle'=>'info'
-                                        ],
-                                        // checkbox options. More data html options [see here](http://www.bootstraptoggle.com)
-                                    ]
-                                );?>
+
                                 <?=   Toggle::widget(
                                     [
                                         'name' => 'paid_currency', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
@@ -148,6 +137,28 @@
                                         // checkbox options. More data html options [see here](http://www.bootstraptoggle.com)
                                     ]
                                 );?>
+                                <?=Toggle::widget(
+                                    [
+                                        'name' => 'paid_method', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
+                                        'checked' => false,
+                                        'id'=>'currency_selector',
+                                        'options' => [
+                                            'data-on'=>'Card',
+                                            'data-off'=>'Cash',
+                                            'data-width'=>'100px',
+                                            'data-onstyle'=>'info'
+                                        ],
+                                        // checkbox options. More data html options [see here](http://www.bootstraptoggle.com)
+                                    ]
+                                );?>
+
+                                <?php
+
+
+
+                                ?>
+
+
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-lg-4">
@@ -169,6 +180,7 @@
                             <?php ActiveForm::end();
 
                             Pjax::end();
+
                         } else {
                             if (isset($_POST['paid_status'])) {
                                 $paid_status = 'paid';
@@ -407,13 +419,6 @@
 
 
 
-<script type="text/javascript">
-
-
-</script>
-
-
-
 <?php
     $toggledisplay = <<< SCRIPT
 
@@ -600,5 +605,4 @@ SCRIPT;
     }
 </style>
 
-</div>
 

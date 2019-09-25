@@ -1336,11 +1336,15 @@
                 $timeHours = Reservations::getProductTimeshours($currentProductId);
 
                 $allDataproviders = [];
+                $allTakenChairs=[];
 
                 foreach ($timeHours as $time) {
 
                     $tmpdataProvider = $searchModel->searchDayTime(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId, $time);
                     $allDataproviders[$time] = $tmpdataProvider;
+                    $allTakenChairs[$time]= $currentProduct->capacity - $searchModel->countTakenChairsOnDayTime
+                        ($selectedDate, $sourcesRows, $time);
+
                 }
 
                 $takenChairsCount = Reservations::countTakenChairsOnDay($selectedDate, $sourcesRows);
@@ -1380,9 +1384,6 @@
 
             $timingbutton=Yii::$app->request->post('timing-button') ?  Yii::$app->request->post('timing-button') : null;
 
-            if($timingbutton){
-                echo 'alma';
-            }
 
             return $this->render(
                 'dayEdit', [
@@ -1396,7 +1397,8 @@
                 'timesHours' => $timeHours,
                 'allDataProviders' => $allDataproviders,
                 'sources' => $sourcesRows,
-                'selectedDate' => $selectedDate
+                'selectedDate' => $selectedDate,
+                'allTakenChairs'=>$allTakenChairs
 
             ]
             );
