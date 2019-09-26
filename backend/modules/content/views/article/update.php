@@ -32,6 +32,8 @@
                     'model' => $model,
                     'categories' => $categories,
                 ]) ?>
+
+
             </div>
             <!-- /.card-body-->
         </div>
