@@ -216,6 +216,17 @@ $bundle = BackendAsset::register($this);
                 'visible' => Yii::$app->user->can('accessContent'),
             ],
             [
+                'label' => Yii::t('backend', 'Seo'),
+                'url' => [
+                    '/Seo/seo/admin'
+                ],
+                'icon' => '<i class="fab fa-google  nav-icon "></i>',
+                'active' => Yii::$app->controller->id === 'seo',
+                'options' => [
+                    'class' => 'nav-item'
+                ],
+            ],
+            [
                 'label' => Yii::t('backend', 'Widgets'),
                 'url' => [
                     '/'

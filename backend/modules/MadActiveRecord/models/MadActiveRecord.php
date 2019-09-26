@@ -203,4 +203,6 @@ class MadActiveRecord extends ActiveRecord {
         return new OrCondition(self::_setConditions($conditions));
     }
 
+
+
 }
