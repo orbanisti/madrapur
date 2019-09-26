@@ -76,6 +76,21 @@ class SeoController extends Controller {
             $model=Article::findOne($id);
 
             $texttoecho='';
+            $seomodel=Seo::find()->where('postId='.$id)->one();
+
+
+
+
+            if($seomodel){
+                $pyscript = 'D:\\Munka\\MadraPurFinal\\madrapur\\backend\\modules\\Saccount\\views\\saccount\\scrapegroups.py';
+                $python = 'C:\\Users\\ROG\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe';
+                $cmd = "$python $pyscript $seomodel->mainKeyword $model->body";
+                $result=exec($cmd, $output, $return );
+                $texttoecho.=$model->body;
+            }
+
+
+
 
 
 
