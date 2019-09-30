@@ -2,8 +2,10 @@
 
 namespace backend\modules\Product\controllers;
 
-use backend\modules\Product\models\ProductAddOn;
+use backend\modules\Product\models\AddOn;
+use function Complex\add;
 use Yii;
+use yii\db\StaleObjectException;
 use yii\web\Controller;
 
 /**
@@ -16,13 +18,50 @@ class AddOnsController extends Controller {
      * @return string
      */
     public function actionAdmin() {
-        $searchModel = new ProductAddOn();
-
+        $searchModel = new AddOn();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        if ($postData = Yii::$app->request->post()) {
+            if (isset($postData['create-add-on'])) {
+                $addOn = new AddOn();
+                $addOn->name = Yii::$app->request->post('name');
+                $addOn->type = Yii::$app->request->post('AddOn')['type'];
+                $addOn->icon = Yii::$app->request->post('icon');
+                $addOn->price = Yii::$app->request->post('price');
+
+                if (!$addOn->save()) {
+                    // error message
+                }
+            }
+        }
+
+        if ($getData = Yii::$app->request->get()) {
+            if (isset($getData['action']) && $action = $getData['action']) {
+                switch ($action) {
+                    case 'delete':
+                        $addOn = AddOn::findOne(['id' => $getData['id']]);
+                        try {
+                            $addOn->delete();
+                        } catch (StaleObjectException $e) {
+                            Yii::error($e->getMessage(), 'addOnDelete');
+                        } catch (\Throwable $e) {
+                            Yii::error($e->getMessage(), 'addOnDelete');
+                        }
+                        break;
+                    case 'edit':
+                        Yii::error($getData, 'aliusEdit');
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
         return $this->render(
             'admin',
             [
-                "dataProvider" => $dataProvider
+                "searchModel" => $searchModel,
+                "dataProvider" => $dataProvider,
             ]
         );
     }
