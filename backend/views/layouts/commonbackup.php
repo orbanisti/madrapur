@@ -66,7 +66,7 @@ $bundle = BackendAsset::register($this);
 								<div class="pull-left">
                                     <?php echo Html::a(Yii::t('backend', 'Account'), ['/sign-in/account'], ['class' => 'btn btn-default btn-flat']) ?>
                                 </div>
-								<div class="pull-right">
+								<div class="float-right">
                                     <?php echo Html::a(Yii::t('backend', 'Logout'), ['/sign-in/logout'], ['class' => 'btn btn-default btn-flat', 'data-method' => 'post']) ?>
                                 </div>
 							</li>

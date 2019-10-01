@@ -106,7 +106,7 @@ body {
   border: solid 0.08em #eeeeee;
   border-radius: .1em; }
 
-.pull-right {
+.float-right {
   float: right; }
 
 .pull-left {
@@ -115,7 +115,7 @@ body {
 .li.pull-left {
   margin-right: .3em; }
 
-.li.pull-right {
+.li.float-right {
   margin-left: .3em; }
 
 .la-spin {

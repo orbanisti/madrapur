@@ -7,8 +7,8 @@
  */
 
 use backend\components\extra;
-use insolita\wgadminlte\LteConst;
-use insolita\wgadminlte\LteSmallBox;
+use insolita\adminlte3\Lte;
+use insolita\adminlte3\LteSmallBox;
 use kartik\helpers\Html;
 use yii\helpers\Url;
 
@@ -23,7 +23,7 @@ use yii\helpers\Url;
         <div class="col-xs-12 col-md-3">
             <?php
             LteSmallBox::begin([
-                'type' => LteConst::COLOR_AQUA,
+                'type' => Lte::COLOR_MAROON,
                 'title' => $monthlySold . 'EUR',
                 'icon' => 'fa fa-list-alt',
                 'text' => 'Monthly sold'
@@ -33,7 +33,7 @@ use yii\helpers\Url;
         <div class="col-xs-12 col-md-3">
             <?php
             LteSmallBox::begin([
-                'type' => LteConst::COLOR_BLUE,
+                'type' => Lte::COLOR_BLUE,
                 'title' => $todaySold . ' EUR',
                 'text' => 'Today Sold',
                 'icon' => 'fa fa-list-alt',
@@ -43,7 +43,7 @@ use yii\helpers\Url;
         <div class="col-xs-12 col-md-3">
             <?php
             LteSmallBox::begin([
-                'type' => LteConst::COLOR_OLIVE,
+                'type' => Lte::COLOR_OLIVE,
                 'title' => "Batthyány tér",
                 'text' => 'Current assigned location',
                 'icon' => 'fa fa-map-marker',
@@ -53,8 +53,8 @@ use yii\helpers\Url;
         <div class="col-xs-12 col-md-3">
             <?php
             LteSmallBox::begin([
-                'type' => LteConst::COLOR_TEAL,
-                'title' => "$nextTicketId",
+                'type' => Lte::COLOR_TEAL,
+                'title' => "$startTicketId",
                 'icon' => 'fa fa-ticket',
                 'text' => 'Next ticked ID',
                 'footer' => 'View ticket block',
@@ -76,6 +76,22 @@ use yii\helpers\Url;
 
         'bookingCost',
         'orderCurrency',
+        [
+            'class' => 'kartik\grid\ActionColumn',
+            'template' => '{view}',
+            'buttons' => [
+                'view' => function ($url) {
+                    return Html::a('<i class="fas fa-eye fa-lg "></i>',
+                                   $url,
+                                   [
+                                       'title' => Yii::t('backend', 'Login')
+                                   ]);
+                },
+            ],
+            'visibleButtons' => [
+                'login' => Yii::$app->user->can('administrator')
+            ]
+        ],
         # 'bookingDate',
         /* [
              'label' => 'Edit Booking',

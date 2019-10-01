@@ -7,6 +7,8 @@
  */
 namespace common\assets;
 
+use kartik\bs4dropdown\DropdownAsset;
+use kartik\popover\PopoverXAsset;
 use yii\bootstrap4\BootstrapPluginAsset;
 use yii\jui\JuiAsset;
 use yii\web\AssetBundle;

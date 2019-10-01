@@ -33,13 +33,7 @@ $form = ActiveForm::begin([
 
 
     <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>
-                <i class="glyphicon glyphicon-euro"></i> <?= Yii::t('app', 'TimeTable') ?>    <?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
-                <button type="button" class="add-item btn btn-info btn-sm pull-right"><i
-                            class="glyphicon glyphicon-plus"></i> <?= Yii::t('app', 'Új') ?></button>
-            </h4>
-        </div>
+
         <div class="panel-body">
             <script>
 
@@ -89,17 +83,50 @@ EOF;
             $events[] = $Event;
 
             ?>
+            <div class="row">
+                <div class="col-12">
+                    <!-- interactive chart -->
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-table"></i>
+                                TimeTable
+                            </h3>
 
-            <?= \yii2fullcalendar\yii2fullcalendar::widget(array(
-                'events' => $modelEvents,
-                'clientOptions' => [
-                    'locale' => 'hu',
-                    'eventClick' => new \yii\web\JsExpression($JSEventClick),
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                </button>
 
-                ]
-            ));
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <?= \yii2fullcalendar\yii2fullcalendar::widget(array(
+                                                                               'events' => $modelEvents,
 
-            ?>
+                                                                               'clientOptions' => [
+                                                                                   'locale' => 'hu',
+
+
+                                                                                   'themeSystem'=>'standard',
+                                                                                   'eventClick' => new 
+                                                                                   \yii\web\JsExpression
+                                                                                   ($JSEventClick),
+
+                                                                               ]
+                                                                           ));
+
+                            ?>
+
+                        </div>
+                        <!-- /.card-body-->
+                    </div>
+                    <!-- /.card -->
+
+                </div>
+
+                <!-- /.col -->
+            </div>
+
 
 
         </div>

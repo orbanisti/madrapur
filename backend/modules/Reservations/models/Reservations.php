@@ -99,6 +99,7 @@ class Reservations extends MadActiveRecord {
             [['status'], 'string'],
             [['iSellerId'], 'string'],
             [['iSellerName'], 'string'],
+            [['notes'], 'string'],
         ];
     }
 
@@ -179,6 +180,10 @@ class Reservations extends MadActiveRecord {
             if (isset($myjson->orderDetails->edited_first_name)) {
                 $this->setAttribute("firstName", $myjson->orderDetails->edited_first_name);
             } else {
+
+                if (isset($this->billing_first_name)) {
+                    $this->setAttribute("firstName", $this->billing_first_name);
+                }
                 if (isset($myjson->orderDetails->billing_first_name)) {
                     $this->setAttribute("firstName", $myjson->orderDetails->billing_first_name);
                 }
@@ -187,6 +192,9 @@ class Reservations extends MadActiveRecord {
             if (isset($myjson->orderDetails->edited_last_name)) {
                 $this->setAttribute("lastName", $myjson->orderDetails->edited_last_name);
             } else {
+                if (isset($this->billing_last_name)) {
+                    $this->setAttribute("lastName", $this->billing_last_name);
+                }
                 if (isset($myjson->orderDetails->billing_last_name)) {
                     $this->setAttribute("lastName", $myjson->orderDetails->billing_last_name);
                 }
@@ -432,6 +440,26 @@ class Reservations extends MadActiveRecord {
 
         foreach ($provider as $item) {
             $total += $item[$fieldName];
+        }
+
+        return $total;
+
+    }
+    public static function sumDataProviderCard($provider,$fieldName){
+        $total = 0;
+
+        foreach ($provider as $item) {
+            if($item->paidMethod=='card'){$total += $item[$fieldName];}
+        }
+
+        return $total;
+
+    }
+    public static function sumDataProviderCash($provider,$fieldName){
+        $total = 0;
+
+        foreach ($provider as $item) {
+            if($item->paidMethod=='cash'){$total += $item[$fieldName];}
         }
 
         return $total;

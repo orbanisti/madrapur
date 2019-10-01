@@ -46,7 +46,7 @@ Vvveb.Components.add("components/product", {
                 value: "pull-left",
                 text: "Left"
             }, {
-                value: "pull-right",
+                value: "float-right",
                 text: "Right"
             }]
        },
@@ -64,10 +64,10 @@ Vvveb.Components.add("components/product", {
                 value: "pull-left",
                 text: "gigi"
             }, {
-                value: "pull-right",
+                value: "float-right",
                 text: "vasile"
             }, {
-                value: "pull-right",
+                value: "float-right",
                 text: "sad34"
             }]
        },

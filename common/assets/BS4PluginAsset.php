@@ -36,6 +36,7 @@ class BS4PluginAsset extends AssetBundle {
 
     ];
 
+
     /**
      *
      * @var array

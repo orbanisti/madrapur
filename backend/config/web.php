@@ -24,6 +24,9 @@ $config = [
         ],
     ],
     'modules' => [
+        'Seo' => [
+            'class' => backend\modules\Seo\Module::class,
+        ],
         'Dashboard' => [
             'class' => backend\modules\Dashboard\Module::class,
         ],
@@ -190,6 +193,7 @@ $config = [
                     'streetAdmin',
                     'streetSeller',
                     'hotline',
+                    'hotelSeller',
                 ],
             ],
         ],

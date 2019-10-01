@@ -216,6 +216,17 @@ $bundle = BackendAsset::register($this);
                 'visible' => Yii::$app->user->can('accessContent'),
             ],
             [
+                'label' => Yii::t('backend', 'Seo'),
+                'url' => [
+                    '/Seo/seo/admin'
+                ],
+                'icon' => '<i class="fab fa-google  nav-icon "></i>',
+                'active' => Yii::$app->controller->id === 'seo',
+                'options' => [
+                    'class' => 'nav-item'
+                ],
+            ],
+            [
                 'label' => Yii::t('backend', 'Widgets'),
                 'url' => [
                     '/'
@@ -442,12 +453,12 @@ $bundle = BackendAsset::register($this);
                 'options' => [
                  'class' => 'nav-item has-treeview'
                 ],
-                'icon' => Icon::show('chair') ,
+                'icon' => '<i class="fas fa-chair nav-icon "></i>' ,
                 'active' => (Yii::$app->controller->id == 'reservations'),
                 'items' => [
                     [
                         'label' => Yii::t('backend', 'Reporting'),
-                        'icon' => '<i class="fa nav-icon fa-bar-chart-o"></i>',
+                        'icon' => '<i class="fas fa-table nav-icon "></i>',
                         'url' => [
                             '/Reservations/reservations/reporting'
                         ],
@@ -488,7 +499,7 @@ $bundle = BackendAsset::register($this);
                         'visible' => !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller') && !Yii::$app->user->can('hotline'),
                     ],
                     [
-                        'label' => Yii::t('backend', 'myReservations'),
+                        'label' => Yii::t('backend', 'My Bookings'),
                         'url' => [
                             '/Reservations/reservations/myreservations'
                         ],
@@ -497,11 +508,11 @@ $bundle = BackendAsset::register($this);
                             Yii::$app->controller->action->id === 'myreservations'),
                     ],
                     [
-                        'label' => Yii::t('backend', 'my Transactions'),
+                        'label' => Yii::t('backend', 'My Transactions'),
                         'url' => [
                             '/Reservations/reservations/mytransactions'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-dollar"></i>',
+                        'icon' => '<i class="fas fa-hand-holding-usd nav-icon "></i>',
                         'active' => (Yii::$app->controller->id == 'reservations' &&
                             Yii::$app->controller->action->id === 'mytransactions'),
                     ],
@@ -587,7 +598,7 @@ $bundle = BackendAsset::register($this);
                     <a href="/sign-in/profile" class="dropdown-item">
                         <!-- Message Start -->
                         <div class="media">
-                            <?=Icon::show('user-circle')?>
+                            <i class="fas fa-user-circle fa-lg  fa-fw"></i>
                             <div class="media-body">
                                 <h3 class="dropdown-item-title">
                                     View Profile
@@ -600,7 +611,8 @@ $bundle = BackendAsset::register($this);
                     <a href="/sign-in/account" class="dropdown-item">
                         <!-- Message Start -->
                         <div class="media">
-                            <?=Icon::show('cogs')?>   <div class="media-body">
+                            <i class="fas fa-cogs fa-lg fa-fw "></i>
+                            <div class="media-body">
                                 <h3 class="dropdown-item-title">
                                     Account config
                                 </h3>
@@ -612,7 +624,7 @@ $bundle = BackendAsset::register($this);
                     <a href="/sign-in/logout" class="dropdown-item" data-method="post">
                         <!-- Message Start -->
                         <div class="media">
-                            <?=Icon::show('sign-out-alt')?>
+                            <i class="fas fa-sign-out-alt fa-lg fa-fw"></i>
                             <div class="media-body">
                                 <h3 class="dropdown-item-title">
                                     Log out

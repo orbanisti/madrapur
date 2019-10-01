@@ -143,7 +143,7 @@ $form = ActiveForm::begin([
             <div class="panel-heading">
                 <h4>
                     <i class="glyphicon glyphicon-euro"></i> <?= Yii::t('app', 'Product $Prices') ?>    <?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
-                    <button type="button" class="add-item btn btn-info btn-sm pull-right"><i
+                    <button type="button" class="add-item btn btn-info btn-sm float-right"><i
                                 class="glyphicon glyphicon-plus"></i> <?= Yii::t('app', 'Új') ?></button>
                 </h4>
             </div>
@@ -153,7 +153,7 @@ $form = ActiveForm::begin([
                         <div class="item panel panel-default"><!-- widgetBody -->
                             <div class="panel-heading">
                                 <h3 class="panel-title pull-left"><?= Yii::t('app', 'Ár') ?></h3>
-                                <div class="pull-right">
+                                <div class="float-right">
                                     <button type="button" class="add-item btn btn-info btn-xs"><i
                                                 class="glyphicon glyphicon-plus"></i></button>
                                     <button type="button" class="remove-item btn btn-danger btn-xs"><i
@@ -257,7 +257,7 @@ $form = ActiveForm::begin([
             <div class="panel-heading">
                 <h4><i class="glyphicon glyphicon-time"></i> <?= Yii::t('app', 'Product Times') ?>
                     <?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
-                    <button type="button" class="add-item-times btn btn-info btn-sm pull-right"><i
+                    <button type="button" class="add-item-times btn btn-info btn-sm float-right"><i
                                 class="glyphicon glyphicon-plus"></i> <?= Yii::t('app', 'Új') ?></button>
 
                 </h4>
@@ -269,7 +269,7 @@ $form = ActiveForm::begin([
                             <div class="panel-heading">
 
                                 <h3 class="panel-title pull-left"><?= Yii::t('app', 'Időpont') ?></h3>
-                                <div class="pull-right">
+                                <div class="float-right">
                                     <button type="button" class="add-item-times btn btn-info btn-xs"><i
                                                 class="glyphicon glyphicon-plus"></i></button>
                                     <button type="button" class="remove-item-times btn btn-danger btn-xs"><i
@@ -426,7 +426,7 @@ $form = ActiveForm::begin([
             <div class="panel-heading">
                 <h4><i class="glyphicon glyphicon-file"></i> <?= Yii::t('app', 'Product Sources') ?>
                     <?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
-                    <button type="button" class="add-item-sources btn btn-info btn-sm pull-right"><i
+                    <button type="button" class="add-item-sources btn btn-info btn-sm float-right"><i
                                 class="glyphicon glyphicon-plus"></i> <?= Yii::t('app', 'Új') ?></button>
 
                 </h4>
@@ -438,7 +438,7 @@ $form = ActiveForm::begin([
                             <div class="panel-heading">
 
                                 <h3 class="panel-title pull-left"><?= Yii::t('app', 'Source') ?></h3>
-                                <div class="pull-right">
+                                <div class="float-right">
                                     <button type="button" class="add-item-sources btn btn-info btn-xs"><i
                                                 class="glyphicon glyphicon-plus"></i></button>
                                     <button type="button" class="remove-item-sources btn btn-danger btn-xs"><i
@@ -563,7 +563,7 @@ $form = ActiveForm::begin([
             <div class="panel-heading">
                 <h4>
                     <i class="glyphicon glyphicon-euro"></i> <?= Yii::t('app', 'TimeTable') ?>    <?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
-                    <button type="button" class="add-item btn btn-info btn-sm pull-right"><i
+                    <button type="button" class="add-item btn btn-info btn-sm float-right"><i
                                 class="glyphicon glyphicon-plus"></i> <?= Yii::t('app', 'Új') ?></button>
                 </h4>
             </div>

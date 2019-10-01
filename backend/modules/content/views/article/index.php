@@ -23,7 +23,7 @@ use yii\web\JsExpression;
 
 
 
-<div class="container">
+
     <div class="row">
 
         <div class="col-lg-12">
@@ -173,5 +173,5 @@ use yii\web\JsExpression;
         </div>
 
     </div>
-</div>
+
 

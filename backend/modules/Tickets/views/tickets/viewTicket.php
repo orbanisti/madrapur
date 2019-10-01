@@ -11,24 +11,33 @@ use backend\models\Product\Product;
 
 ?>
 
-<div class="tickets-view-ticket">
-    <style>
-        td {
-            border: 1px solid black;
-            padding: 3px;
-        }
-    </style>
-    <?php
-    echo \yii\helpers\Html::a('Back', Yii::$app->request->referrer);
-    ?>
-    <div class="panel">
-        <div class="panel-body">
-            <table>
-                <?php foreach ($model as $i => $attribute) {
-                    echo '<tr>' . '<td>' . $i . '</td>' . '<td>' . $attribute . '</td>' . '</tr>';
-                } ?>
-            </table>
 
-        </div>
-    </div>
-</div>
+
+<?php
+
+    use kartik\detail\DetailView;
+
+        $settings=
+        [
+                                'model'=>$model,
+                                'condensed'=>true,
+                                'hover'=>true,
+                                'mode'=>DetailView::MODE_VIEW,
+                                'panel'=>[
+                                    'heading'=>'Ticket # ' . $model->ticketId,
+                                    'type'=>DetailView::TYPE_INFO,
+                                ],
+                                'attributes'=>[
+                                        ['attribute'=>'ticketId'],
+                                        ['attribute'=>'sellerId'],
+                                        ['attribute'=>'timestamp'],
+                                        ['attribute'=>'reservationId'],
+                                        ['attribute'=>'status'],
+
+                                ]
+    ];
+    echo DetailView::widget($settings);
+
+
+
+    ?>

@@ -5,23 +5,41 @@
  * @var $model      common\models\Article
  * @var $categories common\models\ArticleCategory[]
  */
-$this->title = Yii::t('backend', 'Update {modelClass}: ', [
-        'modelClass' => 'Article',
-    ]) . ' ' . $model->title;
-
-$this->params['breadcrumbs'][] = [
-    'label' => Yii::t('backend', 'Articles'),
-    'url' => [
-        'index'
-    ]
-];
-$this->params['breadcrumbs'][] = Yii::t('backend', 'Update');
-
 ?>
 
-<?php
+<div class="row">
+    <div class="col-12">
+        <!-- interactive chart -->
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-pen  "></i>
+                    <?=Yii::t('backend', 'Update {modelClass}: ', [
+        'modelClass' => 'Article',
+    ]) . ' ' . $model->title?>
 
-echo $this->render('_form', [
-    'model' => $model,
-    'categories' => $categories,
-]) ?>
+                </h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
+
+                </div>
+            </div>
+            <div class="card-body">
+
+                <?=$this->render('_form', [
+                    'model' => $model,
+                    'categories' => $categories,
+                ]) ?>
+
+
+            </div>
+            <!-- /.card-body-->
+        </div>
+        <!-- /.card -->
+
+    </div>
+
+    <!-- /.col -->
+</div>-

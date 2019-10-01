@@ -74,13 +74,14 @@
                                 DatePicker::class, [
                                 'type' => DatePicker::TYPE_INLINE
                                 , 'options' => [
-                                    'value' => date('Y-m-d', time()),
-                                    'class' => 'bg-gradient-info bordered'
+                                'value' => date('Y-m-d', time()),
+                                'class' => 'bg-gradient-info bordered'
 
                                 ],
                                 'pluginOptions' => [
 
                                     'autoclose' => true,
+
                                     'format' => 'yyyy-mm-dd',
                                     'startDate' => date(time()),
 
@@ -109,6 +110,7 @@
                                         // properties must be specified.
 
                                         'checked' => false,
+                                        'id'=>'paid_status',
                                         'options' => [
                                             'data-on'=>'Paid',
                                             'data-off'=>'Unpaid',
@@ -121,19 +123,7 @@
                                 );?>
 
 
-                                <?=Toggle::widget(
-                                    [
-                                        'name' => 'paid_method', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
-                                        'checked' => false,
-                                        'options' => [
-                                            'data-on'=>'Card',
-                                            'data-off'=>'Cash',
-                                            'data-width'=>'100px',
-                                            'data-onstyle'=>'info'
-                                        ],
-                                        // checkbox options. More data html options [see here](http://www.bootstraptoggle.com)
-                                    ]
-                                );?>
+
                                 <?=   Toggle::widget(
                                     [
                                         'name' => 'paid_currency', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
@@ -147,6 +137,28 @@
                                         // checkbox options. More data html options [see here](http://www.bootstraptoggle.com)
                                     ]
                                 );?>
+                                <?=Toggle::widget(
+                                    [
+                                        'name' => 'paid_method', // input name. Either 'name', or 'model' and 'attribute' properties must be specified.
+                                        'checked' => false,
+                                        'id'=>'currency_selector',
+                                        'options' => [
+                                            'data-on'=>'Card',
+                                            'data-off'=>'Cash',
+                                            'data-width'=>'100px',
+                                            'data-onstyle'=>'info'
+                                        ],
+                                        // checkbox options. More data html options [see here](http://www.bootstraptoggle.com)
+                                    ]
+                                );?>
+
+                                <?php
+
+
+
+                                ?>
+
+
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-lg-4">
@@ -168,6 +180,7 @@
                             <?php ActiveForm::end();
 
                             Pjax::end();
+
                         } else {
                             if (isset($_POST['paid_status'])) {
                                 $paid_status = 'paid';
@@ -206,7 +219,7 @@
 
 
                             foreach ($myPrices as $i => $price) {
-                                echo'<div class="col-lg-12">';
+
                                 if ($paid_currency == 'HUF') {
                                     $price = ProductPrice::eurtohuf($price);
                                 }
@@ -254,7 +267,7 @@
 
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool"
-                                                data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                                data-card-widget="collapse"><i class="fas fa-plus"></i>
                                         </button>
 
                                     </div>
@@ -300,58 +313,39 @@
 
                                 </div>
                                 <!-- /.card-body-->
-                            </div>    <div class="card bg-primary  card-outline collapsed-card">
+                            </div>
+
+                            <div class="card bg-primary  card-outline collapsed-card">
                                 <div class="card-header">
                                     <h3 class="card-title">
-                                        Seller Tools
+                                        <i class="fas fa-user-friends  "></i>
+                                        Customer Details
                                     </h3>
 
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool"
-                                                data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                                data-card-widget="collapse"><i class="fas fa-plus"></i>
                                         </button>
 
                                     </div>
                                 </div>
                                 <div class="card-body bg-gradient-white">
                                     <div class="col-lg-12">
-                                        <i class="fas fa-user-friends  "></i>
-                                        Customer Details
-                                        <?= TouchSpin::widget(
-                                            [   'name'=>'customPrice',
-                                                'options' =>
-                                                    [
 
-                                                        'placeholder' => 'Adjust ...',
-                                                        'data-priceid' => $price->id,
-                                                        'autocomplete' => 'off',
-                                                        'type'   => 'number',
+                                                <input type="text" name="firstName" id="" class="form-control"
+                                                       placeholder="First Name"
+                                                       aria-describedby="helpId">
+                                                <input type="text" name="lastName" id="" class="form-control"
+                                                       placeholder="Last Name"
+                                                       aria-describedby="helpId">
+                                                <textarea name="orderNote" id="orderNote" class="form-control"
+                                                       placeholder="orderNote"
+                                                          aria-describedby="helpId" form="product-form"></textarea>
 
-                                                    ],
-                                                'pluginOptions' => [
-                                                    'buttonup_txt'=>Icon::show('caret-square-up', ['class'=>'fa-lg 
-                                                    bg-info','framework'
-                                                    =>Icon::FAS]),
-                                                    'buttondown_txt'=>Icon::show('caret-square-down',
-                                                                                 ['class'=>'fa-lg fa-lg bg-info','framework'
-                                                    =>Icon::FAS]) ,
-
-                                                    'max'=>'9999999'
-                                                ]
-                                            ]   );
-                                        ?>
 
                                     </div>
 
-                                    <div class="col-lg-12">
 
-                                        <?php
-                                            // echo Yii::$app->runAction('Reservations/assigner');
-
-                                            echo $this->render('assingui',['model'=>new Reservations()]);
-
-                                        ?>
-                                    </div>
 
                                 </div>
                                 <!-- /.card-body-->
@@ -362,11 +356,11 @@
 
 
 
-                            <div class="col-lg-12 customPrice">
+                            <div class="col-lg-12 customPrice " contentEditable="true" editable="true">
                                 <div class="box box-default box-solid ">
                                     <div class="box-header  bg-blue-gradient with-border">
                                         <h3 class="box-title"></h3>
-                                        <div class="box-tools pull-right">
+                                        <div class="box-tools float-right">
                                             <button type="button" class="btn btn-box-tool" data-widget="collapse">
                                                 <?=Icon::show('plus-circle', ['class'=>'fa-lg','framework'=>Icon::FA
                                                                               ,'style'=>'color:white'
@@ -422,13 +416,6 @@
 
 
 
-
-
-
-<script type="text/javascript">
-
-
-</script>
 
 
 
@@ -618,5 +605,4 @@ SCRIPT;
     }
 </style>
 
-</div>
 
