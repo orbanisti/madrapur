@@ -54,7 +54,7 @@ def __init__():
 
 
     stemmer = Stemmer(LANGUAGE)
-    budapestrivercruise.com
+
     lsaSummarizer = Lsa(stemmer)
     lsaSummarizer.stop_words = get_stop_words(LANGUAGE)
     luhnSummarizer = Luhn(stemmer)

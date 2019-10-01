@@ -80,6 +80,10 @@ class SeoController extends Controller {
                              ]);
     }
 
+    public function actionModcalendar(){
+        return $this->render('eventsch');
+
+    }
 
     public function actionGeneratemeta($id){
             $posted=Yii::$app->request->post('Seo');

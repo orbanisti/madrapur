@@ -24,6 +24,9 @@ $config = [
         ],
     ],
     'modules' => [
+        'Modevent' => [
+            'class' => backend\modules\Modevent\Module::class,
+        ],
         'Seo' => [
             'class' => backend\modules\Seo\Module::class,
         ],
