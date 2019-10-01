@@ -8,6 +8,7 @@ use common\models\Article;
 use common\models\ArticleCategory;
 use Yii;
 use backend\controllers\Controller;
+use yii\web\Response;
 
 /**
  * Controller for the `Seo` module
@@ -59,6 +60,14 @@ class SeoController extends Controller {
         if($seomodel->load(Yii::$app->request->post()) && $seomodel->save()){
 
 
+            return $this->renderAjax('update',
+                                     [
+                                         'model' => $article,
+                                         'categories' => ArticleCategory::find()->active()
+                                             ->all(),
+                                         'seomodel'=>$seomodel,
+                                         'pleaseRefresh'=>true
+                                     ]);
         }
 
 
@@ -73,33 +82,40 @@ class SeoController extends Controller {
 
 
     public function actionGeneratemeta($id){
-            $model=Article::findOne($id);
+            $posted=Yii::$app->request->post('Seo');
+            if(!$posted) {
+                $model = Article::findOne($id);
 
-            $texttoecho='';
-            $seomodel=Seo::find()->where('postId='.$id)->one();
+                $texttoecho = '';
+                $seomodel = Seo::find()->where('postId=' . $id)->one();
+
+                if ($seomodel) {
+                    $pyscript = 'C:\\MadraPurFinal\\madrapur\\backend\\modules\\Seo\\views\\seo\\metadesc.py';
+                    $python = 'C:\\Users\\ROG\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe';
+                    $cmd = "$python $pyscript " . $id;
+                    #$texttoecho.=$cmd;
+                    $result = exec($cmd, $output, $return);
+
+                    $texttoecho = ($output);
+                }
+            }
+            else{
+                $seomodel = Seo::find()->where('postId=' . $id)->one();
+                if($seomodel->load(Yii::$app->request->post()) && $seomodel->save()){
 
 
 
 
-            if($seomodel){
-                $pyscript = 'D:\\Munka\\MadraPurFinal\\madrapur\\backend\\modules\\Saccount\\views\\saccount\\scrapegroups.py';
-                $python = 'C:\\Users\\ROG\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe';
-                $cmd = "$python $pyscript $seomodel->mainKeyword $model->body";
-                $result=exec($cmd, $output, $return );
-                $texttoecho.=$model->body;
+                    return $this->renderAjax('generatemeta',['posted'=>$posted]);
+
+                }
+
             }
 
-
-
-
-
-
-
-
-
-        return $this->render('generatemeta',
+        return $this->renderAjax('generatemeta',
                              ['model'=>$model,
-                              'content'=>$texttoecho
+                              'content'=>$texttoecho,
+                              'posted'=>$posted
                              ]);
 
     }

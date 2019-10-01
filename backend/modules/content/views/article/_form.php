@@ -1,6 +1,7 @@
 <?php
 
-use trntv\filekit\widget\Upload;
+    use dosamigos\ckeditor\CKEditor;
+    use trntv\filekit\widget\Upload;
 use trntv\yii\datetime\DateTimeWidget;
 use yii\bootstrap4\ActiveForm;
 use yii\helpers\Html;
@@ -40,24 +41,10 @@ echo $form->field($model, 'category_id')->dropDownList(\yii\helpers\ArrayHelper:
 
 <?php
 
-echo $form->field($model, 'body')->widget(\yii\imperavi\Widget::class,
-    [
-        'plugins' => [
-            'fullscreen',
-            'fontcolor',
-            'video'
-        ],
-        'options' => [
-            'minHeight' => 400,
-            'maxHeight' => 400,
-            'buttonSource' => true,
-            'convertDivs' => false,
-            'removeEmptyTags' => true,
-            'imageUpload' => Yii::$app->urlManager->createUrl([
-                '/file/storage/upload-imperavi'
-            ]),
-        ],
-    ]) ?>
+echo $form->field($model, 'body')->widget(CKEditor::className(), [
+    'options' => ['rows' => 6],
+    'preset' => 'full'
+]) ?>
 
 <?php
 

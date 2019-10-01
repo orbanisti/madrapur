@@ -101,3 +101,20 @@
 
     <!-- /.col -->
 </div>
+
+<?php
+if(isset($pleaseRefresh)){
+    $this->registerJs(" $(function () {
+                            $('#modal2').modal('toggle');
+                        });");
+}
+?><?php
+
+    yii\bootstrap4\Modal::begin([
+                                    'id' =>'modal2',
+                                    //'headerOptions' => ['id' => 'modalHeader'],
+                                    'title' => 'AI Generated meta',
+
+                                ]);
+
+    yii\bootstrap4\Modal::end(); ?>
