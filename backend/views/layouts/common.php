@@ -406,8 +406,7 @@ $bundle = BackendAsset::register($this);
                             '/Product/add-ons/admin'
                         ],
                         'icon' => '<i class="fa nav-icon fa-plug"></i>',
-                        'active' => (Yii::$app->controller->id == 'add-ons') &&
-                            Yii::$app->controller->action->id === 'admin',
+                        'active' => Yii::$app->controller->id === 'add-ons',
                     ],
                 ],
 //                                'visible' => Yii::$app->user->can('accessProducts'),

@@ -6,15 +6,7 @@ use yii\db\Migration;
 class m190917_104310_addProductAddons extends Migration {
     public $tableName = "{{modulusProductAddOns}}";
     public $columns = [
-        "foreignKeys" => [
-            "prodId" => [
-                "column" => "prodId",
-                "refTable" => "{{modulusProducts}}",
-                "refColumns" => "id",
-                "onDelete" => "CASCADE",
-                "onUpdate" => "CASCADE"
-            ]
-        ]
+        "foreignKeys" => []
     ];
     public $foreignTableName = "{{modulusProducts}}";
     public $tableOptions = "";
@@ -28,10 +20,10 @@ class m190917_104310_addProductAddons extends Migration {
         $this->createTable(
             $this->tableName, [
                 "id" => $this->primaryKey(),
-                "prodId" => $this->integer(11)->notNull(),
-                "name" => $this->string(255),
-                "icon" => $this->string(255)->defaultValue("fa-check"),
-                "type" => "ENUM('boolean', 'integer')",
+                "name" => $this->string(255)->notNull(),
+                "icon" => $this->string(255)->notNull()->defaultValue("fa fa-check"),
+                "type" => "ENUM('simple', 'sub-capacity')",
+                "price" => $this->bigInteger(15)->notNull()->defaultValue(0),
             ],
             $this->tableOptions
         );
