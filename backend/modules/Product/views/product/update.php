@@ -4,7 +4,10 @@
 
 /* @var $model backend\modules\Products\models\Products */
 
+$this->title = Yii::t('app', 'Edit product') . '<br><u>' . $model->title . '</u>';
 
+//$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Termékek'), 'url' => ['admin']];
+//$this->params['breadcrumbs'][] = Yii::t('app', 'Szerkesztés');
 
 ?>
 
@@ -42,7 +45,15 @@
                         }
                         echo $updateResponse;
                     ?>
+                    <?php
 
+                    $referrer = Yii::$app->request->referrer;
+
+                    echo \yii\helpers\Html::a( 'Back', $referrer, [
+                        'class' => "btn btn-primary" . ($referrer ? "" : " disabled"),
+                    ]);
+                    
+                    ?>
 
                     <?=
 

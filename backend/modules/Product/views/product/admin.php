@@ -63,15 +63,19 @@ use kartik\icons\Icon;
                 } ,
                 'update' => function ($url , $model , $key) {
 
-                    return Html::a('<i class="fas fa-lg fa-pencil-alt "></i>' ,
-                        Url::to(['product/update' ,
-                            'prodId' => $model->id]) ,
+                    return Html::a(
+                        '<span class="fa fa-lg fa-pencil-alt"></span>',
+                        Url::to([
+                            'product/update' ,
+                            'prodId' => $model->id,
+                        ]),
                         [
-                            'title' => Yii::t('app' , 'Delete') ,
-                            'data-pjax' => '1' ,
+                            'title' => Yii::t('app' , 'Delete'),
+                            'data-pjax' => '1',
                             'data' => [
-                                'method' => 'post' ,
-                                'pjax' => 1 ,] ,
+                                'method' => 'post',
+                                'pjax' => 1,
+                            ],
                         ]
                     );
 

@@ -846,13 +846,13 @@
 
             return $this->render(
                 'create2', [
-                'model' => new Product(),
-                'disableForm' => $disableForm,
-                'myPrices' => $myprices,
-                'countPrices' => $countPrices,
-                'newReservation' => $updateResponse,
-                'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
-            ]
+                    'model' => new Product(),
+                    'disableForm' => $disableForm,
+                    'myPrices' => $myPrices,
+                    'countPrices' => $countPrices,
+                    'newReservation' => $updateResponse,
+                    'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
+                ]
             );
         }
 

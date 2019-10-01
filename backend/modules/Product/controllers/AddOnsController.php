@@ -31,6 +31,7 @@ class AddOnsController extends Controller {
 
                 if (!$addOn->save()) {
                     // error message
+                    Yii::error('Could not save.', 'addOnCreate');
                 }
             }
         }
@@ -49,7 +50,7 @@ class AddOnsController extends Controller {
                         }
                         break;
                     case 'edit':
-                        Yii::error($getData, 'aliusEdit');
+                        Yii::error($getData, 'addOnEdit');
                         break;
                     default:
                         break;
