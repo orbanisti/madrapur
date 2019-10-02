@@ -225,6 +225,7 @@ $bundle = BackendAsset::register($this);
                 'options' => [
                     'class' => 'nav-item'
                 ],
+
             ],
             [
                 'label' => Yii::t('backend', 'Modevent'),
