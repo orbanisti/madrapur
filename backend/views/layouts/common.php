@@ -225,18 +225,7 @@ $bundle = BackendAsset::register($this);
                 'options' => [
                     'class' => 'nav-item'
                 ],
-
-            ],
-            [
-                'label' => Yii::t('backend', 'Modevent'),
-                'url' => [
-                    '/Modevent/modevent/admin'
-                ],
-                'icon' => '<i class="fas fa-calendar-times  "></i>',
-                'active' => Yii::$app->controller->id === 'seo',
-                'options' => [
-                    'class' => 'nav-item'
-                ],
+                'visible' => Yii::$app->user->can('administrator'),
             ],
             [
                 'label' => Yii::t('backend', 'Widgets'),

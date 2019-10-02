@@ -4,7 +4,9 @@ namespace backend\modules\Product\controllers;
 
 use backend\controllers\Controller;
 use backend\modules\Modmail\models\Modmail;
+use backend\modules\Product\models\AddOn;
 use backend\modules\Product\models\Product;
+use backend\modules\Product\models\ProductAddOn;
 use backend\modules\Product\models\ProductAdminSearchModel;
 use backend\modules\Product\models\ProductBlockout;
 use backend\modules\Product\models\ProductBlockoutTime;
@@ -306,6 +308,40 @@ class ProductController extends Controller {
             $modelTimes[0]->start_date = date("Y-m-d");
         }
 
+        /*******************AddOns Rész /TODO bring this to manly form*********************/
+
+        $request = YII::$app->request;
+        $productPostedAddOns = $request->post('AddOn');
+        $modelAddOns = AddOn::find()->all();
+
+        if ($productPostedAddOns) {
+            $queryGetAddOns = ProductAddOn::aSelect(ProductAddOn::class, 'id', ProductAddOn::tableName(), 'prodId=' . $prodId)->all();
+
+            $queryGetAddOns = ArrayHelper::map($queryGetAddOns, 'id', 'id');
+
+            ProductAddOn::deleteAll(['id' => $queryGetAddOns]);
+
+            foreach ($productPostedAddOns as $postedAddOn):
+                $isEnabled = ProductAddOn::findOne(['id' => 1]);
+
+                if ('0' !== ($addOnId = $postedAddOn['id'])) {
+                    if (!$isEnabled) {
+                        ProductAddOn::insertOne(
+                            new ProductAddOn(),
+                            [
+                                'prodId' => $prodId,
+                                'addOnId' => $addOnId
+                            ]
+                        );
+                    }
+                }
+            endforeach;
+        }
+
+        $rowsAll = ProductAddOn::find()->andFilterWhere(['=', 'prodId', $prodId])->all();
+        $rowsArray = ArrayHelper::toArray($rowsAll);
+        $selectedModelAddOns = array_filter(ArrayHelper::map($rowsArray, 'addOnId', 'addOnId'));
+
         /*******************Prices Rész /TODO bring this to manly form*********************/
 
         $request = YII::$app->request;
@@ -570,6 +606,8 @@ class ProductController extends Controller {
                 'modelEvents' => $modelEvents2,
                 'modelTimes' => ((empty($modelTimes)) ? [new ProductTime()] : $modelTimes),
                 'modelPrices' => ((empty($modelPrices)) ? [new ProductPrice()] : $modelPrices),
+                'modelAddOns' => ((empty($modelAddOns)) ? [new AddOn()] : $modelAddOns),
+                'selectedModelAddOns' => $selectedModelAddOns,
             ]
         );
     }

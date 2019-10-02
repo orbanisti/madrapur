@@ -4,7 +4,15 @@ $config = [
         'assetManager' => [
             'class' => \common\base\MadAssetManager::class,
             'linkAssets' => env('LINK_ASSETS'),
-            'appendTimestamp' => YII_ENV_DEV
+            'appendTimestamp' => YII_ENV_DEV,
+            'bundles' => [
+                'wbraganca\dynamicform\DynamicFormAsset' => [
+                    'sourcePath' => '@common/assets/overrides/js',
+                    'js' => [
+                        'yii2-dynamic-form.js'
+                    ],
+                ],
+            ],
         ]
     ],
     'as locale' => [
