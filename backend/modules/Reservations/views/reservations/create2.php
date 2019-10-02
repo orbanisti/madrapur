@@ -60,7 +60,6 @@
 
 
                             <?php
-                            $allMyProducts = Product::getAllProducts();
                             echo $form->field($model, 'title')
                                 ->dropDownList(ArrayHelper::map($allMyProducts, 'id', 'title'),
                                                ['prompt' => 'Please select a product'])->label(false);

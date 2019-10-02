@@ -3,6 +3,7 @@
 use trntv\yii\datetime\DateTimeWidget;
 use kartik\grid\GridView;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\JsExpression;
 
 /**
@@ -86,10 +87,43 @@ use yii\web\JsExpression;
                                 ],
 
                                 [
-                                    'class' => 'kartik\grid\ActionColumn',
+                                  'class' => 'yii\grid\ActionColumn',
                                     'template' => '{view} {delete}',
+                                    'buttons' => [
+                                        'delete' => function ($url, $searchModel, $key) {
+                                            return Html::a(
+                                                '<span class="fa fa-lg fa-trash"></span>',
+                                                Url::to([
+                                                    '/system/log/delete',
+                                                    'id' => $searchModel->id,
+                                                ]),
+                                                [
+                                                    'title' => Yii::t('app', 'Delete'),
+                                                    'data-pjax' => '1',
+                                                    'data' => [
+                                                        'method' => 'post',
+                                                        'confirm' => Yii::t('app', 'Are you sure you want to delete?'),
+                                                        'pjax' => 1,
+                                                    ],
+                                                ]
+                                            );
+
+                                        },
+                                        'view' => function ($url, $searchModel, $key) {
+                                            return Html::a(
+                                                '<span class="fa fa-lg fa-pencil-alt"></span>',
+                                                Url::to([
+                                                    '/system/log/view',
+                                                    'id' => $searchModel->id,
+                                                ]),
+                                                [
+                                                    'title' => Yii::t('app', 'View'),
+                                                ]
+                                            );
+                                        },
+                                    ]
                                 ],
-                            ],
+                             ],
                         ]);
                 ?>
                
@@ -102,3 +136,4 @@ use yii\web\JsExpression;
  
     <!-- /.col -->
 </div>
+
