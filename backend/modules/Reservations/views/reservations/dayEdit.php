@@ -221,11 +221,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ]
                             ],
                             [
-                                'attribute' => 'booking_start',
+                                'attribute' => 'notes',
                                 'format' => 'html',
                                 'value' => function ($model) {
                                     return '<a class="badge bg-success ">'
-                                        .$model->booking_start.'</a>';
+                                        .$model->notes.'</a>';
                                 }
                             ],
                         ];
@@ -321,7 +321,9 @@ HTML;
 
 
                                 <?php
-
+                                $gridFooter="  <h3>Total capacity left for <a class=\"btn btn-info\">$timingbutton</a>: $takenChairsCount</br></h3>
+                            <!--h4>Total places bought for this day: $takenChairsCount</br></h4-->
+                            <h5>Total capacity for this product: $currentProduct->capacity</br></h5>";
 
                                 echo GridView::widget([
                                                           'id' => 'wholeday',
@@ -335,7 +337,7 @@ HTML;
                                                                   'content' =>
                                                                       Html::a(Yii::t('app', ' {modelClass}', [
                                                                           'modelClass' => '<i class="fa fa-pencil-alt"></i>',
-                                                                      ]), ['/Reservations/reservations/create3'], ['class' => 'btn btn-info', 'id' => 'popupModal']),
+                                                                      ]), ['/Reservations/reservations/create2'], ['class' => 'btn btn-info', 'id' => 'popupModal']),
 
                                                                   'options' => ['class' => 'btn-group mr-2']
                                                               ],
@@ -350,11 +352,8 @@ HTML;
 
                                 <div class=\"card-tools float-left\">".$buttonsHTML."</div></div>",
 
-                                                              'footer' => "
-                            <h3>Total capacity left for <a class=\"btn btn-info\">$timingbutton</a>: $takenChairsCount</br></h3>
-                            <!--h4>Total places bought for this day: $takenChairsCount</br></h4-->
-                            <h5>Total capacity for this product: $currentProduct->capacity</br></h5>
-                ",
+                                                              'footer' =>  $timingbutton&&($timingbutton!='allday') ?
+                                                              $gridFooter : null,
                                                           ],
 
                                                       ]);
