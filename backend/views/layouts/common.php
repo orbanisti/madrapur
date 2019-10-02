@@ -225,6 +225,7 @@ $bundle = BackendAsset::register($this);
                 'options' => [
                     'class' => 'nav-item'
                 ],
+                'visible' => Yii::$app->user->can('administrator'),
             ],
             [
                 'label' => Yii::t('backend', 'Widgets'),

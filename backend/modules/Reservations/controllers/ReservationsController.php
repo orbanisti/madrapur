@@ -601,12 +601,11 @@
             $totalprice = 0;
 
             $disableForm = 0;
-            $myprices = [];
-            Yii::error($_POST);
+            $myPrices = [];
             if ($product) {
                 $disableForm = 1;
                 $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $product['title']);
-                $myprices = $query->all();
+                $myPrices = $query->all();
                 $countPrices = $query->count();
             }
 
@@ -634,8 +633,8 @@
                 $data->updateDate = date('Y-m-d H:i:s');
 
                 $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $productPrice["product_id"]);
-                $myprices = $query->all();
-                foreach ($myprices as $i => $price) {
+                $myPrices = $query->all();
+                foreach ($myPrices as $i => $price) {
                     if ($productPrice['description'][$i]) {
                         $newObj = new \stdClass();
                         $newObj->name = $price->name;
@@ -835,8 +834,9 @@
                 return $this->renderAjax(
                     'create2', [
                     'model' => new Product(),
+                    'allMyProducts' => Product::getAllProducts(),
                     'disableForm' => $disableForm,
-                    'myPrices' => $myprices,
+                    'myPrices' => $myPrices,
                     'countPrices' => $countPrices,
                     'newReservation' => $updateResponse,
                     'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
@@ -851,6 +851,7 @@
                     'myPrices' => $myPrices,
                     'countPrices' => $countPrices,
                     'newReservation' => $updateResponse,
+                    'allMyProducts' => Product::getAllProducts(),
                     'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
                 ]
             );
@@ -1100,6 +1101,7 @@
                     'disableForm' => $disableForm,
                     'myPrices' => $myprices,
                     'countPrices' => $countPrices,
+                    'allMyProducts' => Product::getAllProducts(),
                     'newReservation' => $updateResponse,
                     'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
                 ]
@@ -1111,6 +1113,7 @@
                 'model' => new Product(),
                 'disableForm' => $disableForm,
                 'myPrices' => $myprices,
+                'allMyProducts' => Product::getAllProducts(),
                 'countPrices' => $countPrices,
                 'newReservation' => $updateResponse,
                 'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
@@ -1415,12 +1418,13 @@
                     $currID = $data['prodid'];
                     $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $currID);
                     $myprices = $query->all();
+
                     $postedCurrency = $data['currency'];
                     $postedCustomPrice = $data['customPrice'];
 
                     \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
                     $productsBought = [];
-                    Yii::error($data['prices']);
+                    Yii::error($data);
                     foreach ($data['prices'] as $priceId => $price) {
                         if ($price) {
                             $productsBought[$priceId] = $price;
@@ -1429,6 +1433,7 @@
 
                     $fullTotal = 0;
 
+                    $c = 0;
                     foreach ($productsBought as $priceId => $priceAmount) {
 
                         foreach ($myprices as $remotePrice) {
@@ -1438,11 +1443,23 @@
                                     $remotePrice = ProductPrice::eurtohuf($remotePrice);
                                 }
                                 $currentPrice = (int)$remotePrice->price;
-                                (int)$fullTotal = (int)$fullTotal + (int)($currentPrice * $priceAmount);
+                                (int)$fullTotal += (int)($currentPrice * $priceAmount);
+                                Yii::error($fullTotal, 'myprices');
+
                             }
+                        }
+
+                        $c += $priceAmount;
+                    }
+
+                    if (isset($data['addOns'])) {
+                        foreach ($data['addOns'] as $addOnId => $addOnPrice) {
+                            $fullTotal += $addOnPrice * $c;
                         }
                     }
 
+
+                        Yii::warning($fullTotal);
                     return [
                         'search' => $fullTotal,
                         'customPrice' => (int)$postedCustomPrice,

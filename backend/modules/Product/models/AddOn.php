@@ -66,4 +66,10 @@ class AddOn extends MadActiveRecord {
             ],
         ];
     }
+
+    public function attributeLabels() {
+        return [
+            'id' => Yii::t('app', ' '),
+        ];
+    }
 }

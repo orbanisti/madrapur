@@ -9,7 +9,7 @@ use kartik\datecontrol\DateControl;
 
 DynamicFormWidget::begin([
     'widgetContainer' => 'dynamicform_wrapper_sources', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
-    'widgetBody' => '.container-items-sources', // required: css class selector
+    'widgetBody' => '.card-body.main-sources', // required: css class selector
     'widgetItem' => '.item-sources', // required: css class
     'limit' => 10, // the maximum times, an element can be cloned (default 999)
     'min' => 0, // 0 or 1 (default 1)
@@ -23,65 +23,94 @@ DynamicFormWidget::begin([
 ]);
 ?>
 
-<div class="panel panel-default">
-
-    <div class="panel-heading">
-        <h4><i class="glyphicon glyphicon-file"></i> <?= Yii::t('app', 'Product Sources') ?>
-            <?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
-            <button type="button" class="add-item-sources btn btn-info btn-sm pull-right"><i
-                    class="glyphicon glyphicon-plus"></i> <?= Yii::t('app', 'Új') ?></button>
-
-        </h4>
-    </div>
-    <div class="panel-body">
-        <div class="container-items-sources"><!-- widgetContainer -->
-            <?php foreach ($modelSources as $i => $modelSource): ?>
-                <div class="item-sources panel panel-default"><!-- widgetBody -->
-                    <div class="panel-heading">
-
-                        <h3 class="panel-title pull-left"><?= Yii::t('app', 'Source') ?></h3>
-                        <div class="pull-right">
-                            <button type="button" class="add-item-sources btn btn-info btn-xs"><i
-                                    class="glyphicon glyphicon-plus"></i></button>
-                            <button type="button" class="remove-item-sources btn btn-danger btn-xs"><i
-                                    class="glyphicon glyphicon-minus"></i></button>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="panel-body">
-                        <?php
-                        // necessary for update action.
-
-                        echo Html::activeHiddenInput($modelSource, "[{$i}]id");
-
-                        echo $form->field($modelSource, "[{$i}]product_id")->hiddenInput(['value' => $model->id])->label(false);
-                        ?>
-                        <div class="row">
-                            <div class="col-sm-12">
-
-                            </div>
-                            <div class="col-sm-12">
-
-                            </div>
-                            <div class="col-sm-12">
-
-                            </div>
-                            <div class="col-sm-12">
-
-
-
-                            </div>
-
-
-                        </div><!-- .row -->
-                    </div>
+<div class="row">
+    <div class="col-12">
+        <!-- interactive chart -->
+        <div class="card card-primary card-outline container-items-sources">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <button type="button" class="add-item-sources btn btn-info btn-sm pull-right"><i
+                                class="fa fa-plus fa-fw"></i> <?= Yii::t('app', 'New Source') ?></button>
+                </h3>
+                ​
+                <div class="card-tools">
+                    ​
                 </div>
+            </div>
+            <div class="card-body main-sources">
+                ​
+                <?php foreach ($modelSources as $i => $modelSource): ?>
+                    <div class="row item-sources">
+                        <div class="col-12">
+                            <!-- interactive chart -->
+                            <div class="card card-secondary card-outline">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        <?= $modelSource->name ?>
+                                    </h3>
+                                    ​
+                                    <div class="card-tools">
+                                        <button type="button"
+                                                class="btn btn-tool"
+                                                data-card-widget="collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
 
-            <?php endforeach; ?>
+                                        <button type="button"
+                                                class="close"
+                                                aria-label="Close"
+                                                data-card-widget="close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    ​<?php
+                                    // necessary for update action.
 
+                                    echo Html::activeHiddenInput($modelSource, "[{$i}]id");
+
+                                    echo $form->field($modelSource, "[{$i}]product_id")->hiddenInput(['value' => $model->id])->label(false);
+                                    ?>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <?= $form->field($modelSource, "[{$i}]name")->textInput(['class' => 'form-control']) ?>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <?= $form->field($modelSource, "[{$i}]url")->textInput(['class' => 'form-control']) ?>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <?= $form->field($modelSource, "[{$i}]prodIds")->textInput(['class' => 'form-control']) ?>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <?= $form->field($modelSource, "[{$i}]color")->widget(\kartik\color\ColorInput::class, [
+                                                'options' => ['placeholder' => 'Select color ...'],
+                                            ]); ?>
+                                        </div>
+                                    </div><!-- .row -->
+
+                                </div>
+                                <!-- /.card-body-->
+                            </div>
+                            <!-- /.card -->
+                            ​
+                        </div>
+
+                        <!-- /.col -->
+                    </div>
+
+                <?php endforeach; ?>
+
+            </div>
+            <!-- /.card-body-->
         </div>
+        <!-- /.card -->
+        ​
     </div>
+
+    <!-- /.col -->
 </div>
+
 <?php DynamicFormWidget::end(); ?>
 
 <?php
@@ -106,45 +135,7 @@ $this->registerJs('
                 $(".pricestab").last().attr("href","#"+list[i].id);
         }
     });
-
-    $(".dynamicform_wrapper").on("beforeDelete", function(e, item) {
-        if (! confirm("Biztos, hogy törölni akarod?")) {
-            return false;
-        }
-        return true;
-    });
-
-    $(".dynamicform_wrapper").on("afterDelete", function(e) {
-        console.log("Deleted item!");
-    });
-
-    $(".dynamicform_wrapper").on("limitReached", function(e, item) {
-        alert("Limit elérve");
-    });
     ');
 
-$this->registerJs('
-    $(".dynamicform_wrapper_times").on("beforeInsert", function(e, item) {
-        console.log("beforeInsert");
-    });
 
-    $(".dynamicform_wrapper_times").on("afterInsert", function(e, item) {
-        console.log("afterInsert");
-    });
-
-    $(".dynamicform_wrapper_times").on("beforeDelete", function(e, item) {
-        if (! confirm("Biztos, hogy törölni akarod?")) {
-            return false;
-        }
-        return true;
-    });
-
-    $(".dynamicform_wrapper_times").on("afterDelete", function(e) {
-        console.log("Deleted item!");
-    });
-
-    $(".dynamicform_wrapper_times").on("limitReached", function(e, item) {
-        alert("Limit elérve");
-    });
-    ');
 ?>

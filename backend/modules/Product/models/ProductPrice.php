@@ -33,7 +33,7 @@ class ProductPrice extends MadActiveRecord {
             'name' => Yii::t('app', 'Name'),
             'price' => Yii::t('app', 'Price'),
             'discount' => Yii::t('app', 'Discount'),
-            'description' => Yii::t('app', ''),
+            'description' => Yii::t('app', 'Description'),
         ];
     }
 
@@ -58,6 +58,12 @@ class ProductPrice extends MadActiveRecord {
         $price->name=$newname;
         $price->price=(int)$price->price*(int)Yii::$app->keyStorage->get('currency.huf-value');
         return $price;
+    }
+
+
+    public static function eurtohufValue($price){
+        $hufprice=$price*(int)Yii::$app->keyStorage->get('currency.huf-value');
+        return $hufprice;
     }
 
 }

@@ -16,13 +16,7 @@ if (Yii::$app->session->hasFlash('error')) {
 } elseif (Yii::$app->session->hasFlash('success')) {
     echo '<p class="has-success flashes"><span class="help-block help-block-success">' . Yii::$app->session->getFlash('success') . '</span></p>';
 }
-
-$form = ActiveForm::begin([
-    'id' => 'product-edit',
-    'action' => 'update?prodId=' . $prodId,
-    'options' => ['class' => 'product-edit', 'enctype' => 'multipart/form-data'],
-
-]); ?>
+?>
 
 <ul class="nav nav-pills nav-fill">
     <li class="nav-item">
@@ -30,11 +24,11 @@ $form = ActiveForm::begin([
            href="#content"
            data-toggle="tab"><?= Yii::t('app', 'Details') ?></a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link"
-           href="#meta"
-           data-toggle="tab"><?= Yii::t('app', 'Meta') ?></a>
-    </li>
+<!--    <li class="nav-item">-->
+<!--        <a class="nav-link"-->
+<!--           href="#meta"-->
+<!--           data-toggle="tab">--><?//= Yii::t('app', 'Meta') ?><!--</a>-->
+<!--    </li>-->
     <li class="nav-item">
         <a class="nav-link"
            href="#prices"
@@ -52,14 +46,14 @@ $form = ActiveForm::begin([
     </li>
     <li class="nav-item">
         <a class="nav-link"
-           href="#timetable"
-           data-toggle="tab"><?= Yii::t('app', 'TimeTable') ?></a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link"
            href="#add-ons"
            data-toggle="tab"><?= Yii::t('app', 'Add-ons') ?></a>
     </li>
+<!--    <li class="nav-item">-->
+<!--        <a class="nav-link"-->
+<!--           href="#timetable"-->
+<!--           data-toggle="tab">--><?//= Yii::t('app', 'TimeTable') ?><!--</a>-->
+<!--    </li>-->
 </ul>
 
 
@@ -119,6 +113,17 @@ $form = ActiveForm::begin([
     </div>
 
     <div class="tab-pane"
+         id="add-ons">
+        <?= $this->render("forms/add-ons", [
+            "form" => $form,
+            "model" => $model,
+            "prodId" => $prodId,
+            "modelAddOns" => $modelAddOns,
+            "selectedModelAddOns" => $selectedModelAddOns,
+        ]); ?>
+    </div>
+
+    <div class="tab-pane"
          id="timetable">
 
         <?= $this->render("forms/timetable", [
@@ -130,11 +135,31 @@ $form = ActiveForm::begin([
 
     </div>
 
-    <div class="tab-pane"
-         id="add-ons">
+    <?php
+    $this->registerJs('
+        $(".dynamicform_wrapper_times").on("beforeInsert", function(e, item) {
+            console.log("beforeInsert");
+        });
+    
+        $(".dynamicform_wrapper_times").on("afterInsert", function(e, item) {
+            console.log("afterInsert");
+        });
+    
+        $(".dynamicform_wrapper_times").on("beforeDelete", function(e, item) {
+            if (! confirm("Biztos, hogy törölni akarod?")) {
+                return false;
+            }
+            return true;
+        });
+    
+        $(".dynamicform_wrapper_times").on("afterDelete", function(e) {
+            console.log("Deleted item!");
+        });
+    
+        $(".dynamicform_wrapper_times").on("limitReached", function(e, item) {
+            alert("Limit elérve");
+        });
+    ');
+    ?>
 
-    </div>
-
-
-    <?php ActiveForm::end(); ?>
 </div>

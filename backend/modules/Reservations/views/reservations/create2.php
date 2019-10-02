@@ -8,11 +8,14 @@
      */
 
     use backend\assets\MaterializeWidgetsAsset;
-    use backend\modules\Product\models\Product;
-    use backend\modules\Product\models\ProductPrice;
+use backend\modules\Product\models\AddOn;
+use backend\modules\Product\models\Product;
+use backend\modules\Product\models\ProductAddOn;
+use backend\modules\Product\models\ProductPrice;
     use backend\modules\Reservations\models\Reservations;
     use kartik\date\DatePicker;
-    use kartik\helpers\Html;
+use kartik\form\ActiveForm;
+use kartik\helpers\Html;
     use kartik\icons\Icon;
     use kartik\switchinput\SwitchInput;
     use kartik\touchspin\TouchSpin;
@@ -20,7 +23,7 @@
     use yii\helpers\ArrayHelper;
     use yii\web\JsExpression;
     use yii\web\View;
-    use yii\widgets\ActiveForm;
+
     use yii\widgets\Pjax;
     MaterializeWidgetsAsset::register($this);
 
@@ -351,7 +354,53 @@
                             </div>
                             <!-- /.card -->
 
+                            <div class="card bg-primary  card-outline collapsed-card">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        Add-ons
+                                    </h3>
 
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool"
+                                                data-card-widget="collapse"><i class="fas fa-plus"></i>
+                                        </button>
+
+                                    </div>
+                                </div>
+                                <div class="card-body bg-gradient-white">
+                                    <div class="col-lg-12">
+                                        <?php
+                                            $addOnLinks = ProductAddOn::find()
+                                                ->andFilterWhere(['=', 'prodId', $currentProdId])
+                                                ->all();
+                                            foreach ($addOnLinks as $i => $addOnLink) {
+                                                $addOn = AddOn::findOne(['id' => $addOnLink->addOnId, 'type' => 'simple']);
+                                                if ($addOn) {
+                                                    $addOnPrice = $addOn->price;
+
+                                                    if ($paid_currency == 'HUF') {
+                                                        $addOnPrice = ProductPrice::eurtohufValue($addOnPrice);
+                                                    }
+
+                                                    echo $form->field(
+                                                        $model, "[{$i}]id")->checkbox([
+                                                        'value' => $addOnPrice,
+                                                        'checked' => false,
+                                                        'data-id' => $addOnLink->addOnId,
+                                                        'data-add-on' => true,
+                                                    ])->label("$addOn->name ($addOnPrice $paid_currency)");
+                                                }
+                                            }
+                                        ?>
+
+                                    </div>
+
+
+
+                                </div>
+                                <!-- /.card-body-->
+                            </div>
+                            <!-- /.card -->
 
 
 
@@ -545,6 +594,21 @@ SCRIPT;
 
     }
 
+    function gatherAddOns() {
+        var addOnsObj = {};
+        var countAddOns = $("input[data-add-on]");
+
+        countAddOns.each(function(idx, element) {
+            if (element.checked) {
+                addOnsObj[$(element).attr("data-id")] = element.value;
+            }
+        });
+
+        console.log(addOnsObj);
+
+        return addOnsObj;
+    }
+
     var Total = 0;
     $('#product-form').change(function () {
         $.ajax({
@@ -558,6 +622,7 @@ SCRIPT;
                 prodid: <?=(Yii::$app->request->post('Product'))['title'] ? (Yii::$app->request->post('Product'))['title'] : 999 ?>,
                 currency: '<?=isset($paid_currency) ? $paid_currency : 0 ?>',
                 customPrice:$('input[name=customPrice]').val(),
+                addOns: gatherAddOns(),
             },
             success: function (data) {
 
