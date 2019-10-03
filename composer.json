@@ -29,7 +29,11 @@
 	},
 	"require": {
 		"php": ">=7.1.0",
+		"ext-gmagick": "*",
+		"ext-http": "*",
+		"ext-imagick": "*",
 		"ext-intl": "*",
+		"ext-json": "*",
 		"yiisoft/yii2": "^2.0.13",
 		"yiisoft/yii2-swiftmailer": "^2.0.0",
 		"yiisoft/yii2-authclient": "^2.0.0",
