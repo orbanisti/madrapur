@@ -12,7 +12,7 @@
     use kartik\grid\EditableColumn;
     use kartik\grid\GridView;
     use kartik\helpers\Html;
-    use yii\widgets\ActiveForm;
+    use kartik\form\ActiveForm;
     use yii\widgets\Pjax;
     \kartik\grid\EditableColumnAsset::register($this);
     \kartik\editable\EditableAsset::register($this);
