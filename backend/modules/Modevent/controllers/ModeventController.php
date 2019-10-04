@@ -9,22 +9,18 @@ use backend\controllers\Controller;
 /**
  * Controller for the `Modevent` module
  */
-class ModeventController extends Controller {
-    /**
-     * Renders the admin view for the module
-     * @return string
-     */
-    public function actionAdmin() {
-        $model= new Modevent();
-        $model->title='asd';
-        return $this->render('admin',['model'=>$model]);
+class ModeventController extends ModeventCrudController {
+
+    public function actionCalendar()
+    {
+
+        return $this->render('calendar', [
+        ]);
     }
-    
-    /**
-     * Renders the index view for the module
-     * @return string
-     */
-    public function actionIndex() {
-        return $this->render('index');
+    public function actionSubscribe()
+    {
+
+        return $this->render('subscribe', ['model' => new Modevent()
+        ]);
     }
 }

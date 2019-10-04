@@ -18,16 +18,19 @@ class Modevent extends MadActiveRecord{
     public function rules() {
         return [
             [['id'], 'integer'],
-            [['title','place'], 'string', 'max' => 1200],
-            [['start','end'], 'date', 'format' => 'yyyy-mm-dd H:i'],
+            [['title','place','user','status'], 'string', 'max' => 1200],
+            [['date'], 'datetime', 'format' => 'yyyy-mm-dd H:i'],
         ];
     }
 
     public function attributeLabels() {
         return [
-//            'id' => Yii::t('app', 'ID'),
-//            'source' => Yii::t('app', 'Forrás'),
-//            'randomDate' => Yii::t('app', 'Véletlenszerű dátum'),
+            'id' => Yii::t('app', 'ID'),
+            'title' => Yii::t('app', 'title'),
+            'place' => Yii::t('app', 'place'),
+            'user' => Yii::t('app', 'user'),
+            'status' => Yii::t('app', 'status'),
+            'date' =>Yii::t('app', 'date')
         ];
     }
 }
