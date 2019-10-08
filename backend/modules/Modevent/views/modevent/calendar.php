@@ -34,25 +34,94 @@ use yii\widgets\Pjax;
 
                 <?php
                     $events = array();
-                    //Testing
-                    $Event = new \yii2fullcalendar\models\Event();
-                    $Event->id = 1;
-                    $Event->title = 'Testing';
-                    $Event->start = date('Y-m-d\TH:i:s\Z');
-                    $Event->nonstandard = [
-                        'field1' => 'Something I want to be included in object #1',
-                        'field2' => 'Something I want to be included in object #2',
-                    ];
-                    $events[] = $Event;
+                    foreach ($allEvents as $newEvent){
 
-                    $Event = new \yii2fullcalendar\models\Event();
-                    $Event->id = 2;
-                    $Event->title = 'Testing';
-                    $Event->start = date('Y-m-d\TH:i:s\Z',strtotime('tomorrow 6am'));
-                    $events[] = $Event;
+                        $begin = new DateTime($newEvent->startDate);
+                        $end = new DateTime($newEvent->endDate);
+
+                        $interval = DateInterval::createFromDateString('1 day');
+
+                        $period = new DatePeriod($begin, $interval, $end);
+                        if(!isset($newEvent->place)){
+                            foreach ($period as $dt) {
+                                $Event = new \yii2fullcalendar\models\Event();
+                                $Event->id = $newEvent->id.'###'.$dt->format('Y-m-d');
+                                $Event->title = $newEvent->user;
+                                $Event->start = $dt->format('Y-m-d');
+                                if($newEvent->title=='subscribe'){
+                                    $Event->resourceId = 'att';
+                                }
+                                $Event->nonstandard = [
+                                    'field1' => 'Something I want to be included in object #1',
+
+                                ];
+                                $events[] = $Event;
+
+                            }
+
+                        }
+                        else{
+                            $Event = new \yii2fullcalendar\models\Event();
+                            $Event->id = $newEvent->id.'###'.$newEvent->place;
+                            $Event->title = $newEvent->user;
+                            $Event->start = $newEvent->startDate;
+                            $Event->resourceId=$newEvent->place;
+                            $events[] = $Event;
+                        }
+
+
+
+
+
+                    }
+                    //Testing
+
+                    if(Yii::$app->user->can('streetAdmin') || Yii::$app->user->can('administrator')){
+
+                        $JSEventClick = <<<EOF
+function(calEvent, jsEvent, view) {
+  
+    var m=new Date(calEvent.start);
+    var Year=m.getUTCFullYear();
+    var Month=m.getUTCMonth()+1;
+    var Day=m.getUTCDate();
+    if(Month<10)Month='0'+Month;
+    if(Day<10)Day='0'+Day;
+    dateString = Year+'-'+Month+'-'+Day;
+  console.log('drop the bass'+dateString+calEvent.resourceId);
+ doSave(calEvent.title,dateString,calEvent.resourceId);
+  
+}
+EOF;
+
+                    }else{
+                        $JSEventClick=<<<EOF
+function(calEvent, jsEvent, view) {alert("[no - no]");}
+EOF;
+                    }
 
                 ?>
+                    <script>
+                        function doSave(user,date,place){
 
+                            $.ajax({
+                                url: '<?php echo Yii::$app->request->baseUrl. 'save' ?>',
+                                type: 'post',
+                                data: {
+                                    user: user,
+                                    date:date,
+                                    place:place,
+                                    title:'arranged',
+                                    _csrf : '<?=Yii::$app->request->getCsrfToken()?>'
+                                },
+                                success: function (data) {
+                                    console.log(data.search);
+                                }
+                            });
+
+                        }
+
+                    </script>
                 <?= \edofre\fullcalendarscheduler\FullcalendarScheduler::widget([
                                                                                     'header'        => [
                                                                                         'left'   => 'today prev,next',
@@ -61,7 +130,7 @@ use yii\widgets\Pjax;
                                                                                     ],
 
                                                                                     'clientOptions' => [
-                                                                                        'now'               => '2016-05-07',
+                                                                                        'now'               => '2019-10-04',
                                                                                         'editable'          => true, // enable draggable events
                                                                                         'aspectRatio'       => 1.8,
                                                                                          'plugins'=>[   'resourceDayGridPlugin' ],
@@ -98,27 +167,36 @@ use yii\widgets\Pjax;
                                                                                             ],
                                                                                         ],
                                                                                         'resourceLabelText' => 'Rooms',
-                                                                                        'resources'         => [
-                                                                                            ['id' => 'a', 'title' => 'Rakpart'],
-                                                                                            ['id' => 'b', 'title' => 'Váci', 'eventColor' => 'green'],
-                                                                                            ['id' => 'c', 'title' => 'Utcasarok', 'eventColor' => 'orange'],
-                                                                                            [
-                                                                                                'id'       => 'd', 'title' => 'Dock',
-                                                                                                'children' => [
-                                                                                                    ['id' => 'd1', 'title' => 'Dock délelőtt'],
-                                                                                                    ['id' => 'd2', 'title' => 'Dock délelután'],
-                                                                                                ],
-                                                                                            ],
-                                                                                            ['id' => 'e', 'title' => 'Auditorium E'],
-
-                                                                                        ],
-                                                                                        'events'            => [
-                                                                                            ['id' => '1', 'resourceId' => 'b', 'start' => '2016-05-07T02:00:00', 'end' => '2016-05-07T07:00:00', 'title' => 'event 1'],
-                                                                                            ['id' => '2', 'resourceId' => 'c', 'start' => '2016-05-07T05:00:00', 'end' => '2016-05-07T22:00:00', 'title' => 'event 2'],
-                                                                                            ['id' => '3', 'resourceId' => 'd', 'start' => '2016-05-06', 'end' => '2016-05-08', 'title' => 'event 3'],
-                                                                                            ['id' => '4', 'resourceId' => 'e', 'start' => '2016-05-07T03:00:00', 'end' => '2016-05-07T08:00:00', 'title' => 'event 4'],
-                                                                                            ['id' => '5', 'resourceId' => 'f', 'start' => '2016-05-07T00:30:00', 'end' => '2016-05-07T02:30:00', 'title' => 'event 5'],
-                                                                                        ],
+                                                                                        'resources'         =>
+                                                                                            \yii\helpers\Url::to
+                                                                                            (['modevent/resources','id'=>1]),
+                                                                                        'resourceRender'    => new \yii\web\JsExpression("
+			function(resource, leftCells, rightCells) {
+				if (resource.id != 'att') {
+				   
+					leftCells.css('display', 'block');
+					timeBadge=document.createElement(\"span\"); 
+					roleBadge=document.createElement(\"span\"); 
+					timeBadge.className='badge pull-right badge-info';
+					roleBadge.className='badge pull-right badge-warning';
+					
+					var timeText = document.createTextNode(resource.eventClassName[0]);
+					var roleText = document.createTextNode(resource.eventBorderColor);
+					console.log(resource.eventBorderColor);
+					timeBadge.append(timeText);
+					roleBadge.append(roleText);
+					textCell=leftCells.find('.fc-cell-content');
+					textCell.append(timeBadge);
+					textCell.append(roleBadge);
+					
+				}
+			}
+		"),
+                                                                                        'events'            =>
+                                                                                            $events,
+                                                                                        'eventDrop'=> new
+                                                                                   \yii\web\JsExpression
+                                                                                   ($JSEventClick),
                                                                                     ],
                                                                                 ]);
                 ?>
@@ -132,3 +210,4 @@ use yii\widgets\Pjax;
 
     <!-- /.col -->
 </div>
+

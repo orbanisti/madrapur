@@ -1,6 +1,7 @@
 <?php
 
     use kartik\date\DatePicker;
+    use kartik\daterange\DateRangePicker;
     use kartik\form\ActiveForm;
     use yii\helpers\Html;
 use kartik\grid\GridView;
@@ -34,22 +35,44 @@ use yii\widgets\Pjax;
             </div>
             <div class="card-body">
                 <?php
-                    $form= ActiveForm::begin();
-                    echo '<label class="control-label">Valid Dates</label>';
-                    echo DatePicker::widget([
-                                                'name' => 'from_date',
-                                                'value' => '01-Feb-1996',
-                                                'type' => DatePicker::TYPE_RANGE,
-                                                'name2' => 'to_date',
-                                                'value2' => '27-Feb-1996',
-                                                'pluginOptions' => [
-                                                    'autoclose' => true,
-                                                    'format' => 'yyyy-mm-dd'
-                                                ]
-                                            ]);
 
-                    ActiveForm::end();
                 ?>
+                <div class="form-group">
+                    <?php
+                        $form= ActiveForm::begin();
+                        echo '<label class="control-label">Please select a date range</label>';
+                        echo DatePicker::widget([
+                                                    'model' => $model,
+                                                    'attribute' => 'startDate',
+                                                    'attribute2' => 'endDate',
+                                                    'options' => ['placeholder' => 'Start date'],
+                                                    'options2' => ['placeholder' => 'End date'],
+                                                    'type' => DatePicker::TYPE_RANGE,
+                                                    'form' => $form,
+                                                    'pluginOptions' => [
+                                                        'format' => 'yyyy-mm-dd',
+                                                        'autoclose' => true,
+                                                    ]
+                                                ]);
+
+                        echo $form->field($model, 'user')->hiddeninput(['value' => Yii::$app->user->getIdentity()
+                            ->username])
+                            ->label
+                        (false);
+                        echo $form->field($model, 'title')->hiddeninput(['value' => 'subscribe'])
+                            ->label
+                        (false);
+
+                        echo Html::submitButton(Yii::t('backend', 'Subscribe for work'),
+                                                [
+                                                    'class' => 'btn btn-primary btn-flat',
+                                                    'name' => 'blocking-button',
+                                                    'value' => 'dayBlocking'
+                                                ]);
+                        ActiveForm::end();
+                    ?>
+                </div>
+
                
             </div>
             <!-- /.card-body-->

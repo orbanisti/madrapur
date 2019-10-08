@@ -10,7 +10,7 @@ use kartik\datecontrol\DateControl;
  */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Modevents', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Modevents'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="modevent-view">
@@ -47,6 +47,32 @@ $this->params['breadcrumbs'][] = $this->title;
             'status',
             'user:ntext',
             'title:ntext',
+            [
+                'attribute' => 'startDate',
+                'format' => [
+                    'date', (isset(Yii::$app->modules['datecontrol']['displaySettings']['date']))
+                        ? Yii::$app->modules['datecontrol']['displaySettings']['date']
+                        : 'd-m-Y'
+                ],
+                'type' => DetailView::INPUT_WIDGET,
+                'widgetOptions' => [
+                    'class' => DateControl::classname(),
+                    'type' => DateControl::FORMAT_DATE
+                ]
+            ],
+            [
+                'attribute' => 'endDate',
+                'format' => [
+                    'date', (isset(Yii::$app->modules['datecontrol']['displaySettings']['date']))
+                        ? Yii::$app->modules['datecontrol']['displaySettings']['date']
+                        : 'd-m-Y'
+                ],
+                'type' => DetailView::INPUT_WIDGET,
+                'widgetOptions' => [
+                    'class' => DateControl::classname(),
+                    'type' => DateControl::FORMAT_DATE
+                ]
+            ],
         ],
         'deleteOptions' => [
             'url' => ['delete', 'id' => $model->id],

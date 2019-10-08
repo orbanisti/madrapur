@@ -16,7 +16,7 @@ class ModeventSearch extends Modevent
     {
         return [
             [['id', 'status'], 'integer'],
-            [['date', 'place', 'user', 'title'], 'safe'],
+            [['date', 'place', 'user', 'title', 'startDate', 'endDate'], 'safe'],
         ];
     }
 
@@ -42,6 +42,8 @@ class ModeventSearch extends Modevent
             'id' => $this->id,
             'date' => $this->date,
             'status' => $this->status,
+            'startDate' => $this->startDate,
+            'endDate' => $this->endDate,
         ]);
 
         $query->andFilterWhere(['like', 'place', $this->place])

@@ -7,8 +7,10 @@ use yii\helpers\Html;
  * @var backend\modules\Modevent\models\Modevent $model
  */
 
-$this->title = 'Create Modevent';
-$this->params['breadcrumbs'][] = ['label' => 'Modevents', 'url' => ['index']];
+$this->title = Yii::t('backend', 'Create {modelClass}', [
+    'modelClass' => 'Modevent',
+]);
+$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Modevents'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="modevent-create">

@@ -285,6 +285,7 @@ $bundle = BackendAsset::register($this);
                         ],
                         'icon' => '<i class="fas fa-bell fa-fw nav-icon "></i>',
                         'active' => Yii::$app->controller->id === 'text',
+                        'visible'=>Yii::$app->user->can('administrator')
                     ],
                     [
                         'label' => Yii::t('backend', 'Calendar'),
@@ -293,6 +294,7 @@ $bundle = BackendAsset::register($this);
                         ],
                         'icon' => '<i class="fas fa-calendar-times nav-icon "></i>',
                         'active' => Yii::$app->controller->id === 'text',
+
                     ],
                     [
                         'label' => Yii::t('backend', 'Subscribe'),
@@ -302,9 +304,34 @@ $bundle = BackendAsset::register($this);
                         'icon' => '<i class="fas fa-pen-fancy nav-icon "></i>',
                         'active' => Yii::$app->controller->id === 'text',
                     ],
+                    [
+                        'label' => Yii::t('backend', 'Workshift'),
+                        'url' => [
+                            '/Modevent/modevent/workshift'
+                        ],
+                        'icon' => '<i class="fas fa-key nav-icon"></i>',
+                        'active' => Yii::$app->controller->id === 'text',
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'My Work'),
+                        'url' => [
+                            '/Modevent/modevent/mywork'
+                        ],
+                        'icon' => '<i class="fas fa-sun nav-icon"></i>',
+                        'active' => Yii::$app->controller->id === 'text',
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Peeper'),
+                        'url' => [
+                            '/Modevent/modevent/peeper'
+                        ],
+                        'icon' => '<i class="fas fa-eye-slash nav-icon "></i>',
+                        'active' => Yii::$app->controller->id === 'text',
+                    ],
 
                 ],
-                'visible' => Yii::$app->user->can('administrator'),
+                'visible' => Yii::$app->user->can('streetSeller') || Yii::$app->user->can('streetAdmin')||
+                    Yii::$app->user->can('administrator') ,
             ],
 
             // TRANSLATION

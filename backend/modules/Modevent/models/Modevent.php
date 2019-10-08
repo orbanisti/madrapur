@@ -15,11 +15,14 @@ class Modevent extends MadActiveRecord{
         return 'modulusModevent';
     }
 
+
+
     public function rules() {
         return [
             [['id'], 'integer'],
             [['title','place','user','status'], 'string', 'max' => 1200],
             [['date'], 'datetime', 'format' => 'yyyy-mm-dd H:i'],
+            [['startDate','endDate'], 'date', 'format' => 'yyyy-mm-dd'],
         ];
     }
 
@@ -30,7 +33,10 @@ class Modevent extends MadActiveRecord{
             'place' => Yii::t('app', 'place'),
             'user' => Yii::t('app', 'user'),
             'status' => Yii::t('app', 'status'),
-            'date' =>Yii::t('app', 'date')
+            'date' =>Yii::t('app', 'date'),
+            'startDate' =>Yii::t('app', 'startDate'),
+            'endDate' =>Yii::t('app', 'endDate'),
         ];
     }
+
 }

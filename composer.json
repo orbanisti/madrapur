@@ -95,7 +95,11 @@
 		"schmunk42/yii2-giiant": "@stable",
 		"edofre/yii2-fullcalendar-scheduler": "V1.1.12",
 		"kartik-v/yii2-widget-activeform": "@dev",
-		"kartik-v/yii2-field-range": "*"
+		"kartik-v/yii2-field-range": "*",
+		"warrence/yii2-kartikgii": "dev-master",
+		"kartik-v/yii2-widget-timepicker": "*"
+
+
 
 
 	},
