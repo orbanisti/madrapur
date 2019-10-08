@@ -140,6 +140,7 @@ class UserProfile extends ActiveRecord {
         ]);
     }
 
+
     /**
      *
      * @return null|string

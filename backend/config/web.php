@@ -24,6 +24,9 @@ $config = [
         ],
     ],
     'modules' => [
+        'gridview' => [
+            'class' => kartik\grid\Module::class,
+        ],
         'Modevent' => [
             'class' => backend\modules\Modevent\Module::class,
         ],
@@ -218,7 +221,7 @@ if (YII_ENV_DEV) {
                 ],
                 'template' => 'yii2-starter-kit',
                 'messageCategory' => 'backend',
-            ],
+            ],     'kartikgii-crud' => ['class' => 'warrence\kartikgii\crud\Generator']
         ],
     ];
 }

@@ -268,6 +268,71 @@ $bundle = BackendAsset::register($this);
                     ],
                 ],
                 'visible' => Yii::$app->user->can('accessContent'),
+            ],[
+                'label' => Yii::t('backend', 'Workflow'),
+                'url' => [
+                    '/'
+                ],
+                'icon' => '<i class="fab fa-wizards-of-the-coast nav-icon "></i>',
+                'options' => [
+                 'class' => 'nav-item has-treeview'
+                ],
+                'active' => Yii::$app->controller->module->id === 'widget',
+                'items' => [
+                    [
+                        'label' => Yii::t('backend', 'Overview'),
+                        'url' => [
+                            '/Modevent/modevent/index'
+                        ],
+                        'icon' => '<i class="fas fa-bell fa-fw nav-icon "></i>',
+                        'active' => Yii::$app->controller->id === 'text',
+                        'visible'=>Yii::$app->user->can('administrator')
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Calendar'),
+                        'url' => [
+                            '/Modevent/modevent/calendar'
+                        ],
+                        'icon' => '<i class="fas fa-calendar-times nav-icon "></i>',
+                        'active' => Yii::$app->controller->id === 'text',
+
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Subscribe'),
+                        'url' => [
+                            '/Modevent/modevent/subscribe'
+                        ],
+                        'icon' => '<i class="fas fa-pen-fancy nav-icon "></i>',
+                        'active' => Yii::$app->controller->id === 'text',
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Workshift'),
+                        'url' => [
+                            '/Modevent/modevent/workshift'
+                        ],
+                        'icon' => '<i class="fas fa-key nav-icon"></i>',
+                        'active' => Yii::$app->controller->id === 'text',
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'My Work'),
+                        'url' => [
+                            '/Modevent/modevent/mywork'
+                        ],
+                        'icon' => '<i class="fas fa-sun nav-icon"></i>',
+                        'active' => Yii::$app->controller->id === 'text',
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Peeper'),
+                        'url' => [
+                            '/Modevent/modevent/peeper'
+                        ],
+                        'icon' => '<i class="fas fa-eye-slash nav-icon "></i>',
+                        'active' => Yii::$app->controller->id === 'text',
+                    ],
+
+                ],
+                'visible' => Yii::$app->user->can('streetSeller') || Yii::$app->user->can('streetAdmin')||
+                    Yii::$app->user->can('administrator') ,
             ],
 
             // TRANSLATION

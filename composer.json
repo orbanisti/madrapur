@@ -96,7 +96,14 @@
 		"insolita/yii2-adminlte3-widgets": "~0.0.1",
 		"insolita/yii2-migration-generator": "^3.1",
 		"2amigos/yii2-ckeditor-widget": "^2.2",
-		"schmunk42/yii2-giiant": "@stable"
+		"schmunk42/yii2-giiant": "@stable",
+		"edofre/yii2-fullcalendar-scheduler": "V1.1.12",
+		"kartik-v/yii2-widget-activeform": "@dev",
+		"kartik-v/yii2-field-range": "*",
+		"warrence/yii2-kartikgii": "dev-master",
+		"kartik-v/yii2-widget-timepicker": "*"
+
+
 
 
 	},
