@@ -59,7 +59,6 @@ class BackendAsset extends AssetBundle {
      */
     public $depends = [
         BS4PluginAsset::class,
-        BootstrapPluginAsset::class,
         YiiAsset::class,
         AdminLte::class,
         Html5shiv::class,

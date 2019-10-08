@@ -10315,6 +10315,7 @@
     "packages-dev": [
         {
             "name": "almasaeed2010/adminlte",
+
             "version": "v3.0.0-rc.4",
             "source": {
                 "type": "git",
@@ -10325,6 +10326,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/ColorlibHQ/AdminLTE/zipball/d8a6ddca02c4781dcf2bb91bbfc54bd1f27e5399",
                 "reference": "d8a6ddca02c4781dcf2bb91bbfc54bd1f27e5399",
+
                 "shasum": ""
             },
             "type": "library",
@@ -10350,7 +10352,9 @@
                 "theme",
                 "web"
             ],
+
             "time": "2019-10-04T13:18:22+00:00"
+
         },
         {
             "name": "behat/gherkin",

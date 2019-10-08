@@ -135,6 +135,7 @@ $bundle = BackendAsset::register($this);
                         'icon' => '<i class="fa nav-icon fa-plus"></i>',
                         'active' => Yii::$app->controller->id === 'tickets' &&
                             Yii::$app->controller->action->id === 'add-block',
+                        'visible' => Yii::$app->user->can('administrator'),
                     ],
                     [
                         'label' => Yii::t('backend', 'View assigned blocks'),

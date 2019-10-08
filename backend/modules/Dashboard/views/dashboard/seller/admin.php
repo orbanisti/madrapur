@@ -35,5 +35,5 @@
         }
     </style>
 
-    <a href="<?= Url::to("/Reservations/reservations/create2") ?>" class="btn btn-floating-right-bottom btn-app bg-purple"><i class="fa fa-plus-square-o"></i></a>
+    <a href="<?= Url::to("/Reservations/reservations/create2") ?>" class="btn btn-floating-right-bottom btn-app bg-purple"><i class="fa fa-plus-square"></i></a>
 </div>

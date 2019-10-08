@@ -248,7 +248,7 @@ use kartik\helpers\Html;
 
                                                                                           'max'=>'9999999'
                                                                                       ]
-                                                                                     ]   );
+                                                                                     ]   )->label(false);
 
                             }
                             echo $form->field($model, 'product_id')->hiddeninput(['value' => $currentProdId])->label(false);

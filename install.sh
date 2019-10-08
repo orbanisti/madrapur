@@ -29,6 +29,12 @@ php console/yii app/setup --interactive=0
 
 echo -e "\n"
 echo -e "${GREEN}######################################"
+echo -e "#######    ${NC}MIGRATE             ${GREEN}#######"
+echo -e "######################################\n${NC}"
+php console/yii mad-migrate/up --interactive=0
+
+echo -e "\n"
+echo -e "${GREEN}######################################"
 echo -e "#######    ${NC}NPM INSTALL         ${GREEN}#######"
 echo -e "######################################\n${NC}"
 npm install
