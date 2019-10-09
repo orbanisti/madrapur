@@ -12,6 +12,7 @@ use yii\web\JsExpression;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 //$this->title = Yii::t('backend', 'Users');
+
 ?>
 
 <div class="card card-primary card-outline">

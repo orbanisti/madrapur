@@ -80,8 +80,8 @@
             $searchModel = new ProductAdminSearchModel();
             $users=[];
             $users []= User::findOne(Yii::$app->user->id);
-
-            $today = date('Y-m-d');
+            $getDate=Yii::$app->request->get('date');
+            $today = $getDate ? $getDate : date('Y-m-d');
 
             $gridColumns = [
                 [
@@ -120,6 +120,11 @@
                         }
                         return $model->bookingCost . ' ' . $currencySymbol;
                     }
+                ],
+                [
+                    'label'=>'Partner',
+                    'attribute'=>'sellerName'
+
                 ],
                 [
                     'class' => 'kartik\grid\ActionColumn',

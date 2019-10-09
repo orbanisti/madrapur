@@ -56,10 +56,13 @@
                                                  alt="User Image">
                                             <a class="users-list-name" href="#"><?=$userModel->username?></a>
                                             <span class="users-list-date
-                                        bg-gradient-white"><span class="badge-pill badge-info"><?=
-                                                        (\backend\modules\Modevent\models\Workshift::findOne
+                                        bg-gradient-white"><span class="badge-pill badge-info">
+                                                    <?=($workshift=\backend\modules\Modevent\models\Workshift::findOne
                                                         ($user->place))
-                                                            ->place
+                                                            ->place.'</span><br/><span class="badge-pill badge-info"> 
+                                                            '.$workshift->startTime." - 
+                                                            "
+                                                    .$workshift->endTime
                                                     ?></span> </span>
 
                                             <span class="badge-pill <?=$user->status ?
@@ -82,7 +85,7 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer text-center">
-                            <a href="<?=Yii::li?>">View calendar</a>
+                            <a href="<?=\yii\helpers\Url::to(['modevent/calendar'])?>">View calendar</a>
                         </div>
                         <!-- /.card-footer -->
                     </div>
