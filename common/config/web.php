@@ -1,6 +1,13 @@
 <?php
 $config = [
     'components' => [
+        'thumbnailer' => [
+            'class' => 'daxslab\thumbnailer\Thumbnailer',
+
+            'thumbnailsPath' => '@webroot/assets/thumbs',
+            'thumbnailsBaseUrl' => '@web/assets/thumbs',
+            'enableCaching' => true, //defaults to false but is recommended
+        ],
         'assetManager' => [
             'class' => \common\base\MadAssetManager::class,
             'linkAssets' => env('LINK_ASSETS'),

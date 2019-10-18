@@ -6,6 +6,7 @@
     'id' => 'backend',
     'basePath' => dirname(__DIR__),
     'components' => [
+
         'assetManager'=>[    'bundles' => [
 
             'yii\bootstrap\BootstrapAsset' => [

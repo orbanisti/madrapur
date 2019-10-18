@@ -29,8 +29,7 @@
 	},
 	"require": {
 		"php": ">=7.1.0",
-		"ext-gmagick": "*",
-		"ext-http": "*",
+
 		"ext-imagick": "*",
 		"ext-intl": "*",
 		"ext-json": "*",
@@ -101,7 +100,9 @@
 		"kartik-v/yii2-widget-activeform": "@dev",
 		"kartik-v/yii2-field-range": "*",
 		"warrence/yii2-kartikgii": "dev-master",
-		"kartik-v/yii2-widget-timepicker": "*"
+		"kartik-v/yii2-widget-timepicker": "*",
+		"daxslab/yii2-thumbnailer": "*",
+		"yiisoft/yii2-imagine": "*"
 
 
 

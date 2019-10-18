@@ -3,6 +3,8 @@
     namespace backend\modules\Reservations\controllers;
 
     use backend\controllers\Controller;
+    use backend\modules\Modevent\models\Modevent;
+    use backend\modules\Modevent\models\Workshift;
     use backend\modules\Product\models\Product;
     use backend\modules\Product\models\ProductAdminSearchModel;
     use backend\modules\Product\models\ProductPrice;
@@ -11,8 +13,11 @@
     use backend\modules\Reservations\models\DateImport;
     use backend\modules\Reservations\models\Reservations;
     use backend\modules\Reservations\models\ReservationsAdminSearchModel;
+    use backend\modules\Tickets\models\TicketBlock;
     use backend\modules\Tickets\models\TicketBlockSearchModel;
     use backend\modules\Tickets\models\TicketSearchModel;
+    use common\commands\AddOldTicketToReservationCommand;
+    use common\commands\AddTicketToOldReservationCommand;
     use common\commands\AddTicketToReservationCommand;
     use common\commands\AddToTimelineCommand;
     use common\commands\SendEmailCommand;
@@ -70,17 +75,16 @@
 
             return $this->render(
                 'createReact', [
-                'data' => Json::encode($dataArray),
-            ]
+                                 'data' => Json::encode($dataArray),
+                             ]
             );
         }
 
-
         public function actionMytransactions() {
             $searchModel = new ProductAdminSearchModel();
-            $users=[];
-            $users []= User::findOne(Yii::$app->user->id);
-            $getDate=Yii::$app->request->get('date');
+            $users = [];
+            $users [] = User::findOne(Yii::$app->user->id);
+            $getDate = Yii::$app->request->get('date');
             $today = $getDate ? $getDate : date('Y-m-d');
 
             $gridColumns = [
@@ -115,15 +119,15 @@
                         } else {
                             $currencySymbol = 'Ft';
                         }
-                        if($model->status=='unpaid'){
-                            $currencySymbol.='<span class="badge badge-pill badge-warning">unpaid</span>';
+                        if ($model->status == 'unpaid') {
+                            $currencySymbol .= '<span class="badge badge-pill badge-warning">unpaid</span>';
                         }
                         return $model->bookingCost . ' ' . $currencySymbol;
                     }
                 ],
                 [
-                    'label'=>'Partner',
-                    'attribute'=>'sellerName'
+                    'label' => 'Partner',
+                    'attribute' => 'sellerName'
 
                 ],
                 [
@@ -131,11 +135,13 @@
                     'template' => '{view}',
                     'buttons' => [
                         'view' => function ($url) {
-                            return Html::a('<i class="fas fa-eye fa-lg "></i>',
-                                           $url,
-                                           [
-                                               'title' => Yii::t('backend', 'View')
-                                           ]);
+                            return Html::a(
+                                '<i class="fas fa-eye fa-lg "></i>',
+                                $url,
+                                [
+                                    'title' => Yii::t('backend', 'View')
+                                ]
+                            );
                         },
 
                     ],
@@ -183,14 +189,9 @@
                     ]
                 );
 
-
-
-
-
                 if ($user->hasRole('streetSeller')) {
 
-
-                    $userList[]='
+                    $userList[] = '
                             <!-- interactive chart -->
                             <div class="card card-primary card-outline">
                                 <div class="card-header">
@@ -224,9 +225,9 @@
                                 			              <div class="info-box-content">
                                 			                  <span class="info-box-text">EUR income today</span>
                                 			                <span class="info-box-number"><i 
-                                			                class="fas fa-wallet fa-fw"></i>'.$eurCashToday.'</span>
+                                			                class="fas fa-wallet fa-fw"></i>' . $eurCashToday . '</span>
                                 			                <span class="info-box-number"><i class="fas fa-credit-card fa-fw "></i></i>
-                                			                '.$eurCardToday.'</span>
+                                			                ' . $eurCardToday . '</span>
                                 			              </div>
                                 			              <!-- /.info-box-content -->
                                 			            </div>                          
@@ -238,9 +239,9 @@
                                 			              <div class="info-box-content">
                                 			                <span class="info-box-text">Huf income today</span>
                                 			                <span class="info-box-number"><i 
-                                			                class="fas fa-wallet fa-fw"></i>'.$hufCashToday.'</span>
+                                			                class="fas fa-wallet fa-fw"></i>' . $hufCashToday . '</span>
                                 			                <span class="info-box-number"><i class="fas fa-credit-card fa-fw "></i></i>
-                                			                '.$hufCardToday.'</span>
+                                			                ' . $hufCardToday . '</span>
                                 			              </div>
                                 			              <!-- /.info-box-content -->
                                 			            </div>                          
@@ -261,8 +262,354 @@
                 }
             }
 
-            return $this->render('mytransactions', ['userList' => $userList, 'searchModel' => $searchModel, 'today' =>
-                $today]);
+            return $this->render(
+                'mytransactions', [
+                'userList' => $userList, 'searchModel' => $searchModel, 'today' =>
+                    $today
+            ]
+            );
+        }
+
+        public function actionDayover() {
+            
+            if($workModeventId=Yii::$app->request->get('id')){
+                sessionSetFlashAlert('success', '<i class="fas fa-joint  "></i>Workshift ended! Good Job! Have a nice day!');
+                $workModevent=Modevent::findOne($workModeventId);
+                $workModevent->status='worked';
+                $workModevent->save();
+
+                Yii::error($workModevent->attributes);
+                
+            }
+            
+            $searchModel = new ProductAdminSearchModel();
+            $users = [];
+            $users [] = User::findOne(Yii::$app->user->id);
+            $getDate = Yii::$app->request->get('date');
+            $today = $getDate ? $getDate : date('Y-m-d');
+
+            $reservationmodel = new Reservations();
+
+            $userList = [];
+            $userUnfinished = [];
+
+            $userCurrentWorkshift = Modevent::userNextWork();
+            $workShift = Workshift::findOne($userCurrentWorkshift->place);
+
+            $userSkippedIds = TicketBlock::userWorkshiftSkippedTickets($workShift->id);
+
+
+
+
+            $userUnfinishedGrid = '<div class="row">';
+
+
+            foreach ($userSkippedIds as $skippedId) {
+
+                $userUnfinished[] = "
+                <div class=\"col-lg-3\">
+                    <!-- interactive chart -->
+                    <div class=\"card card-danger \">
+                        <div class=\"card-header\">
+                            <h3 class=\"card-title\">
+                                <i class=\"fas fa-bolt  \"></i>
+                                Skipped Ticket #         $skippedId
+                                
+                            </h3>
+            
+                            <div class=\"card-tools\">
+                                <button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"collapse\"><i class=\"fas fa-minus\"></i>
+                                </button>
+            
+                            </div>
+                        </div>
+                        <div class=\"card-body\">
+                        " . Html::a(
+                        Yii::t(
+                            'app', ' {modelClass}', [
+                            'modelClass' => '<i class="fa fa-pencil-alt"></i>Create Reservation',
+                        ]
+                        ), ['/Reservations/reservations/create2?ticketId=' . $skippedId], ['class' => 'btn btn-info', 'id' => 'popupModal']
+                    )
+                    . ' ' .
+                    Html::a(
+                        Yii::t(
+                            'app', ' {modelClass}', [
+                            'modelClass' => 'Storno',
+                        ]
+                        ), ['/Reservations/reservations/storno'], [
+                            'class' => 'btn btn-danger disabled',
+                            'id' =>
+                                'popupModal'
+                        ]
+                    ) . "
+            
+                  
+                        </div>
+                        <!-- /.card-body-->
+                    </div>
+                    <!-- /.card -->
+            
+                </div>   
+             
+                <!-- /.col -->
+        ";
+            }
+
+            $userUnableToContinue='';
+            if(sizeof($userUnfinished)>0){
+                //If the user still has skipped Tickets
+                sessionSetFlashAlert('danger', '<i class="fas fa-ticket-alt fa-fw"></i>' . 'Please finish your skipped tickets before you can end the Workshift');
+
+
+                foreach ($userUnfinished as $card) {
+                    $userUnfinishedGrid .= $card;
+                }
+                $userUnableToContinue='disabled';
+            }
+
+            $userUnfinishedGrid .= '</div>';
+
+            foreach ($users as $in => $user) {
+                $userDataProvider = $reservationmodel->searchReservations(Yii::$app->request->queryParams, $user->id, $today);
+
+
+
+                $userDataHuf = $reservationmodel->searchReservations(Yii::$app->request->queryParams, $user->id, $today, 'HUF');
+                $userDataEur = $reservationmodel->searchReservations(Yii::$app->request->queryParams, $user->id, $today, 'EUR');
+                $hufToday = Reservations::sumDataProvider($userDataHuf->models, 'bookingCost');
+                $hufCashToday = Reservations::sumDataProviderCash($userDataHuf->models, 'bookingCost');
+                $hufCardToday = Reservations::sumDataProviderCard($userDataHuf->models, 'bookingCost');
+                $eurCashToday = Reservations::sumDataProviderCash($userDataEur->models, 'bookingCost');
+                $eurCardToday = Reservations::sumDataProviderCard($userDataEur->models, 'bookingCost');
+
+                $eurToday = Reservations::sumDataProvider($userDataEur->models, 'bookingCost');
+
+                $workShiftName=$workShift->place.' - '.date('H:i',strtotime($workShift->startTime))."-".date('H:i',
+                                                                                                          strtotime
+                    ($workShift->endTime));
+
+
+                $ProductCount=Reservations::getCountBy($userDataProvider,'productId');
+
+                $ProductCountSummary='';
+
+                foreach ($ProductCount as $key=>$item){
+                    $ProductCountSummary.=(Product::getProdById($key))->title.' x '.$item."<br/>";
+                }
+
+
+                $gridColumns = [
+                    [
+                        'label' => 'Ticket Id',
+                        'attribute' => 'ticketId',
+
+                    ],
+                    [
+                        'label' => 'Product',
+                        'attribute' => 'productId',
+                        'format' => 'html',
+                        'value' => function ($model) {
+                            return (Product::getProdById($model->productId))->title;
+                        },
+                        'pageSummary'=>$ProductCountSummary,
+
+                        'pageSummaryOptions' => ['colspan' => 2],
+                    ],
+
+                    [
+                        'label' => 'Persons',
+                        'attribute' => 'bookedChairsCount',
+                        'format' => 'html',
+                        'value' => function ($model) {
+                            $sellerBadge = '';
+                            if (isset($model->iSellerName)) {
+
+                                $sellerBadge = " <span class=\" badge bg-yellow\">" . $model->iSellerName . "</span>";
+                            }
+
+                            return $model->bookedChairsCount . ' ' . Icon::show(
+                                    'users', [
+                                               'class' => 'fa-lg', 'framework'
+                                               => Icon::FA
+                                           ]
+                                ) . $sellerBadge;
+                        }
+                    ],
+                    [
+                        'label' => 'Cost',
+                        'attribute' => 'bookingCost',
+
+                        'format' => 'html',
+                        'value' => function ($model) {
+
+                            if ($model->orderCurrency == 'EUR') {
+                                $currencySymbol = '<i class="fas fa-euro-sign  "></i>';
+                            } else {
+                                $currencySymbol = 'Ft';
+                            }
+                            if ($model->status == 'unpaid') {
+                                $currencySymbol .= '<span class="badge badge-pill badge-warning">unpaid</span>';
+                            }
+                            return $model->bookingCost . ' ' . $currencySymbol;
+                        },
+                        'pageSummary'=>
+                            'Total <i class="fas fa-euro-sign  "></i> Cash '.$eurCashToday.
+                            '<br/>Total <i class="fas fa-euro-sign  "></i> Card '.$eurCardToday.
+                            '<br/>Total Ft Cash '.$hufCashToday.
+                            '<br/>Total Ft Card '.$hufCardToday
+                        ,
+
+                        'pageSummaryOptions' => ['colspan' => 2],
+
+                    ],
+                    [
+                        'label' => 'Partner',
+                        'attribute' => 'sellerName',
+                        'format' => 'html',
+                        'value' => function ($model) {
+                            if ($model->sellerName === Yii::$app->user->getIdentity()->username) {
+                                return '';
+                            }
+
+                            return $model->sellerName;
+                        }
+
+                    ],
+                    [
+                        'label' => 'Paid Method',
+                        'attribute' => 'paidMethod',
+                        'format' => 'html',
+                        'value' => function ($model) {
+                            return $model->paidMethod;
+                        }
+                    ],
+                    [
+                        'label' => 'Notes',
+                        'attribute' => 'notes',
+                        'format' => 'html',
+                        'value' => function ($model) {
+                            return $model->notes;
+                        }
+                    ],
+                    [
+                        'class' => 'kartik\grid\ActionColumn',
+                        'template' => '{view}',
+                        'buttons' => [
+                            'view' => function ($url) {
+                                return Html::a(
+                                    '<i class="fas fa-eye fa-lg "></i>',
+                                    $url,
+                                    [
+                                        'title' => Yii::t('backend', 'View')
+                                    ]
+                                );
+                            },
+
+                        ],
+
+                    ],
+
+                ];
+                $workStatus='';
+                if($userCurrentWorkshift->status=='worked'){
+
+
+                }
+
+                $userGrid = \kartik\grid\GridView::widget(
+                    [
+                        'dataProvider' => $userDataProvider,
+                        'columns' => $gridColumns,
+                        'pjax' => false,
+                        'layout' => '{summary}\n{items}\n{pager}',
+                        'showPageSummary' => true,
+                        'summary' => '',
+                        'toolbar' => [
+                            '',
+
+                            [
+
+
+                                'options' => ['class' => 'btn-group mr-2']
+                            ],
+                            Html::a('End Workshift', [
+                                'dayover',
+                                'id' => $userCurrentWorkshift->id
+
+                            ],['class'=>"btn btn-info $userUnableToContinue"]),
+                            '{export}',
+                            '{toggleData}',
+
+                        ],
+                        'panel' => [
+                            'heading' => $workShiftName,
+
+
+                        ],
+                        'toggleDataContainer' => ['class' => 'btn-group mr-2'],
+                        // set export properties
+                        'export' => [
+                            'fontAwesome' => true,
+
+                        ],
+
+
+
+                    ]
+                );
+
+                if ($user->hasRole('streetSeller')) {
+
+                    $userList[] = '
+                            <!-- interactive chart -->
+                            <div class="card card-primary card-outline">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        <i class="fas fa-user  "></i>
+                                        ' . $user->username . '
+                                    </h3>
+                    
+                                    <div class="card-tools btn-group    ">
+                                     
+                                     <span class="badge bg-info">
+                                     <i class="fas fa-euro-sign  "></i>
+                                     ' . $eurToday . "</span>
+                <span class=\" badge bg-green\">" . $hufToday . "Ft</span>
+                <span class=\"t badge bg-red\">" . $userDataProvider->getCount() . '</span>
+                                      
+                     <button type="button" class="btn btn-tool" 
+                                        data-card-widget="collapse"><i 
+                                        class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                
+                         
+                                
+                            
+                                
+                         
+                    
+                                   ' . $userUnfinishedGrid . $userGrid . '
+                                   
+                                   
+                                </div>
+                                <!-- /.card-body-->
+                            </div>
+                            <!-- /.card -->
+                    
+';
+                }
+            }
+
+            return $this->render(
+                'dayover', [
+                'userList' => $userList, 'searchModel' => $searchModel, 'today' =>
+                    $today
+            ]
+            );
         }
 
         /**
@@ -306,7 +653,7 @@
                         if ($booking->bookingDetails->booking_cost > 200000 && $booking->orderDetails->order_currency == 'EUR') {
                             continue;
                         }
-                        $dataJson=Json::encode($data);
+                        $dataJson = Json::encode($data);
 
                         $values = [
                             'invoiceMonth' => date('m', strtotime($booking->orderDetails->paid_date)),
@@ -371,17 +718,16 @@
             }
             $allsources = new ProductSource();
 
-
             return $this->render(
                 'admin', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-                'chartDataProvider' => $chartDataProvider,
-                'dateImportModel' => $dateImportModel,
-                'importResponse' => $importResponse,
-                'allsources' => $allsources
+                           'searchModel' => $searchModel,
+                           'dataProvider' => $dataProvider,
+                           'chartDataProvider' => $chartDataProvider,
+                           'dateImportModel' => $dateImportModel,
+                           'importResponse' => $importResponse,
+                           'allsources' => $allsources
 
-            ]
+                       ]
             );
         }
 
@@ -567,13 +913,14 @@
             }
             return $this->render(
                 'create', [
-                    'model' => new Product(),
-                    'disableForm' => $disableForm,
-                    'myPrices' => $myprices,
-                    'countPrices' => $countPrices,
-                    'newReservation' => $updateResponse,
+                'model' => new Product(),
+                'disableForm' => $disableForm,
+                'myPrices' => $myprices,
+                'countPrices' => $countPrices,
+                'newReservation' => $updateResponse,
 
-            ]);
+            ]
+            );
         }
 
         /**
@@ -695,6 +1042,12 @@
                     $orderNote = Yii::$app->request->post('orderNote');
                 }
 
+                if ($oldTicket = Yii::$app->request->post('ticketId')) {
+                    $ticketId = $oldTicket;
+                } else {
+                    $ticketId = $ticket->ticketId;
+                }
+
                 $values = [
                     'booking_cost' => $productPrice["discount"],
                     'invoiceMonth' => date('m'),
@@ -707,23 +1060,20 @@
                     'data' => json_encode($data),
                     'sellerId' => Yii::$app->user->getId(),
                     'sellerName' => Yii::$app->user->identity->username,
-                    'ticketId' => $ticket->ticketId,
+                    'ticketId' => $ticketId,
                     'status' => $paid_status,
-                    'paidMethod' => $paid_status=='paid' ? $paid_method : null,
-                    'order_currency' =>  $paid_currency,
+                    'paidMethod' => $paid_status == 'paid' ? $paid_method : null,
+                    'order_currency' => $paid_currency,
                     'billing_first_name' => $firstName,
                     'billing_last_name' => $lastName,
                     'notes' => $orderNote,
                 ];
                 /// Create2 reservation most important part
 
-
-
-
                 if ($_POST['anotherSeller']) {
                     //selling for somebody else
                     $originSellerId = $_POST['anotherSeller'];
-                    $originIdentity=User::findIdentity($originSellerId);
+                    $originIdentity = User::findIdentity($originSellerId);
                     Yii::error($originIdentity);
 
                     $originSellerName = $originIdentity->username;
@@ -734,65 +1084,46 @@
                     $values['sellerName'] = $originSellerName;
                     $values['iSellerId'] = $foolSellerId;
                     $values['iSellerName'] = $foolSellerName;
-
-
-
-
-
-
-
-
-
-
                 }
 
                 $insertReservation = Reservations::insertOne($newReservarion, $values);
 
-
-                Yii::info('Reservation created '.$insertReservation);
+                Yii::info('Reservation created ' . $insertReservation);
                 if ($insertReservation) {
                     ///Succsessfully booked now assigning bookingId
                     $findBooking = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'bookingId="tmpMad1"');
                     $booking = $findBooking->one();
                     $values = ['bookingId' => $booking->id];
 
-                    $logged=0;
-
-
-
-
+                    $logged = 0;
 
                     //Saving Reservation
                     Reservations::insertOne($booking, $values);
-                    $message = 'sold '.$_POST['sellerCustomDate'];
-                    if(isset($foolSellerName)){
-                        $from=$foolSellerName;
-                        $to=$originSellerName;
-                        Reservations::log($booking,$message,$from,$to);
-                        if($booking->status=='paid' && $booking->paidMethod=='cash'){
-                            Reservations::log($booking,$booking->booking_cost.' '.$booking->order_currency.' cash collected by'
-                                                      .$from);
-                            $logged=1;
-
+                    $message = 'sold ' . $_POST['sellerCustomDate'];
+                    if (isset($foolSellerName)) {
+                        $from = $foolSellerName;
+                        $to = $originSellerName;
+                        Reservations::log($booking, $message, $from, $to);
+                        if ($booking->status == 'paid' && $booking->paidMethod == 'cash') {
+                            Reservations::log(
+                                $booking, $booking->booking_cost . ' ' . $booking->order_currency . ' cash collected by'
+                                        . $from
+                            );
+                            $logged = 1;
                         }
-
                     }
 
-
-                    if($booking->status=='paid' && $booking->paidMethod=='cash' && $logged==0){
-                        Reservations::log($booking,$booking->booking_cost.' '.$booking->order_currency.' cash collected by'
-                                                  .$booking->sellerName);
+                    if ($booking->status == 'paid' && $booking->paidMethod == 'cash' && $logged == 0) {
+                        Reservations::log(
+                            $booking, $booking->booking_cost . ' ' . $booking->order_currency . ' cash collected by'
+                                    . $booking->sellerName
+                        );
                     }
-
-
-
-
-
 
                     ///Let's create a log that it was sold for somebody else
 
-
                     $updateResponse = sessionSetFlashAlert('success', '<i class="fas fa-check-square fa-lg   "></i> ' . 'Successful Reservation');;
+
 
                     Yii::$app->commandBus->handle(
                         new AddToTimelineCommand(
@@ -808,15 +1139,29 @@
                         )
                     );
 
-                    Yii::$app->commandBus->handle(
-                        new AddTicketToReservationCommand(
-                            [
-                                'sellerId' => Yii::$app->user->getId(),
-                                'timestamp' => time(),
-                                'bookingId' => $booking->id,
-                            ]
-                        )
-                    );
+                    if ($oldTicket) {
+                        Yii::$app->commandBus->handle(
+                            new AddOldTicketToReservationCommand(
+                                [
+                                    'sellerId' => Yii::$app->user->getId(),
+                                    'timestamp' => time(),
+                                    'bookingId' => $booking->id,
+                                    'ticketId' => $oldTicket
+                                ]
+                            )
+                        );
+                    } else {
+                        Yii::$app->commandBus->handle(
+                            new AddTicketToReservationCommand(
+                                [
+                                    'block'=>$block,
+                                    'sellerId' => Yii::$app->user->getId(),
+                                    'timestamp' => time(),
+                                    'bookingId' => $booking->id,
+                                ]
+                            )
+                        );
+                    }
                     Yii::$app->commandBus->handle(
                         new SendEmailCommand(
                             [
@@ -838,27 +1183,27 @@
             if (Yii::$app->request->isAjax) {
                 return $this->renderAjax(
                     'create2', [
-                    'model' => new Product(),
-                    'allMyProducts' => Product::getAllProducts(),
-                    'disableForm' => $disableForm,
-                    'myPrices' => $myPrices,
-                    'countPrices' => $countPrices,
-                    'newReservation' => $updateResponse,
-                    'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
-                ]
+                                 'model' => new Product(),
+                                 'allMyProducts' => Product::getAllProducts(),
+                                 'disableForm' => $disableForm,
+                                 'myPrices' => $myPrices,
+                                 'countPrices' => $countPrices,
+                                 'newReservation' => $updateResponse,
+                                 'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
+                             ]
                 );
             }
-
+            if(isset($oldTicket) && $oldTicket) return $this->redirect('dayover');
             return $this->render(
                 'create2', [
-                    'model' => new Product(),
-                    'disableForm' => $disableForm,
-                    'myPrices' => $myPrices,
-                    'countPrices' => $countPrices,
-                    'newReservation' => $updateResponse,
-                    'allMyProducts' => Product::getAllProducts(),
-                    'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
-                ]
+                             'model' => new Product(),
+                             'disableForm' => $disableForm,
+                             'myPrices' => $myPrices,
+                             'countPrices' => $countPrices,
+                             'newReservation' => $updateResponse,
+                             'allMyProducts' => Product::getAllProducts(),
+                             'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
+                         ]
             );
         }
 
@@ -866,7 +1211,6 @@
             if (!Yii::$app->user->can(Reservations::CREATE_BOOKING)) {
                 throw new ForbiddenHttpException('userCan\'t');
             }
-
 
             $allProduct = Product::getAllProducts();
 
@@ -981,21 +1325,18 @@
                     'sellerName' => Yii::$app->user->identity->username,
                     'ticketId' => null,
                     'status' => $paid_status,
-                    'paidMethod' => $paid_status=='paid' ? $paid_method : null,
-                    'order_currency' =>  $paid_currency,
+                    'paidMethod' => $paid_status == 'paid' ? $paid_method : null,
+                    'order_currency' => $paid_currency,
                     'billing_first_name' => $firstName,
                     'billing_last_name' => $lastName,
                     'notes' => $orderNote,
                 ];
                 /// Create2 reservation most important part
 
-
-
-
                 if ($_POST['anotherSeller']) {
                     //selling for somebody else
                     $originSellerId = $_POST['anotherSeller'];
-                    $originIdentity=User::findIdentity($originSellerId);
+                    $originIdentity = User::findIdentity($originSellerId);
                     Yii::error($originIdentity);
 
                     $originSellerName = $originIdentity->username;
@@ -1006,63 +1347,43 @@
                     $values['sellerName'] = $originSellerName;
                     $values['iSellerId'] = $foolSellerId;
                     $values['iSellerName'] = $foolSellerName;
-
-
-
-
-
-
-
-
-
-
                 }
 
                 $insertReservation = Reservations::insertOne($newReservarion, $values);
 
-
-                Yii::info('Reservation created '.$insertReservation);
+                Yii::info('Reservation created ' . $insertReservation);
                 if ($insertReservation) {
                     ///Succsessfully booked now assigning bookingId
                     $findBooking = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'bookingId="tmpMad1"');
                     $booking = $findBooking->one();
                     $values = ['bookingId' => $booking->id];
 
-                    $logged=0;
-
-
-
-
+                    $logged = 0;
 
                     //Saving Reservation
                     Reservations::insertOne($booking, $values);
-                    $message = 'sold '.$_POST['sellerCustomDate'];
-                    if(isset($foolSellerName)){
-                        $from=$foolSellerName;
-                        $to=$originSellerName;
-                        Reservations::log($booking,$message,$from,$to);
-                        if($booking->status=='paid' && $booking->paidMethod=='cash'){
-                            Reservations::log($booking,$booking->booking_cost.' '.$booking->order_currency.' cash collected by'
-                                                      .$from);
-                            $logged=1;
-
+                    $message = 'sold ' . $_POST['sellerCustomDate'];
+                    if (isset($foolSellerName)) {
+                        $from = $foolSellerName;
+                        $to = $originSellerName;
+                        Reservations::log($booking, $message, $from, $to);
+                        if ($booking->status == 'paid' && $booking->paidMethod == 'cash') {
+                            Reservations::log(
+                                $booking, $booking->booking_cost . ' ' . $booking->order_currency . ' cash collected by'
+                                        . $from
+                            );
+                            $logged = 1;
                         }
-
                     }
 
-
-                    if($booking->status=='paid' && $booking->paidMethod=='cash' && $logged==0){
-                        Reservations::log($booking,$booking->booking_cost.' '.$booking->order_currency.' cash collected by'
-                                                  .$booking->sellerName);
+                    if ($booking->status == 'paid' && $booking->paidMethod == 'cash' && $logged == 0) {
+                        Reservations::log(
+                            $booking, $booking->booking_cost . ' ' . $booking->order_currency . ' cash collected by'
+                                    . $booking->sellerName
+                        );
                     }
-
-
-
-
-
 
                     ///Let's create a log that it was sold for somebody else
-
 
                     $updateResponse = sessionSetFlashAlert('success', '<i class="fas fa-check-square fa-lg   "></i> ' . 'Successful Reservation');;
 
@@ -1079,7 +1400,6 @@
                             ]
                         )
                     );
-
 
                     Yii::$app->commandBus->handle(
                         new SendEmailCommand(
@@ -1102,27 +1422,27 @@
             if (Yii::$app->request->isAjax) {
                 return $this->renderAjax(
                     'create2', [
-                    'model' => new Product(),
-                    'disableForm' => $disableForm,
-                    'myPrices' => $myprices,
-                    'countPrices' => $countPrices,
-                    'allMyProducts' => Product::getAllProducts(),
-                    'newReservation' => $updateResponse,
-                    'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
-                ]
+                                 'model' => new Product(),
+                                 'disableForm' => $disableForm,
+                                 'myPrices' => $myprices,
+                                 'countPrices' => $countPrices,
+                                 'allMyProducts' => Product::getAllProducts(),
+                                 'newReservation' => $updateResponse,
+                                 'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
+                             ]
                 );
             }
 
             return $this->render(
                 'create2', [
-                'model' => new Product(),
-                'disableForm' => $disableForm,
-                'myPrices' => $myprices,
-                'allMyProducts' => Product::getAllProducts(),
-                'countPrices' => $countPrices,
-                'newReservation' => $updateResponse,
-                'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
-            ]
+                             'model' => new Product(),
+                             'disableForm' => $disableForm,
+                             'myPrices' => $myprices,
+                             'allMyProducts' => Product::getAllProducts(),
+                             'countPrices' => $countPrices,
+                             'newReservation' => $updateResponse,
+                             'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
+                         ]
             );
         }
 
@@ -1164,9 +1484,9 @@
 
                         return $model->bookedChairsCount . ' ' . Icon::show(
                                 'users', [
-                                'class' => 'fa-lg', 'framework'
-                                => Icon::FA
-                            ]
+                                           'class' => 'fa-lg', 'framework'
+                                           => Icon::FA
+                                       ]
                             ) . $sellerBadge;
                     }
                 ],
@@ -1182,8 +1502,8 @@
                         } else {
                             $currencySymbol = 'Ft';
                         }
-                        if($model->status=='unpaid'){
-                            $currencySymbol.='<span class="badge badge-pill badge-warning">unpaid</span>';
+                        if ($model->status == 'unpaid') {
+                            $currencySymbol .= '<span class="badge badge-pill badge-warning">unpaid</span>';
                         }
 
                         return $model->bookingCost . ' ' . $currencySymbol;
@@ -1194,11 +1514,13 @@
                     'template' => '{view}',
                     'buttons' => [
                         'view' => function ($url) {
-                            return Html::a('<i class="fas fa-eye fa-lg "></i>',
-                                           $url,
-                                           [
-                                               'title' => Yii::t('backend', 'View')
-                                           ]);
+                            return Html::a(
+                                '<i class="fas fa-eye fa-lg "></i>',
+                                $url,
+                                [
+                                    'title' => Yii::t('backend', 'View')
+                                ]
+                            );
                         },
 
                     ],
@@ -1246,14 +1568,9 @@
                     ]
                 );
 
-
-
-
-
                 if ($user->hasRole('streetSeller')) {
 
-
-                    $userList[]='
+                    $userList[] = '
                             <!-- interactive chart -->
                             <div class="card card-primary card-outline collapsed-card">
                                 <div class="card-header">
@@ -1287,9 +1604,9 @@
                                 			              <div class="info-box-content">
                                 			                  <span class="info-box-text">EUR income today</span>
                                 			                <span class="info-box-number"><i 
-                                			                class="fas fa-wallet fa-fw"></i>'.$eurCashToday.'</span>
+                                			                class="fas fa-wallet fa-fw"></i>' . $eurCashToday . '</span>
                                 			                <span class="info-box-number"><i class="fas fa-credit-card fa-fw "></i></i>
-                                			                '.$eurCardToday.'</span>
+                                			                ' . $eurCardToday . '</span>
                                 			              </div>
                                 			              <!-- /.info-box-content -->
                                 			            </div>                          
@@ -1301,9 +1618,9 @@
                                 			              <div class="info-box-content">
                                 			                <span class="info-box-text">Huf income today</span>
                                 			                <span class="info-box-number"><i 
-                                			                class="fas fa-wallet fa-fw"></i>'.$hufCashToday.'</span>
+                                			                class="fas fa-wallet fa-fw"></i>' . $hufCashToday . '</span>
                                 			                <span class="info-box-number"><i class="fas fa-credit-card fa-fw "></i></i>
-                                			                '.$hufCardToday.'</span>
+                                			                ' . $hufCardToday . '</span>
                                 			              </div>
                                 			              <!-- /.info-box-content -->
                                 			            </div>                          
@@ -1343,15 +1660,16 @@
                 $timeHours = Reservations::getProductTimeshours($currentProductId);
 
                 $allDataproviders = [];
-                $allTakenChairs=[];
+                $allTakenChairs = [];
 
                 foreach ($timeHours as $time) {
 
                     $tmpdataProvider = $searchModel->searchDayTime(Yii::$app->request->queryParams, $selectedDate, $sourcesRows, $currentProductId, $time);
                     $allDataproviders[$time] = $tmpdataProvider;
-                    $allTakenChairs[$time]= $currentProduct->capacity - $searchModel->countTakenChairsOnDayTime
-                        ($selectedDate, $sourcesRows, $time);
-
+                    $allTakenChairs[$time] = $currentProduct->capacity - $searchModel->countTakenChairsOnDayTime
+                        (
+                            $selectedDate, $sourcesRows, $time
+                        );
                 }
 
                 $takenChairsCount = Reservations::countTakenChairsOnDay($selectedDate, $sourcesRows);
@@ -1389,25 +1707,24 @@
                 }
             }
 
-            $timingbutton=Yii::$app->request->post('timing-button') ?  Yii::$app->request->post('timing-button') : null;
-
+            $timingbutton = Yii::$app->request->post('timing-button') ? Yii::$app->request->post('timing-button') : null;
 
             return $this->render(
                 'dayEdit', [
-                'dataProvider' => $dataProvider,
-                'searchModel' => $searchModel,
-                'model' => Reservations::class,
-                'currentProduct' => $currentProduct,
-                'currentDay' => Yii::$app->request->get('date'),
-                'takenChairsCount' => $takenChairsCount,
-                'availableChairs' => $availableChairsOnDay,
-                'timesHours' => $timeHours,
-                'allDataProviders' => $allDataproviders,
-                'sources' => $sourcesRows,
-                'selectedDate' => $selectedDate,
-                'allTakenChairs'=>$allTakenChairs
+                             'dataProvider' => $dataProvider,
+                             'searchModel' => $searchModel,
+                             'model' => Reservations::class,
+                             'currentProduct' => $currentProduct,
+                             'currentDay' => Yii::$app->request->get('date'),
+                             'takenChairsCount' => $takenChairsCount,
+                             'availableChairs' => $availableChairsOnDay,
+                             'timesHours' => $timeHours,
+                             'allDataProviders' => $allDataproviders,
+                             'sources' => $sourcesRows,
+                             'selectedDate' => $selectedDate,
+                             'allTakenChairs' => $allTakenChairs
 
-            ]
+                         ]
             );
         }
 
@@ -1450,7 +1767,6 @@
                                 $currentPrice = (int)$remotePrice->price;
                                 (int)$fullTotal += (int)($currentPrice * $priceAmount);
                                 Yii::error($fullTotal, 'myprices');
-
                             }
                         }
 
@@ -1463,8 +1779,7 @@
                         }
                     }
 
-
-                        Yii::warning($fullTotal);
+                    Yii::warning($fullTotal);
                     return [
                         'search' => $fullTotal,
                         'customPrice' => (int)$postedCustomPrice,
@@ -1576,16 +1891,15 @@
             return $this->render('bookingEdit', ['model' => $model, 'backenddata' => $bookingInfo]);
         }
 
-        public function actionView(){
+        public function actionView() {
 
-            $id=Yii::$app->request->get('id');
-            $reservation=Reservations::findOne($id);
+            $id = Yii::$app->request->get('id');
+            $reservation = Reservations::findOne($id);
             if (Yii::$app->request->isAjax) {
-                return $this->renderAjax('view',['model'=>$reservation,'reservationModel'=>$reservation]);
-
+                return $this->renderAjax('view', ['model' => $reservation, 'reservationModel' => $reservation]);
             }
 
-            return $this->render('view',['model'=>$reservation,'reservationModel'=>$reservation]);
+            return $this->render('view', ['model' => $reservation, 'reservationModel' => $reservation]);
         }
 
         public function actionBookingview() {

@@ -21,6 +21,30 @@ class TicketSearchModel extends MadActiveRecord {
         return ['ticketId'];
     }
 
+    public static function userNextTicketId(){
+        $ticketBlock = TicketBlockSearchModel::aSelect(TicketBlockSearchModel::class, '*', TicketBlockSearchModel::tableName(), 'assignedTo = ' . Yii::$app->user->id . ' AND isActive IS TRUE')->one();
+        $nextTicket=TicketSearchModel::useTable('modulus_tb_' . $ticketBlock->returnStartId())::findOne(['reservationId'
+                                                                                                      =>
+                                                                                                     null,
+                                                                                             'status' => 'open']);
+
+        return $nextTicket->ticketId;
+    }
+
+    public static function findTicketBlockOf($ticketId){
+        $userTicketBlocks=TicketBlockSearchModel::userTicketBlocks();
+        foreach($userTicketBlocks as $ticketBlock){
+            if($ticketId-50<$ticketBlock->startId){
+                return $ticketBlock;
+            }
+
+        }
+
+
+    }
+
+
+
     /**
      * @param $params
      *
@@ -78,5 +102,6 @@ class TicketSearchModel extends MadActiveRecord {
 
         return $dataProvider;
     }
+
 
 }

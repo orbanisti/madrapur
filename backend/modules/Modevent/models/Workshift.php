@@ -47,4 +47,8 @@ class Workshift extends \backend\modules\MadActiveRecord\models\MadActiveRecord
             'role' => 'Role',
         ];
     }
+
+
+
+
 }

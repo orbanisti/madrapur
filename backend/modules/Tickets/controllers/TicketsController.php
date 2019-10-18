@@ -39,6 +39,10 @@ class TicketsController extends Controller {
      *
      * @return string
      */
+
+
+
+
     public function actionAdmin() {
         $searchModel = new TicketBlockSearchModel();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -438,10 +442,12 @@ class TicketsController extends Controller {
 
             $block->isActive = true;
             if ($block->save(false)) {
+
                 sessionSetFlashAlert(
                     'success',
                     'Ticket block set successfully!<br>Have a bright day!'
                 );
+                $this->redirect('Dashboard/dashboard/street');
             }
         }
 

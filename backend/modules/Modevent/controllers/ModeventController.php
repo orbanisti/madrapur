@@ -43,21 +43,33 @@ class ModeventController extends ModeventCrudController {
     public function actionMywork(){
 
 
+
+
         if($workstart=Yii::$app->request->post('work'))
         {
             $workAboutToStart=Modevent::findOne($workstart);
             $workAboutToStart->status='working';
             $workAboutToStart->save();
+            return $this->redirect(Yii::$app->request->referrer);
 
         }
         if($workstart=Yii::$app->request->post('work-end'))
         {
-            $workAboutToStart=Modevent::findOne($workstart);
-            $workAboutToStart->status='worked';
-            $workAboutToStart->save();
+
+//            $workAboutToStart=Modevent::findOne($workstart);
+//            $workAboutToStart->status='worked';
+//            $workAboutToStart->save();
+            return $this->redirect('/Reservations/reservations/dayover');
 
         }
-        $toprint=Modevent::find()->andFilterWhere(['=','user',Yii::$app->user->getIdentity()->username])->andWhere('`title`=\'arranged\'')->orderBy('startDate')->all();
+
+        $toprint=Modevent::find()->andFilterWhere(['=','user',Yii::$app->user->getIdentity()->username])->andWhere('`title`=\'arranged\'')->orderBy('startDate');
+
+        if($workdate=Yii::$app->request->get('date')){
+            $toprint->andFilterWhere(['=','startDate',$workdate]);
+
+        }
+        $toprint=$toprint->all();
 
         return $this->render('mywork', [
             'toprint'=>isset($toprint) ? $toprint : null,

@@ -9,12 +9,12 @@ use trntv\bus\interfaces\SelfHandlingCommand;
 use Yii;
 use yii\base\BaseObject;
 
-class AddTicketToReservationCommand extends BaseObject implements SelfHandlingCommand {
+class AddOldTicketToReservationCommand extends BaseObject implements SelfHandlingCommand {
 
     public $sellerId;
     public $timestamp;
     public $bookingId;
-    public $block;
+    public $ticketId;
 
 
     /**
@@ -23,11 +23,14 @@ class AddTicketToReservationCommand extends BaseObject implements SelfHandlingCo
      * @return mixed
      */
     public function handle($command) {
-        $ticketBlock = $command->block;
-        $startId = $ticketBlock->returnStartId();
-        $model = TicketSearchModel::useTable('modulus_tb_' . $startId)::find()->andWhere(['sellerId' =>
-            null])->andWhere(['reservationId' => null])->andWhere(['status' => 'open'])->one();
-        Yii::error($model->attributes);
+
+        $ticketBlock = TicketSearchModel::findTicketBlockOf($command->ticketId);
+
+        $startId = $ticketBlock->startId;
+        $model = TicketSearchModel::useTable('modulus_tb_' . $startId)::find()->andWhere(['ticketId' =>
+                                                                                              $command->ticketId])
+            ->one();
+        Yii::error($model);
 
         if (!$model) {
             sessionSetFlashAlert(
@@ -37,7 +40,6 @@ class AddTicketToReservationCommand extends BaseObject implements SelfHandlingCo
 
             return false;
         } else {
-
             $model->sellerId = $command->sellerId;
             $model->timestamp = $command->timestamp;
             $model->reservationId = $command->bookingId;

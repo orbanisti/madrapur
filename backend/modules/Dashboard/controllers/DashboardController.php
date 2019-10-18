@@ -3,6 +3,7 @@
 namespace backend\modules\Dashboard\controllers;
 
 use backend\controllers\Controller;
+use backend\modules\Modevent\models\Modevent;
 use backend\modules\Tickets\models\TicketBlockSearchModel;
 use Yii;
 
@@ -14,7 +15,65 @@ class DashboardController extends Controller {
      * Renders the admin view for the module
      *
      * @return string
+     *
      */
+
+    public function actionStreet(){
+
+
+        return $this->render('street');
+
+    }
+
+    public function actionManager(){
+        $searchmodel = new TicketBlockSearchModel();
+        $allTicketBlocks=$searchmodel->find()->andFilterWhere([
+                                                                  '=',
+                                                                  'assignedTo',
+                                                                  Yii::$app->user->id
+                                                              ])->all();
+
+
+        if ($changeTo = Yii::$app->request->get('changeTo')) {
+            $block = TicketBlockSearchModel::find()
+                ->andFilterWhere(['=', 'assignedTo', Yii::$app->user->id])
+                ->andWhere('isActive IS TRUE')
+                ->one();
+
+            if ($block && $block->returnStartId() !== $changeTo) {
+                $block->isActive = false;
+                $block->save(false);
+            }
+
+            $block = TicketBlockSearchModel::find()
+                ->andFilterWhere(['=', 'startId', $changeTo])
+                ->one();
+
+            $block->isActive = true;
+            if ($block->save(false)) {
+
+                sessionSetFlashAlert(
+                    'info',
+                    'Ticket block set successfully!<br>Have a bright day!'
+                );
+
+                $this->redirect('street');
+            }
+        }
+
+
+
+        return $this->render('manager',[
+            'allTicketBlocks'=>$allTicketBlocks
+
+        ]);
+    }
+
+
+
+
+
+
     public function actionAdmin() {
         $viewType = '';
         $viewName = 'admin';
@@ -27,8 +86,8 @@ class DashboardController extends Controller {
         }
 
         if (Yii::$app->user->can("streetSeller")) {
-            $viewType = 'seller/';
-            $viewName = 'admin';
+            $viewType = '';
+            $viewName = 'street';
 
             if ($cb = Yii::$app->request->get('change-ticket-block')) {
                 $block = TicketBlockSearchModel::find()
@@ -58,6 +117,8 @@ class DashboardController extends Controller {
                             'success',
                             'Ticket block set successfully!<br>Have a bright day!'
                         );
+
+
                     }
                 }
             }
@@ -118,6 +179,7 @@ class DashboardController extends Controller {
                     sessionSetFlashAlert('warning', 'Ticket skipped.');
 
                     $assignedBlock->skipCurrentTicket();
+                    return $this->redirect('street');
                 }
             }
         }

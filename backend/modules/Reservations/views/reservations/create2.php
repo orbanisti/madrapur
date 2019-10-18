@@ -13,6 +13,7 @@ use backend\modules\Product\models\Product;
 use backend\modules\Product\models\ProductAddOn;
 use backend\modules\Product\models\ProductPrice;
     use backend\modules\Reservations\models\Reservations;
+    use backend\modules\Tickets\models\TicketSearchModel;
     use kartik\date\DatePicker;
 use kartik\form\ActiveForm;
 use kartik\helpers\Html;
@@ -32,7 +33,7 @@ use kartik\helpers\Html;
     //$this->params['breadcrumbs'][] = $this->title;
 
     $huf = Yii::$app->keyStorage->get('currency.huf-value') ? Yii::$app->keyStorage->get('currency.huf-value') : null;
-
+    $oldTicketId=Yii::$app->request->get('ticketId');
 ?>
 
 <!--suppress ALL -->
@@ -45,7 +46,11 @@ use kartik\helpers\Html;
 <div class="row">
     <div class="col-12">
         <!-- interactive chart -->
-        <div class="card card-primary card-outline">
+        <?=$oldTicketId ? '<div class="card card-danger ">' : '<div class="card card-primary ">' ?>
+            <div class="card-header">
+                <i class="fas fa-ticket-alt  "></i>
+                <?= $oldTicketId ? $oldTicketId : $a=TicketSearchModel::userNextTicketId(); ?>
+            </div>
 
             <div class="card-body">
                 <div class="products-index">
@@ -169,6 +174,7 @@ use kartik\helpers\Html;
 
                                     </div>
                                 </div>
+                                <?=Html::hiddenInput('ticketId', $oldTicketId);?>
 
 
                             </div>
@@ -201,6 +207,13 @@ use kartik\helpers\Html;
                             } else {
                                 $paid_currency = 'HUF';
                             }
+                            if(isset($_POST['ticketId'])){
+                                $oldTicketId=$_POST['ticketId'];
+
+                            }else{
+                                $oldTicketId=null;
+
+                            }
 
                             $form = ActiveForm::begin(['id' => 'product-form']);
                             $model = new ProductPrice();
@@ -212,6 +225,7 @@ use kartik\helpers\Html;
                             <?=Html::hiddenInput('paid_currency', $paid_currency);?>
                             <?=Html::hiddenInput('paid_status', $paid_status);?>
                             <?=Html::hiddenInput('paid_method', $paid_method);?>
+                            <?=$oldTicketId ? Html::hiddenInput('ticketId', $oldTicketId) : null;?>
 
 
                             <?php

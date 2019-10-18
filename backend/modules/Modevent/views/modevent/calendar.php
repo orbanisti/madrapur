@@ -130,7 +130,7 @@ EOF;
                                                                                     ],
 
                                                                                     'clientOptions' => [
-                                                                                        'now'               => '2019-10-04',
+                                                                                        'now'               => date('Y-m-d',time()),
                                                                                         'editable'          => true, // enable draggable events
                                                                                         'aspectRatio'       => 1.8,
                                                                                          'plugins'=>[   'resourceDayGridPlugin' ],

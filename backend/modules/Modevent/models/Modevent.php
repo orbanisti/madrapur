@@ -39,4 +39,17 @@ class Modevent extends MadActiveRecord{
         ];
     }
 
+    public static function userNextWork(){
+        $date=date('Y-m-d',strtotime('today'));
+
+        $next = Modevent::find()->andFilterWhere(['=','user',Yii::$app->user->getIdentity()->username])->andFilterWhere
+        (['>=','startDate',$date])->andWhere('`title`=\'arranged\'')->orderBy('startDate')->one();
+        Yii::warning($next);
+        return $next;
+
+
+    }
+
+
+
 }

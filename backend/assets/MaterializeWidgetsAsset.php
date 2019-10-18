@@ -31,8 +31,7 @@ class MaterializeWidgetsAsset extends AssetBundle {
      */
     public $css = [
         'css/materializeWidgets.min.css',
-        'css/mdb.css',
-        'css/bootstrap.min.css',
+
     ];
 
     /**
