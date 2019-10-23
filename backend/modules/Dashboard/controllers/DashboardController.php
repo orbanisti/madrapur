@@ -3,6 +3,8 @@
 namespace backend\modules\Dashboard\controllers;
 
 use backend\controllers\Controller;
+use backend\modules\Modevent\models\Modevent;
+use backend\modules\Reservations\models\Reservations;
 use backend\modules\Tickets\models\TicketBlockSearchModel;
 use Yii;
 
@@ -14,11 +16,68 @@ class DashboardController extends Controller {
      * Renders the admin view for the module
      *
      * @return string
+     *
      */
+
+    public function actionStreet(){
+
+
+        return $this->render('street');
+
+    }
+
+    public function actionManager(){
+        $searchmodel = new TicketBlockSearchModel();
+        $allTicketBlocks=$searchmodel->find()->andFilterWhere([
+                                                                  '=',
+                                                                  'assignedTo',
+                                                                  Yii::$app->user->id
+                                                              ])->all();
+
+
+        if ($changeTo = Yii::$app->request->get('changeTo')) {
+            $block = TicketBlockSearchModel::find()
+                ->andFilterWhere(['=', 'assignedTo', Yii::$app->user->id])
+                ->andWhere('isActive IS TRUE')
+                ->one();
+
+            if ($block && $block->returnStartId() !== $changeTo) {
+                $block->isActive = false;
+                $block->save(false);
+            }
+
+            $block = TicketBlockSearchModel::find()
+                ->andFilterWhere(['=', 'startId', $changeTo])
+                ->one();
+
+            $block->isActive = true;
+            if ($block->save(false)) {
+
+                sessionSetFlashAlert(
+                    'info',
+                    'Ticket block set successfully!<br>Have a bright day!'
+                );
+
+                $this->redirect('admin');
+            }
+        }
+
+
+
+        return $this->render('manager',[
+            'allTicketBlocks'=>$allTicketBlocks
+
+        ]);
+    }
+
+
+
+
+
+
     public function actionAdmin() {
         $viewType = '';
         $viewName = 'admin';
-        sessionSetFlashAlert('warning', "Screen under construction");
 
         if (Yii::$app->user->can("hotline")) {
             $viewType = 'hotline/';
@@ -27,8 +86,8 @@ class DashboardController extends Controller {
         }
 
         if (Yii::$app->user->can("streetSeller")) {
-            $viewType = 'seller/';
-            $viewName = 'admin';
+            $viewType = '';
+            $viewName = 'street';
 
             if ($cb = Yii::$app->request->get('change-ticket-block')) {
                 $block = TicketBlockSearchModel::find()
@@ -58,6 +117,8 @@ class DashboardController extends Controller {
                             'success',
                             'Ticket block set successfully!<br>Have a bright day!'
                         );
+
+
                     }
                 }
             }
@@ -118,9 +179,26 @@ class DashboardController extends Controller {
                     sessionSetFlashAlert('warning', 'Ticket skipped.');
 
                     $assignedBlock->skipCurrentTicket();
+                    return $this->redirect('admin');
                 }
             }
         }
+        $reservationmodel=new Reservations();
+        $user=Yii::$app->user;
+        $today= $today = date('Y-m-d');
+
+        $userDataProvider = $reservationmodel->searchReservations(Yii::$app->request->queryParams, $user->id, $today);
+
+
+
+        $userDataHuf = $reservationmodel->searchReservations(Yii::$app->request->queryParams, $user->id, $today, 'HUF');
+        $userDataEur = $reservationmodel->searchReservations(Yii::$app->request->queryParams, $user->id, $today, 'EUR');
+        $hufToday = Reservations::sumDataProvider($userDataHuf->models, 'bookingCost');
+        $hufCashToday = Reservations::sumDataProviderCash($userDataHuf->models, 'bookingCost');
+        $hufCardToday = Reservations::sumDataProviderCard($userDataHuf->models, 'bookingCost');
+        $eurCashToday = Reservations::sumDataProviderCash($userDataEur->models, 'bookingCost');
+        $eurCardToday = Reservations::sumDataProviderCard($userDataEur->models, 'bookingCost');
+
 
         return $this->render(
             $viewType . $viewName, [
@@ -128,6 +206,12 @@ class DashboardController extends Controller {
                 'startTicketId' => isset($assignedBlock) ? $assignedBlock->returnStartId() : 'N/A',
                 'nextTicketId' => isset($assignedBlock) ? $assignedBlock->returnCurrentId() : 'N/A',
                 'selectTicket' => isset($selectTicket) ? $selectTicket : null,
+                'hufCardToday'=>$hufCardToday,
+                'eurCashToday'=>$eurCashToday,
+                'hufCashToday'=>$hufCashToday,
+                'eurCardToday'=>$eurCardToday,
+
+
 
             ]
         );

@@ -25,6 +25,7 @@ class Product extends MadActiveRecord {
         $where = self::andWhereFilter([
             ['id', '!=', '0'],
             ['isDeleted', '!=', "yes"],
+
         ]);
         $query = Product::aSelect(Product::class, '*', Product::tableName(), $where);
 
@@ -41,6 +42,30 @@ class Product extends MadActiveRecord {
 
         return $prodInfo;
     }
+
+    public static function getStreetProducts() {
+
+        $where = self::andWhereFilter([
+                                          ['id', '!=', '0'],
+                                          ['isDeleted', '!=', "yes"],
+                                          ['isStreet', '=', "yes"],
+                                      ]);
+        $query = Product::aSelect(Product::class, '*', Product::tableName(), $where);
+
+        $prodInfo = 0;
+
+        try {
+            $prodInfo = $query->all();
+            foreach ($prodInfo as $i => $prod) {
+                $prodInfo[$i] = Product::getProdById($prod->id);
+            }
+        } catch (Exception $e) {
+
+        }
+
+        return $prodInfo;
+    }
+
 
 //TODO
 
@@ -151,6 +176,7 @@ class Product extends MadActiveRecord {
             [['duration'], 'string', 'max' => 255],
             [['slug'], 'string', 'max' => 255],
             [['isDeleted'], 'string', 'max' => 10],
+            [['isStreet'], 'string', 'max' => 10],
         ];
     }
 

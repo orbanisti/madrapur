@@ -39,29 +39,29 @@ use yii\helpers\Url;
                 'icon' => 'fa fa-list-alt',
             ]) ?>
             <?php LteSmallBox::end() ?>
+        </div> <div class="col-xs-12 col-md-3">
+            <?php
+                LteSmallBox::begin([
+                                       'type' => Lte::COLOR_TEAL,
+                                       'title' => "$startTicketId",
+                                       'icon' => 'fa fa-ticket',
+                                       'text' => 'Next ticked ID',
+                                       'footer' => 'View ticket block',
+                                       'link' => Url::to("/Tickets/tickets/admin")
+                                   ]) ?>
+            <?php LteSmallBox::end() ?>
         </div>
         <div class="col-xs-12 col-md-3">
-            <?php
+            <?php /*
             LteSmallBox::begin([
                 'type' => Lte::COLOR_OLIVE,
                 'title' => "Batthyány tér",
                 'text' => 'Current assigned location',
                 'icon' => 'fa fa-map-marker',
             ]) ?>
-            <?php LteSmallBox::end() ?>
+            <?php LteSmallBox::end() */?>
         </div>
-        <div class="col-xs-12 col-md-3">
-            <?php
-            LteSmallBox::begin([
-                'type' => Lte::COLOR_TEAL,
-                'title' => "$startTicketId",
-                'icon' => 'fa fa-ticket',
-                'text' => 'Next ticked ID',
-                'footer' => 'View ticket block',
-                'link' => Url::to("/Tickets/tickets/admin")
-            ]) ?>
-            <?php LteSmallBox::end() ?>
-        </div>
+
     </div>
     <?php
     $gridColumns = [

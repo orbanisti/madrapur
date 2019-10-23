@@ -1,5 +1,8 @@
 <?php
-$config = [
+
+    use yii\web\View;
+
+    $config = [
     'homeUrl' => Yii::getAlias('@frontendUrl'),
     'controllerNamespace' => 'frontend\controllers',
     'defaultRoute' => 'site/index',
@@ -12,11 +15,59 @@ $config = [
             'shouldBeActivated' => false,
             'enableLoginByPass' => false,
         ],
-        'Page' => [
-            'class' => frontend\modules\Page\Module::class,
-        ],
     ],
     'components' => [
+        'thumbnailer' => [
+            'class' => 'daxslab\thumbnailer\Thumbnailer',
+            'defaultWidth' => 500,
+            'defaultHeight' => 500,
+            'thumbnailsPath' => '@webroot/assets/thumbs',
+            'thumbnailsBaseUrl' => '@web/assets/thumbs',
+            'enableCaching' => true, //defaults to false but is recommended
+        ],
+        'assetManager'=>[    'bundles' => [
+
+            'yii\bootstrap\BootstrapAsset' => [
+                'sourcePath'=>'@npm/bootstrap/dist',
+
+                'css' => [
+
+                    YII_ENV_DEV ? 'css/bootstrap.min.css' : 'css/bootstrap.min.css',
+
+                ],
+
+            ],
+
+            'yii\bootstrap\BootstrapPluginAsset' => [
+                'sourcePath'=>'@npm/bootstrap/dist',
+
+
+                'js' => [
+
+                    YII_ENV_DEV ? 'js/bootstrap.bundle.js' : 'js/bootstrap.bundle.js',
+                    'js/bootstrap.js'
+
+                ],
+                'jsOptions' => [
+                    'position' => View::POS_HEAD
+                ]
+
+            ],
+
+
+            'yii\web\JqueryAsset' => [
+
+                'js' => [
+
+                    YII_ENV_DEV ? 'jquery.js' : 'jquery.min.js'
+
+                ]
+
+            ],
+
+        ],
+
+        ],
         'authClientCollection' => [
             'class' => yii\authclient\Collection::class,
             'clients' => [
@@ -62,7 +113,7 @@ $config = [
             ],
             'enableAutoLogin' => true,
             'as afterLogin' => common\behaviors\LoginTimestampBehavior::class
-        ]
+        ],
     ]
 ];
 

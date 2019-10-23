@@ -7,10 +7,10 @@ return [
     'showScriptName' => false,
     'rules' => [
         // Pages
-        /*[
+        [
             'pattern' => 'page/<slug>',
             'route' => 'page/view'
-        ],*/
+        ],
 
         // Articles
         [
@@ -24,40 +24,6 @@ return [
         [
             'pattern' => 'article/<slug>',
             'route' => 'article/view'
-        ],
-
-        // .co.uk routes
-        [
-            'pattern' => '<cruise-shop:\w+>',
-            'route' => 'site/index'
-        ],
-        [
-            'pattern' => '<slug>',
-            'route' => 'site/index',
-        ],
-        [
-            'pattern' => 'page/<slug>',
-            'route' => 'site/index',
-        ],
-        [
-            'pattern' => 'product/<slug>',
-            'route' => 'site/index'
-        ],
-        [
-            'pattern' => 'privacy-policy',
-            'route' => 'site/index'
-        ],
-        [
-            'pattern' => 'checkout',
-            'route' => 'site/index'
-        ],
-        [
-            'pattern' => 'checkout/thankyou/<orderRef>/<status>',
-            'route' => 'site/index'
-        ],
-        [
-            'pattern' => 'cart',
-            'route' => 'site/index'
         ],
 
         // Sitemap

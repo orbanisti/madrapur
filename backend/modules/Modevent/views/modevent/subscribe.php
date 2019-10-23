@@ -73,13 +73,68 @@ use yii\widgets\Pjax;
                     ?>
                 </div>
 
+               <div class="row">
+                   <div class="col-12">
+                       <!-- interactive chart -->
+                       <div class="card card-primary card-outline">
+                           <div class="card-header">
+                               <h3 class="card-title">
+                                   My Subscriptions for Work
+                               </h3>
                
+                               <div class="card-tools">
+                                   <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                   </button>
+               
+                               </div>
+                           </div>
+                           <div class="card-body">
+                               <?php
+                                   echo GridView::widget(
+                                       [
+                                           'dataProvider' => $dataProvider,
+                                           'options' => [
+                                               'class' => 'grid-view table-responsive',
+                                           ],
+                                           'layout' => '{items}',
+                                           'columns' => [
+
+                                               [
+                                                   'attribute' => 'startDate',
+                                               ],
+                                               [
+                                                   'attribute' => 'endDate',
+                                               ],
+
+                                               [
+                                                   'class' => 'kartik\grid\ActionColumn',
+                                                   'template' => '{delete}',
+                                               ],
+                                           ],
+                                       ]);
+                               ?>
+
+
+
+                           </div>
+                           <!-- /.card-body-->
+                       </div>
+                       <!-- /.card -->
+               
+                   </div>   
+                
+                   <!-- /.col -->
+               </div>
             </div>
+    
+  
             <!-- /.card-body-->
         </div>
         <!-- /.card -->
 
-    </div>   
+        
+    </div>
+    
  
     <!-- /.col -->
 </div>

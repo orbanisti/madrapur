@@ -31,7 +31,7 @@ $bundle = BackendAsset::register($this);
             'role'=>'menu',
             'data-accordion'=>false
         ],
-        'linkTemplate' => '<a class="nav-link {active}" href="{url}">{icon}<span>{label}</span>{badge}{right-icon}</a>',
+        'linkTemplate' => '<a class="nav-link {active}" href="{url}">{icon}<p>{label}</p>{badge}{right-icon}</a>',
         'submenuTemplate' => "\n<ul class=\"nav nav-treeview bg-secondary \" >\n{items}\n</ul>\n",
         'activateParents' => true,
         'itemOptions'=>['class'=>'nav-item'],
@@ -51,8 +51,9 @@ $bundle = BackendAsset::register($this);
                     '/Dashboard/dashboard/admin'
                 ],
                 'options' => [
-                    'class' => 'nav-item'
+                    'class' => 'nav-item',
                 ],
+
             ],
             [
                 'label' => Yii::t('backend', 'Timeline'),
@@ -78,7 +79,7 @@ $bundle = BackendAsset::register($this);
                 'items'=>[
                     [
                         'label' => Yii::t('backend', 'modMail'),
-                        'icon' => '<i class="fa nav-icon fa-envelope-o"></i>',
+                        'icon' => '<i class="fa fa-lg nav-icon fa-envelope-o"></i>',
                         'url' => [
                             '/Modmail/modmail/admin'
                         ],
@@ -132,17 +133,17 @@ $bundle = BackendAsset::register($this);
                         'url' => [
                             '/Tickets/tickets/add-block'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-plus"></i>',
+                        'icon' => '<i class="fas fa-plus-square nav-icon "></i>',
                         'active' => Yii::$app->controller->id === 'tickets' &&
                             Yii::$app->controller->action->id === 'add-block',
-                        'visible' => Yii::$app->user->can('administrator'),
+                        'visible' => Yii::$app->user->can('administrator')  || Yii::$app->user->can('streetAdmin'),
                     ],
                     [
                         'label' => Yii::t('backend', 'View assigned blocks'),
                         'url' => [
-                            '/Tickets/tickets/view-assigned-blocks'
+                            '/Dashboard/dashboard/manager'
                         ],
-                        'icon' => '<i class="fa nav-icon fa-"></i>',
+                        'icon' => '<i class="fas fa-ticket-alt nav-icon "></i>',
                         'active' => Yii::$app->controller->id === 'tickets' &&
                             Yii::$app->controller->action->id === 'view-assigned-blocks',
                     ],
@@ -312,9 +313,10 @@ $bundle = BackendAsset::register($this);
                         ],
                         'icon' => '<i class="fas fa-key nav-icon"></i>',
                         'active' => Yii::$app->controller->id === 'text',
+
                     ],
                     [
-                        'label' => Yii::t('backend', 'My Work'),
+                        'label' => Yii::t('backend', 'My Works'),
                         'url' => [
                             '/Modevent/modevent/mywork'
                         ],
@@ -328,6 +330,7 @@ $bundle = BackendAsset::register($this);
                         ],
                         'icon' => '<i class="fas fa-eye-slash nav-icon "></i>',
                         'active' => Yii::$app->controller->id === 'text',
+                        'visible'=>Yii::$app->user->can('streetAdmin')
                     ],
 
                 ],
@@ -656,6 +659,38 @@ $bundle = BackendAsset::register($this);
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
             <!-- Messages Dropdown Menu -->
+
+            <!-- Notifications Dropdown Menu -->
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="far fa-bell"></i>
+                    <span class="badge badge-warning navbar-badge">15</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <span class="dropdown-item dropdown-header">15 Notifications</span>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-envelope mr-2"></i> 4 new messages
+                        <span class="float-right text-muted text-sm">3 mins</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-users mr-2"></i> 8 friend requests
+                        <span class="float-right text-muted text-sm">12 hours</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-file mr-2"></i> 3 new reports
+                        <span class="float-right text-muted text-sm">2 days</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
+                            class="fas fa-th-large"></i></a>
+            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
                     <i class="fas fa-user-cog"></i>
@@ -707,43 +742,12 @@ $bundle = BackendAsset::register($this);
                 </div>
 
             </li>
-            <!-- Notifications Dropdown Menu -->
-            <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-bell"></i>
-                    <span class="badge badge-warning navbar-badge">15</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-item dropdown-header">15 Notifications</span>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-envelope mr-2"></i> 4 new messages
-                        <span class="float-right text-muted text-sm">3 mins</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-users mr-2"></i> 8 friend requests
-                        <span class="float-right text-muted text-sm">12 hours</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-file mr-2"></i> 3 new reports
-                        <span class="float-right text-muted text-sm">2 days</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
-                            class="fas fa-th-large"></i></a>
-            </li>
         </ul>
     </nav>
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <aside class="main-sidebar  sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="index3.html" class="brand-link">
             <!--img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"

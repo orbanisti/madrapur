@@ -48,7 +48,7 @@ use kartik\helpers\Html;
                         'class' => "btn btn-primary" . ($referrer ? "" : " disabled"),
                     ]);
 
-                    echo Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']);
+                    echo Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']);0
 
                     switch ($updateResponse) {
                         case 1:

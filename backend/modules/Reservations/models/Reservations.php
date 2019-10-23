@@ -400,9 +400,11 @@ class Reservations extends MadActiveRecord {
         $today=date('Y-m-d');
 
 
+
         if($userId != NULL){
-            $query->andFilterWhere(['and',
-                ['=','sellerId', strval($userId)]]);
+            $query->andFilterWhere(['or',
+                                    ['=','sellerId', strval($userId)],
+                                    ['=','iSellerId', strval($userId)]]);
         }
 
         if($searchdate != NULL){
@@ -464,6 +466,47 @@ class Reservations extends MadActiveRecord {
 
         return $total;
 
+    }
+
+    public static function getCountBy($dataProvider,$fieldName){
+        $items=[];
+        $models=$dataProvider->models;
+
+
+        foreach ($models as $model){
+            if(!isset($items[$model->$fieldName])){
+                $items[$model->$fieldName]=1;
+            }
+            else{
+                $items[$model->$fieldName]+=1;
+            }
+
+
+        }
+        return ($items);
+    }
+
+    public static function countProducts($dataProvider,$fieldName){
+        $items=[];
+        $models=$dataProvider->models;
+
+
+        foreach ($models as $model){
+            if(!isset($items[$model->$fieldName])){
+                $items[$model->$fieldName]=1;
+            }
+            else{
+                $items[$model->$fieldName]+=1;
+            }
+
+
+        }
+        $Products='';
+        foreach ($items as $item){
+
+        }
+
+        return ($items);
     }
 
     public function searchAllreservations($params) {

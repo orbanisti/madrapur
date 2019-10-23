@@ -37,7 +37,7 @@
                         ?>
                         <script>
                             $('#dropPicker').change(function() {
-                                window.location.href="<?=Url::to('mytransactions')?>"+"?date="+$('#dropPicker')
+                                window.location.href="<?=Url::to('dayover')?>"+"?date="+$('#dropPicker')
                                     .val();
                             });
                         </script>
