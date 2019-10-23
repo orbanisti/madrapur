@@ -4,6 +4,7 @@ namespace backend\modules\Dashboard\controllers;
 
 use backend\controllers\Controller;
 use backend\modules\Modevent\models\Modevent;
+use backend\modules\Reservations\models\Reservations;
 use backend\modules\Tickets\models\TicketBlockSearchModel;
 use Yii;
 
@@ -57,7 +58,7 @@ class DashboardController extends Controller {
                     'Ticket block set successfully!<br>Have a bright day!'
                 );
 
-                $this->redirect('street');
+                $this->redirect('admin');
             }
         }
 
@@ -77,7 +78,6 @@ class DashboardController extends Controller {
     public function actionAdmin() {
         $viewType = '';
         $viewName = 'admin';
-        sessionSetFlashAlert('warning', "Screen under construction");
 
         if (Yii::$app->user->can("hotline")) {
             $viewType = 'hotline/';
@@ -179,10 +179,26 @@ class DashboardController extends Controller {
                     sessionSetFlashAlert('warning', 'Ticket skipped.');
 
                     $assignedBlock->skipCurrentTicket();
-                    return $this->redirect('street');
+                    return $this->redirect('admin');
                 }
             }
         }
+        $reservationmodel=new Reservations();
+        $user=Yii::$app->user;
+        $today= $today = date('Y-m-d');
+
+        $userDataProvider = $reservationmodel->searchReservations(Yii::$app->request->queryParams, $user->id, $today);
+
+
+
+        $userDataHuf = $reservationmodel->searchReservations(Yii::$app->request->queryParams, $user->id, $today, 'HUF');
+        $userDataEur = $reservationmodel->searchReservations(Yii::$app->request->queryParams, $user->id, $today, 'EUR');
+        $hufToday = Reservations::sumDataProvider($userDataHuf->models, 'bookingCost');
+        $hufCashToday = Reservations::sumDataProviderCash($userDataHuf->models, 'bookingCost');
+        $hufCardToday = Reservations::sumDataProviderCard($userDataHuf->models, 'bookingCost');
+        $eurCashToday = Reservations::sumDataProviderCash($userDataEur->models, 'bookingCost');
+        $eurCardToday = Reservations::sumDataProviderCard($userDataEur->models, 'bookingCost');
+
 
         return $this->render(
             $viewType . $viewName, [
@@ -190,6 +206,12 @@ class DashboardController extends Controller {
                 'startTicketId' => isset($assignedBlock) ? $assignedBlock->returnStartId() : 'N/A',
                 'nextTicketId' => isset($assignedBlock) ? $assignedBlock->returnCurrentId() : 'N/A',
                 'selectTicket' => isset($selectTicket) ? $selectTicket : null,
+                'hufCardToday'=>$hufCardToday,
+                'eurCashToday'=>$eurCashToday,
+                'hufCashToday'=>$hufCashToday,
+                'eurCardToday'=>$eurCardToday,
+
+
 
             ]
         );

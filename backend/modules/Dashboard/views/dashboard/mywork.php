@@ -91,7 +91,7 @@
                                             Yii::t('backend', 'Job Done, Good work!' . '<i class="fas fa-thumbs-up fa-fw "></i>'),
                                             [
                                                 'class' => 'disabled btn btn-success btn-flat',
-                                                'name' => 'work-end',
+                                                'name' => 'dayover',
                                                 'value' => $work->id
                                             ]
                                         );

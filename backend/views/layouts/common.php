@@ -141,7 +141,7 @@ $bundle = BackendAsset::register($this);
                     [
                         'label' => Yii::t('backend', 'View assigned blocks'),
                         'url' => [
-                            '/Tickets/tickets/view-assigned-blocks'
+                            '/Dashboard/dashboard/manager'
                         ],
                         'icon' => '<i class="fas fa-ticket-alt nav-icon "></i>',
                         'active' => Yii::$app->controller->id === 'tickets' &&
@@ -313,9 +313,10 @@ $bundle = BackendAsset::register($this);
                         ],
                         'icon' => '<i class="fas fa-key nav-icon"></i>',
                         'active' => Yii::$app->controller->id === 'text',
+
                     ],
                     [
-                        'label' => Yii::t('backend', 'My Work'),
+                        'label' => Yii::t('backend', 'My Works'),
                         'url' => [
                             '/Modevent/modevent/mywork'
                         ],
@@ -329,6 +330,7 @@ $bundle = BackendAsset::register($this);
                         ],
                         'icon' => '<i class="fas fa-eye-slash nav-icon "></i>',
                         'active' => Yii::$app->controller->id === 'text',
+                        'visible'=>Yii::$app->user->can('streetAdmin')
                     ],
 
                 ],

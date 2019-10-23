@@ -86,69 +86,9 @@
             $users [] = User::findOne(Yii::$app->user->id);
             $getDate = Yii::$app->request->get('date');
             $today = $getDate ? $getDate : date('Y-m-d');
+            $ProductCountSummary='';
 
-            $gridColumns = [
-                [
-                    'label' => 'Persons',
-                    'attribute' => 'bookedChairsCount',
-                    'format' => 'html',
-                    'value' => function ($model) {
-                        $sellerBadge = '';
-                        if (isset($model->iSellerName)) {
 
-                            $sellerBadge = " <span class=\" badge bg-yellow\">" . $model->iSellerName . "</span>";
-                        }
-
-                        return $model->bookedChairsCount . ' ' . Icon::show(
-                                'users', [
-                                           'class' => 'fa-lg', 'framework'
-                                           => Icon::FA
-                                       ]
-                            ) . $sellerBadge;
-                    }
-                ],
-                [
-                    'label' => 'Cost',
-                    'attribute' => 'bookingCost',
-
-                    'format' => 'html',
-                    'value' => function ($model) {
-
-                        if ($model->orderCurrency == 'EUR') {
-                            $currencySymbol = '<i class="fas fa-euro-sign  "></i>';
-                        } else {
-                            $currencySymbol = 'Ft';
-                        }
-                        if ($model->status == 'unpaid') {
-                            $currencySymbol .= '<span class="badge badge-pill badge-warning">unpaid</span>';
-                        }
-                        return $model->bookingCost . ' ' . $currencySymbol;
-                    }
-                ],
-                [
-                    'label' => 'Partner',
-                    'attribute' => 'sellerName'
-
-                ],
-                [
-                    'class' => 'kartik\grid\ActionColumn',
-                    'template' => '{view}',
-                    'buttons' => [
-                        'view' => function ($url) {
-                            return Html::a(
-                                '<i class="fas fa-eye fa-lg "></i>',
-                                $url,
-                                [
-                                    'title' => Yii::t('backend', 'View')
-                                ]
-                            );
-                        },
-
-                    ],
-
-                ],
-
-            ];
 
             $reservationmodel = new Reservations();
 
@@ -162,9 +102,124 @@
                 $hufCardToday = Reservations::sumDataProviderCard($userDataHuf->models, 'bookingCost');
                 $eurCashToday = Reservations::sumDataProviderCash($userDataEur->models, 'bookingCost');
                 $eurCardToday = Reservations::sumDataProviderCard($userDataEur->models, 'bookingCost');
+                $ProductCount=Reservations::getCountBy($userDataProvider,'productId');
 
+                foreach ($ProductCount as $key=>$item){
+                    $ProductCountSummary.=(Product::getProdById($key))->title.' x '.$item."<br/>";
+                }
                 $eurToday = Reservations::sumDataProvider($userDataEur->models, 'bookingCost');
+                $gridColumns = [
+                    [
+                        'label' => 'Ticket Id',
+                        'attribute' => 'ticketId',
 
+                    ],
+                    [
+                        'label' => 'Product',
+                        'attribute' => 'productId',
+                        'format' => 'html',
+                        'value' => function ($model) {
+                            return (Product::getProdById($model->productId))->title;
+                        },
+                        'pageSummary'=>$ProductCountSummary,
+
+                        'pageSummaryOptions' => ['colspan' => 2],
+                    ],
+
+                    [
+                        'label' => 'Persons',
+                        'attribute' => 'bookedChairsCount',
+                        'format' => 'html',
+                        'value' => function ($model) {
+                            $sellerBadge = '';
+                            if (isset($model->iSellerName)) {
+
+                                $sellerBadge = " <span class=\" badge bg-yellow\">" . $model->iSellerName . "</span>";
+                            }
+
+                            return $model->bookedChairsCount . ' ' . Icon::show(
+                                    'users', [
+                                               'class' => 'fa-lg', 'framework'
+                                               => Icon::FA
+                                           ]
+                                ) . $sellerBadge;
+                        }
+                    ],
+                    [
+                        'label' => 'Cost',
+                        'attribute' => 'bookingCost',
+
+                        'format' => 'html',
+                        'value' => function ($model) {
+
+                            if ($model->orderCurrency == 'EUR') {
+                                $currencySymbol = '<i class="fas fa-euro-sign  "></i>';
+                            } else {
+                                $currencySymbol = 'Ft';
+                            }
+                            if ($model->status == 'unpaid') {
+                                $currencySymbol .= '<span class="badge badge-pill badge-warning">unpaid</span>';
+                            }
+                            return $model->bookingCost . ' ' . $currencySymbol;
+                        },
+                        'pageSummary'=>
+                            'Total € Cash '.$eurCashToday.
+                            '<br/>Total € Card '.$eurCardToday.
+                            '<br/>Total Ft Cash '.$hufCashToday.
+                            '<br/>Total Ft Card '.$hufCardToday
+                        ,
+
+                        'pageSummaryOptions' => ['colspan' => 2],
+
+                    ],
+                    [
+                        'label' => 'Partner',
+                        'attribute' => 'sellerName',
+                        'format' => 'html',
+                        'value' => function ($model) {
+                            if ($model->sellerName === Yii::$app->user->getIdentity()->username) {
+                                return '';
+                            }
+
+                            return $model->sellerName;
+                        }
+
+                    ],
+                    [
+                        'label' => 'Paid Method',
+                        'attribute' => 'paidMethod',
+                        'format' => 'html',
+                        'value' => function ($model) {
+                            return $model->paidMethod;
+                        }
+                    ],
+                    [
+                        'label' => 'Notes',
+                        'attribute' => 'notes',
+                        'format' => 'html',
+                        'value' => function ($model) {
+                            return $model->notes;
+                        }
+                    ],
+                    [
+                        'class' => 'kartik\grid\ActionColumn',
+                        'template' => '{view}',
+                        'buttons' => [
+                            'view' => function ($url) {
+                                return Html::a(
+                                    '<i class="fas fa-eye fa-lg "></i>',
+                                    $url,
+                                    [
+                                        'title' => Yii::t('backend', 'View')
+                                    ]
+                                );
+                            },
+
+                        ],
+
+                    ],
+
+                ];
                 $userGrid = \kartik\grid\GridView::widget(
                     [
                         'dataProvider' => $userDataProvider,
@@ -178,6 +233,10 @@
                             ],
                             '{export}',
                             '{toggleData}',
+                        ],
+                        'panel'=>[
+                            'heading'=>$today,
+
                         ],
                         'toggleDataContainer' => ['class' => 'btn-group mr-2'],
                         // set export properties
@@ -200,7 +259,7 @@
                                         ' . $user->username . '
                                     </h3>
                     
-                                    <div class="card-tools btn-group    ">
+                                    <div class="card-tools btn-group    ">  
                                      
                                      <span class="badge bg-info">
                                      <i class="fas fa-euro-sign  "></i>
@@ -216,40 +275,7 @@
                                 </div>
                                 <div class="card-body">
                                 
-                                <div class="container">
-                                	<div class="row">
-                                		<div class="col-lg-3">
-                                			<div class="info-box">
-                                			              <span class="info-box-icon bg-info"><i class="fas fa-euro-sign"></i></span>
-                                			
-                                			              <div class="info-box-content">
-                                			                  <span class="info-box-text">EUR income today</span>
-                                			                <span class="info-box-number"><i 
-                                			                class="fas fa-wallet fa-fw"></i>' . $eurCashToday . '</span>
-                                			                <span class="info-box-number"><i class="fas fa-credit-card fa-fw "></i></i>
-                                			                ' . $eurCardToday . '</span>
-                                			              </div>
-                                			              <!-- /.info-box-content -->
-                                			            </div>                          
-                                		</div>
-                                		<div class="col-lg-3">
-                                			<div class="info-box">
-                                			              <span class="info-box-icon bg-info">Ft</span>
-                                			
-                                			              <div class="info-box-content">
-                                			                <span class="info-box-text">Huf income today</span>
-                                			                <span class="info-box-number"><i 
-                                			                class="fas fa-wallet fa-fw"></i>' . $hufCashToday . '</span>
-                                			                <span class="info-box-number"><i class="fas fa-credit-card fa-fw "></i></i>
-                                			                ' . $hufCardToday . '</span>
-                                			              </div>
-                                			              <!-- /.info-box-content -->
-                                			            </div>                          
-                                		</div>
-                                		
-                                	</div>
-                                </div>
-                                
+                               
                          
                     
                                    ' . $userGrid . '
@@ -294,6 +320,22 @@
             $userUnfinished = [];
 
             $userCurrentWorkshift = Modevent::userNextWork();
+            if(Modevent::userLastWork()->startDate==date('Y-m-d',strtotime('today'))){
+                $userCurrentWorkshift=Modevent::userLastWork();
+            }
+            if(!isset($userCurrentWorkshift->status)){
+                $userCurrentWorkshift= Modevent::userLastWork();
+
+            }
+            $workComplete=false;
+
+            if($userCurrentWorkshift->status=='worked'){
+               $workComplete=true;
+
+
+            }
+
+
             $workShift = Workshift::findOne($userCurrentWorkshift->place);
 
             $userSkippedIds = TicketBlock::userWorkshiftSkippedTickets($workShift->id);
@@ -454,8 +496,8 @@
                             return $model->bookingCost . ' ' . $currencySymbol;
                         },
                         'pageSummary'=>
-                            'Total <i class="fas fa-euro-sign  "></i> Cash '.$eurCashToday.
-                            '<br/>Total <i class="fas fa-euro-sign  "></i> Card '.$eurCardToday.
+                            'Total € Cash '.$eurCashToday.
+                            '<br/>Total € Card '.$eurCardToday.
                             '<br/>Total Ft Cash '.$hufCashToday.
                             '<br/>Total Ft Card '.$hufCardToday
                         ,
@@ -533,17 +575,19 @@
 
                                 'options' => ['class' => 'btn-group mr-2']
                             ],
-                            Html::a('End Workshift', [
-                                'dayover',
-                                'id' => $userCurrentWorkshift->id
-
-                            ],['class'=>"btn btn-info $userUnableToContinue"]),
+                            $workComplete? Html::a('Work Complete', ['dayover','id' =>
+                                $userCurrentWorkshift->id],
+                                                   ['class'=>"btn btn-info disabled"]) : Html::a('End Workshift',
+                                                                                          ['dayover','id' =>
+                                $userCurrentWorkshift->id],
+                                                      ['class'=>"btn btn-info $userUnableToContinue"]),
                             '{export}',
                             '{toggleData}',
 
                         ],
                         'panel' => [
-                            'heading' => $workShiftName,
+                            'heading' => $workComplete ? '<i class="fas fa-check-circle fa-fw "></i>'.$workShiftName:$workShiftName,
+
 
 
                         ],
@@ -1201,7 +1245,7 @@
                              'myPrices' => $myPrices,
                              'countPrices' => $countPrices,
                              'newReservation' => $updateResponse,
-                             'allMyProducts' => Product::getAllProducts(),
+                             'allMyProducts' => Product::getStreetProducts(),
                              'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
                          ]
             );
@@ -1802,6 +1846,11 @@
                         $StreetHeader = "<span class=\"info-box-text\">Available places left:</span>
 <span class=\"info-box-number\">$availableChairs</span>";
 
+                        $NoPacesLeftHeader = "<span class=\"info-box-text\">Sorry, this spot is full</span>
+<span class=\"info-box-number\"></span>";
+
+
+
                         $capPercentage = round($availableChairs * 0.9, -1);
                         $HotelHeader = "<span class=\"info-box-text\">Remaining capacity:</span>
 <span class=\"info-box-number\">$capPercentage+ </span>";
@@ -1827,6 +1876,12 @@
                         if ($availableChairs > ($currentProduct->capacity) * 65 / 100) {
                             $capcolor = 'bg-blue';
                         }
+                        $buttonEnable='true';
+                        if($availableChairs < 0){
+                            $capcolor ='bg-dark';
+                            $BoxInfo=$NoPacesLeftHeader;
+                            $buttonEnable='false';
+                        }
 
                         $AvailableSpacesHtml = "
 <div class=\"info-box $capcolor\">
@@ -1846,9 +1901,11 @@
 <!-- /.info-box-content -->
 </div>";
 
+
                         return [
                             'search' => "$AvailableSpacesHtml",
-                            'response' => 'places'
+                            'response' => 'places',
+                            'buttonEnable'=>"$buttonEnable"
 
                         ];
                     }

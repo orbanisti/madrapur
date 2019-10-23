@@ -14,6 +14,11 @@ use yii\filters\VerbFilter;
  */
 class ModeventCrudController extends Controller
 {
+    public static $bans = [
+        "workshift" => [
+            "streetSeller",
+        ],
+    ];
     public function behaviors()
     {
         return [
@@ -103,8 +108,11 @@ class ModeventCrudController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+        sessionSetFlashAlert('warning', '<i class="fas fa-check-circle fa-fw "></i>Successfuly deleted! Doesn\'t apply to arranged work!');
 
-        return $this->redirect(['index']);
+        return $this->redirect(['subscribe']);
+
+
     }
 
     /**

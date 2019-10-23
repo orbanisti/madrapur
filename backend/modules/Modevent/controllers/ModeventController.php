@@ -15,6 +15,8 @@ use yii\data\ActiveDataProvider;
  */
 class ModeventController extends ModeventCrudController {
 
+
+
     public function actionCalendar()
     {
         $query=Modevent::find();
@@ -53,6 +55,7 @@ class ModeventController extends ModeventCrudController {
             return $this->redirect(Yii::$app->request->referrer);
 
         }
+
         if($workstart=Yii::$app->request->post('work-end'))
         {
 
@@ -62,6 +65,17 @@ class ModeventController extends ModeventCrudController {
             return $this->redirect('/Reservations/reservations/dayover');
 
         }
+
+        if($workstart=Yii::$app->request->post('dayover'))
+        {
+
+//            $workAboutToStart=Modevent::findOne($workstart);
+//            $workAboutToStart->status='worked';
+//            $workAboutToStart->save();
+            return $this->redirect('/Reservations/reservations/dayover');
+
+        }
+
 
         $toprint=Modevent::find()->andFilterWhere(['=','user',Yii::$app->user->getIdentity()->username])->andWhere('`title`=\'arranged\'')->orderBy('startDate');
 
@@ -122,6 +136,7 @@ class ModeventController extends ModeventCrudController {
             $model->startDate=Yii::$app->request->post('date');
             $model->place=Yii::$app->request->post('place');
             $model->title=Yii::$app->request->post('title');
+            $model->status=Yii::$app->request->post('status');
             $model->save();
             return 1;
 
@@ -173,10 +188,14 @@ class ModeventController extends ModeventCrudController {
     {
         $model=new Modevent();
 
+        $dataProvider=$model->search(Yii::$app->request->queryParams);
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            sessionSetFlashAlert('success', '<i class="fas fa-check-circle fa-fw "></i>Successful subscription!');
+
+            return $this->redirect(['subscribe', 'id' => $model->id]);
         }
-        return $this->render('subscribe', ['model' => $model
+        return $this->render('subscribe', ['model' => $model,'dataProvider'=>$dataProvider
         ]);
     }
 }

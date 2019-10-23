@@ -342,7 +342,8 @@ class TicketsController extends Controller {
                     $value = $model->reservationId;
 
                     if (is_numeric($model->reservationId)) {
-                        $value = '<a href="/Reservations/reservations/bookingedit?id=' . $model->reservationId . '">' . $model->reservationId . '</a>';
+                        $value = '<a href="/Reservations/reservations/view?id=' . $model->reservationId . '">' .
+                            $model->reservationId . '</a>';
                     }
 
                     return $value;
@@ -447,7 +448,7 @@ class TicketsController extends Controller {
                     'success',
                     'Ticket block set successfully!<br>Have a bright day!'
                 );
-                $this->redirect('Dashboard/dashboard/street');
+                $this->redirect('/Dashboard/dashboard/admin');
             }
         }
 

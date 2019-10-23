@@ -4,6 +4,7 @@ namespace backend\modules\Modevent\models;
 
 use backend\modules\MadActiveRecord\models\MadActiveRecord;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
 
 /**
@@ -43,11 +44,39 @@ class Modevent extends MadActiveRecord{
         $date=date('Y-m-d',strtotime('today'));
 
         $next = Modevent::find()->andFilterWhere(['=','user',Yii::$app->user->getIdentity()->username])->andFilterWhere
-        (['>=','startDate',$date])->andWhere('`title`=\'arranged\'')->orderBy('startDate')->one();
+        (['>=','startDate',$date])->andWhere('`title`=\'arranged\'')->andWhere('not `status`<=>\'worked\'')->orderBy
+        (['startDate'=>SORT_ASC])->one();
+
         Yii::warning($next);
         return $next;
+    }
+    public static function userLastWork(){
+        $date=date('Y-m-d',strtotime('today'));
 
+        $next = Modevent::find()->andFilterWhere(['=','user',Yii::$app->user->getIdentity()->username])->andFilterWhere
+        (['<=','startDate',$date])->andWhere('`title`=\'arranged\'')->andWhere('`status`=\'worked\'')->orderBy
+        ('startDate')->one();
+        return $next;
+    }
+    public function search($params) {
+        $query = Modevent::find()->andFilterWhere(['=','user',Yii::$app->user->getIdentity()->username])->andWhere('`title`=\'subscribe\'');
 
+        $dataProvider = new ActiveDataProvider([
+                                                   'query' => $query,
+                                                   'pagination' => [
+                                                       'pageSize' => 15,
+                                                   ],
+                                               ]);
+
+        if (!($this->load($params) && $this->validate())) {
+            return $dataProvider;
+        }
+
+//        $query->andFilterWhere((['=', 'ticketId', $this->ticketId]));
+//        $query->andFilterWhere((['like', 'source', $this->source]));
+//        $query->andFilterWhere((['=', 'bookingDate', $this->bookingDate]));
+
+        return $dataProvider;
     }
 
 

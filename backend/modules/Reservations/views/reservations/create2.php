@@ -82,7 +82,7 @@ use kartik\helpers\Html;
                                 'type' => DatePicker::TYPE_INLINE
                                 , 'options' => [
                                 'value' => date('Y-m-d', time()),
-                                'class' => 'bg-gradient-info bordered'
+                                'class' => 'bg-gradient-primary '
 
                                 ],
                                 'pluginOptions' => [
@@ -182,7 +182,7 @@ use kartik\helpers\Html;
 
                             <div id="myTimes"></div>
                             <div id="myPrices"></div>
-                            <?= Html::submitButton('Create Reservation', ['class' => 'btn btn-block bg-aqua btn-lg btn-primary prodUpdateBtn']) ?>
+                            <?= Html::submitButton('Create Reservation', ['class' => 'create btn btn-block bg-aqua btn-lg btn-primary prodUpdateBtn']) ?>
 
 
                             <?php ActiveForm::end();
@@ -498,7 +498,7 @@ use kartik\helpers\Html;
      
         $('.bootstrap-switch-label').on('click',toggleshowcPrice);
         $('.bootstrap-switch-handle-on').on('click',toggleshowcPrice);
-        console.log('megy');
+ 
      })
 
 
@@ -555,6 +555,7 @@ SCRIPT;
             },
             success: function (data) {
                 console.log(data.search);
+
                 mytimes = data.search
                 $('#myTimes').html('');
                 $('#product-times').html('<option>Please select a time</option>')
@@ -639,6 +640,16 @@ SCRIPT;
                 addOns: gatherAddOns(),
             },
             success: function (data) {
+                console.log(data.buttonEnable);
+
+                if(data.buttonEnable=='false'){
+                    $('.create').prop( "disabled", true );
+                }
+                else{
+                    $('.create').prop( "disabled", false );
+
+
+                }
 
                 mytimes = data.search;
 

@@ -20,34 +20,28 @@
                     <i class="fas fa-hand-holding-usd  "></i>
                     My Transactions
                     <div class="btn-group">
-                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
-                            <?=$today?></button>
-                        <div class="dropdown-menu float-right" role="menu">
-                            <?php
-                                echo  DatePicker::widget([
-                                                             'model' => $searchModel,
-                                                             'name' => 'dp_2',
-                                                             'id'=>'dropPicker',
-                                                             'type' => DatePicker::TYPE_COMPONENT_PREPEND,
-                                                             'pluginOptions' => [
-                                                                 'autoclose' => true,
-                                                                 'format' => 'yyyy-mm-dd'
 
-                                                             ]
-                                                         ]);
+                        <?php
+                            echo  DatePicker::widget([
+                                                         'model' => $searchModel,
+                                                         'name' => 'dp_2',
+                                                         'id'=>'dropPicker',
+                                                         'type' => DatePicker::TYPE_COMPONENT_PREPEND,
+                                                         'pluginOptions' => [
+                                                             'autoclose' => true,
+                                                             'format' => 'yyyy-mm-dd'
 
-                            ?>
-                            <script>
-                                $('#dropPicker').change(function() {
-                                    window.location.href="<?=Url::to('mytransactions')?>"+"?date="+$('#dropPicker')
-                                        .val();
-                                });
-                            </script>
-                            <a href="#" class="dropdown-item">Add new event</a>
-                            <a href="#" class="dropdown-item">Clear events</a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">View calendar</a>
-                        </div>
+                                                         ]
+                                                     ]);
+
+                        ?>
+                        <script>
+                            $('#dropPicker').change(function() {
+                                window.location.href="<?=Url::to('mytransactions')?>"+"?date="+$('#dropPicker')
+                                    .val();
+                            });
+                        </script>
+
                     </div>
                 </h3>
 

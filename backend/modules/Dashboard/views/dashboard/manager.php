@@ -1,5 +1,5 @@
 <?php
-
+\frontend\assets\MdbButtonsAsset::register($this);
 ?>
 
 
@@ -33,7 +33,8 @@
                     <i class="fas fa-book fa-3x "></i>
                 </div>
                 <div class="product-info">
-                    <a href="javascript:void(0)" class="product-title"><?=$ticketblock->startId?>
+                    <a href="/Tickets/tickets/view-block?ticketBlockStartId=<?=$ticketblock->startId?>"
+                       class="product-title"><?=$ticketblock->startId?>
                       <?php
                             if(!$ticketblock->isActive){
                                 echo Html::a('Activate',
@@ -45,6 +46,9 @@
 
                             }
                             else{
+
+
+
                                 echo Html::a('<i class="fas fa-check-double  "></i>'.'Active',
                                              '/Dashboard/dashboard/admin?skip-ticket='.TicketBlock::userNextTicketId(),
                                              [

@@ -51,6 +51,7 @@ use yii\widgets\Pjax;
                                 if($newEvent->title=='subscribe'){
                                     $Event->resourceId = 'att';
                                 }
+
                                 $Event->nonstandard = [
                                     'field1' => 'Something I want to be included in object #1',
 
@@ -64,6 +65,10 @@ use yii\widgets\Pjax;
                             $Event = new \yii2fullcalendar\models\Event();
                             $Event->id = $newEvent->id.'###'.$newEvent->place;
                             $Event->title = $newEvent->user;
+                            if($newEvent->status=='worked'){
+                                $Event->title = $newEvent->user.' ✓';
+                                $Event->color='limegreen';
+                            }
                             $Event->start = $newEvent->startDate;
                             $Event->resourceId=$newEvent->place;
                             $events[] = $Event;
@@ -112,6 +117,7 @@ EOF;
                                     date:date,
                                     place:place,
                                     title:'arranged',
+                                    status:'notyet',
                                     _csrf : '<?=Yii::$app->request->getCsrfToken()?>'
                                 },
                                 success: function (data) {
