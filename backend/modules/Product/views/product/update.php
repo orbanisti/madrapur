@@ -48,16 +48,17 @@ use kartik\helpers\Html;
                         'class' => "btn btn-primary" . ($referrer ? "" : " disabled"),
                     ]);
 
-                    echo Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']);0
+                    echo Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']);
 
                     switch ($updateResponse) {
                         case 1:
-                            $updateResponse = '<span style="color:green">Product Update Successful</span>';
+                            $updateResponse = sessionSetFlashAlert('success','Product Update Successful');
                             break;
-                        case 0:
-                            $updateResponse = '<span style="color:red">Product Update Failed</span>';
+
                     }
-                    echo $updateResponse;
+
+
+
 
                     echo $this->render('editForm', [
                         'model' => $model,

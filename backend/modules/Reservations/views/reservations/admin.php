@@ -209,6 +209,9 @@ use yii\widgets\ActiveForm;
 
                                                                    ]
                                                                ]),
+                            ],  [
+                                'attribute' => 'sellerName',
+
                             ],
                             [
                                 'label' => 'Edit Booking',

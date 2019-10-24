@@ -1511,8 +1511,9 @@
             $searchModel = new ProductAdminSearchModel();
 
             $users = User::find()->all();
+            $getDate = Yii::$app->request->get('date');
+            $today = $getDate ? $getDate : date('Y-m-d');
 
-            $today = date('Y-m-d');
 
             $gridColumns = [
                 [
@@ -1577,6 +1578,13 @@
 
             $userList = [];
             foreach ($users as $in => $user) {
+                $userDoneForToday='';
+                if($todayOrLast=Modevent::userNextWorkSpecific($user->username)){
+                    $userDoneForToday=$todayOrLast->title;
+
+                }
+
+
                 $userDataProvider = $reservationmodel->searchReservations(Yii::$app->request->queryParams, $user->id, $today);
                 $userDataHuf = $reservationmodel->searchReservations(Yii::$app->request->queryParams, $user->id, $today, 'HUF');
                 $userDataEur = $reservationmodel->searchReservations(Yii::$app->request->queryParams, $user->id, $today, 'EUR');
@@ -1601,7 +1609,10 @@
                             ],
                             '{export}',
                             '{toggleData}',
-                        ],
+                             ],
+//                        'panel'=>['heading'=>'asd',
+//                        ],
+
                         'toggleDataContainer' => ['class' => 'btn-group mr-2'],
                         // set export properties
                         'export' => [
@@ -1624,7 +1635,9 @@
                                     </h3>
                     
                                     <div class="card-tools btn-group    ">
-                                     
+                                      <span class="badge bg-info">
+                                     <i class="fas fa-euro-sign  "></i>
+                                     ' . $userDoneForToday . "</span>".'
                                      <span class="badge bg-info">
                                      <i class="fas fa-euro-sign  "></i>
                                      ' . $eurToday . "</span>
@@ -1664,7 +1677,9 @@
                                 			                <span class="info-box-number"><i 
                                 			                class="fas fa-wallet fa-fw"></i>' . $hufCashToday . '</span>
                                 			                <span class="info-box-number"><i class="fas fa-credit-card fa-fw "></i></i>
-                                			                ' . $hufCardToday . '</span>
+                                			                ' . $hufCardToday . '</span>  
+                                			                <span class="info-box-number"><i class="fas fa-credit-card fa-fw "></i></i>
+                                			                ' .$userDoneForToday .'</span>
                                 			              </div>
                                 			              <!-- /.info-box-content -->
                                 			            </div>                          

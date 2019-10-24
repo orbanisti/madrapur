@@ -10,133 +10,141 @@ use yii\widgets\ActiveForm;
 ?>
 
 
-<?php
-if (Yii::$app->session->hasFlash('error')) {
-    echo '<p class="has-error flashes"><span class="help-block help-block-error">' . Yii::$app->session->getFlash('error') . '</span></p>';
-} elseif (Yii::$app->session->hasFlash('success')) {
-    echo '<p class="has-success flashes"><span class="help-block help-block-success">' . Yii::$app->session->getFlash('success') . '</span></p>';
-}
-?>
 
-<ul class="nav nav-pills nav-fill">
-    <li class="nav-item">
-        <a class="nav-link active"
-           href="#content"
-           data-toggle="tab"><?= Yii::t('app', 'Details') ?></a>
-    </li>
-<!--    <li class="nav-item">-->
-<!--        <a class="nav-link"-->
-<!--           href="#meta"-->
-<!--           data-toggle="tab">--><?//= Yii::t('app', 'Meta') ?><!--</a>-->
-<!--    </li>-->
-    <li class="nav-item">
-        <a class="nav-link"
-           href="#prices"
-           data-toggle="tab"><?= Yii::t('app', '$Prices') ?></a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link"
-           href="#sources"
-           data-toggle="tab"><?= Yii::t('app', 'Sources') ?></a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link"
-           href="#times"
-           data-toggle="tab"><?= Yii::t('app', 'Times') ?></a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link"
-           href="#add-ons"
-           data-toggle="tab"><?= Yii::t('app', 'Add-ons') ?></a>
-    </li>
-<!--    <li class="nav-item">-->
-<!--        <a class="nav-link"-->
-<!--           href="#timetable"-->
-<!--           data-toggle="tab">--><?//= Yii::t('app', 'TimeTable') ?><!--</a>-->
-<!--    </li>-->
-</ul>
+<div class="row">
+    <div class="col-12">
+        <!-- interactive chart -->
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+
+                <ul class="nav nav-pills nav-fill">
+                    <li class="nav-item">
+                        <a class="nav-link active"
+                           href="#content"
+                           data-toggle="tab"><?= Yii::t('app', 'Details') ?></a>
+                    </li>
+                    <!--    <li class="nav-item">-->
+                    <!--        <a class="nav-link"-->
+                    <!--           href="#meta"-->
+                    <!--           data-toggle="tab">--><?//= Yii::t('app', 'Meta') ?><!--</a>-->
+                    <!--    </li>-->
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="#prices"
+                           data-toggle="tab"><?= Yii::t('app', '$Prices') ?></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="#sources"
+                           data-toggle="tab"><?= Yii::t('app', 'Sources') ?></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="#times"
+                           data-toggle="tab"><?= Yii::t('app', 'Times') ?></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="#add-ons"
+                           data-toggle="tab"><?= Yii::t('app', 'Add-ons') ?></a>
+                    </li>
+                    <!--    <li class="nav-item">-->
+                    <!--        <a class="nav-link"-->
+                    <!--           href="#timetable"-->
+                    <!--           data-toggle="tab">--><?//= Yii::t('app', 'TimeTable') ?><!--</a>-->
+                    <!--    </li>-->
+                </ul>
 
 
-<div class="tab-content">
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
 
-    <div class="tab-pane active"
-         id="content">
+                </div>
+            </div>
+            <div class="card-body">
 
-        <?= $this->render("forms/content", [
-            "form" => $form,
-            "model" => $model,
-        ]); ?>
 
-    </div>
+                <div class="tab-content">
 
-    <div class="tab-pane"
-         id="meta">
+                    <div class="tab-pane active"
+                         id="content">
 
-        <?= $this->render("forms/meta", [
-            "form" => $form,
-            "model" => $model,
-        ]); ?>
+                        <?= $this->render("forms/content", [
+                            "form" => $form,
+                            "model" => $model,
+                        ]); ?>
 
-    </div>
+                    </div>
 
-    <div class="tab-pane"
-         id="prices">
+                    <div class="tab-pane"
+                         id="meta">
 
-        <?= $this->render("forms/prices", [
-            "form" => $form,
-            "model" => $model,
-            "modelPrices" => $modelPrices
-        ]); ?>
+                        <?= $this->render("forms/meta", [
+                            "form" => $form,
+                            "model" => $model,
+                        ]); ?>
 
-    </div>
+                    </div>
 
-    <div class="tab-pane"
-         id="times">
+                    <div class="tab-pane"
+                         id="prices">
 
-        <?= $this->render("forms/times", [
-            "form" => $form,
-            "model" => $model,
-            "modelTimes" => $modelTimes
-        ]); ?>
+                        <?= $this->render("forms/prices", [
+                            "form" => $form,
+                            "model" => $model,
+                            "modelPrices" => $modelPrices
+                        ]); ?>
 
-    </div>
+                    </div>
 
-    <div class="tab-pane"
-         id="sources">
+                    <div class="tab-pane"
+                         id="times">
 
-        <?= $this->render("forms/sources", [
-            "form" => $form,
-            "model" => $model,
-            "modelSources" => $modelSources
-        ]); ?>
+                        <?= $this->render("forms/times", [
+                            "form" => $form,
+                            "model" => $model,
+                            "modelTimes" => $modelTimes
+                        ]); ?>
 
-    </div>
+                    </div>
 
-    <div class="tab-pane"
-         id="add-ons">
-        <?= $this->render("forms/add-ons", [
-            "form" => $form,
-            "model" => $model,
-            "prodId" => $prodId,
-            "modelAddOns" => $modelAddOns,
-            "selectedModelAddOns" => $selectedModelAddOns,
-        ]); ?>
-    </div>
+                    <div class="tab-pane"
+                         id="sources">
 
-    <div class="tab-pane"
-         id="timetable">
+                        <?= $this->render("forms/sources", [
+                            "form" => $form,
+                            "model" => $model,
+                            "modelSources" => $modelSources
+                        ]); ?>
 
-        <?= $this->render("forms/timetable", [
-            "form" => $form,
-            "model" => $model,
-            "prodId" => $prodId,
-            "modelEvents" => $modelEvents
-        ]); ?>
+                    </div>
 
-    </div>
+                    <div class="tab-pane"
+                         id="add-ons">
+                        <?= $this->render("forms/add-ons", [
+                            "form" => $form,
+                            "model" => $model,
+                            "prodId" => $prodId,
+                            "modelAddOns" => $modelAddOns,
+                            "selectedModelAddOns" => $selectedModelAddOns,
+                        ]); ?>
+                    </div>
 
-    <?php
-    $this->registerJs('
+                    <div class="tab-pane"
+                         id="timetable">
+
+                        <?= $this->render("forms/timetable", [
+                            "form" => $form,
+                            "model" => $model,
+                            "prodId" => $prodId,
+                            "modelEvents" => $modelEvents
+                        ]); ?>
+
+                    </div>
+
+                    <?php
+                        $this->registerJs('
         $(".dynamicform_wrapper_times").on("beforeInsert", function(e, item) {
             console.log("beforeInsert");
         });
@@ -160,6 +168,16 @@ if (Yii::$app->session->hasFlash('error')) {
             alert("Limit elérve");
         });
     ');
-    ?>
+                    ?>
 
+                </div>
+
+            </div>
+            <!-- /.card-body-->
+        </div>
+        <!-- /.card -->
+
+    </div>
+
+    <!-- /.col -->
 </div>

@@ -10,6 +10,10 @@ use kartik\datecontrol\DateControl;
                 </h4>
             </div>
             <div class="panel-body">
+                <?= $form->field($model, 'isStreet')
+                    ->dropDownList(['yes' => 'yes','no' => 'no']);
+
+                ?>
 
 
                 <?= $form->field($model, 'currency')->dropDownList(array('HUF' => 'HUF', 'EUR' => 'EUR',), array('options' => array('HUF' => array('selected' => true)))); ?>
