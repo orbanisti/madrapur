@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7ebad28077b0cdbc183f2f88c2807e62",
+    "content-hash": "39ccf9b3fc34979518c41ece9d628632",
     "packages": [
         {
             "name": "2amigos/yii2-ckeditor-widget",
@@ -230,16 +230,16 @@
         },
         {
             "name": "bower-asset/ace-builds",
-            "version": "v1.4.6",
+            "version": "v1.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ajaxorg/ace-builds.git",
-                "reference": "c36237047e22cc3350845bc3f5b55ec062953f42"
+                "reference": "5ad04a46e8e0981a65dd982693e5d19a2209311c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ajaxorg/ace-builds/zipball/c36237047e22cc3350845bc3f5b55ec062953f42",
-                "reference": "c36237047e22cc3350845bc3f5b55ec062953f42"
+                "url": "https://api.github.com/repos/ajaxorg/ace-builds/zipball/5ad04a46e8e0981a65dd982693e5d19a2209311c",
+                "reference": "5ad04a46e8e0981a65dd982693e5d19a2209311c"
             },
             "type": "bower-asset",
             "license": [
@@ -290,7 +290,7 @@
             "version": "v2.24.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/blueimp/JavaScript-Load-Image.git",
+                "url": "git@github.com:blueimp/JavaScript-Load-Image.git",
                 "reference": "1196b4ce3c56f01cacf90fc5527b324ecccdf3b0"
             },
             "dist": {
@@ -402,7 +402,7 @@
             "version": "v4.15.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/free-jqgrid/jqGrid.git",
+                "url": "git@github.com:free-jqgrid/jqGrid.git",
                 "reference": "9ae82409e2a03b9b2a4d0d5f09ec43f03bea97af"
             },
             "dist": {
@@ -469,7 +469,7 @@
             "version": "3.3.11",
             "source": {
                 "type": "git",
-                "url": "https://github.com/RobinHerbots/Inputmask.git",
+                "url": "git@github.com:RobinHerbots/Inputmask.git",
                 "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
             },
             "dist": {
@@ -740,16 +740,16 @@
         },
         {
             "name": "components/flag-icon-css",
-            "version": "3.4.0",
+            "version": "3.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lipis/flag-icon-css.git",
-                "reference": "3b6b30073bafe944ea7021b89588dab7818e8aee"
+                "reference": "1b0d2f6eb78ee1cecbcce0c63ab106aa51d044d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lipis/flag-icon-css/zipball/3b6b30073bafe944ea7021b89588dab7818e8aee",
-                "reference": "3b6b30073bafe944ea7021b89588dab7818e8aee",
+                "url": "https://api.github.com/repos/lipis/flag-icon-css/zipball/1b0d2f6eb78ee1cecbcce0c63ab106aa51d044d6",
+                "reference": "1b0d2f6eb78ee1cecbcce0c63ab106aa51d044d6",
                 "shasum": ""
             },
             "type": "component",
@@ -774,7 +774,7 @@
                 }
             ],
             "description": "CSS for vector based country flags",
-            "time": "2019-09-20T09:14:38+00:00"
+            "time": "2019-10-16T12:35:55+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -1757,27 +1757,28 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.3.3",
+            "version": "6.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "407b0cb880ace85c9b63c5f9551db498cb2d50ba"
+                "reference": "0895c932405407fd3a7368b6910c09a24d26db11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/407b0cb880ace85c9b63c5f9551db498cb2d50ba",
-                "reference": "407b0cb880ace85c9b63c5f9551db498cb2d50ba",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/0895c932405407fd3a7368b6910c09a24d26db11",
+                "reference": "0895c932405407fd3a7368b6910c09a24d26db11",
                 "shasum": ""
             },
             "require": {
+                "ext-json": "*",
                 "guzzlehttp/promises": "^1.0",
-                "guzzlehttp/psr7": "^1.4",
+                "guzzlehttp/psr7": "^1.6.1",
                 "php": ">=5.5"
             },
             "require-dev": {
                 "ext-curl": "*",
                 "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.4 || ^7.0",
-                "psr/log": "^1.0"
+                "psr/log": "^1.1"
             },
             "suggest": {
                 "psr/log": "Required for using the Log middleware"
@@ -1789,12 +1790,12 @@
                 }
             },
             "autoload": {
-                "files": [
-                    "src/functions_include.php"
-                ],
                 "psr-4": {
                     "GuzzleHttp\\": "src/"
-                }
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -1818,7 +1819,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2018-04-22T15:46:56+00:00"
+            "time": "2019-10-23T15:58:00+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -4621,16 +4622,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.56",
+            "version": "1.0.57",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "90e3f83cb10ef6b058d70f95267030e7a6236518"
+                "reference": "0e9db7f0b96b9f12dcf6f65bc34b72b1a30ea55a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/90e3f83cb10ef6b058d70f95267030e7a6236518",
-                "reference": "90e3f83cb10ef6b058d70f95267030e7a6236518",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/0e9db7f0b96b9f12dcf6f65bc34b72b1a30ea55a",
+                "reference": "0e9db7f0b96b9f12dcf6f65bc34b72b1a30ea55a",
                 "shasum": ""
             },
             "require": {
@@ -4701,7 +4702,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2019-10-12T13:05:59+00:00"
+            "time": "2019-10-16T21:01:05+00:00"
         },
         {
             "name": "league/glide",
@@ -7379,16 +7380,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd"
+                "reference": "bf73deb2b3b896a9d9c75f3f0d88185d2faa27e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
-                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/bf73deb2b3b896a9d9c75f3f0d88185d2faa27e2",
+                "reference": "bf73deb2b3b896a9d9c75f3f0d88185d2faa27e2",
                 "shasum": ""
             },
             "require": {
@@ -7397,7 +7398,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -7422,7 +7423,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2018-11-20T15:27:04+00:00"
+            "time": "2019-10-25T08:06:51+00:00"
         },
         {
             "name": "psr/simple-cache",
@@ -7681,16 +7682,16 @@
         },
         {
             "name": "select2/select2",
-            "version": "4.0.10",
+            "version": "4.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/select2/select2.git",
-                "reference": "c4b730a0a014ea38641bfbcb245e4b7aa0ca5657"
+                "reference": "a2b0acc7077808006328710b73f330382935cfa8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/select2/select2/zipball/c4b730a0a014ea38641bfbcb245e4b7aa0ca5657",
-                "reference": "c4b730a0a014ea38641bfbcb245e4b7aa0ca5657",
+                "url": "https://api.github.com/repos/select2/select2/zipball/a2b0acc7077808006328710b73f330382935cfa8",
+                "reference": "a2b0acc7077808006328710b73f330382935cfa8",
                 "shasum": ""
             },
             "type": "component",
@@ -7715,7 +7716,7 @@
             ],
             "description": "Select2 is a jQuery based replacement for select boxes.",
             "homepage": "https://select2.org/",
-            "time": "2019-08-28T03:09:32+00:00"
+            "time": "2019-10-13T20:42:14+00:00"
         },
         {
             "name": "setasign/fpdi",
@@ -9330,16 +9331,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.12.0",
+            "version": "v2.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "c7a85fd08348ca04b4d8f234f49583d9910906aa"
+                "reference": "ddd4134af9bfc6dba4eff7c8447444ecc45b9ee5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/c7a85fd08348ca04b4d8f234f49583d9910906aa",
-                "reference": "c7a85fd08348ca04b4d8f234f49583d9910906aa",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/ddd4134af9bfc6dba4eff7c8447444ecc45b9ee5",
+                "reference": "ddd4134af9bfc6dba4eff7c8447444ecc45b9ee5",
                 "shasum": ""
             },
             "require": {
@@ -9393,7 +9394,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2019-10-05T16:42:38+00:00"
+            "time": "2019-10-17T07:34:53+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -9623,16 +9624,16 @@
         },
         {
             "name": "yiisoft/yii2",
-            "version": "2.0.28",
+            "version": "2.0.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "80bf3a6e04a0128f753cb73ba7255d8e2ae3a02f"
+                "reference": "f972275551172a4b2e293979d77aa0c795ae36a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/80bf3a6e04a0128f753cb73ba7255d8e2ae3a02f",
-                "reference": "80bf3a6e04a0128f753cb73ba7255d8e2ae3a02f",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/f972275551172a4b2e293979d77aa0c795ae36a2",
+                "reference": "f972275551172a4b2e293979d77aa0c795ae36a2",
                 "shasum": ""
             },
             "require": {
@@ -9719,7 +9720,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2019-10-08T13:14:18+00:00"
+            "time": "2019-10-22T13:47:14+00:00"
         },
         {
             "name": "yiisoft/yii2-authclient",
@@ -10354,16 +10355,16 @@
     "packages-dev": [
         {
             "name": "almasaeed2010/adminlte",
-            "version": "v3.0.0-rc.4",
+            "version": "v3.0.0-rc.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ColorlibHQ/AdminLTE.git",
-                "reference": "d8a6ddca02c4781dcf2bb91bbfc54bd1f27e5399"
+                "reference": "14967aec9459073e46283b67657f1204e98aa56b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ColorlibHQ/AdminLTE/zipball/d8a6ddca02c4781dcf2bb91bbfc54bd1f27e5399",
-                "reference": "d8a6ddca02c4781dcf2bb91bbfc54bd1f27e5399",
+                "url": "https://api.github.com/repos/ColorlibHQ/AdminLTE/zipball/14967aec9459073e46283b67657f1204e98aa56b",
+                "reference": "14967aec9459073e46283b67657f1204e98aa56b",
                 "shasum": ""
             },
             "type": "library",
@@ -10389,7 +10390,7 @@
                 "theme",
                 "web"
             ],
-            "time": "2019-10-04T13:18:22+00:00"
+            "time": "2019-10-19T09:38:03+00:00"
         },
         {
             "name": "behat/gherkin",
@@ -12369,10 +12370,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.1.0",
-        "ext-imagick": "*",
-        "ext-intl": "*",
-        "ext-json": "*"
+        "php": ">=7.1.0"
     },
     "platform-dev": []
 }
