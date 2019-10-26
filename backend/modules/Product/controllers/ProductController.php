@@ -186,6 +186,7 @@ class ProductController extends Controller {
                 'start_date' => $productEdit['start_date'],
                 'end_date' => $productEdit['end_date'],
                 'slug' => $productEdit['slug'],
+                'isStreet'=>$productEdit['isStreet']
             ];
 
             $query = Product::aSelect(Product::class, '*', Product::tableName(), 'id=' . $prodId);

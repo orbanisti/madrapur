@@ -3,6 +3,8 @@
 namespace backend\modules\Modevent\models;
 
 use backend\modules\MadActiveRecord\models\MadActiveRecord;
+use common\models\User;
+use common\models\UserProfile;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
@@ -50,6 +52,29 @@ class Modevent extends MadActiveRecord{
         Yii::warning($next);
         return $next;
     }
+    public static function userNextWorkSpecific($username){
+        $date=date('Y-m-d',strtotime('today'));
+
+        $next = Modevent::find()->andFilterWhere(['=','user',$username])->andFilterWhere
+        (['>=','startDate',$date])->andWhere('`title`=\'arranged\'')->andWhere('not `status`<=>\'worked\'')->orderBy
+        (['startDate'=>SORT_ASC])->one();
+
+        Yii::warning($next);
+        return $next;
+
+    }
+
+    public static function userLastWorkSpecific($username){
+        $date=date('Y-m-d',strtotime('today'));
+
+        $next = Modevent::find()->andFilterWhere(['=','user',$username])->andFilterWhere
+        (['<=','startDate',$date])->andWhere('`title`=\'arranged\'')->andWhere(' `status`=\'worked\'')->orderBy
+        (['startDate'=>SORT_ASC])->one();
+
+        Yii::warning($next);
+        return $next;
+
+    }
     public static function userLastWork(){
         $date=date('Y-m-d',strtotime('today'));
 
@@ -58,6 +83,7 @@ class Modevent extends MadActiveRecord{
         ('startDate')->one();
         return $next;
     }
+
     public function search($params) {
         $query = Modevent::find()->andFilterWhere(['=','user',Yii::$app->user->getIdentity()->username])->andWhere('`title`=\'subscribe\'');
 

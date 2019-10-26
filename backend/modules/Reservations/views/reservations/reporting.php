@@ -3,6 +3,7 @@
     use backend\modules\Product\models\ProductSource;
 
     use kartik\grid\GridView;
+    use kartik\widgets\DatePicker;
     use yii\helpers\Html;
     use yii\helpers\Url;
     use kartik\icons\Icon;
@@ -17,7 +18,30 @@
             <div class="card-header">
                 <h3 class="card-title">
                     <i class="fas fa-table  "></i>
-                    Reporting Center <?=$today?>
+                    Reporting Center <?=$today?>   <div class="btn-group">
+
+                        <?php
+                            echo  DatePicker::widget([
+                                                         'model' => $searchModel,
+                                                         'name' => 'dp_2',
+                                                         'id'=>'dropPicker',
+                                                         'type' => DatePicker::TYPE_BUTTON,
+                                                         'pluginOptions' => [
+                                                             'autoclose' => true,
+                                                             'format' => 'yyyy-mm-dd'
+
+                                                         ]
+                                                     ]);
+
+                        ?>
+                        <script>
+                            $('#dropPicker').change(function() {
+                                window.location.href="<?=Url::to('reporting')?>"+"?date="+$('#dropPicker')
+                                    .val();
+                            });
+                        </script>
+
+                    </div>
                 </h3>
 
                 <div class="card-tools">

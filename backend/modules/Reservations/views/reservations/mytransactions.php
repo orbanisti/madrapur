@@ -26,7 +26,7 @@
                                                          'model' => $searchModel,
                                                          'name' => 'dp_2',
                                                          'id'=>'dropPicker',
-                                                         'type' => DatePicker::TYPE_COMPONENT_PREPEND,
+                                                         'type' => DatePicker::TYPE_BUTTON,
                                                          'pluginOptions' => [
                                                              'autoclose' => true,
                                                              'format' => 'yyyy-mm-dd'
