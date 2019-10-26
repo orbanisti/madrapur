@@ -83,6 +83,7 @@ class Modevent extends MadActiveRecord{
         ('startDate')->one();
         return $next;
     }
+
     public function search($params) {
         $query = Modevent::find()->andFilterWhere(['=','user',Yii::$app->user->getIdentity()->username])->andWhere('`title`=\'subscribe\'');
 

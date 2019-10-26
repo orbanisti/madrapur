@@ -307,7 +307,10 @@
                 Yii::error($workModevent->attributes);
                 
             }
-            
+
+
+
+
             $searchModel = new ProductAdminSearchModel();
             $users = [];
             $users [] = User::findOne(Yii::$app->user->id);
@@ -319,19 +322,25 @@
             $userList = [];
             $userUnfinished = [];
 
-            $userCurrentWorkshift = Modevent::userNextWork();
-            if(Modevent::userLastWork()->startDate==date('Y-m-d',strtotime('today'))){
-                $userCurrentWorkshift=Modevent::userLastWork();
+            $userCurrentWorkshift = Modevent::userLastWork();
+            if(isset(Modevent::userLastWork()->startDate)){
+
+                if(Modevent::userLastWork()->startDate==date('Y-m-d',strtotime('today'))){
+
+                    $userCurrentWorkshift=Modevent::userLastWork();
+                }
             }
+            $userCurrentWorkshift = Modevent::userNextWork();
+
             if(!isset($userCurrentWorkshift->status)){
                 $userCurrentWorkshift= Modevent::userLastWork();
 
             }
+
             $workComplete=false;
 
             if($userCurrentWorkshift->status=='worked'){
                $workComplete=true;
-
 
             }
 
@@ -447,6 +456,7 @@
                         'attribute' => 'ticketId',
 
                     ],
+
                     [
                         'label' => 'Product',
                         'attribute' => 'productId',
@@ -937,16 +947,16 @@
                         )
                     );
 
-                    Yii::$app->commandBus->handle(
-                        new SendEmailCommand(
-                            [
-                                'to' => 'alpe15.1992@gmail.com',
-                                'from' => 'alpe15.1992@gmail.com',
-                                'subject' => 'New reservation',
-                                'type' => 'newReservation'
-                            ]
-                        )
-                    );
+//                    Yii::$app->commandBus->handle(
+////                        new SendEmailCommand(
+////                            [
+////                                'to' => 'alpe15.1992@gmail.com',
+////                                'from' => 'alpe15.1992@gmail.com',
+////                                'subject' => 'New reservation',
+////                                'type' => 'newReservation'
+////                            ]
+////                        )
+//                    );
                 } else {
                     $updateResponse = '<span style="color:red">Reservation Failed</span>';
                     //show an error message
@@ -1206,16 +1216,16 @@
                             )
                         );
                     }
-                    Yii::$app->commandBus->handle(
-                        new SendEmailCommand(
-                            [
-                                'to' => 'alpe15.1992@gmail.com',
-                                'from' => 'alpe15.1992@gmail.com',
-                                'subject' => 'New reservation',
-                                'type' => 'newReservation'
-                            ]
-                        )
-                    );
+//                    Yii::$app->commandBus->handle(
+//                        new SendEmailCommand(
+//                            [
+//                                'to' => 'alpe15.1992@gmail.com',
+//                                'from' => 'alpe15.1992@gmail.com',
+//                                'subject' => 'New reservation',
+//                                'type' => 'newReservation'
+//                            ]
+//                        )
+//                    );
                 } else {
                     $updateResponse = '<span style="color:red">Reservation Failed</span>';
                     //show an error message
@@ -1445,16 +1455,16 @@
                         )
                     );
 
-                    Yii::$app->commandBus->handle(
-                        new SendEmailCommand(
-                            [
-                                'to' => 'alpe15.1992@gmail.com',
-                                'from' => 'alpe15.1992@gmail.com',
-                                'subject' => 'New reservation',
-                                'type' => 'newReservation'
-                            ]
-                        )
-                    );
+//                    Yii::$app->commandBus->handle(
+//                        new SendEmailCommand(
+//                            [
+//                                'to' => 'alpe15.1992@gmail.com',
+//                                'from' => 'alpe15.1992@gmail.com',
+//                                'subject' => 'New reservation',
+//                                'type' => 'newReservation'
+//                            ]
+//                        )
+//                    );
                 } else {
                     $updateResponse = '<span style="color:red">Reservation Failed</span>';
                     //show an error message
@@ -1580,7 +1590,11 @@
             foreach ($users as $in => $user) {
                 $userDoneForToday='';
                 if($todayOrLast=Modevent::userNextWorkSpecific($user->username)){
-                    $userDoneForToday=$todayOrLast->title;
+
+                    if(isset($todayOrLast->status)){
+                        $userDoneForToday='✓';
+
+                    }
 
                 }
 
@@ -1636,7 +1650,7 @@
                     
                                     <div class="card-tools btn-group    ">
                                       <span class="badge bg-info">
-                                     <i class="fas fa-euro-sign  "></i>
+                                     </i>
                                      ' . $userDoneForToday . "</span>".'
                                      <span class="badge bg-info">
                                      <i class="fas fa-euro-sign  "></i>
@@ -1678,8 +1692,7 @@
                                 			                class="fas fa-wallet fa-fw"></i>' . $hufCashToday . '</span>
                                 			                <span class="info-box-number"><i class="fas fa-credit-card fa-fw "></i></i>
                                 			                ' . $hufCardToday . '</span>  
-                                			                <span class="info-box-number"><i class="fas fa-credit-card fa-fw "></i></i>
-                                			                ' .$userDoneForToday .'</span>
+                                			               
                                 			              </div>
                                 			              <!-- /.info-box-content -->
                                 			            </div>                          
@@ -1892,7 +1905,7 @@
                             $capcolor = 'bg-blue';
                         }
                         $buttonEnable='true';
-                        if($availableChairs < 0){
+                        if($availableChairs <= 0){
                             $capcolor ='bg-dark';
                             $BoxInfo=$NoPacesLeftHeader;
                             $buttonEnable='false';

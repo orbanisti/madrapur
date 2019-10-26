@@ -236,7 +236,7 @@ class DashboardController extends Controller {
                             'No ticket block found. :(<br>Have a bright day!'
                         );
                     } else if (1 < count($ownBlocks)) {
-                        $viewName = 'selectTicket';
+                        $viewName = 'manager';
 
                         $selectTicket = new \stdClass();
                         $selectTicket->searchModel = new TicketBlockSearchModel();

@@ -128,6 +128,7 @@
                                             <div class="col-lg-12  ">
                                                 <div class="description-block">
                                                     <div class="small-box bg-info ">
+
                                                         <div class="inner">
 
 

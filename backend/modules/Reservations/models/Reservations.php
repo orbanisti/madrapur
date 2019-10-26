@@ -309,6 +309,20 @@ class Reservations extends MadActiveRecord {
         return $this->data;
     }
 
+//    public static function getTopSellers(){
+//        $reservationmodel=new Reservations();
+//        $today=$reservationmodel->find()->andFilterWhere(['=','invoiceDate',date('Y-m-d',strtotime('today'))])->andWhere
+//        ('`source` = \'Street\'')->all();
+//
+//        foreach ($today as $item){
+//
+//
+//        }
+//
+//        return $today;
+//
+//    }
+
     public function search($params) {
         $query = Reservations::find()->indexBy('id');;
 
