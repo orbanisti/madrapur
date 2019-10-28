@@ -37,7 +37,11 @@ use yii\widgets\Pjax;
                     foreach ($allEvents as $newEvent){
 
                         $begin = new DateTime($newEvent->startDate);
-                        $end = new DateTime($newEvent->endDate);
+
+                        $endTimifyed=date('Y-m-d',strtotime($newEvent->endDate.' +1 day'));
+
+                        $end = new DateTime($endTimifyed);
+                        Yii::error($newEvent->endDate);
 
                         $interval = DateInterval::createFromDateString('1 day');
 
