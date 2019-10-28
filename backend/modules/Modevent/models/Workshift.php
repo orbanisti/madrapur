@@ -20,7 +20,7 @@ class Workshift extends \backend\modules\MadActiveRecord\models\MadActiveRecord
      */
     public static function tableName()
     {
-        return 'modulusworkshift';
+        return 'modulusWorkshift';
     }
 
     /**
