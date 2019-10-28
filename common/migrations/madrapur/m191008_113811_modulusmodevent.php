@@ -17,7 +17,7 @@ class m191008_113811_modulusmodevent extends Migration
         $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
 
         $this->createTable(
-            'modulusmodevent',
+            'modulusModevent',
             [
                 'id'=> $this->primaryKey(11),
                 'date'=> $this->datetime()->null()->defaultValue(null),

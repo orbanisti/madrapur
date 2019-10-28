@@ -17,7 +17,7 @@ class m191008_113852_modulusworkshift extends Migration
         $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
 
         $this->createTable(
-            'modulusworkshift',
+            'modulusWorkshift',
             [
                 'id'=> $this->primaryKey(11),
                 'place'=> $this->text()->null()->defaultValue(null),
