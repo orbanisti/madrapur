@@ -269,7 +269,19 @@ $bundle = BackendAsset::register($this);
                     ],
                 ],
                 'visible' => Yii::$app->user->can('accessContent'),
-            ],[
+            ],
+
+            [
+                'label' => Yii::t('backend', 'Issues'),
+                'url' => [
+                    '/Issuerequest/issuerequest/create2'
+                ],
+                'icon' => '<i class="fas fa-exclamation-circle nav-icon "></i>',
+                'active' => Yii::$app->controller->id === 'text',
+                'visible'=>Yii::$app->user->can('administrator')
+            ],
+
+            [
                 'label' => Yii::t('backend', 'Workflow'),
                 'url' => [
                     '/'

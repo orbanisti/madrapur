@@ -24,6 +24,9 @@ $config = [
         ],
     ],
     'modules' => [
+        'Issuerequest' => [
+            'class' => backend\modules\Issuerequest\Module::class,
+        ],
         'gridview' => [
             'class' => kartik\grid\Module::class,
         ],
