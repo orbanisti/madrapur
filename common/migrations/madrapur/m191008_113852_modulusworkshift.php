@@ -26,13 +26,13 @@ class m191008_113852_modulusworkshift extends Migration
                 'role'=> $this->text()->null()->defaultValue(null),
             ],$tableOptions
         );
-        $this->createIndex('modulusworkshift_id_uindex','{{%modulusworkshift}}',['id'],true);
+        $this->createIndex('modulusWorkshift_id_uindex','{{%modulusWorkshift}}',['id'],true);
 
     }
 
     public function safeDown()
     {
-        $this->dropIndex('modulusworkshift_id_uindex', '{{%modulusworkshift}}');
-        $this->dropTable('modulusworkshift');
+        $this->dropIndex('modulusWorkshift_id_uindex', '{{%modulusWorkshift}}');
+        $this->dropTable('modulusWorkshift');
     }
 }

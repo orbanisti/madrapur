@@ -29,13 +29,13 @@ class m191008_113811_modulusmodevent extends Migration
                 'endDate'=> $this->date()->null()->defaultValue(null),
             ],$tableOptions
         );
-        $this->createIndex('modulusModevent_id_uindex','{{%modulusmodevent}}',['id'],true);
+        $this->createIndex('modulusModevent_id_uindex','{{%modulusModevent}}',['id'],true);
 
     }
 
     public function safeDown()
     {
-        $this->dropIndex('modulusModevent_id_uindex', '{{%modulusmodevent}}');
-        $this->dropTable('modulusmodevent');
+        $this->dropIndex('modulusModevent_id_uindex', '{{%modulusModevent}}');
+        $this->dropTable('modulusModevent');
     }
 }
