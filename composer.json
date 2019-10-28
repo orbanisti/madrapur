@@ -110,7 +110,7 @@
 	"require-dev": {
 		"yiisoft/yii2": "2.*",
 		"yiisoft/yii2-bootstrap4": "~1.0.0",
-		"ColorlibHQ/AdminLTE": "^3.0",
+		"almasaeed2010/adminlte": "^3.0",
 		"yiisoft/yii2-debug": "~2.0.0",
 		"yiisoft/yii2-gii": "dev-master",
 		"yiisoft/yii2-faker": "~2.0.0",
@@ -137,15 +137,6 @@
 			"type": "vcs",
 			"url": "https://github.com/orbanisti/yii2-adminlte-widgets"
 		},
-		{
-			"type": "vcs",
-			"url": "https://github.com/Insolita/yii2-adminlte3-widgets"
-		},
-		{
-			"type": "vcs",
-			"url": "https://github.com/orbanisti/AdminLTE"
-		},
-
 		{
 			"type": "composer",
 			"url": "https://asset-packagist.org"
