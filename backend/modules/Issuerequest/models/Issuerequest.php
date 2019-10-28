@@ -2,6 +2,7 @@
 
 namespace backend\modules\Issuerequest\models;
 
+use trntv\filekit\behaviors\UploadBehavior;
 use Yii;
 use \backend\modules\Issuerequest\models\base\Issuerequest as BaseIssuerequest;
 use yii\helpers\ArrayHelper;
@@ -17,7 +18,9 @@ class Issuerequest extends BaseIssuerequest
         return ArrayHelper::merge(
             parent::behaviors(),
             [
-                # custom behaviors
+
+
+
             ]
         );
     }

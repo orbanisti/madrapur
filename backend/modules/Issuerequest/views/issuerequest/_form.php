@@ -14,30 +14,48 @@ use kartik\datecontrol\DateControl;
 
 <div class="issuerequest-form">
 
-    <?php $form = ActiveForm::begin(['type' => ActiveForm::TYPE_HORIZONTAL]); echo Form::widget([
 
-        'model' => $model,
-        'form' => $form,
-        'columns' => 1,
-        'attributes' => [
+    <?php $form = ActiveForm::begin() ?>
 
-            'content' => ['type' => Form::INPUT_TEXTAREA, 'options' => ['placeholder' => 'Enter Content...','rows' => 6]],
 
-            'image' => ['type' => Form::INPUT_TEXTAREA, 'options' => ['placeholder' => 'Enter Image...','rows' => 6]],
 
-            'priority' => ['type' => Form::INPUT_TEXTAREA, 'options' => ['placeholder' => 'Enter Priority...','rows' => 6]],
+    <?php echo $form->field($model, 'content')->textarea(['rows'=>6])->label('Message') ?>
 
-            'status' => ['type' => Form::INPUT_TEXTAREA, 'options' => ['placeholder' => 'Enter Status...','rows' => 6]],
 
-            'assignedUser' => ['type' => Form::INPUT_TEXT, 'options' => ['placeholder' => 'Enter Assigned User...']],
 
-        ]
+        <div class="row">
+            <div class="col-sm-4">
+                <?= $form->field($model, 'priority')->dropDownList(array('High' => 'High', 'Medium' => 'Medium', 'Low' => 'Low',
+                                                                   ), array('options' =>
+                                                                                array
+                                                                                ('Medium' => array('selected' => true)))); ?>
+            </div>
+            <div class="col-sm-4">
+                <?= $form->field($model, 'category')->dropDownList(['Street' => 'Street', 'Hotel' => 'Hotel', 'Web'
+                                                                   => 'Web', 'Partner' =>
+                    'Partner', 'Other' => 'Other'
+                                                                   ],['options' =>
+                                                                               ['Other' => ['selected' => true]]])
+                ; ?>
+            </div>
+            <div class="col-sm-4">
+                <?=$form->field($model, 'picture')->widget(\trntv\filekit\widget\Upload::class, [
+                    'url' => [
+                        'avatar-upload'
+                    ],
 
-    ]);
+                ])->label('Image')?>
+            </div>
+            
+        </div>
 
-    echo Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'),
-        ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']
-    );
-    ActiveForm::end(); ?>
+
+
+    <div class="form-group">
+        <?php echo Html::submitButton(Yii::t('backend', '<i class="fas fa-paper-plane  "></i>Create Issue'), ['class' => 'btn btn-primary ']) ?>
+    </div>
+
+    <?php ActiveForm::end() ?>
+
 
 </div>

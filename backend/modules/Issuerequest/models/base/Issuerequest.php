@@ -4,6 +4,7 @@
 
 namespace backend\modules\Issuerequest\models\base;
 
+use trntv\filekit\behaviors\UploadBehavior;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -25,12 +26,13 @@ use yii\behaviors\TimestampBehavior;
  */
 abstract class Issuerequest extends \backend\modules\MadActiveRecord\models\MadActiveRecord
 {
-
+    public $picture;
 
 
     /**
      * @inheritdoc
      */
+
     public static function tableName()
     {
         return 'modulusIssuerequest';
@@ -52,6 +54,12 @@ abstract class Issuerequest extends \backend\modules\MadActiveRecord\models\MadA
                 'createdAtAttribute' => 'createdAt',
                 'updatedAtAttribute' => 'updatedAt',
             ],
+            'picture' => [
+                'class' => UploadBehavior::class,
+                'attribute' => 'picture',
+                'pathAttribute' => 'image',
+                'baseUrlAttribute' => 'avatar_base_url'
+            ]
         ];
     }
 
@@ -61,8 +69,12 @@ abstract class Issuerequest extends \backend\modules\MadActiveRecord\models\MadA
     public function rules()
     {
         return [
-            [['content', 'image', 'priority', 'status'], 'string'],
-            [['assignedUser'], 'integer']
+            [['content', 'image', 'priority', 'status','category'], 'string'],
+            [['assignedUser'], 'integer'],
+            [
+                'picture',
+                'safe'
+            ]
         ];
     }
 
