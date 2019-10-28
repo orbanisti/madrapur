@@ -138,10 +138,6 @@
 			"url": "https://github.com/orbanisti/yii2-adminlte-widgets"
 		},
 		{
-			"type": "vcs",
-			"url": "https://github.com/Insolita/yii2-adminlte3-widgets"
-		},
-		{
 			"type": "composer",
 			"url": "https://asset-packagist.org"
 		},
