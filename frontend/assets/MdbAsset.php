@@ -7,7 +7,7 @@
 namespace frontend\assets;
 
 use common\assets\Html5shiv;
-use insolita\adminlte3bs4\assets\FontAwesome4Asset;
+
 use yii\bootstrap\BootstrapAsset;
 use yii\bootstrap4\BootstrapPluginAsset;
 use yii\web\AssetBundle;

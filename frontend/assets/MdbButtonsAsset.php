@@ -7,7 +7,6 @@
 namespace frontend\assets;
 
 use common\assets\Html5shiv;
-use insolita\adminlte3bs4\assets\FontAwesome4Asset;
 use yii\bootstrap\BootstrapAsset;
 use yii\bootstrap4\BootstrapPluginAsset;
 use yii\web\AssetBundle;
@@ -43,6 +42,7 @@ class MdbButtonsAsset extends AssetBundle {
      * @var array
      */
     public $depends = [
+        FontAwesome4Asset::class,
         JqueryAsset::class,
         BootstrapPluginAsset::class,
         FontAwesome4Asset::class,
