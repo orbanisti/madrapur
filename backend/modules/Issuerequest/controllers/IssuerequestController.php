@@ -44,6 +44,17 @@ class IssuerequestController extends Controller
         ]);
     }
 
+    public function actionMyreports()
+    {
+        $searchModel = new IssuerequestSearch;
+        $dataProvider = $searchModel->searchMy(Yii::$app->request->getQueryParams());
+
+        return $this->render('index2', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+        ]);
+    }
+
 
 
     /**
