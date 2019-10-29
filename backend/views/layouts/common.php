@@ -278,8 +278,33 @@ $bundle = BackendAsset::register($this);
                 ],
                 'icon' => '<i class="fas fa-exclamation-circle nav-icon "></i>',
                 'active' => Yii::$app->controller->id === 'text',
-                'visible'=>Yii::$app->user->can('administrator')
+                'visible'=>Yii::$app->user->can('administrator'),
+                'items'=>[
+                    [
+                        'label' => Yii::t('backend', 'Create'),
+                        'url' => [
+                            '/Issuerequest/issuerequest/create2'
+                        ],
+                        'icon' => '<i class="fas fa-exclamation-circle nav-icon "></i>',
+                        'active' => Yii::$app->controller->id === 'text',
+                        'visible'=>Yii::$app->user->can('administrator'),
+                        'items'=>[],
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'View'),
+                        'url' => [
+                            '/Issuerequest/issuerequest/index'
+                        ],
+                        'icon' => '<i class="fas fa-exclamation-circle nav-icon "></i>',
+                        'active' => Yii::$app->controller->id === 'text',
+                        'visible'=>Yii::$app->user->can('administrator'),
+                        'items'=>[],
+                    ],
+
+                ],
             ],
+
+
 
             [
                 'label' => Yii::t('backend', 'Workflow'),

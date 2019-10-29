@@ -2,6 +2,9 @@
 
 namespace backend\modules\Issuerequest\controllers;
 
+use Intervention\Image\ImageManagerStatic;
+use trntv\filekit\actions\DeleteAction;
+use trntv\filekit\actions\UploadAction;
 use Yii;
 use backend\modules\Issuerequest\models\Issuerequest;
 use backend\modules\Issuerequest\models\IssuerequestSearch;
@@ -35,7 +38,7 @@ class IssuerequestController extends Controller
         $searchModel = new IssuerequestSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
-        return $this->render('index', [
+        return $this->render('index2', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
         ]);
@@ -69,6 +72,7 @@ class IssuerequestController extends Controller
         $model = new Issuerequest;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -80,14 +84,32 @@ class IssuerequestController extends Controller
     {
         $model = new Issuerequest;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {  sessionSetFlashAlert('success', 'Issue sent successfully');
+            return $this->redirect(['create2', 'id' => $model->id]);
         } else {
             return $this->render('create2', [
                 'model' => $model,
             ]);
         }
     }
+    public function actions() {
+        return [
+            'avatar-upload' => [
+                'class' => UploadAction::class,
+                'deleteRoute' => 'avatar-delete',
+                'on afterSave' => function ($event) {
+                    /* @var $file \League\Flysystem\File */
+                    $file = $event->file;
+                    $img = ImageManagerStatic::make($file->read());
+                    $file->put($img->encode());
+                }
+            ],
+            'avatar-delete' => [
+                'class' => DeleteAction::class
+            ]
+        ];
+    }
+
 
     /**
      * Updates an existing Issuerequest model.

@@ -7,11 +7,7 @@ use yii\helpers\Html;
  * @var backend\modules\Issuerequest\models\Issuerequest $model
  */
 
-$this->title = Yii::t('backend', 'Create {modelClass}', [
-    'modelClass' => 'Issuerequest',
-]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Issuerequests'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
 <div class="row">
