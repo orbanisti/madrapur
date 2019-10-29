@@ -11,7 +11,11 @@ use kartik\datecontrol\DateControl;
  * @var yii\widgets\ActiveForm $form
  */
 ?>
-
+<style>
+    .upload-kit,.upload-kit-input{
+        max-height:50px;
+    }
+</style>
 <div class="issuerequest-form">
 
 

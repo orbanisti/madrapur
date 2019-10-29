@@ -86,7 +86,9 @@ abstract class Issuerequest extends \backend\modules\MadActiveRecord\models\MadA
         return [
             'id' => Yii::t('backend', 'ID'),
             'content' => Yii::t('backend', 'Content'),
+            'category' => Yii::t('backend', 'Category'),
             'image' => Yii::t('backend', 'Image'),
+            'picture' => Yii::t('backend', 'Picture'),
             'priority' => Yii::t('backend', 'Priority'),
             'status' => Yii::t('backend', 'Status'),
             'assignedUser' => Yii::t('backend', 'Assigned User'),

@@ -38,7 +38,7 @@ class IssuerequestController extends Controller
         $searchModel = new IssuerequestSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
-        return $this->render('index', [
+        return $this->render('index2', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
         ]);
@@ -72,6 +72,7 @@ class IssuerequestController extends Controller
         $model = new Issuerequest;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -83,8 +84,8 @@ class IssuerequestController extends Controller
     {
         $model = new Issuerequest;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {  sessionSetFlashAlert('success', 'Issue sent successfully');
+            return $this->redirect(['create2', 'id' => $model->id]);
         } else {
             return $this->render('create2', [
                 'model' => $model,
