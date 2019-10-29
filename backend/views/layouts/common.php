@@ -291,9 +291,19 @@ $bundle = BackendAsset::register($this);
                         'items'=>[],
                     ],
                     [
-                        'label' => Yii::t('backend', 'View'),
+                        'label' => Yii::t('backend', 'View All'),
                         'url' => [
                             '/Issuerequest/issuerequest/index'
+                        ],
+                        'icon' => '<i class="fas fa-exclamation-circle nav-icon "></i>',
+                        'active' => Yii::$app->controller->id === 'text',
+                        'visible'=>Yii::$app->user->can('administrator'),
+                        'items'=>[],
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'My Reports'),
+                        'url' => [
+                            '/Issuerequest/issuerequest/myreports'
                         ],
                         'icon' => '<i class="fas fa-exclamation-circle nav-icon "></i>',
                         'active' => Yii::$app->controller->id === 'text',
