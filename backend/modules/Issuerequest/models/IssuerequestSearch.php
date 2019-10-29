@@ -54,4 +54,35 @@ class IssuerequestSearch extends Issuerequest
 
         return $dataProvider;
     }
+
+    public function searchMy($params)
+    {
+        $query = Issuerequest::find();
+        $query->andFilterWhere(['=','createdBy',Yii::$app->user->id]);
+
+        $dataProvider = new ActiveDataProvider([
+                                                   'query' => $query,
+                                               ]);
+
+        if (!($this->load($params) && $this->validate())) {
+            return $dataProvider;
+        }
+
+        $query->andFilterWhere([
+                                   'id' => $this->id,
+                                   'assignedUser' => $this->assignedUser,
+                                   'createdAt' => $this->createdAt,
+                                   'updatedAt' => $this->updatedAt,
+                                   'createdBy' => $this->createdBy,
+                                   'updatedBy' => $this->updatedBy,
+                               ]);
+
+        $query->andFilterWhere(['like', 'content', $this->content])
+            ->andFilterWhere(['like', 'image', $this->image])
+            ->andFilterWhere(['like', 'priority', $this->priority])
+            ->andFilterWhere(['like', 'status', $this->status]);
+
+        return $dataProvider;
+    }
+
 }

@@ -271,48 +271,7 @@ $bundle = BackendAsset::register($this);
                 'visible' => Yii::$app->user->can('accessContent'),
             ],
 
-            [
-                'label' => Yii::t('backend', 'Issues'),
-                'url' => [
-                    '/Issuerequest/issuerequest/create2'
-                ],
-                'icon' => '<i class="fas fa-exclamation-circle nav-icon "></i>',
-                'active' => Yii::$app->controller->id === 'text',
-                'visible'=>Yii::$app->user->can('administrator'),
-                'items'=>[
-                    [
-                        'label' => Yii::t('backend', 'Create'),
-                        'url' => [
-                            '/Issuerequest/issuerequest/create2'
-                        ],
-                        'icon' => '<i class="fas fa-exclamation-circle nav-icon "></i>',
-                        'active' => Yii::$app->controller->id === 'text',
-                        'visible'=>Yii::$app->user->can('administrator'),
-                        'items'=>[],
-                    ],
-                    [
-                        'label' => Yii::t('backend', 'View All'),
-                        'url' => [
-                            '/Issuerequest/issuerequest/index'
-                        ],
-                        'icon' => '<i class="fas fa-exclamation-circle nav-icon "></i>',
-                        'active' => Yii::$app->controller->id === 'text',
-                        'visible'=>Yii::$app->user->can('administrator'),
-                        'items'=>[],
-                    ],
-                    [
-                        'label' => Yii::t('backend', 'My Reports'),
-                        'url' => [
-                            '/Issuerequest/issuerequest/myreports'
-                        ],
-                        'icon' => '<i class="fas fa-exclamation-circle nav-icon "></i>',
-                        'active' => Yii::$app->controller->id === 'text',
-                        'visible'=>Yii::$app->user->can('administrator'),
-                        'items'=>[],
-                    ],
 
-                ],
-            ],
 
 
 
@@ -680,6 +639,51 @@ $bundle = BackendAsset::register($this);
                 'badge' => SystemLog::find()->count(),
                 'badgeBgClass' => 'label-danger',
                 'visible' => Yii::$app->user->can('accessSystemLogs'),
+            ],
+            [
+                'label' => Yii::t('backend', 'Issues'),
+                'url' => [
+                    '/Issuerequest/issuerequest/create2'
+                ],
+                'icon' => '<i class="fas fa-exclamation-circle nav-icon "></i>',
+                'active' => Yii::$app->controller->id === 'text',
+                'visible'=>Yii::$app->user->can('administrator')or Yii::$app->user->can('streetSeller') or
+                    Yii::$app->user->can('streetAdmin'),
+                'items'=>[
+                    [
+                        'label' => Yii::t('backend', 'Create'),
+                        'url' => [
+                            '/Issuerequest/issuerequest/create2'
+                        ],
+                        'icon' => '<i class="fas fa-exclamation-circle nav-icon "></i>',
+                        'active' => Yii::$app->controller->id === 'text',
+                        'visible'=>Yii::$app->user->can('administrator') or Yii::$app->user->can('streetSeller') or
+                            Yii::$app->user->can('streetAdmin'),
+                        'items'=>[],
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'View All'),
+                        'url' => [
+                            '/Issuerequest/issuerequest/index'
+                        ],
+                        'icon' => '<i class="fas fa-exclamation-circle nav-icon "></i>',
+                        'active' => Yii::$app->controller->id === 'text',
+                        'visible'=>Yii::$app->user->can('administrator'),
+                        'items'=>[],
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'My Reports'),
+                        'url' => [
+                            '/Issuerequest/issuerequest/myreports'
+                        ],
+                        'icon' => '<i class="fas fa-exclamation-circle nav-icon "></i>',
+                        'active' => Yii::$app->controller->id === 'text',
+                        'visible'=>Yii::$app->user->can('administrator')or Yii::$app->user->can('streetSeller') or
+                            Yii::$app->user->can('streetAdmin'),
+                        'items'=>[],
+                    ],
+
+                ],
             ],
         ],
     ];
