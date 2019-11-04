@@ -1,14 +1,13 @@
 <?php
 
-use yii\widgets\ActiveForm;
+    use yii\widgets\ActiveForm;
 
-\kartik\datetime\DateTimePickerAsset::register($this);
+    \kartik\datetime\DateTimePickerAsset::register($this);
 
 ?>
 <?php
 
 ?>
-
 
 
 <div class="row">
@@ -26,7 +25,7 @@ use yii\widgets\ActiveForm;
                     <!--    <li class="nav-item">-->
                     <!--        <a class="nav-link"-->
                     <!--           href="#meta"-->
-                    <!--           data-toggle="tab">--><?//= Yii::t('app', 'Meta') ?><!--</a>-->
+                    <!--           data-toggle="tab">--><? //= Yii::t('app', 'Meta') ?><!--</a>-->
                     <!--    </li>-->
                     <li class="nav-item">
                         <a class="nav-link"
@@ -51,7 +50,7 @@ use yii\widgets\ActiveForm;
                     <!--    <li class="nav-item">-->
                     <!--        <a class="nav-link"-->
                     <!--           href="#timetable"-->
-                    <!--           data-toggle="tab">--><?//= Yii::t('app', 'TimeTable') ?><!--</a>-->
+                    <!--           data-toggle="tab">--><? //= Yii::t('app', 'TimeTable') ?><!--</a>-->
                     <!--    </li>-->
                 </ul>
 
@@ -70,81 +69,96 @@ use yii\widgets\ActiveForm;
                     <div class="tab-pane active"
                          id="content">
 
-                        <?= $this->render("forms/content", [
-                            "form" => $form,
-                            "model" => $model,
-                        ]); ?>
+                        <?= $this->render(
+                            "forms/content", [
+                                               "form" => $form,
+                                               "model" => $model,
+                                           ]
+                        ); ?>
 
                     </div>
 
                     <div class="tab-pane"
                          id="meta">
 
-                        <?= $this->render("forms/meta", [
-                            "form" => $form,
-                            "model" => $model,
-                        ]); ?>
+                        <?= $this->render(
+                            "forms/meta", [
+                                            "form" => $form,
+                                            "model" => $model,
+                                        ]
+                        ); ?>
 
                     </div>
 
                     <div class="tab-pane"
                          id="prices">
 
-                        <?= $this->render("forms/prices", [
-                            "form" => $form,
-                            "model" => $model,
-                            "modelPrices" => $modelPrices
-                        ]); ?>
+                        <?= $this->render(
+                            "forms/prices", [
+                                              "form" => $form,
+                                              "model" => $model,
+                                              "modelPrices" => $modelPrices
+                                          ]
+                        ); ?>
 
                     </div>
 
                     <div class="tab-pane"
                          id="times">
 
-                        <?= $this->render("forms/times", [
-                            "form" => $form,
-                            "model" => $model,
-                            "modelTimes" => $modelTimes
-                        ]); ?>
+                        <?= $this->render(
+                            "forms/times", [
+                                             "form" => $form,
+                                             "model" => $model,
+                                             "modelTimes" => $modelTimes
+                                         ]
+                        ); ?>
 
                     </div>
 
                     <div class="tab-pane"
                          id="sources">
 
-                        <?= $this->render("forms/sources", [
-                            "form" => $form,
-                            "model" => $model,
-                            "modelSources" => $modelSources
-                        ]); ?>
+                        <?= $this->render(
+                            "forms/sources", [
+                                               "form" => $form,
+                                               "model" => $model,
+                                               "modelSources" => $modelSources
+                                           ]
+                        ); ?>
 
                     </div>
 
                     <div class="tab-pane"
                          id="add-ons">
-                        <?= $this->render("forms/add-ons", [
-                            "form" => $form,
-                            "model" => $model,
-                            "prodId" => $prodId,
-                            "modelAddOns" => $modelAddOns,
-                            "selectedModelAddOns" => $selectedModelAddOns,
-                        ]); ?>
+                        <?= $this->render(
+                            "forms/add-ons", [
+                                               "form" => $form,
+                                               "model" => $model,
+                                               "prodId" => $prodId,
+                                               "modelAddOns" => $modelAddOns,
+                                               "selectedModelAddOns" => $selectedModelAddOns,
+                                           ]
+                        ); ?>
                     </div>
 
                     <div class="tab-pane"
                          id="timetable">
 
-                        <?= $this->render("forms/timetable", [
-                            "form" => $form,
-                            "model" => $model,
-                            "prodId" => $prodId,
-                            "modelEvents" => $modelEvents
-                        ]); ?>
+                        <?= $this->render(
+                            "forms/timetable", [
+                                                 "form" => $form,
+                                                 "model" => $model,
+                                                 "prodId" => $prodId,
+                                                 "modelEvents" => $modelEvents
+                                             ]
+                        ); ?>
 
                     </div>
 
                     <?php
-                        $this->registerJs('
+                        $this->registerJs(
+                            '
         $(".dynamicform_wrapper_times").on("beforeInsert", function(e, item) {
             console.log("beforeInsert");
         });
@@ -167,7 +181,8 @@ use yii\widgets\ActiveForm;
         $(".dynamicform_wrapper_times").on("limitReached", function(e, item) {
             alert("Limit elérve");
         });
-    ');
+    '
+                        );
                     ?>
 
                 </div>
