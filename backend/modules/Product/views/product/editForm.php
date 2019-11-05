@@ -35,10 +35,10 @@
 
 <div class="tab-content">
     <div class="tab-pane active" id="content">
-        <div class="card card-default">
+        <div class="card card-primary card-outline">
             <div class="card-header">
                 <h4><i class="glyphicon glyphicon-time"></i> <?= Yii::t('app', 'Product Details') ?>
-                    <?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
+                    <?= Html::submitButton('Update Product', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
                 </h4>
             </div>
             <div class="card-body">
@@ -150,7 +150,7 @@
             ]
         ); ?>
 
-        <div class="card card-default">
+        <div class="card card-primary card-outline">
             <div class="card-header">
                 <h4>
                     <i class="fas fa-euro-sign  "></i> <?= Yii::t('app', 'Product $Prices') ?>
@@ -278,7 +278,7 @@
             );
         ?>
 
-        <div class="card card-default">
+        <div class="card card-primary card-outline ">
 
             <div class="card-header">
                 <h4><i class="fas fa-clock"></i> <?= Yii::t('app', 'Product Times') ?>
@@ -468,7 +468,7 @@
             );
         ?>
 
-        <div class="card card-default">
+        <div class="card card-primary card-outline">
 
             <div class="card-header">
                 <h4><i class="glyphicon glyphicon-file"></i> <?= Yii::t('app', 'Product Sources') ?>
@@ -615,7 +615,7 @@
         ?>
 
 
-        <div class="card card-default">
+        <div class="card card-primary card-outline">
             <div class="card-header">
                 <h4>
                     <i class="glyphicon glyphicon-euro"></i> <?= Yii::t('app', 'TimeTable') ?>    <?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
@@ -708,10 +708,17 @@ EOF;
                         class="card card-primary card-outline">
                     <div
                             class="card-header">
-                        <h3
-                                class="card-title">
+                        <h4>
 
-                        </h3>
+                            <i class="fas fa-plus fa-lg fa-fw  "></i>Add-ons
+                            <?=
+                                Html::submitButton(
+                                    'Update Product', [
+                                                        'class'
+                                                        => 'btn btn-primary prodUpdateBtn'
+                                                    ]
+                                ) ?>
+                        </h4>
                         ​
                         <div
                                 class="card-tools">
