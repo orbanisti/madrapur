@@ -181,8 +181,6 @@ class Reservations extends MadActiveRecord {
             if(isset($myjson->orderDetails->allPersons)){
                 if(!$this->allPersons){
                     $this->setAttribute('allPersons',$myjson->orderDetails->allPersons);
-
-
                 }
 
             }
