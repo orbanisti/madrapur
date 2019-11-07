@@ -122,18 +122,7 @@
                                       <!-- /.direct-chat-msg -->
 
                                      <!-- Message to the right -->
-                                     <div class="direct-chat-msg right">
-                                         <div class="direct-chat-infos clearfix">
-                                             <span class="direct-chat-name float-right">Madrapur</span>
-                                             <span class="direct-chat-timestamp float-left">23 Jan 2:05 pm</span>
-                                         </div>
-                                         <!-- /.direct-chat-infos -->
-                                         <i class="fab fa-dev direct-chat-img fa-2x  "></i>
 
-                                         <!-- /.direct-chat-img -->
-
-                                         <!-- /.direct-chat-text -->
-                                     </div>
 
 
                                      <?php
