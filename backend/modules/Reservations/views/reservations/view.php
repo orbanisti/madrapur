@@ -131,9 +131,7 @@
                                          <i class="fab fa-dev direct-chat-img fa-2x  "></i>
 
                                          <!-- /.direct-chat-img -->
-                                         <div class="direct-chat-text">
-                                             You better believe it!
-                                         </div>
+
                                          <!-- /.direct-chat-text -->
                                      </div>
 
