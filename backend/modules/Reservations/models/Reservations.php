@@ -5,6 +5,7 @@ namespace backend\modules\Reservations\models;
 use backend\modules\MadActiveRecord\models\MadActiveRecord;
 use backend\modules\Product\models\Product;
 use backend\modules\Product\models\ProductTime;
+use backend\modules\Reservations\controllers\ReservationsController;
 use backend\modules\Tickets\models\TicketBlock;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -254,9 +255,14 @@ class Reservations extends MadActiveRecord {
         }
     }
 
+
+
     public function beforeSave($insert) {
 
         /*Yii::$app->log($insert); Turn on for debug*/
+
+
+
         if (is_string($this->data)) {
             $myjson = Json::decode($this->data, false);
             $editableAttribute = Yii::$app->request->post('editableAttribute');

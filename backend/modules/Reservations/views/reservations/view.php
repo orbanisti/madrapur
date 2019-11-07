@@ -64,7 +64,7 @@
                                                      'type'=>DetailView::INPUT_TEXTAREA,
                                                     ],
                                                     ['attribute'=>'allPersons',
-                                                     'type'=>DetailView::INPUT_TEXTAREA,
+                                                     'format'=>['integer'],
                                                     ],
                                                     ['attribute'=>'booking_cost',
                                                      'type'=>DetailView::INPUT_TEXTAREA,

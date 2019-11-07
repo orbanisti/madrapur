@@ -1994,6 +1994,24 @@
 
             $id = Yii::$app->request->get('id');
             $reservation = Reservations::findOne($id);
+
+
+
+            if($reservation->load(Yii::$app->request->post())){
+                Yii::error($reservation->billing_first_name);
+                $oldAttributes=$reservation->getOldAttributes();
+
+              $changed_attributes=array_diff_assoc($oldAttributes,$reservation->getAttributes());
+              Yii::error($changed_attributes);
+              $reservation->save();
+              foreach ($changed_attributes as $attribute=>$value){
+                  $message=$attribute.' changed from '.$oldAttributes[$attribute].' to '.$reservation->$attribute.' by '
+                      .Yii::$app->user->getIdentity()->username;
+                  Reservations::log($reservation,$message);
+              }
+
+            }
+
             if (Yii::$app->request->isAjax) {
                 return $this->renderAjax('view', ['model' => $reservation, 'reservationModel' => $reservation]);
             }
