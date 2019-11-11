@@ -32,34 +32,28 @@
                                                     'heading'=>'Reservation # ' . $model->id,
                                                     'type'=>DetailView::TYPE_INFO,
                                                 ],
+                                                'deleteOptions'=>[ // your ajax delete parameters
+                                                                   'params' => ['id' => $model->id, 'kvdelete'=>true],
+                                                ],
 
                                                 'attributes'=>[
-                                                    [ 'attribute'=>'bookingId',
-                                                      'columns'=>[
-                                                          ['attribute'=>'sellerName'],
-                                                          ['attribute'=>'billing_first_name',
-                                                           'label'=>'First Name',
-                                                          ],
-                                                          ['attribute'=>'billing_last_name',
-                                                           'label'=>'Last Name'],
-
-                                                      ]
+                                                    ['attribute'=>'sellerName'],
+                                                    ['attribute'=>'billing_last_name',
+                                                     'label'=>'Last Name'],
+                                                    ['attribute'=>'billing_first_name',
+                                                     'label'=>'First Name',
                                                     ],
                                                     ['attribute'=>'invoiceDate',
-                                                     'columns'=>[
-                                                         ['attribute'=>'productId',
+                                                    ],
+                                                    ['attribute'=>'productId',
                                                           'value'=> (Product::findOne($model->productId))->title,
                                                           'label'=>'Product'
                                                          ],
-                                                         ['attribute'=>'booking_start',
-                                                          'value'=>substr($model->booking_start,0,-3),
 
-                                                         ],
+                                                    ['attribute'=>'booking_start',
+                                                     'value'=>substr($model->booking_start,0,-3),
 
-
-                                                     ]
                                                     ],
-
                                                     ['attribute'=>'notes',
                                                      'type'=>DetailView::INPUT_TEXTAREA,
                                                     ],

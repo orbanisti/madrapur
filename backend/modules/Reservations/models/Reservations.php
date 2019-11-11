@@ -72,7 +72,7 @@ class Reservations extends MadActiveRecord {
     public function rules() {
         return [
             [['id'], 'integer'],
-            [['bookingId'], 'integer'],
+            [['bookingId','workshiftId'], 'integer'],
             [['source'], 'string', 'max' => 255],
             [['data'], 'string', 'max' => 1000],
             [['productId'], 'string', 'max' => 32],

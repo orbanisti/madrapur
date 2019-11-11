@@ -24,10 +24,12 @@
     use common\models\User;
     use kartik\helpers\Html;
     use kartik\icons\Icon;
+    use PhpParser\Node\Expr\AssignOp\Mod;
     use Yii;
     use yii\helpers\ArrayHelper;
     use yii\helpers\Json;
     use yii\web\ForbiddenHttpException;
+    use yii\web\JsonParser;
 
     /**
      * ReservationsController implements the CRUD actions for ReservationsModel.
@@ -1109,6 +1111,11 @@
                     $ticketId = $ticket->ticketId;
                 }
 
+                $workshiftId = isset(Modevent::userCurrentWorkshift()->id) ?
+                    Modevent::userCurrentWorkshift()
+                    ->id :
+                        null;
+
                 $values = [
                     'booking_cost' => $productPrice["discount"],
                     'invoiceMonth' => date('m'),
@@ -1128,6 +1135,8 @@
                     'billing_first_name' => $firstName,
                     'billing_last_name' => $lastName,
                     'notes' => $orderNote,
+                    'workshiftId'=>$workshiftId
+
                 ];
                 /// Create2 reservation most important part
 
@@ -1173,6 +1182,7 @@
                             $logged = 1;
                         }
                     }
+
 
                     if ($booking->status == 'paid' && $booking->paidMethod == 'cash' && $logged == 0) {
                         Reservations::log(
@@ -1247,15 +1257,319 @@
                 if(Yii::$app->request->get('_pjax')=='#grid-pjax'){
                     return $this->redirect('create2');
                 }
+
+                $model=new Product();
+
+
+
                 return $this->renderAjax(
                     'create2', [
-                                 'model' => new Product(),
+                                 'model' => $model,
                                  'allMyProducts' => Product::getStreetProducts(),
                                  'disableForm' => $disableForm,
                                  'myPrices' => $myPrices,
                                  'countPrices' => $countPrices,
                                  'newReservation' => $updateResponse,
                                  'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
+                             ]
+                );
+            }
+            if(isset($oldTicket) && $oldTicket) return $this->redirect('dayover');
+
+            return $this->render(
+                'create2', [
+                             'model' => new Product(),
+                             'disableForm' => $disableForm,
+                             'myPrices' => $myPrices,
+                             'countPrices' => $countPrices,
+                             'newReservation' => $updateResponse,
+                             'allMyProducts' => Product::getStreetProducts(),
+                             'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
+                         ]
+            );
+        }
+        public function actionCreatefortime() {
+            if (!Yii::$app->user->can(Reservations::CREATE_BOOKING)) {
+                throw new ForbiddenHttpException('userCan\'t');
+            }
+            $ticketBlock = TicketBlockSearchModel::aSelect(TicketBlockSearchModel::class, '*', TicketBlockSearchModel::tableName(), 'assignedTo = ' . Yii::$app->user->id . ' AND isActive IS TRUE')->one();
+            if(!$ticketBlock){
+                sessionSetFlashAlert('danger','Oops, you\'ll need a Ticket Block first ');
+                return $this->redirect('/Dashboard/dashboard/admin');
+            }
+
+
+
+            $block = TicketBlockSearchModel::find()
+                ->andFilterWhere(['=', 'assignedTo', Yii::$app->user->id])
+                ->andWhere('isActive IS TRUE')
+                ->one();
+            if (!$block && !Yii::$app->user->can('administrator')) {
+
+                throw new ForbiddenHttpException('Sorry you dont have an active Ticket Block');
+            }
+
+            $allProduct = Product::getAllProducts();
+
+            $searchModel = new ReservationsAdminSearchModel();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            $product = Yii::$app->request->post('Product');
+            $productPrice = Yii::$app->request->post('ProductPrice');
+            $totalprice = 0;
+
+            $disableForm = 0;
+            $myPrices = [];
+            if ($product) {
+                $disableForm = 1;
+                $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $product['title']);
+                $myPrices = $query->all();
+                $countPrices = $query->count();
+            }
+
+            if (!isset($countPrices)) {
+                $countPrices = 0;
+            }
+            if ($productPrice) {
+                /**
+                 * Booking form step 2
+                 */
+
+                $paid_status = $_POST['paid_status'];
+
+                $paid_method = $_POST['paid_method'];
+
+                $paid_currency = $_POST['paid_currency'];
+
+                $newReservarion = new Reservations();
+
+                $data = new \stdClass();
+                $data->boookingDetails = new \stdClass();
+                $data->orderDetails = new \stdClass();
+
+                $data->personInfo = [];
+                $data->updateDate = date('Y-m-d H:i:s');
+
+                $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $productPrice["product_id"]);
+                $myPrices = $query->all();
+                foreach ($myPrices as $i => $price) {
+                    if ($productPrice['description'][$i]) {
+                        $newObj = new \stdClass();
+                        $newObj->name = $price->name;
+                        $newObj->purchaseNumber = $productPrice['description'][$i];
+                        $newObj->oneCost = $price->price;
+                        $data->personInfo[] = $newObj;
+                    }
+                }
+
+                $countPersons = 0;
+                foreach ($productPrice['description'] as $price) {
+                    if ($price) {
+                        $countPersons += $price;
+                    }
+                }
+                #echo $countPersons;
+
+                #var_dump($data);
+                $data->boookingDetails->booking_cost = $productPrice["discount"];
+                $data->boookingDetails->booking_product_id = $productPrice["product_id"];
+                $data->boookingDetails->booking_start = $productPrice['booking_date'] . ' ' . $productPrice['time_name'] . ':00';
+                $data->boookingDetails->booking_end = $productPrice['booking_date'] . ' ' . $productPrice['time_name'] . ':00';
+                $data->orderDetails->paid_date = date('Y-m-d');
+                $data->orderDetails->allPersons = $countPersons;
+                $data->orderDetails->order_currency = $paid_currency;
+
+                # $data=['boookingDetails'=> $booking->bookingDetails,'orderDetails'=>$booking->orderDetails,'personInfo'=>$booking->personInfo,'updateDate'=>date("Y-m-d H:i:s")];
+
+                $source = 'unset';
+                $imaStreetSeller = Yii::$app->authManager->getAssignment('streetSeller', Yii::$app->user->getId());
+                $imaHotelSeller = Yii::$app->authManager->getAssignment('hotelSeller', Yii::$app->user->getId());
+
+                if ($imaStreetSeller) {
+                    $source = 'Street';
+                }
+                if ($imaHotelSeller) {
+                    $source = 'Hotel';
+                }
+
+                $ticketBlock = TicketBlockSearchModel::aSelect(TicketBlockSearchModel::class, '*', TicketBlockSearchModel::tableName(), 'assignedTo = ' . Yii::$app->user->id . ' AND isActive IS TRUE')->one();
+                $ticket = TicketSearchModel::useTable('modulus_tb_' . $ticketBlock->returnStartId())::findOne(['reservationId' => null, 'status' => 'open']);
+
+                $firstName = '';
+                $lastName = '';
+                $orderNote = '';
+                if (Yii::$app->request->post('firstName')) {
+                    $firstName = Yii::$app->request->post('firstName');
+                }
+                if (Yii::$app->request->post('lastName')) {
+                    $lastName = Yii::$app->request->post('lastName');
+                }
+                if (Yii::$app->request->post('orderNote')) {
+                    $orderNote = Yii::$app->request->post('orderNote');
+                }
+
+                if ($oldTicket = Yii::$app->request->post('ticketId')) {
+                    $ticketId = $oldTicket;
+                } else {
+                    $ticketId = $ticket->ticketId;
+                }
+
+                $workshiftId = isset(Modevent::userCurrentWorkshift()->id) ?
+                    Modevent::userCurrentWorkshift()
+                        ->id :
+                    null;
+
+                $values = [
+                    'booking_cost' => $productPrice["discount"],
+                    'invoiceMonth' => date('m'),
+                    'invoiceDate' => date('Y-m-d'),
+                    'bookingDate' => $productPrice['booking_date'],
+                    'booking_start' => $data->boookingDetails->booking_start,
+                    'source' => $source,
+                    'productId' => $productPrice['product_id'],
+                    'bookingId' => 'tmpMad1',
+                    'data' => json_encode($data),
+                    'sellerId' => Yii::$app->user->getId(),
+                    'sellerName' => Yii::$app->user->identity->username,
+                    'ticketId' => $ticketId,
+                    'status' => $paid_status,
+                    'paidMethod' => $paid_status == 'paid' ? $paid_method : null,
+                    'order_currency' => $paid_currency,
+                    'billing_first_name' => $firstName,
+                    'billing_last_name' => $lastName,
+                    'notes' => $orderNote,
+                    'workshiftId'=>$workshiftId
+
+                ];
+                /// Create2 reservation most important part
+
+                if ($_POST['anotherSeller']) {
+                    //selling for somebody else
+                    $originSellerId = $_POST['anotherSeller'];
+                    $originIdentity = User::findIdentity($originSellerId);
+                    Yii::error($originIdentity);
+
+                    $originSellerName = $originIdentity->username;
+                    $foolSellerId = Yii::$app->user->id;
+                    $foolSellerName = (Yii::$app->user->getIdentity($foolSellerId))->username;
+
+                    $values['sellerId'] = $originSellerId;
+                    $values['sellerName'] = $originSellerName;
+                    $values['iSellerId'] = $foolSellerId;
+                    $values['iSellerName'] = $foolSellerName;
+                }
+
+                $insertReservation = Reservations::insertOne($newReservarion, $values);
+
+                Yii::info('Reservation created ' . $insertReservation);
+                if ($insertReservation) {
+                    ///Succsessfully booked now assigning bookingId
+                    $findBooking = Reservations::aSelect(Reservations::class, '*', Reservations::tableName(), 'bookingId="tmpMad1"');
+                    $booking = $findBooking->one();
+                    $values = ['bookingId' => $booking->id];
+
+                    $logged = 0;
+
+                    //Saving Reservation
+                    Reservations::insertOne($booking, $values);
+                    $message = 'sold ' . $_POST['sellerCustomDate'];
+                    if (isset($foolSellerName)) {
+                        $from = $foolSellerName;
+                        $to = $originSellerName;
+                        Reservations::log($booking, $message, $from, $to);
+                        if ($booking->status == 'paid' && $booking->paidMethod == 'cash') {
+                            Reservations::log(
+                                $booking, $booking->booking_cost . ' ' . $booking->order_currency . ' cash collected by'
+                                        . $from
+                            );
+                            $logged = 1;
+                        }
+                    }
+
+
+                    if ($booking->status == 'paid' && $booking->paidMethod == 'cash' && $logged == 0) {
+                        Reservations::log(
+                            $booking, $booking->booking_cost . ' ' . $booking->order_currency . ' cash collected by'
+                                    . $booking->sellerName
+                        );
+                    }
+
+                    ///Let's create a log that it was sold for somebody else
+
+                    $updateResponse = sessionSetFlashAlert('success', '<i class="fas fa-check-square fa-lg   "></i> ' . 'Successful Reservation');
+
+
+                    Yii::$app->commandBus->handle(
+                        new AddToTimelineCommand(
+                            [
+                                'category' => 'bookings',
+                                'event' => 'newBooking',
+                                'data' => [
+                                    'public_identity' => Yii::$app->user->getIdentity(),
+                                    'user_id' => Yii::$app->user->getId(),
+                                    'created_at' => time()
+                                ]
+                            ]
+                        )
+                    );
+
+                    if ($oldTicket) {
+                        Yii::$app->commandBus->handle(
+                            new AddOldTicketToReservationCommand(
+                                [
+                                    'sellerId' => Yii::$app->user->getId(),
+                                    'timestamp' => time(),
+                                    'bookingId' => $booking->id,
+                                    'ticketId' => $oldTicket
+                                ]
+                            )
+                        );
+                    } else {
+                        Yii::$app->commandBus->handle(
+                            new AddTicketToReservationCommand(
+                                [
+                                    'block'=>$block,
+                                    'sellerId' => Yii::$app->user->getId(),
+                                    'timestamp' => time(),
+                                    'bookingId' => $booking->id,
+                                ]
+                            )
+                        );
+                    }
+//                    Yii::$app->commandBus->handle(
+//                        new SendEmailCommand(
+//                            [
+//                                'to' => 'alpe15.1992@gmail.com',
+//                                'from' => 'alpe15.1992@gmail.com',
+//                                'subject' => 'New reservation',
+//                                'type' => 'newReservation'
+//                            ]
+//                        )
+//                    );
+                } else {
+                    $updateResponse = '<span style="color:red">Reservation Failed</span>';
+                    //show an error message
+                }
+            }
+            if (!isset($updateResponse)) {
+                $updateResponse = '';
+            }
+
+
+            if (Yii::$app->request->isAjax) {
+                if(Yii::$app->request->get('_pjax')=='#grid-pjax'){
+                    return $this->redirect('create2');
+                }
+
+                return $this->renderAjax(
+                    'createfortime', [
+                                 'model' => new Product(),
+                                 'allMyProducts' => Product::getStreetProducts(),
+                                 'disableForm' => $disableForm,
+                                 'myPrices' => $myPrices,
+                                 'countPrices' => $countPrices,
+                                 'newReservation' => $updateResponse,
+                                 'subView' => $this->renderPartial('assingui', ['model' => new Reservations()]),
+
                              ]
                 );
             }
@@ -1994,22 +2308,68 @@
 
             $id = Yii::$app->request->get('id');
             $reservation = Reservations::findOne($id);
+            $reservationTemp=$reservation;
 
-
-
+            $workshiftMatch=false;
+            if(Yii::$app->user->can('streetAdmin')){
+                $workshiftMatch=true;
+            }
             if($reservation->load(Yii::$app->request->post())){
-                Yii::error($reservation->billing_first_name);
+
                 $oldAttributes=$reservation->getOldAttributes();
 
               $changed_attributes=array_diff_assoc($oldAttributes,$reservation->getAttributes());
-              Yii::error($changed_attributes);
-              $reservation->save();
-              foreach ($changed_attributes as $attribute=>$value){
-                  $message=$attribute.' changed from '.$oldAttributes[$attribute].' to '.$reservation->$attribute.' by '
-                      .Yii::$app->user->getIdentity()->username;
-                  Reservations::log($reservation,$message);
+
+              if(isset(Modevent::userCurrentWorkshift()->id) && Modevent::userCurrentWorkshift()->id==$reservation->workshiftId){
+                  $workshiftMatch=true;
               }
 
+              if($workshiftMatch){
+                  $reservation->save();
+                  foreach ($changed_attributes as $attribute=>$value){
+                      $message=$attribute.' changed from '.$oldAttributes[$attribute].' to '.$reservation->$attribute.' by '
+                          .Yii::$app->user->getIdentity()->username;
+                      Reservations::log($reservation,$message);
+                      Yii::$app->session->setFlash('kv-detail-success', 'Successful modification');
+
+                  }
+
+              }
+              else{
+                  sessionSetFlashAlert('danger','Sorry workshift not matching changes not saved');
+
+              }
+
+
+            }
+            if (Yii::$app->request->isAjax && isset($_POST['kvdelete'])) {
+                if($workshiftMatch){
+
+                    $postedId=Yii::$app->request->post('id');
+                    $reservation=Reservations::findOne($postedId);
+                    Yii::info('deleted a Booking '.json_encode($reservation));
+                    $reservation->delete();
+
+
+
+                    echo Json::encode([
+                                          'success' => true,
+                                          'messages' => [
+                                              'kv-detail-info' => 'The book # '.$_POST['id'].' was successfully deleted. ' .
+                                                  Html::a('<i class="fas fa-hand-right"></i>  Click here',
+                                                          ['/Dashboard/dashboard/admin'], ['class' => 'btn btn-sm 
+                                                        btn-info']) . ' to proceed.'
+                                          ]
+                                      ]);
+                    return;
+                }
+                echo Json::encode([
+                                      'success' => false,
+                                      'messages' => [
+                                          'kv-detail-warning' => 'Not in workshift'
+                                      ]
+                                  ]);
+                return;
             }
 
             if (Yii::$app->request->isAjax) {

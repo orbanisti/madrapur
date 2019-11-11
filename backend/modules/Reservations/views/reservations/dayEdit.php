@@ -324,6 +324,7 @@ HTML;
                                 $gridFooter="  <h3>Total capacity left for <a class=\"btn btn-info\">$timingbutton</a>: $takenChairsCount</br></h3>
                             <!--h4>Total places bought for this day: $takenChairsCount</br></h4-->
                             <h5>Total capacity for this product: $currentProduct->capacity</br></h5>";
+                                $prodId=Yii::$app->request->get('prodId');
 
                                 echo GridView::widget([
                                                           'id' => 'wholeday',
@@ -337,7 +338,9 @@ HTML;
                                                                   'content' =>
                                                                       Html::a(Yii::t('app', ' {modelClass}', [
                                                                           'modelClass' => '<i class="fa fa-pencil-alt"></i>',
-                                                                      ]), ['/Reservations/reservations/create2'], ['class' => 'btn btn-info', 'id' => 'popupModal']),
+                                                                      ]), ['/Reservations/reservations/createfortime?prodId='.$prodId.'&date='.Yii::$app->request->get('date').'&time='.$timingbutton,
+                                                                          ], ['class' => 'btn btn-info',
+                                                                                           'id' => 'popupModal']),
 
                                                                   'options' => ['class' => 'btn-group mr-2']
                                                               ],
