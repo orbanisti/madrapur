@@ -659,7 +659,8 @@ SCRIPT;
                 }
 
                 mytimes = data.search;
-                console.log(mytimes);
+                
+
 
                 if(data.customPrice){
 
