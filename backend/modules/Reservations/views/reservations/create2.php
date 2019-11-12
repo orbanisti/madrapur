@@ -441,20 +441,19 @@ use kartik\helpers\Html;
                                     <!-- /.box-body -->
                                 </div>
                                 <div class="col-lg-12">
-                                    <?= \insolita\adminlte3\LteInfoBox::widget([
+                                       <div class="small-box bg-gradient-primary">
+                                                                                       <div class="inner">
+                                                                                           <h4><div id="total_price">0</div></h4>
 
-                                                                                   'bgColor' => 'white',
-                                                                                   'number' => "<h4><div id=\"total_price\">0</div></h4>",
-                                                                                   'text' => 'Total Price' . ' <strong>(' . $paid_currency . ')</strong>',
-                                                                                   //                        'description'=>'asd',
-                                                                                   'icon' => 'fa fa-cart-plus',
-                                                                                   'showProgress' => true,
-                                                                                   'progressNumber' => 100,
+                                                                                           <p><?= 'Total Price' . ' <strong>(' . $paid_currency . ')</strong>'; ?></p>
+                                                                                       </div>
+                                                                                       <div class="icon">
+                                                                                           <i class="fas fa-boxes  "></i>
+                                                                                       </div>
 
+                                                                                   </div>
 
-                                                                               ]);
-                                    ?>
-                                </div>'
+                                </div>
                             </div>
 
 
@@ -660,6 +659,7 @@ SCRIPT;
                 }
 
                 mytimes = data.search;
+                console.log(mytimes);
 
                 if(data.customPrice){
 

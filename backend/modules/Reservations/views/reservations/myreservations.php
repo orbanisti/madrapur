@@ -8,8 +8,7 @@
 
 use backend\components\extra;
     use backend\modules\Product\models\Product;
-    use insolita\adminlte3\Lte;
-use insolita\adminlte3\LteSmallBox;
+
     use kartik\dynagrid\DynaGrid;
     use kartik\grid\GridView;
     use kartik\helpers\Html;
@@ -26,35 +25,12 @@ use insolita\adminlte3\LteSmallBox;
 
     <div class="row">
         <div class="col-xs-12 col-md-3">
-            <?php
-            LteSmallBox::begin([
-                'type' => Lte::COLOR_MAROON,
-                'title' => $monthlySold . 'EUR',
-                'icon' => 'fa fa-list-alt',
-                'text' => 'Monthly sold'
-            ]) ?>
-            <?php LteSmallBox::end() ?>
+
         </div>
         <div class="col-xs-12 col-md-3">
-            <?php
-            LteSmallBox::begin([
-                'type' => Lte::COLOR_BLUE,
-                'title' => $todaySold . ' EUR',
-                'text' => 'Today Sold',
-                'icon' => 'fa fa-list-alt',
-            ]) ?>
-            <?php LteSmallBox::end() ?>
+
         </div> <div class="col-xs-12 col-md-3">
-            <?php
-                LteSmallBox::begin([
-                                       'type' => Lte::COLOR_TEAL,
-                                       'title' => "$startTicketId",
-                                       'icon' => 'fa fa-ticket',
-                                       'text' => 'Next ticked ID',
-                                       'footer' => 'View ticket block',
-                                       'link' => Url::to("/Tickets/tickets/admin")
-                                   ]) ?>
-            <?php LteSmallBox::end() ?>
+
         </div>
         <div class="col-xs-12 col-md-3">
             <?php /*
