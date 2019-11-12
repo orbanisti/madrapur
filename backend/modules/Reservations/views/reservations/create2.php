@@ -659,7 +659,7 @@ SCRIPT;
                 }
 
                 mytimes = data.search;
-                
+                console.log('asd');
 
 
                 if(data.customPrice){
