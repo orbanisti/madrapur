@@ -1,6 +1,7 @@
 <?php
-use yii\helpers\Html;
+
 use yii\grid\GridView;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -10,30 +11,30 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="rbac-auth-rule-index">
 
-	<h1><?php echo Html::encode($this->title) ?></h1>
+    <h1><?php echo Html::encode($this->title) ?></h1>
 
-	<p>
+    <p>
         <?php echo Html::a(Yii::t('frontend', 'Create Rbac Auth Rule'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?php
 
-echo GridView::widget(
-            [
-                'dataProvider' => $dataProvider,
-                'columns' => [
-                    [
-                        'class' => 'yii\grid\SerialColumn'
-                    ],
-
-                    'name',
-                    'data',
-                    'created_at:datetime',
-                    'updated_at:datetime',
-
-                    [
-                        'class' => 'yii\grid\ActionColumn'
-                    ],
+    echo GridView::widget(
+        [
+            'dataProvider' => $dataProvider,
+            'columns' => [
+                [
+                    'class' => 'yii\grid\SerialColumn'
                 ],
-            ]);
+
+                'name',
+                'data',
+                'created_at:datetime',
+                'updated_at:datetime',
+
+                [
+                    'class' => 'yii\grid\ActionColumn'
+                ],
+            ],
+        ]);
     ?>
 </div>

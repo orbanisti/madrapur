@@ -16,14 +16,16 @@ class JquerySlimScroll extends AssetBundle {
      *
      * @var string
      */
-    public $sourcePath = '@npm/jquery-slimscroll';
+    public $sourcePath = '@vendor/almasaeed2010/adminlte';
+
+    public $css =['plugins/overlayScrollbars/css/OverlayScrollbars.min.css'];
 
     /**
      *
      * @var array
      */
     public $js = [
-        'jquery.slimscroll.min.js'
+        'plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js'
     ];
 
     /**

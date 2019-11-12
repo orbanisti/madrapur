@@ -15,13 +15,13 @@ class FontAwesome extends AssetBundle {
      *
      * @var string
      */
-    public $sourcePath = '@npm/font-awesome';
+    public $sourcePath = '@vendor/almasaeed2010/adminlte';
 
     /**
      *
      * @var array
      */
     public $css = [
-        'css/font-awesome.min.css'
+        'plugins/fontawesome-free/css/all.min.css'
     ];
 }

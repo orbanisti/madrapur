@@ -2,19 +2,15 @@
 
 namespace backend\modules\Product\models;
 
-use yii\base\Model;
-use yii\data\ActiveDataProvider;
+use backend\modules\Products\models\Graylinepartners;
 use backend\modules\Products\models\Products;
 use backend\modules\Products\models\Productscities;
 use backend\modules\Products\models\Productscountires;
-use yii\helpers\ArrayHelper;
-use backend\modules\Products\models\Graylinepartners;
+use yii\data\ActiveDataProvider;
 
-class ProductAdminSearchModel extends Product
-{
+class ProductAdminSearchModel extends Product {
 
-    public function rules()
-    {
+    public function rules() {
         return [
             [['id'], 'integer'],
             [['currency'], 'string', 'max' => 255],
@@ -28,23 +24,23 @@ class ProductAdminSearchModel extends Product
             [['start_date'], 'string', 'max' => 255],
             [['end_date'], 'string', 'max' => 255],
             [['capacity'], 'string', 'max' => 255],
-            [['duration'], 'string', 'max' => 255]
+            [['duration'], 'string', 'max' => 255],
+            [['isDeleted'], 'string', 'max' => 10]
         ];
     }
 
-    public function search($params)
-    {
-      #  $invoiceDate = '2016-02-05';
-       # $bookingDate = '2020-08-20';
+    public function search($params) {
+        #  $invoiceDate = '2016-02-05';
+        # $bookingDate = '2020-08-20';
 
         $what = ['*'];
         $from = self::tableName();
         $where = self::andWhereFilter([
             ['id', '!=', '0'],
+            ['isDeleted', '!=', "yes"],
         ]);
 
-
-        $rows = self::aSelect(ProductAdminSearchModel::class, $what, $from,$where);
+        $rows = self::aSelect(Product::class, $what, $from, $where);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $rows,
@@ -58,6 +54,20 @@ class ProductAdminSearchModel extends Product
         return $dataProvider;
     }
 
+    public function searchAllProducts($params) {
+        #  $invoiceDate = '2016-02-05';
+        # $bookingDate = '2020-08-20';
+
+        $what = ['*'];
+        $from = self::tableName();
+        $where = self::andWhereFilter([
+            ['id', '!=', '0'],
+        ]);
+
+        $rows = self::aSelect(Product::class, $what, $from, $where);
+        return $rows->all();
+    }
+
     public function returnProductId() {
         return $this['id'];
     }
@@ -68,5 +78,6 @@ class ProductAdminSearchModel extends Product
             'fname'
         ]);
     }
+
 }
 

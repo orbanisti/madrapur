@@ -3,147 +3,120 @@
 namespace backend\modules\Product\models;
 
 use backend\modules\MadActiveRecord\models\MadActiveRecord;
-use Psr\Log\NullLogger;
 use Yii;
-use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 
 /**
  * Default model for the `Product` module
  */
-class Product extends MadActiveRecord{
+class Product extends MadActiveRecord {
+
+    const ACCESS_PRODUCT_ADMIN = 'viewProductAdmin';
+    const CREATE_PRODUCT = 'createProduct';
+    const UPDATE_PRODUCT = 'updateProduct';
+    const UPDATE_OWN_PRODUCT = 'updateOwnProduct';
+    const ACCESS_TIME_TABLE = 'accessTimeTable';
+    const BLOCK_DAYS = 'blockDays';
+    const BLOCK_TIMES = 'blockTimes';
+
+    public static function getAllProducts() {
+
+        $where = self::andWhereFilter([
+            ['id', '!=', '0'],
+            ['isDeleted', '!=', "yes"],
+
+        ]);
+        $query = Product::aSelect(Product::class, '*', Product::tableName(), $where);
+
+        $prodInfo = 0;
+
+        try {
+            $prodInfo = $query->all();
+            foreach ($prodInfo as $i => $prod) {
+                $prodInfo[$i] = Product::getProdById($prod->id);
+            }
+        } catch (Exception $e) {
+
+        }
+
+        return $prodInfo;
+    }
+
+    public static function getStreetProducts() {
+
+        $where = self::andWhereFilter([
+                                          ['id', '!=', '0'],
+                                          ['isDeleted', '!=', "yes"],
+                                          ['isStreet', '=', "yes"],
+                                      ]);
+        $query = Product::aSelect(Product::class, '*', Product::tableName(), $where);
+
+        $prodInfo = 0;
+
+        try {
+            $prodInfo = $query->all();
+            foreach ($prodInfo as $i => $prod) {
+                $prodInfo[$i] = Product::getProdById($prod->id);
+            }
+        } catch (Exception $e) {
+
+        }
+
+        return $prodInfo;
+    }
 
 
- 
+//TODO
+
     public static function tableName() {
         return 'modulusProducts';
     }
 
 //TODO
-    public function rules() {
-        return [
-            [['id'], 'integer'],
-            [['currency'], 'string', 'max' => 255],
-            [['status'], 'string', 'max' => 255],
-            [['title'], 'string', 'max' => 255],
-            [['description'], 'string', 'max' => 20000],
-            [['short_description'], 'string', 'max' => 5000],
-            [['thumbnail'], 'string', 'max' => 255],
-            [['images'], 'string', 'max' => 255],
-            [['category'], 'string', 'max' => 255],
-            [['start_date'], 'string', 'max' => 255],
-            [['end_date'], 'string', 'max' => 255],
-            [['capacity'], 'string', 'max' => 255],
-            [['duration'], 'string', 'max' => 255],
-             [['slug'], 'string', 'max' => 255],
-        ];
-    }
-//TODO
-    public function attributeLabels() {
-        return [
-            'id' => Yii::t('app', 'ID'),
-            'currency' => Yii::t('app', 'Currency'),
-            'randomDate' => Yii::t('app', 'Véletlenszerű dátum'),
-        ];
-    }
-    public function attributes() {
-        $attributes = parent::attributes();
-        return array_merge($attributes, [
-            'times','prices'
-        ]);
-    }
 
-
-
-    public function getPricesDetails() {
-        return $this->prices;
-    }
-    public function setPricesDetails($orderDetails) {
-        $this->prices = $orderDetails;
-    }
-    public function getTimesDetails() {
-        return $this->times;
-    }
-    public function setTimesDetails($orderDetails) {
-        $this->times = $orderDetails;
-    }
-
-    public function getProdUrl() {
-        return $this->times;
-    }
-    public function setProdUrl($orderDetails) {
-        $this->times = $orderDetails;
-    }
-
-
-    public static function getProdById($id){
+    public static function getProdById($id) {
 
 //TODO get product from ID
 
         $query = Product::aSelect(Product::class, '*', Product::tableName(), 'id=' . $id);
         $queryTimes = Product::aSelect(ProductTime::class, '*', ProductTime::tableName(), '1');
         $queryPrices = Product::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), '1');
-        $allTimes=$queryTimes->all();
-        $allPrices=$queryPrices->all();
+        $allTimes = $queryTimes->all();
+        $allPrices = $queryPrices->all();
 
-
-        $prodInfo=0;
+        $prodInfo = new Product();
         try {
             $prodInfo = $query->one();
 
+            $thisProdTimes = [];
+            foreach ($allTimes as $time) {
+                if ($time->product_id == $id) {
 
-            foreach ($allTimes as $time){
-                 if($time->product_id==$id){
-                     $prodInfo->setAttribute("times", $time);
-                 }
-
-            }
-            foreach ($allPrices as $price){
-                if($price->product_id==$id){
-                    $prodInfo->setAttribute("prices", $price);
+                    $thisProdTimes[] = $time;
                 }
-
             }
-
-
-
+            $prodInfo->setAttribute("times", $thisProdTimes);
+            $thisProdPrice = [];
+            foreach ($allPrices as $price) {
+                if ($price->product_id == $id) {
+                    $thisProdPrice[] = $price;
+                }
+            }
+            $prodInfo->setAttribute("prices", $thisProdPrice);
         } catch (Exception $e) {
         }
 
         return $prodInfo;
-
     }
 
-    public static function getAllProducts() {
-        $query = Product::aSelect(Product::class, '*', Product::tableName(), '1');
-
-
-        $prodInfo = 0;
-
-
-        try {
-            $prodInfo = $query->all();
-            foreach ($prodInfo as $i => $prod){
-                $prodInfo[$i]=Product::getProdById($prod->id);
-
-            }
-
-        } catch (Exception $e) {
-
-        }
-
-        return $prodInfo;
-
-    }
-
-    public static function createMultiple($modelClass, $multipleModels = [])
-    {
-        $model    = new $modelClass;
+    public static function createMultiple($modelClass, $multipleModels = []) {
+        $model = new $modelClass;
         $formName = $model->formName();
-        $post     = Yii::$app->request->post($formName);
-        $models   = [];
+        $post = Yii::$app->request->post($formName);
+        $models = [];
 
-        if (! empty($multipleModels)) {
+        if (!empty($multipleModels)) {
             $keys = array_keys(ArrayHelper::map($multipleModels, 'id', 'id'));
             $multipleModels = array_combine($keys, $multipleModels);
         }
@@ -163,5 +136,96 @@ class Product extends MadActiveRecord{
         return $models;
     }
 
+    public static function searchSourceName($sourceID, $sourceUrl) {
+        /**
+         * Returns source name
+         */
+        $what = ['*'];
+        $from = ProductSource::tableName();
+        $wheres = [];
+        $wheres[] = ['prodIds', '=', $sourceID];
+        $wheres[] = ['url', '=', Html::encode($sourceUrl)];
+
+        $where = self::andWhereFilter($wheres);
+
+        $rows = self::aSelect(ProductSource::class, $what, $from, $where);
+
+        $myreturned = $rows->one();
+        if (isset($myreturned->name)) {
+
+            return $myreturned->name;
+        } else {
+            return null;
+        }
+    }
+
+    public function rules() {
+        return [
+            [['id'], 'integer'],
+            [['currency'], 'string', 'max' => 255],
+            [['status'], 'string', 'max' => 255],
+            [['title'], 'string', 'max' => 255],
+            [['description'], 'string', 'max' => 20000],
+            [['short_description'], 'string', 'max' => 5000],
+            [['thumbnail'], 'string', 'max' => 255],
+            [['images'], 'string', 'max' => 255],
+            [['category'], 'string', 'max' => 255],
+            [['start_date'], 'string', 'max' => 255],
+            [['end_date'], 'string', 'max' => 255],
+            [['capacity'], 'string', 'max' => 255],
+            [['duration'], 'string', 'max' => 255],
+            [['slug'], 'string', 'max' => 255],
+            [['isDeleted'], 'string', 'max' => 10],
+            [['isStreet'], 'string', 'max' => 10],
+        ];
+    }
+
+    public function attributeLabels() {
+        return [
+            'id' => Yii::t('app', 'ID'),
+            'currency' => Yii::t('app', 'Currency'),
+            'randomDate' => Yii::t('app', 'Véletlenszerű dátum'),
+        ];
+    }
+
+    public function attributes() {
+        $attributes = parent::attributes();
+        return array_merge($attributes, [
+            'times', 'prices'
+        ]);
+    }
+
+    public function getPricesDetails() {
+        return $this->prices;
+    }
+
+    public function setPricesDetails($orderDetails) {
+        $this->prices = $orderDetails;
+    }
+
+    public function getTimesDetails() {
+        return $this->times;
+    }
+
+    public function setTimesDetails($orderDetails) {
+        $this->times = $orderDetails;
+    }
+
+    public function getProdUrl() {
+        return $this->times;
+    }
+
+    public function setProdUrl($orderDetails) {
+        $this->times = $orderDetails;
+    }
+
+    public function afterFind() {
+
+        if (!isset($this->isDeleted)) {
+            $this->isDeleted = 'no';
+            $this->save('false');
+        }
+        parent::afterFind(); // TODO: Change the autogenerated stub
+    }
 
 }

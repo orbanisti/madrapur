@@ -1,8 +1,10 @@
 <?php
+
 $config = [
     'homeUrl' => Yii::getAlias('@backendUrl'),
     'controllerNamespace' => 'backend\controllers',
-    'defaultRoute' => 'timeline-event/index',
+
+    'defaultRoute' => 'Dashboard/dashboard/admin',
     'components' => [
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -22,8 +24,40 @@ $config = [
         ],
     ],
     'modules' => [
+        'dynagrid'=> [
+            'class'=>'\kartik\dynagrid\Module',
+            // other module settings
+        ],
+
+        'Issuerequest' => [
+            'class' => backend\modules\Issuerequest\Module::class,
+        ],
         'gridview' => [
             'class' => kartik\grid\Module::class,
+        ],
+        'Modevent' => [
+            'class' => backend\modules\Modevent\Module::class,
+        ],
+        'Seo' => [
+            'class' => backend\modules\Seo\Module::class,
+        ],
+        'Dashboard' => [
+            'class' => backend\modules\Dashboard\Module::class,
+        ],
+        'Modmail' => [
+            'class' => backend\modules\Modmail\Module::class,
+        ],
+        'Modulusbuilder' => [
+            'class' => backend\modules\Modulusbuilder\Module::class,
+        ],
+        'ModulusCart' => [
+            'class' => backend\modules\ModulusCart\Module::class,
+        ],
+        'gridview' => [
+            'class' => kartik\grid\Module::class,
+        ],
+        'Payment' => [
+                'class' => backend\modules\Payment\Module::class,
         ],
         'redactor' => [
             'class' => yii\redactor\RedactorModule::class,
@@ -40,8 +74,8 @@ $config = [
         'madActiveRecord' => [
             'class' => backend\modules\MadActiveRecord\Module::class,
         ],
-        'Products' => [
-            'class' => backend\modules\Products\Module::class,
+        'Order' => [
+            'class' => backend\modules\Order\Module::class,
         ],
         'Product' => [
             'class' => backend\modules\Product\Module::class,
@@ -51,6 +85,12 @@ $config = [
         ],
         'system' => [
             'class' => backend\modules\system\Module::class,
+        ],
+        'Statistics' => [
+            'class' => backend\modules\Statistics\Module::class,
+        ],
+        'Tickets' => [
+            'class' => backend\modules\Tickets\Module::class,
         ],
         'translation' => [
             'class' => backend\modules\translation\Module::class,
@@ -63,7 +103,7 @@ $config = [
             'class' => 'lajax\translatemanager\Module',
             //'root' => '@app',             // The root directory of the project scan.
             'root' => '@webroot',               // The root directory of the project scan.
-            'layout' => '@app/admin/themes/mandelan/layouts/admin',               // Name of the used layout. If using own layout use 'null'.
+            'layout' => null,               // Name of the used layout. If using own layout use 'null'.
             'allowedIPs' => [$_SERVER['REMOTE_ADDR']],  // IP addresses from which the translation interface is accessible.
             'roles' => ['@'],               // For setting access levels to the translating interface.
             'tmpDir' => '@runtime',         // Writable directory for the client-side temporary language files.
@@ -145,7 +185,9 @@ $config = [
                 ],
                 'allow' => true,
                 'roles' => [
-                    'administrator'
+                    'administrator',
+                    'officeAdmin',
+                    'streetAdmin',
                 ],
             ],
             [
@@ -157,8 +199,15 @@ $config = [
             [
                 'allow' => true,
                 'roles' => [
-                    'manager',
-                    'administrator'
+                    'administrator',
+                    'officeAdmin',
+                    'hotelEditor',
+                    'ticketEditor',
+                    'officeVisitor',
+                    'streetAdmin',
+                    'streetSeller',
+                    'hotline',
+                    'hotelSeller',
                 ],
             ],
         ],
@@ -166,6 +215,8 @@ $config = [
 ];
 
 define("WEB_ROOT", ".");
+define("OTP", "../../../../simplepay/");
+define("REACT", "../../react/index.php");
 
 if (YII_ENV_DEV) {
     $config['modules']['gii'] = [
@@ -178,7 +229,7 @@ if (YII_ENV_DEV) {
                 ],
                 'template' => 'yii2-starter-kit',
                 'messageCategory' => 'backend',
-            ],
+            ],     'kartikgii-crud' => ['class' => 'warrence\kartikgii\crud\Generator']
         ],
     ];
 }

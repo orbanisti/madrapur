@@ -34,9 +34,9 @@ function render($view, $params = []) {
  * @param int $statusCode
  * @return \yii\web\Response
  */
-function redirect($url, $statusCode = 302) {
-    return Yii::$app->controller->redirect($url, $statusCode);
-}
+//function redirect($url, $statusCode = 302) {
+//    return Yii::$app->controller->redirect($url, $statusCode);
+//}
 
 /**
  *
@@ -62,4 +62,58 @@ function env($key, $default = null) {
     }
 
     return $value;
+}
+
+function isLocalhost() {
+    return isset($_SERVER['REMOTE_ADDR']) ? in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']) : true;
+}
+
+/**
+ * @param $string
+ * @param $start
+ * @param $end
+ *
+ * @return array
+ */
+function get_string_between($string, $start, $end){
+    $between = [];
+
+    for ($i = 0; $i < count($start); ++$i) {
+        $between[] = substr($string, $start[$i], $end[$i] - $start[$i]);
+    }
+    return $between;
+}
+
+/**
+ * @param $body
+ * @param $templateFields
+ *
+ * @return string
+ */
+function set_strings($body, $templateFields){
+    foreach ($templateFields as $field) {
+        $body = str_replace("{{".$field."}}", Yii::$app->request->post($field), $body);
+    }
+    return $body;
+}
+
+/**
+ * @param $type
+ * @param $message
+ * @param string $category
+ */
+function sessionSetFlashAlert($type, $message, $category = 'backend') {
+    Yii::$app->session->setFlash(
+        'alert',
+        [
+            'options' => [
+                'class' => 'alert-' . $type
+            ],
+            'body' => Yii::t($category, $message)
+        ]
+    );
+}
+
+function table_exists($tableName) {
+    return !(Yii::$app->db->getTableSchema(Yii::$app->db->tablePrefix . $tableName, true) === null);
 }

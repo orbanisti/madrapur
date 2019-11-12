@@ -1,11 +1,11 @@
 <?php
+
 namespace backend\modules\Reservations;
 
 /**
  * reservations module definition class
  */
-class Module extends \yii\base\Module
-{
+class Module extends \yii\base\Module {
     /**
      * {@inheritdoc}
      */
@@ -14,10 +14,8 @@ class Module extends \yii\base\Module
     /**
      * {@inheritdoc}
      */
-    public function init()
-    {
+    public function init() {
         parent::init();
-
         // custom initialization code goes here
     }
 }

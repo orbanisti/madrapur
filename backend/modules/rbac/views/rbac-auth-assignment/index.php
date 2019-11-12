@@ -1,47 +1,75 @@
 <?php
+
+    use kartik\grid\GridView;
 use yii\helpers\Html;
-use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Rbac Auth Assignments');
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
-<div class="rbac-auth-assignment-index">
+
+<div class="row">
+    <div class="col-12">
+        <!-- interactive chart -->
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-pen"></i>
+                    <?= Yii::t('app', 'Rbac Auth Assignments')?>
+                </h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
+
+                </div>
+            </div>
+            <div class="card-body">
+
+                <div class="rbac-auth-assignment-index">
 
 
-	<p>
-        <?php
+                    <p>
+                        <?php
 
-echo Html::a(Yii::t('app', 'Create {modelClass}', [
-            'modelClass' => 'Rbac Auth Assignment',
-        ]), [
-            'create'
-        ], [
-            'class' => 'btn btn-success'
-        ])?>
-    </p>
+                            echo Html::a(Yii::t('app', 'Create {modelClass}', [
+                                'modelClass' => 'Rbac Auth Assignment',
+                            ]), [
+                                             'create'
+                                         ], [
+                                             'class' => 'btn btn-info'
+                                         ]) ?>
+                    </p>
 
-    <?php
+                    <?php
 
-echo GridView::widget(
-            [
-                'dataProvider' => $dataProvider,
-                'columns' => [
-                    [
-                        'class' => 'yii\grid\SerialColumn'
-                    ],
+                        echo GridView::widget(
+                            [
+                                'dataProvider' => $dataProvider,
+                                'columns' => [
+                                    [
+                                        'class' => 'yii\grid\SerialColumn'
+                                    ],
 
-                    'item_name',
-                    'user_id',
-                    'created_at:datetime',
+                                    'item_name',
+                                    'user_id',
+                                    'created_at:datetime',
 
-                    [
-                        'class' => 'yii\grid\ActionColumn'
-                    ],
-                ],
-            ]);
-    ?>
+                                    [
+                                        'class' => \kartik\grid\ActionColumn::class
+                                    ],
+                                ],
+                            ]);
+                    ?>
 
+                </div>
+            </div>
+            <!-- /.card-body-->
+        </div>
+        <!-- /.card -->
+
+    </div>   
+ 
+    <!-- /.col -->
 </div>

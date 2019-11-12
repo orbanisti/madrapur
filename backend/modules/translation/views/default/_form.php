@@ -1,5 +1,6 @@
 <?php
-use yii\bootstrap\ActiveForm;
+
+use yii\bootstrap4\ActiveForm;
 use yii\helpers\Html;
 
 /**
@@ -18,24 +19,24 @@ use yii\helpers\Html;
 <?php echo $form->field($model->getModel('source'), 'message')->textInput() ?>
 
 <?php if (!$model->getModel('source')->isNewRecord) { ?>
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<h3 class="panel-title"><?php echo Yii::t('backend', 'Translations') ?></h3>
-	</div>
-	<div class="panel-body">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><?php echo Yii::t('backend', 'Translations') ?></h3>
+        </div>
+        <div class="panel-body">
             <?php
 
-foreach ($languages as $language => $name) {
-        echo $form->field($model->getModel($language), 'translation')
-            ->textInput([
-            'id' => $language . '-translation',
-            'name' => $language . '[translation]',
-        ])
-            ->label($name);
-    }
-    ?>
+            foreach ($languages as $language => $name) {
+                echo $form->field($model->getModel($language), 'translation')
+                    ->textInput([
+                        'id' => $language . '-translation',
+                        'name' => $language . '[translation]',
+                    ])
+                    ->label($name);
+            }
+            ?>
         </div>
-</div>
+    </div>
 <?php } ?>
 
 <div class="form-group">

@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\content\models\search;
 
 use common\models\ArticleCategory;
@@ -51,7 +52,7 @@ class ArticleCategorySearch extends ArticleCategory {
             'query' => $query,
         ]);
 
-        if (! ($this->load($params) && $this->validate())) {
+        if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 

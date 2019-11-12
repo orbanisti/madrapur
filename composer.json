@@ -1,5 +1,5 @@
 {
-	"name": "Aekan/madrapur",
+	"name": "aekan/madrapur",
 	"description": "madrapur",
 	"keywords": [
 		"yii2",
@@ -14,19 +14,23 @@
 			"name": "Péter Alius",
 			"email": "peter.alius92@gmail.com",
 			"homepage": "http://github.com/aekan"
+		},
+		{
+			"name": "István Orbán",
+			"email": "orbanisti94@gmail.com",
+			"homepage": "http://github.com/orbanisti"
 		}
 	],
 	"type": "project",
 	"license": "BSD-3-Clause",
 	"support": {
-		"issues": "https://github.com/Aekan/madrapur/issues?state=open",
-		"source": "https://github.com/Aekan/madrapur"
+		"issues": "https://github.com/aekan/madrapur/issues?state=open",
+		"source": "https://github.com/aekan/madrapur"
 	},
 	"require": {
 		"php": ">=7.1.0",
-		"ext-intl": "*",
+
 		"yiisoft/yii2": "^2.0.13",
-		"yiisoft/yii2-bootstrap": "^2.0.0",
 		"yiisoft/yii2-swiftmailer": "^2.0.0",
 		"yiisoft/yii2-authclient": "^2.0.0",
 		"yiisoft/yii2-jui": "^2.0.0",
@@ -40,11 +44,10 @@
 		"trntv/yii2-command-bus": "^3.0",
 		"intervention/image": "^2.1",
 		"vlucas/phpdotenv": "^2.0",
-		"npm-asset/admin-lte": "^2.0",
-		"npm-asset/font-awesome": "^4.0",
+		"npm-asset/font-awesome": "~4.7",
 		"npm-asset/html5shiv": "^3.0",
 		"npm-asset/jquery-slimscroll": "^1.3",
-		"npm-asset/flot": "^0.8@alpha",
+		"npm-asset/flot": "3.2.9",
 		"symfony/process": "^4.0",
 		"guzzlehttp/guzzle": "^6.0",
 		"alexantr/yii2-elfinder": "^1.3",
@@ -61,10 +64,11 @@
 		"kartik-v/yii2-date-range": "dev-master",
 		"kartik-v/yii2-social": "dev-master",
 		"kartik-v/yii2-mpdf": "*",
+		"kartik-v/yii2-icons": "*",
 		"kartik-v/yii2-widget-switchinput": "*",
 		"kartik-v/yii2-export": "*",
 		"kartik-v/yii2-helpers": "dev-master",
-		"kartik-v/yii2-editable": "^1.7",
+		"kartik-v/yii2-editable": "@dev",
 		"lajax/yii2-translate-manager": "1.*",
 		"yiidoc/yii2-redactor": "*",
 		"wbraganca/yii2-dynamicform": "dev-master",
@@ -74,9 +78,38 @@
 		"cranetm/yii2-json-rpc-2.0": "^1.2",
 		"philippfrenzel/yii2fullcalendar": "3.9.0",
 		"kartik-v/yii2-widget-colorinput": "^1.0",
-		"himiklab/yii2-jqgrid-widget": "^1.2"
+		"himiklab/yii2-jqgrid-widget": "^1.2",
+		"kartik-v/yii2-widget-touchspin": "dev-master",
+		"froala/yii2-froala-editor": "^2.9",
+		"2amigos/yii2-date-picker-widget": "~1.0",
+		"insolita/yii2-adminlte-widgets": "dev-master",
+		"phuml/phuml": "^1.7",
+		"loveorigami/yii2-bootstrap-toggle": "*",
+		"pelago/emogrifier": "^2.1",
+		"kartik-v/yii2-detail-view":"dev-master",
+		"kartik-v/yii2-bootstrap4-dropdown": "^1.0",
+		"kartik-v/yii2-popover-x": "@dev",
+		"insolita/yii2-migration-generator": "^3.1",
+		"2amigos/yii2-ckeditor-widget": "^2.2",
+		"schmunk42/yii2-giiant": "@stable",
+		"edofre/yii2-fullcalendar-scheduler": "V1.1.12",
+		"kartik-v/yii2-widget-activeform": "@dev",
+		"kartik-v/yii2-field-range": "*",
+		"warrence/yii2-kartikgii": "dev-master",
+		"kartik-v/yii2-widget-timepicker": "*",
+		"aryelds/yii2-sweet-alert": "dev-master",
+		"kartik-v/yii2-dynagrid": "dev-master",
+		"kartik-v/yii2-krajee-base": "dev-master",
+		"slavkovrn/yii2-chat": "^1.0",
+		"kartik-v/yii2-number": "dev-master"
+
 	},
+	"minimum-stability": "dev",
+	"prefer-stable": true,
 	"require-dev": {
+		"yiisoft/yii2": "2.*",
+		"yiisoft/yii2-bootstrap4": "~1.0.0",
+		"almasaeed2010/adminlte": "3.0.0-rc.6",
 		"yiisoft/yii2-debug": "~2.0.0",
 		"yiisoft/yii2-gii": "dev-master",
 		"yiisoft/yii2-faker": "~2.0.0",
@@ -93,17 +126,25 @@
 	},
 	"config": {
 		"process-timeout": 1800,
-		"optimize-autoloader": true
+		"optimize-autoloader": true,
+		"fxp-asset": {
+			"enabled": false
+		}
 	},
 	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/orbanisti/yii2-adminlte-widgets"
+		},
 		{
 			"type": "composer",
 			"url": "https://asset-packagist.org"
 		},
 		{
 			"type": "vcs",
-			"url":  "git@github.com:Aekan/yii2-gii.git"
+			"url":  "git@github.com:aekan/yii2-gii.git"
 		}
+
 	],
 	"archive": {
 		"exclude": [

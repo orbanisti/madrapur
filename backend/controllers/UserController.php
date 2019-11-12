@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\controllers;
 
 use backend\models\search\UserSearch;
@@ -48,6 +49,7 @@ class UserController extends Controller {
      * Displays a single User model.
      *
      * @param integer $id
+     *
      * @return mixed
      */
     public function actionView($id) {
@@ -57,9 +59,27 @@ class UserController extends Controller {
     }
 
     /**
+     * Finds the User model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     *
+     * @param integer $id
+     *
+     * @return User the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id) {
+        if (($model = User::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    /**
      *
      * @param
      *            $id
+     *
      * @return \yii\web\Response
      * @throws \yii\base\Exception
      * @throws NotFoundHttpException
@@ -69,11 +89,11 @@ class UserController extends Controller {
         $tokenModel = UserToken::create($model->getId(), UserToken::TYPE_LOGIN_PASS, 60);
 
         return $this->redirect(
-                Yii::$app->urlManagerFrontend->createAbsoluteUrl(
-                        [
-                            'user/sign-in/login-by-pass',
-                            'token' => $tokenModel->token
-                        ]));
+            Yii::$app->urlManagerFrontend->createAbsoluteUrl(
+                [
+                    'user/sign-in/login-by-pass',
+                    'token' => $tokenModel->token
+                ]));
     }
 
     /**
@@ -92,16 +112,17 @@ class UserController extends Controller {
         }
 
         return $this->render('create',
-                [
-                    'model' => $model,
-                    'roles' => ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'name')
-                ]);
+            [
+                'model' => $model,
+                'roles' => $model->getRoles()
+            ]);
     }
 
     /**
      * Updates an existing User model.
      *
      * @param integer $id
+     *
      * @return mixed
      */
     public function actionUpdate($id) {
@@ -114,10 +135,10 @@ class UserController extends Controller {
         }
 
         return $this->render('update',
-                [
-                    'model' => $model,
-                    'roles' => ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'name')
-                ]);
+            [
+                'model' => $model,
+                'roles' => $model->getRoles()
+            ]);
     }
 
     /**
@@ -125,6 +146,7 @@ class UserController extends Controller {
      * If deletion is successful, the browser will be redirected to the 'index' page.
      *
      * @param integer $id
+     *
      * @return mixed
      */
     public function actionDelete($id) {
@@ -134,21 +156,5 @@ class UserController extends Controller {
         return $this->redirect([
             'index'
         ]);
-    }
-
-    /**
-     * Finds the User model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     *
-     * @param integer $id
-     * @return User the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id) {
-        if (($model = User::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\widget\controllers;
 
 use backend\modules\widget\models\search\CarouselItemSearch;
@@ -49,11 +50,11 @@ class CarouselController extends Controller {
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
             return $this->render('index',
-                    [
-                        'searchModel' => $searchModel,
-                        'dataProvider' => $dataProvider,
-                        'model' => $widgetCarousel,
-                    ]);
+                [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                    'model' => $widgetCarousel,
+                ]);
         }
     }
 
@@ -80,25 +81,11 @@ class CarouselController extends Controller {
             ]);
         } else {
             return $this->render('update',
-                    [
-                        'model' => $widgetCarousel,
-                        'carouselItemsProvider' => $carouselItemsProvider,
-                    ]);
+                [
+                    'model' => $widgetCarousel,
+                    'carouselItemsProvider' => $carouselItemsProvider,
+                ]);
         }
-    }
-
-    /**
-     *
-     * @param integer $id
-     *
-     * @return mixed
-     */
-    public function actionDelete($id) {
-        $this->findWidget($id)->delete();
-
-        return $this->redirect([
-            'index'
-        ]);
     }
 
     /**
@@ -114,5 +101,19 @@ class CarouselController extends Controller {
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    /**
+     *
+     * @param integer $id
+     *
+     * @return mixed
+     */
+    public function actionDelete($id) {
+        $this->findWidget($id)->delete();
+
+        return $this->redirect([
+            'index'
+        ]);
     }
 }

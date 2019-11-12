@@ -1,0 +1,35 @@
+{
+  "env": "default",
+  "host": "localhost",
+  "port": "8080",
+  "publicPath": "/",
+  "assetPath": "react-bundle",
+  "jsSourcePath": "src/js",
+  "optimization": {
+    "analyzeMode": true,
+    "analyze": {
+      "port": 8888
+    }
+  },
+  "browserSync": {
+    "active": true,
+    "port": 3002
+  },
+  "html": [
+    {
+      "name": "homepage",
+      "title": "Everything is Awesome",
+      "template": "_default.html",
+      "filename": "index.html"
+    }
+  ],
+  "app": {
+    "description": "config inside 'app' will be injected to your frontend code automatically",
+    "API": "https://api.budapestrivercruise.co.uk/v1/rester/",
+    "METHODS": {
+      "GET": "GET",
+      "POST": "POST"
+    },
+    "SOURCENAME": "budapestrivercruise.co.uk"
+  }
+}

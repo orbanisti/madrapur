@@ -29,4 +29,4 @@ $this->params['breadcrumbs'][] = Yii::t('backend', 'Create');
 
 echo $this->render('_form', [
     'model' => $model,
-])?>
+]) ?>

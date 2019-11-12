@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\system\models\search;
 
 use backend\modules\system\models\SystemLog;
@@ -70,7 +71,7 @@ class SystemLogSearch extends SystemLog {
             'query' => $query,
         ]);
 
-        if (! ($this->load($params) && $this->validate())) {
+        if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 

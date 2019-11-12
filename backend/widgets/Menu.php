@@ -1,6 +1,7 @@
 <?php
 namespace backend\widgets;
 
+use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -46,7 +47,7 @@ class Menu extends \yii\widgets\Menu {
      *
      * @var string
      */
-    public $parentRightIcon = '<span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>';
+    public $parentRightIcon = '<i class="fa fa-angle-left right"></i>';
 
     /**
      *
@@ -69,10 +70,11 @@ class Menu extends \yii\widgets\Menu {
 
             return strtr($template,
                     [
+                        '{active}' => $item['active'] ? 'active' : '',
                         '{badge}' => isset($item['badge']) ? Html::tag('span',
                                 Html::tag('small', $item['badge'], $item['badgeOptions']),
                                 [
-                                    'class' => 'pull-right-container'
+                                    'class' => 'badge badge-info right'
                                 ]) : '',
                         '{icon}' => isset($item['icon']) ? $item['icon'] : '',
                         '{right-icon}' => isset($item['right-icon']) ? $item['right-icon'] : '',

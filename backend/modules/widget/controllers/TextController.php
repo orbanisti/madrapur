@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\widget\controllers;
 
 use backend\modules\widget\models\search\TextSearch;
@@ -47,11 +48,11 @@ class TextController extends Controller {
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
             return $this->render('index',
-                    [
-                        'searchModel' => $searchModel,
-                        'dataProvider' => $dataProvider,
-                        'model' => $widgetText,
-                    ]);
+                [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                    'model' => $widgetText,
+                ]);
         }
     }
 
@@ -81,20 +82,6 @@ class TextController extends Controller {
      *
      * @param integer $id
      *
-     * @return mixed
-     */
-    public function actionDelete($id) {
-        $this->findWidget($id)->delete();
-
-        return $this->redirect([
-            'index'
-        ]);
-    }
-
-    /**
-     *
-     * @param integer $id
-     *
      * @return WidgetText the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -104,5 +91,19 @@ class TextController extends Controller {
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    /**
+     *
+     * @param integer $id
+     *
+     * @return mixed
+     */
+    public function actionDelete($id) {
+        $this->findWidget($id)->delete();
+
+        return $this->redirect([
+            'index'
+        ]);
     }
 }

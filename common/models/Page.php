@@ -1,11 +1,11 @@
 <?php
 namespace common\models;
 
+use backend\modules\MadActiveRecord\models\MadActiveRecord;
 use common\models\query\PageQuery;
 use Yii;
 use yii\behaviors\SluggableBehavior;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "page".
@@ -14,12 +14,11 @@ use yii\db\ActiveRecord;
  * @property string $slug
  * @property string $title
  * @property string $body
- * @property string $view
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
  */
-class Page extends ActiveRecord {
+class Page extends MadActiveRecord {
 
     const STATUS_DRAFT = 0;
 
@@ -30,7 +29,7 @@ class Page extends ActiveRecord {
      * @inheritdoc
      */
     public static function tableName() {
-        return '{{%page}}';
+        return 'page';
     }
 
     /**
@@ -76,14 +75,35 @@ class Page extends ActiveRecord {
         return [
             [
                 [
-                    'title',
-                    'body'
+                    'title'
                 ],
                 'required'
             ],
             [
                 [
-                    'body'
+                    'body',
+
+                    'meta:name:description',
+                    'meta:name:keywords',
+                    'meta:name:alternate',
+                    'meta:name:canonical',
+                    'meta:name:author',
+                    'meta:name:news_keywords',
+
+                    'meta:property:fb:pages',
+                    'meta:property:og:type',
+                    'meta:property:og:url',
+                    'meta:property:og:title',
+                    'meta:property:og:site_name',
+                    'meta:property:og:locale',
+                    'meta:property:og:updated_time',
+                    'meta:property:og:description',
+                    'meta:property:og:image:alt',
+                    'meta:property:og:image',
+                    'meta:property:article:publisher',
+
+                    'meta:property:m:publication_local',
+                    'meta:property:m:publication',
                 ],
                 'string'
             ],
@@ -113,13 +133,6 @@ class Page extends ActiveRecord {
                 'string',
                 'max' => 512
             ],
-            [
-                [
-                    'view'
-                ],
-                'string',
-                'max' => 255
-            ]
         ];
     }
 

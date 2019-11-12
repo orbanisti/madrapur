@@ -1,9 +1,9 @@
 # Env
 /.env
-
 # Composer
 /vendor
 composer.phar
+/frontend
 
 # JS
 node_modules
@@ -32,3 +32,5 @@ phpunit.phar
 
 # Tests
 tests/codeception/*/_support/_generated/*
+tmp-*.html
+backend/web/react-bundle/*

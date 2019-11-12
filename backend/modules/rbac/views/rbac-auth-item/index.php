@@ -1,7 +1,9 @@
 <?php
+
 use common\grid\EnumColumn;
-use yii\helpers\Html;
-use yii\grid\GridView;
+
+    use kartik\grid\GridView;
+    use yii\helpers\Html;
 use yii\rbac\Item;
 
 /* @var $this yii\web\View */
@@ -9,43 +11,44 @@ use yii\rbac\Item;
 
 $this->title = Yii::t('frontend', 'Rbac Auth Items');
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="rbac-auth-item-index">
 
-	<h1><?php echo Html::encode($this->title) ?></h1>
+    <h1><?php echo Html::encode($this->title) ?></h1>
 
-	<p>
+    <p>
         <?php echo Html::a(Yii::t('frontend', 'Create Rbac Auth Item'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?php
 
-echo GridView::widget(
-            [
-                'dataProvider' => $dataProvider,
-                'columns' => [
-                    [
-                        'class' => 'yii\grid\SerialColumn'
-                    ],
-
-                    'name',
-                    [
-                        'class' => EnumColumn::class,
-                        'attribute' => 'type',
-                        'enum' => [
-                            Item::TYPE_ROLE => 'role',
-                            Item::TYPE_PERMISSION => 'permission',
-                        ]
-                    ],
-                    'description:ntext',
-                    'rule_name',
-                    'data',
-                    // 'created_at',
-                    // 'updated_at',
-
-                    [
-                        'class' => 'yii\grid\ActionColumn'
-                    ],
+    echo GridView::widget(
+        [
+            'dataProvider' => $dataProvider,
+            'columns' => [
+                [
+                    'class' => 'yii\grid\SerialColumn'
                 ],
-            ]);
+
+                'name',
+                [
+                    'class' => EnumColumn::class,
+                    'attribute' => 'type',
+                    'enum' => [
+                        Item::TYPE_ROLE => 'role',
+                        Item::TYPE_PERMISSION => 'permission',
+                    ]
+                ],
+                'description:ntext',
+                'rule_name',
+                'data',
+                // 'created_at',
+                // 'updated_at',
+
+                [
+                    'class' => \kartik\grid\ActionColumn::class
+                ],
+            ],
+        ]);
     ?>
 </div>

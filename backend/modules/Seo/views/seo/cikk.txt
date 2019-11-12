@@ -1,0 +1,5 @@
+﻿Codota promises to provide you with the right suggestion at the right time. Codota supports IntelliJ IDEA, Android Studio, and Eclipse and provides autocompletion for Java and Kotlin.
+
+In contrast with the above solutions, it requires to keep you an open internet connection so that the plugin can communicate with Codota’s cloud to find the suggestions (only the minimal contextual information is sent).
+
+A nice feature is that you can benefit from Codota even if you don’t have the plugin installed. Codota’s website allows you to search for code snippets from the web interface itself. See below what I got when trying to find examples using the BufferedReader class. Once you get the first set of results, you can refine the search to improve the accuracy. In this example, if I refine the search to look for examples that beyond BufferedReader use the readLine method from BufferedReader, I do get a nice example of iterating over a file

@@ -1,12 +1,13 @@
 <?php
+
 namespace backend\modules\rbac\controllers;
 
-use Yii;
 use backend\modules\rbac\models\RbacAuthItemChild;
+use Yii;
 use yii\data\ActiveDataProvider;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * RbacAuthItemChildController implements the CRUD actions for RbacAuthItemChild model.
@@ -50,12 +51,34 @@ class RbacAuthItemChildController extends Controller {
      *
      * @param string $parent
      * @param string $child
+     *
      * @return mixed
      */
     public function actionView($parent, $child) {
         return $this->render('view', [
             'model' => $this->findModel($parent, $child),
         ]);
+    }
+
+    /**
+     * Finds the RbacAuthItemChild model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     *
+     * @param string $parent
+     * @param string $child
+     *
+     * @return RbacAuthItemChild the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($parent, $child) {
+        if (($model = RbacAuthItemChild::findOne([
+                'parent' => $parent,
+                'child' => $child
+            ])) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
     }
 
     /**
@@ -86,6 +109,7 @@ class RbacAuthItemChildController extends Controller {
      *
      * @param string $parent
      * @param string $child
+     *
      * @return mixed
      */
     public function actionUpdate($parent, $child) {
@@ -110,6 +134,7 @@ class RbacAuthItemChildController extends Controller {
      *
      * @param string $parent
      * @param string $child
+     *
      * @return mixed
      */
     public function actionDelete($parent, $child) {
@@ -118,25 +143,5 @@ class RbacAuthItemChildController extends Controller {
         return $this->redirect([
             'index'
         ]);
-    }
-
-    /**
-     * Finds the RbacAuthItemChild model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     *
-     * @param string $parent
-     * @param string $child
-     * @return RbacAuthItemChild the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($parent, $child) {
-        if (($model = RbacAuthItemChild::findOne([
-            'parent' => $parent,
-            'child' => $child
-        ])) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
     }
 }

@@ -1,12 +1,13 @@
 <?php
+
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\rbac\models\RbacAuthRule */
 
 $this->title = Yii::t('frontend', 'Update {modelClass}: ', [
-    'modelClass' => 'Rbac Auth Rule',
-]) . $model->name;
+        'modelClass' => 'Rbac Auth Rule',
+    ]) . $model->name;
 $this->params['breadcrumbs'][] = [
     'label' => Yii::t('frontend', 'Rbac Auth Rules'),
     'url' => [
@@ -24,12 +25,12 @@ $this->params['breadcrumbs'][] = Yii::t('frontend', 'Update');
 ?>
 <div class="rbac-auth-rule-update">
 
-	<h1><?php echo Html::encode($this->title) ?></h1>
+    <h1><?php echo Html::encode($this->title) ?></h1>
 
     <?php
 
-echo $this->render('_form', [
+    echo $this->render('_form', [
         'model' => $model,
-    ])?>
+    ]) ?>
 
 </div>

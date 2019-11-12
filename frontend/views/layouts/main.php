@@ -6,7 +6,7 @@ use yii\widgets\Breadcrumbs;
 /* @var $content string */
 
 $this->beginContent('@frontend/views/layouts/base.php')?>
-<div class="container">
+
 
         <?php
 
@@ -33,5 +33,5 @@ echo \common\widgets\DbText::widget([
 
         <?php echo $content ?>
 
-    </div>
+
 <?php $this->endContent() ?>

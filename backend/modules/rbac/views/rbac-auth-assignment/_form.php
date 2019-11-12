@@ -1,6 +1,7 @@
 <?php
+
+use yii\bootstrap4\ActiveForm;
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\rbac\models\RbacAuthAssignment */
@@ -20,7 +21,7 @@ use yii\bootstrap\ActiveForm;
     <?php echo $form->field($model, 'created_at')->textInput() ?>
 
     <div class="form-group">
-        <?php echo Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?php echo Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-info' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end() ?>

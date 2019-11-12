@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\content\models\search;
 
 use common\models\Article;
@@ -67,7 +68,7 @@ class ArticleSearch extends Article {
      *
      * @param
      *            $params
-     *            
+     *
      * @return ActiveDataProvider
      */
     public function search($params) {
@@ -77,19 +78,19 @@ class ArticleSearch extends Article {
             'query' => $query,
         ]);
 
-        if (! ($this->load($params) && $this->validate())) {
+        if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 
         $query->andFilterWhere(
-                [
-                    'id' => $this->id,
-                    'slug' => $this->slug,
-                    'created_by' => $this->created_by,
-                    'category_id' => $this->category_id,
-                    'updated_by' => $this->updated_by,
-                    'status' => $this->status,
-                ]);
+            [
+                'id' => $this->id,
+                'slug' => $this->slug,
+                'created_by' => $this->created_by,
+                'category_id' => $this->category_id,
+                'updated_by' => $this->updated_by,
+                'status' => $this->status,
+            ]);
 
         if ($this->published_at !== null) {
             $query->andFilterWhere([
@@ -124,15 +125,15 @@ class ArticleSearch extends Article {
             $this->slug
         ])
             ->andFilterWhere([
-            'like',
-            'title',
-            $this->title
-        ])
+                'like',
+                'title',
+                $this->title
+            ])
             ->andFilterWhere([
-            'like',
-            'body',
-            $this->body
-        ]);
+                'like',
+                'body',
+                $this->body
+            ]);
 
         return $dataProvider;
     }

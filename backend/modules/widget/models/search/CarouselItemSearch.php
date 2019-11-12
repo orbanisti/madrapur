@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\modules\widget\models\search;
 
 use common\models\WidgetCarouselItem;
@@ -59,17 +60,17 @@ class CarouselItemSearch extends WidgetCarouselItem {
             'query' => $query,
         ]);
 
-        if (! ($this->load($params) && $this->validate())) {
+        if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 
         $query->andFilterWhere(
-                [
-                    'id' => $this->id,
-                    'carousel_id' => $this->carousel_id,
-                    'status' => $this->status,
-                    'order' => $this->order,
-                ]);
+            [
+                'id' => $this->id,
+                'carousel_id' => $this->carousel_id,
+                'status' => $this->status,
+                'order' => $this->order,
+            ]);
 
         $query->andFilterWhere([
             'like',
@@ -77,15 +78,15 @@ class CarouselItemSearch extends WidgetCarouselItem {
             $this->path
         ])
             ->andFilterWhere([
-            'like',
-            'url',
-            $this->url
-        ])
+                'like',
+                'url',
+                $this->url
+            ])
             ->andFilterWhere([
-            'like',
-            'caption',
-            $this->caption
-        ]);
+                'like',
+                'caption',
+                $this->caption
+            ]);
 
         return $dataProvider;
     }

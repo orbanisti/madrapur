@@ -1,0 +1,52 @@
+SimplePay PHP SDK
+
+1.0 
+2016.03.31.
+----------
+Eredeti kiadás
+
+1.0.1 
+2016.05.06.
+----------
+Hibajavítások
+	OneClick logolási hiba javítása
+	
+1.0.2 
+2016.07.05.
+----------
+Funkciók
+	Logo csere: Simple -> SimplePay
+
+1.0.3 
+2016.11.08.
+----------
+Funkciók
+	Backref RT ellenőrzés kibővítése
+	
+1.0.4 
+2017.04.06.
+----------
+Funkciók
+	Logolás optimalizálása
+	
+1.0.5 
+2017.08.25.
+----------
+Funkciók
+	IPN fogadás ellenőrzése a log alapján
+
+1.0.6 
+2017.10.31.
+----------
+Funkciók
+	Logo csere
+	
+Hibajavítások
+	Nogui csomag ios.php szintaktikai hiba javítása
+
+1.0.7 
+2017.12.07.
+----------
+Funkciók
+	Új használható devizanemek: PLN, CZK, HRK, RSD, BGN, RON, GBP
+	Fizetőoldal nyelvének kiválasztása a demo felületen

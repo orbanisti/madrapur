@@ -20,18 +20,14 @@ class FrontendAsset extends AssetBundle {
      *
      * @var string
      */
-    public $sourcePath = '@frontend/web/react-bundle';
+    public $sourcePath = '@frontend/web/bundle';
 
     /**
      *
      * @var array
      */
     public $css = [
-        'app-style.css',
-        '1-style.css',
-        '2-style.css',
-        '3-style.css',
-        '4-style.css',
+        'style.css',
     ];
 
     /**
@@ -39,16 +35,17 @@ class FrontendAsset extends AssetBundle {
      * @var array
      */
     public $js = [
-        'app-script.js',
-        '1-script.js',
-        '2-script.js',
-        '3-script.js',
-        '4-script.js'
+        'app.js',
     ];
 
     /**
      *
      * @var array
      */
-    public $depends = [];
+    public $depends = [
+        YiiAsset::class,
+        BootstrapAsset::class,
+        Html5shiv::class,
+
+    ];
 }
