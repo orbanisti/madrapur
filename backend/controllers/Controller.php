@@ -36,6 +36,7 @@ class Controller extends \yii\web\Controller {
             'http://api.modulus.hu',
             'http://backend.modulus.hu',
             'http://frontend.modulus.hu',
+            'https://frontend.modulus.hu',
             'http://budapestrivercruise.co.uk',
             'http://api.budapestrivercruise.co.uk',
             'http://backend.budapestrivercruise.co.uk',

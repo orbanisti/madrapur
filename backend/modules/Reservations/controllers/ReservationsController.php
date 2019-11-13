@@ -672,6 +672,9 @@
          * @return string
          * @throws ForbiddenHttpException
          */
+
+
+
         public function actionAdmin() {
             if (!Yii::$app->user->can(Reservations::ACCESS_BOOKINGS_ADMIN)) {
                 throw new ForbiddenHttpException('userCan\'t');
