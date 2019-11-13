@@ -35,13 +35,13 @@
      * ReservationsController implements the CRUD actions for ReservationsModel.
      */
     class ReservationsController extends Controller {
-
         /**
          * @param bool $id
          *
          * @return string
          * @throws ForbiddenHttpException
          */
+
         public function actionCreateReact($id = false) {
             if (!Yii::$app->user->can(Reservations::CREATE_BOOKING)) {
                 throw new ForbiddenHttpException('userCan\'t');
@@ -1288,26 +1288,11 @@
                          ]
             );
         }
-        public function actionCreatefortime() {
-            if (!Yii::$app->user->can(Reservations::CREATE_BOOKING)) {
-                throw new ForbiddenHttpException('userCan\'t');
-            }
-            $ticketBlock = TicketBlockSearchModel::aSelect(TicketBlockSearchModel::class, '*', TicketBlockSearchModel::tableName(), 'assignedTo = ' . Yii::$app->user->id . ' AND isActive IS TRUE')->one();
-            if(!$ticketBlock){
-                sessionSetFlashAlert('danger','Oops, you\'ll need a Ticket Block first ');
-                return $this->redirect('/Dashboard/dashboard/admin');
-            }
+
+        public function actionCreateframe() {
 
 
 
-            $block = TicketBlockSearchModel::find()
-                ->andFilterWhere(['=', 'assignedTo', Yii::$app->user->id])
-                ->andWhere('isActive IS TRUE')
-                ->one();
-            if (!$block && !Yii::$app->user->can('administrator')) {
-
-                throw new ForbiddenHttpException('Sorry you dont have an active Ticket Block');
-            }
 
             $allProduct = Product::getAllProducts();
 
@@ -1391,8 +1376,6 @@
                     $source = 'Hotel';
                 }
 
-                $ticketBlock = TicketBlockSearchModel::aSelect(TicketBlockSearchModel::class, '*', TicketBlockSearchModel::tableName(), 'assignedTo = ' . Yii::$app->user->id . ' AND isActive IS TRUE')->one();
-                $ticket = TicketSearchModel::useTable('modulus_tb_' . $ticketBlock->returnStartId())::findOne(['reservationId' => null, 'status' => 'open']);
 
                 $firstName = '';
                 $lastName = '';
@@ -1407,16 +1390,20 @@
                     $orderNote = Yii::$app->request->post('orderNote');
                 }
 
-                if ($oldTicket = Yii::$app->request->post('ticketId')) {
-                    $ticketId = $oldTicket;
-                } else {
-                    $ticketId = $ticket->ticketId;
+                try{
+                    $workshiftId = isset(Modevent::userCurrentWorkshift()->id) ?
+                        Modevent::userCurrentWorkshift()
+                            ->id :
+                        null;
+
+                }catch (\Exception $exception){
+
+                    $workshiftId=null;
                 }
 
-                $workshiftId = isset(Modevent::userCurrentWorkshift()->id) ?
-                    Modevent::userCurrentWorkshift()
-                        ->id :
-                    null;
+                $ticketId="1337";
+
+                $currentUsername= isset(Yii::$app->user->identity->username)? Yii::$app->user->identity->username:null;
 
                 $values = [
                     'booking_cost' => $productPrice["discount"],
@@ -1429,7 +1416,7 @@
                     'bookingId' => 'tmpMad1',
                     'data' => json_encode($data),
                     'sellerId' => Yii::$app->user->getId(),
-                    'sellerName' => Yii::$app->user->identity->username,
+                    'sellerName' => $currentUsername,
                     'ticketId' => $ticketId,
                     'status' => $paid_status,
                     'paidMethod' => $paid_status == 'paid' ? $paid_method : null,
@@ -1512,29 +1499,7 @@
                         )
                     );
 
-                    if ($oldTicket) {
-                        Yii::$app->commandBus->handle(
-                            new AddOldTicketToReservationCommand(
-                                [
-                                    'sellerId' => Yii::$app->user->getId(),
-                                    'timestamp' => time(),
-                                    'bookingId' => $booking->id,
-                                    'ticketId' => $oldTicket
-                                ]
-                            )
-                        );
-                    } else {
-                        Yii::$app->commandBus->handle(
-                            new AddTicketToReservationCommand(
-                                [
-                                    'block'=>$block,
-                                    'sellerId' => Yii::$app->user->getId(),
-                                    'timestamp' => time(),
-                                    'bookingId' => $booking->id,
-                                ]
-                            )
-                        );
-                    }
+
 //                    Yii::$app->commandBus->handle(
 //                        new SendEmailCommand(
 //                            [
@@ -1557,26 +1522,29 @@
 
             if (Yii::$app->request->isAjax) {
                 if(Yii::$app->request->get('_pjax')=='#grid-pjax'){
-                    return $this->redirect('create2');
+                    return $this->redirect('createframe');
                 }
 
+                $model=new Product();
+
+
+
                 return $this->renderAjax(
-                    'createfortime', [
-                                 'model' => new Product(),
+                    'createframe', [
+                                 'model' => $model,
                                  'allMyProducts' => Product::getStreetProducts(),
                                  'disableForm' => $disableForm,
                                  'myPrices' => $myPrices,
                                  'countPrices' => $countPrices,
                                  'newReservation' => $updateResponse,
-                                 'subView' => $this->renderPartial('assingui', ['model' => new Reservations()]),
-
+                                 'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
                              ]
                 );
             }
             if(isset($oldTicket) && $oldTicket) return $this->redirect('dayover');
 
             return $this->render(
-                'create2', [
+                'createframe', [
                              'model' => new Product(),
                              'disableForm' => $disableForm,
                              'myPrices' => $myPrices,

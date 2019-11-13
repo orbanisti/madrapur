@@ -16,7 +16,7 @@
             'enableLoginByPass' => false,
         ],
         'Reservations' => [
-            'class' => backend\modules\Reservations\Module::class,
+            'class' => frontend\modules\Reservations\Module::class,
         ],
     ],
     'components' => [
