@@ -2125,6 +2125,7 @@
                         foreach ($myprices as $remotePrice) {
 
                             if ($remotePrice->id == $priceId) {
+                                $currentPrice=$remotePrice->price;
                                 if ($postedCurrency == 'HUF') {
                                     $remotePrice = ProductPrice::eurtohuf($remotePrice);
                                     $currentPrice = (int)$remotePrice->hufPrice ? (int)$remotePrice->hufPrice: (int)
