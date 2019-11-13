@@ -1543,7 +1543,7 @@
             }
             if(isset($oldTicket) && $oldTicket) return $this->redirect('dayover');
 
-            return $this->render(
+            return $this->renderAjax(
                 'createframe', [
                              'model' => new Product(),
                              'disableForm' => $disableForm,
@@ -1557,7 +1557,7 @@
         }
 
 
-        
+
 
         public function actionCreate3() {
 
