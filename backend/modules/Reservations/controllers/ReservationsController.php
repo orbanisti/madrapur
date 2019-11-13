@@ -2127,9 +2127,10 @@
                             if ($remotePrice->id == $priceId) {
                                 if ($postedCurrency == 'HUF') {
                                     $remotePrice = ProductPrice::eurtohuf($remotePrice);
+                                    $currentPrice = (int)$remotePrice->hufPrice ? (int)$remotePrice->hufPrice: (int)
+                                    $remotePrice->price;
+
                                 }
-                                $currentPrice = (int)$remotePrice->hufPrice ? (int)$remotePrice->hufPrice: (int)
-                                $remotePrice->price;
                                 (int)$fullTotal += (int)($currentPrice * $priceAmount);
                                 Yii::error($fullTotal, 'myprices');
                             }

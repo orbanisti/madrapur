@@ -80,7 +80,7 @@ use kartik\helpers\Html;
 
                             <?= $form->field($model, "start_date")->widget(
                                 DatePicker::class, [
-                                'type' => DatePicker::TYPE_INLINE
+                                'type' => DatePicker::TYPE_COMPONENT_PREPEND
                                 , 'options' => [
                                 'value' => date('Y-m-d', time()),
                                 'class' => 'bg-gradient-primary '
