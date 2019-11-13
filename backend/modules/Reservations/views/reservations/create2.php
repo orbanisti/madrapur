@@ -184,7 +184,7 @@ use kartik\helpers\Html;
 
                             <div id="myTimes"></div>
                             <div id="myPrices"></div>
-                            <?= Html::submitButton('Create Reservation', ['class' => 'create btn btn-block bg-aqua btn-lg btn-primary prodUpdateBtn']) ?>
+                            <?= Html::submitButton('Create Reservation', ['class' => 'create btn btn-block bg-aqua btn-lg btn-primary prodUpdateBtn', 'disabled' => true]) ?>
 
 
                             <?php ActiveForm::end();
@@ -441,19 +441,20 @@ use kartik\helpers\Html;
                                     <!-- /.box-body -->
                                 </div>
                                 <div class="col-lg-12">
-                                       <div class="small-box bg-gradient-primary">
-                                                                                       <div class="inner">
-                                                                                           <h4><div id="total_price">0</div></h4>
+                                    <?= \insolita\adminlte3\LteInfoBox::widget([
 
-                                                                                           <p><?= 'Total Price' . ' <strong>(' . $paid_currency . ')</strong>'; ?></p>
-                                                                                       </div>
-                                                                                       <div class="icon">
-                                                                                           <i class="fas fa-boxes  "></i>
-                                                                                       </div>
+                                                                                   'bgColor' => 'white',
+                                                                                   'number' => "<h4><div id=\"total_price\">0</div></h4>",
+                                                                                   'text' => 'Total Price' . ' <strong>(' . $paid_currency . ')</strong>',
+                                                                                   //                        'description'=>'asd',
+                                                                                   'icon' => 'fa fa-cart-plus',
+                                                                                   'showProgress' => true,
+                                                                                   'progressNumber' => 100,
 
-                                                                                   </div>
 
-                                </div>
+                                                                               ]);
+                                    ?>
+                                </div>'
                             </div>
 
 
@@ -547,8 +548,16 @@ SCRIPT;
 
     $().ready(() => {
 
+        $('#product-times').change(function () {
+            var timeVal = $('#product-times').val();
 
-
+            if (timeVal != 'Please select a time') {
+                $('.create').prop("disabled", false);
+            }
+            else {
+                $('.create').prop("disabled", true);
+            }
+        });
 
 
 
@@ -569,7 +578,10 @@ SCRIPT;
                 mytimes.forEach(myFunction)
 
 
+
             }
+
+
         });
         $.ajax({
             url: '<?php echo Yii::$app->request->baseUrl . '/Reservations/reservations/getprices' ?>',
@@ -647,20 +659,9 @@ SCRIPT;
                 addOns: gatherAddOns(),
             },
             success: function (data) {
-                console.log(data.buttonEnable);
 
-                if(data.buttonEnable=='false'){
-                    $('.create').prop( "disabled", true );
-                }
-                else{
-                    $('.create').prop( "disabled", false );
-
-
-                }
 
                 mytimes = data.search;
-                console.log('asd');
-
 
                 if(data.customPrice){
 
