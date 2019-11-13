@@ -3,7 +3,7 @@
 # Composer
 /vendor
 composer.phar
-/frontend
+
 
 # JS
 node_modules
