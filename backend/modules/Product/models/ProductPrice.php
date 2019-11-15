@@ -61,6 +61,8 @@ class ProductPrice extends MadActiveRecord {
     }
 
 
+
+
     public static function eurtohufValue($price){
         $hufprice=$price*(int)Yii::$app->keyStorage->get('currency.huf-value');
         return $hufprice;

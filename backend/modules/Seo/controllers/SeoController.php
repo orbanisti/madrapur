@@ -4,6 +4,7 @@ namespace backend\modules\Seo\controllers;
 
 use backend\modules\content\models\search\ArticleSearch;
 use backend\modules\Seo\models\Seo;
+use backend\modules\Seo\models\Seoproject;
 use common\models\Article;
 use common\models\ArticleCategory;
 use Yii;
@@ -31,6 +32,24 @@ class SeoController extends Controller {
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionProjects(){
+
+        $newProject=new Seoproject();
+        if($newProject->load(Yii::$app->request->post()) && $newProject->save()){
+         sessionSetFlashAlert('success','Project successfully created');
+         return $this->redirect('projects');
+
+        }
+
+
+        return $this->render('projects');
+    }
+
+    public function actionProject(){
+
+        return $this->render('project');
     }
     
     /**

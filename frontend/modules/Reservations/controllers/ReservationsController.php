@@ -1543,7 +1543,7 @@
             }
             if(isset($oldTicket) && $oldTicket) return $this->redirect('dayover');
 
-            return $this->renderAjax(
+            return $this->render(
                 'createframe', [
                              'model' => new Product(),
                              'disableForm' => $disableForm,
@@ -1555,7 +1555,20 @@
                          ]
             );
         }
+        public function actionRemotebook(){
 
+            $model=new Reservations();
+
+
+            if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())){
+                return $this->renderAjax('remotebookstep2',[
+                    'model'=>$model
+                ]);
+            }
+
+            return $this->render('remotebook');
+
+        }
 
 
 
@@ -1808,6 +1821,24 @@
                 return [
                     'search' => $mytimes,
                 ];
+            }
+            return [];
+        }
+        public function actionGettimesarray() {
+            if (Yii::$app->request->isAjax) {
+                $id = Yii::$app->request->get('id');
+
+                $query = ProductTime::aSelect(ProductTime::class, '*', ProductTime::tableName(), 'product_id=' . $id);
+                $mytimes = $query->all();
+                \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                $allmytimes=ArrayHelper::map($mytimes,'name','name');
+                foreach($allmytimes as $time){
+
+                    $out[]=['id'=>$time,'name'=>$time];
+                }
+
+
+                return  ['output'=>$out,'selected'=>$out[0]];
             }
             return [];
         }
@@ -2095,9 +2126,6 @@
             );
         }
 
-        /**
-         * @return array
-         */
         public function actionCalcprice() {
             if (Yii::$app->request->isAjax) {
 
@@ -2151,6 +2179,153 @@
                     return [
                         'search' => $fullTotal,
                         'customPrice' => (int)$postedCustomPrice,
+                        'response' => 'price'
+                    ];
+                } else {
+                    if (isset($data['date']) && isset($data['time'])) {
+                        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+                        $currID = $data['productId'];
+                        $currDate = $data['date'];
+                        $currTime = $data['time'];
+                        $reservationModel = new Reservations();
+
+                        $sources = ProductSource::getProductSourceIds($currID);
+                        $currentProduct = Product::getProdById($currID);
+                        $availableChairs = $currentProduct->capacity - $reservationModel->countTakenChairsOnDayTime($currDate, $sources, $currTime);
+                        $progressBarlenght = round($availableChairs, -1);
+
+                        $StreetHeader = "<span class=\"info-box-text\">Available places left:</span>
+<span class=\"info-box-number\">$availableChairs</span>";
+
+                        $NoPacesLeftHeader = "<span class=\"info-box-text\">Sorry, this spot is full</span>
+<span class=\"info-box-number\"></span>";
+
+
+
+                        $capPercentage = round($availableChairs * 0.9, -1);
+                        $HotelHeader = "<span class=\"info-box-text\">Remaining capacity:</span>
+<span class=\"info-box-number\">$capPercentage+ </span>";
+
+                        if (Yii::$app->user->can('hotelEditor')) {
+                            $BoxInfo = $HotelHeader;
+                        } else {
+                            if (Yii::$app->user->can('streetSeller')) {
+                                $BoxInfo = $StreetHeader;
+                            } else {
+
+                                $BoxInfo = $HotelHeader;
+                            }
+                        }
+
+                        $capcolor = 'bg-blue';
+                        if ($availableChairs < ($currentProduct->capacity) * 25 / 100) {
+                            $capcolor = 'bg-red';
+                        }
+                        if ($availableChairs > ($currentProduct->capacity) * 45 / 100) {
+                            $capcolor = 'bg-yellow';
+                        }
+                        if ($availableChairs > ($currentProduct->capacity) * 65 / 100) {
+                            $capcolor = 'bg-blue';
+                        }
+                        $buttonEnable='true';
+                        if($availableChairs <= 0){
+                            $capcolor ='bg-dark';
+                            $BoxInfo=$NoPacesLeftHeader;
+                            $buttonEnable='false';
+                        }
+
+                        $AvailableSpacesHtml = "
+<div class=\"info-box $capcolor\">
+
+<span class=\"info-box-icon\"><i class=\"fa fa-clock\"></i></span>
+
+<div class=\"info-box-content\">
+    " . $BoxInfo . "
+
+    <div class=\"progress\">
+        <div class=\"progress-bar\" style=\"width:$progressBarlenght%\"></div>
+    </div>
+    <span class=\"progress-description\">
+                    for <strong>$currTime</strong>
+                 </span>
+</div>
+<!-- /.info-box-content -->
+</div>";
+
+
+                        return [
+                            'search' => "$AvailableSpacesHtml",
+                            'response' => 'places',
+                            'buttonEnable'=>"$buttonEnable"
+
+                        ];
+                    }
+                }
+            }
+            return [];
+        }
+
+
+        /**
+         * @return array
+         */
+        public function actionCalcpriceremote() {
+            if (Yii::$app->request->isAjax) {
+
+                $data = Yii::$app->request->post();
+                if (isset($data['prices'])) {
+
+                    $currID = $data['prodid'];
+
+                    $query = ProductPrice::aSelect(ProductPrice::class, '*', ProductPrice::tableName(), 'product_id=' . $currID);
+
+                    $myprices = $query->all();
+
+                    Yii::error($data);
+
+                    $postedCurrency = 'EUR';//TODO change this
+
+                    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                    $productsBought = [];
+                    foreach ($data['prices'] as $priceId => $price) {
+                        if ($price) {
+                            $productsBought[$priceId] = $price;
+                        }
+                    }
+
+                    Yii::error($productsBought);
+                    Yii::error($myprices);
+
+                    $fullTotal = 0;
+
+                    $c = 0;
+                    foreach ($productsBought as $priceId => $priceAmount) {
+
+                        foreach ($myprices as $remotePrice) {
+
+                            if ($remotePrice->id == $priceId) {
+                                if ($postedCurrency == 'HUF') {
+                                    $remotePrice = ProductPrice::eurtohuf($remotePrice);
+                                }
+                                $currentPrice = (int)$remotePrice->price;
+                                (int)$fullTotal += (int)($currentPrice * $priceAmount);
+                                Yii::error($fullTotal, 'myprices');
+                            }
+                        }
+
+                        $c += $priceAmount;
+                    }
+
+                    if (isset($data['addOns'])) {
+                        foreach ($data['addOns'] as $addOnId => $addOnPrice) {
+                            $fullTotal += $addOnPrice * $c;
+                        }
+                    }
+
+                    Yii::warning($fullTotal);
+                    return [
+                        'search' => $fullTotal,
                         'response' => 'price'
                     ];
                 } else {

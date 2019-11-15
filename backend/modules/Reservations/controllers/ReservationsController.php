@@ -249,6 +249,33 @@
 
                     ]
                 );
+                $userGrid = \kartik\grid\GridView::widget(
+                    [
+                        'dataProvider' => $userDataProvider,
+                        'columns' => $gridColumns,
+                        'pjax' => false,
+                        'layout' => '{items}',
+                        'toolbar' => [
+                            [
+
+                                'options' => ['class' => 'btn-group mr-2']
+                            ],
+                            '{export}',
+                            '{toggleData}',
+                        ],
+                        'panel'=>[
+                            'heading'=>$today,
+
+                        ],
+                        'toggleDataContainer' => ['class' => 'btn-group mr-2'],
+                        // set export properties
+                        'export' => [
+                            'fontAwesome' => true,
+
+                        ],
+
+                    ]
+                );
 
                 if ($user->hasRole('streetSeller')) {
 
