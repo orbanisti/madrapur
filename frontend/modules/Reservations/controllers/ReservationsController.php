@@ -1581,7 +1581,7 @@
                 ]);
             }
 
-            return $this->render('remotebook');
+            return $this->renderAjax('remotebook');
 
         }
 
