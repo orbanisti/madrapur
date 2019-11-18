@@ -54,7 +54,16 @@
                 ], 'currency.USD-value' => [
                     'label' => Yii::t('backend', 'Value of 1 EUR in USD'),
 
-                ],];
+                ],
+                     'paypal.email' => [
+                         'label' => Yii::t('backend', 'This is the Email where Paypal may be sent'),
+
+                     ],
+                     'simplePay.eur' => [
+                         'label' => Yii::t('backend', 'This is the Id of EUR Simplepay merchant'),
+
+                     ],
+                    ];
                 $allOptions;
                 foreach ($adminOptions as $key => $option) {
                     $allOptions['keys'][$key] = $option;

@@ -14,7 +14,101 @@ use yii\filters\VerbFilter;
  * Controller for the `Payment` module
  */
 class PaymentController extends Controller {
+
+
     public static function actionPay($ids) {
+        $reservations = Reservations::getReservationsByIds($ids);
+        error_reporting(E_ALL | E_STRICT);
+        ini_set('display_errors', '1');
+        require_once(OTP . 'sdk/config.php');
+        require_once(OTP . 'sdk/SimplePayment.class.php');
+
+
+
+//        $cur = ($orderData->orderDetails->order_currency === 'EUR' || $orderData->orderDetails->order_currency === 'HUF') ? $orderData->orderDetails->order_currency : 'EUR';
+        $orderCurrency = 'EUR';
+
+        $lu = new \SimpleLiveUpdate($config, $orderCurrency);
+
+        $simpleLang = (Yii::$app->language === "hu-HU") ? 'HU' : 'EN';
+        $lu->setField("LANGUAGE", $simpleLang);
+
+        /*
+        if(!empty($reservations->coupon)) { // ha van kupon megadva, akkor kiszámoljuk a kedvezmény értékét
+            $discount=($reservations->orderedproductsprice-$reservations->totalprice);
+            $discount=($reservations->currency=='HUF')?((int)$discount):(number_format($discount, 2, '.', '')); // valutánként más formátum kell
+            $lu->setField("DISCOUNT", $discount);
+        }
+        */
+
+        $orderIds = [];
+        foreach ($reservations as $key => $order) {
+
+            $orderIds[] = $order->id;
+
+
+
+            $lu->addProduct(array(
+                'name' => 'Something',                            //product name [ string ]
+                'code' => $reservations[0]->productId,                            //merchant systemwide unique product
+                // ID [
+                // string ]
+                'info' => '',            //product description [ string ]
+                'price' => $reservations[0]->booking_cost,                                //product price [ HUF:
+                // integer |
+                // EUR,
+                // USD
+                // decimal 0.00 ]
+                'vat' => 0,                                        //product tax rate [ in case of gross price: 0 ] (percent)
+                'qty' => 1,                            //product quantity [ integer ]
+            ));
+        }
+
+        $order = new Order();
+        $values = [
+            'status' => 'pending',
+            'transactionId' => '',
+            'reservationIds' => json_encode($orderIds),
+            'data' => ''
+        ];
+
+        $payOrderId = Order::insertOneReturn($order, $values);
+        $lu->setField("ORDER_REF", $payOrderId);
+
+        //Billing data
+        $lu->setField("BILL_FNAME", $reservations[0]->billing_first_name);
+        $lu->setField("BILL_LNAME", $reservations[0]->billing_last_name);
+        $lu->setField("BILL_EMAIL", $reservations[0]->billing_email);
+        $lu->setField("BILL_PHONE", $reservations[0]->billing_phone);
+        $lu->setField("BILL_COMPANY", '');                // optional
+        //$lu->setField("BILL_FISCALCODE", " ");                  		// optional
+        $lu->setField("BILL_COUNTRYCODE", "HU");
+        $lu->setField("BILL_STATE", '');
+        $lu->setField("BILL_CITY", "Budapest");
+        $lu->setField("BILL_ADDRESS", "Main str 1");
+        //$lu->setField("BILL_ADDRESS2", $orderData->orderDetails->billing_address2);		// optional
+        $lu->setField("BILL_ZIPCODE", "1031");
+
+        $lu->setField("DELIVERY_FNAME", $reservations[0]->billing_first_name);
+        $lu->setField("DELIVERY_LNAME", $reservations[0]->billing_last_name);
+        $lu->setField("DELIVERY_EMAIL", $reservations[0]->billing_email);
+        $lu->setField("DELIVERY_PHONE", $reservations[0]->billing_phone);
+        $lu->setField("DELIVERY_COMPANY", '');                // optional
+        //$lu->setField("DELIVERY_FISCALCODE", " ");                  		// optional
+        $lu->setField("DELIVERY_COUNTRYCODE", "HU");
+        $lu->setField("DELIVERY_STATE", 'Budapest');
+        $lu->setField("DELIVERY_CITY", "Budapest");
+        $lu->setField("DELIVERY_ADDRESS", "Main str 1");
+        //$lu->setField("DELIVERY_ADDRESS2", $orderData->orderDetails->billing_address2);		// optional
+        $lu->setField("DELIVERY_ZIPCODE", "1031");
+
+        $display = $lu->createHtmlForm('SimpleForm', 'auto', 'Start Payment');   // format: link, button, auto (auto is redirects to payment page immediately )
+
+        $lu->errorLogger();
+
+        return '<span style="display: none;">' . $display . '</span>';
+    }
+    public static function actionPayBackup($ids) {
         $reservations = Reservations::getReservationsByIds($ids);
         error_reporting(E_ALL | E_STRICT);
         ini_set('display_errors', '1');
@@ -53,13 +147,13 @@ class PaymentController extends Controller {
             }
 
             $lu->addProduct(array(
-                'name' => $bookingDetails->booking_name,                            //product name [ string ]
-                'code' => $bookingDetails->booking_product_id,                            //merchant systemwide unique product ID [ string ]
-                'info' => '',            //product description [ string ]
-                'price' => $sumPrice,                                //product price [ HUF: integer | EUR, USD decimal 0.00 ]
-                'vat' => 0,                                        //product tax rate [ in case of gross price: 0 ] (percent)
-                'qty' => 1,                            //product quantity [ integer ]
-            ));
+                                'name' => $bookingDetails->booking_name,                            //product name [ string ]
+                                'code' => $bookingDetails->booking_product_id,                            //merchant systemwide unique product ID [ string ]
+                                'info' => '',            //product description [ string ]
+                                'price' => $sumPrice,                                //product price [ HUF: integer | EUR, USD decimal 0.00 ]
+                                'vat' => 0,                                        //product tax rate [ in case of gross price: 0 ] (percent)
+                                'qty' => 1,                            //product quantity [ integer ]
+                            ));
         }
 
         $order = new Order();
@@ -108,7 +202,7 @@ class PaymentController extends Controller {
     }
 
     public static function actionBackref() {
-        $to = 'alpe15.1992@gmail.com';
+        $to = 'orbanisti94@gmail.com';
         $subject = 'ORDER';
         $message = 'Thank you!';
         $headers = 'From: web@budapestrivercruise.co.uk' . "\r\n" .

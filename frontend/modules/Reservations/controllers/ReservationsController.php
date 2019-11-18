@@ -1557,18 +1557,40 @@
         }
         public function actionRemotebook(){
 
+
+
+
             $model=new Reservations();
-
-
             if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())){
+                $model->productId=Yii::$app->request->get('id');
+
+                if(isset($model->billing_first_name)){
+
+                    $model->source=$_SERVER['HTTP_HOST'];
+                    $model->save();
+                    return $this->renderAjax('remotebookstep3',[
+                        'model'=>$model
+
+                    ]);
+
+                }
+
                 return $this->renderAjax('remotebookstep2',[
                     'model'=>$model
+
                 ]);
             }
 
             return $this->render('remotebook');
 
         }
+
+
+        public function actionSuccess(){
+
+            return $this->render('success');
+        }
+
 
 
 
