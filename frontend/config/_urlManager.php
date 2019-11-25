@@ -25,6 +25,10 @@ return [
             'pattern' => 'article/<slug>',
             'route' => 'article/view'
         ],
+        [
+            'pattern' => 'product/<slug>',
+            'route' => 'product/view'
+        ],
 
         // Sitemap
         [

@@ -31,7 +31,6 @@ class MdbAsset extends AssetBundle {
      */
     public $css = [
         'css/mdb.min.css',
-        'css/goldbootstrap.css',
     ];
 
     /**

@@ -25,45 +25,42 @@ $this->title = $model->title;
 jarallax(document.querySelectorAll(\'.jarallax\'));',\yii\web\View::POS_READY
 
     );
-
+\frontend\assets\MdbAsset::register($this);
+\common\assets\FontAwesome::register($this);
 ?>
-<div class="container-fluid">
+<div class="container">
+
 
     <div class="row">
-        <div class="col-gold-lg">
-            <div class="card card-cascade wider reverse my-4">
-
-                <!-- Card image -->
-                <?php
-
-
-                    $thumbnail=Yii::$app->fileStorage->baseUrl.$model->thumbnail_path;
+        <div class="col-12">
+            <!-- interactive chart -->
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <h1 class="card-title h1-responsive"><span><?php echo $model->title ?></span></h1>
 
 
-                ?>
-                <?php
 
-                 /*   echo Html::img(Yii::$app->thumbnailer->get($thumbnail,200,200,10,
-                                                               ManipulatorInterface::THUMBNAIL_INSET),['class'=>'card-img-top'])
-
-                    ;*/?>
-           <div class="view view-cascade overlay" style="max-height:200px;">
-                    <img class="card-img-top" src="<?=$thumbnail?>? "
-                         alt="Card
-                    image cap">
-               <?php
-
-               ?>
-                    <a href="#!">
-                        <div class="mask rgba-white-slight waves-effect waves-light"></div>
-                    </a>
                 </div>
+                <div class="card-body">
 
-                <!-- Card content -->
-                <div class="card-body card-body-cascade text-">
+                    <!-- Card image -->
+                    <?php
+
+
+                        $thumbnail=Yii::$app->fileStorage->baseUrl.$model->thumbnail_path;
+
+
+                    ?>
+
+
+                    <!-- Card content -->
+                    <style>
+                        img{
+                            max-width:100%;
+                        }
+                    </style>
 
                     <!-- Title -->
-                    <h1 class="card-title"><?php echo $model->title ?></h1>
                     <!-- Subtitle -->
                     <div class="content">
                         <article class="article-item">
@@ -92,9 +89,14 @@ jarallax(document.querySelectorAll(\'.jarallax\'));',\yii\web\View::POS_READY
                         </article>
                     </div>
 
-                </div>
 
+                </div>
+                <!-- /.card-body-->
             </div>
+            <!-- /.card -->
+
         </div>
+
+        <!-- /.col -->
     </div>
 </div>

@@ -18,10 +18,14 @@ use backend\modules\Product\models\ProductTime;
 use backend\modules\Product\models\ProductUpdate;
 use backend\modules\Reservations\models\Reservations;
 use common\models\User;
+use Intervention\Image\ImageManagerStatic;
 use kartik\grid\EditableColumnAction;
 use League\Uri\PublicSuffix\CurlHttpClient;
 use PhpParser\Node\Expr\Yield_;
+use trntv\filekit\actions\DeleteAction;
+use trntv\filekit\actions\UploadAction;
 use Yii;
+use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -183,7 +187,6 @@ class ProductController extends Controller {
                 'capacity' => $productEdit['capacity'],
                 'duration' => $productEdit['duration'],
                 'images' => $productEdit['images'],
-                'thumbnail' => $productEdit['thumbnail'],
                 'start_date' => $productEdit['start_date'],
                 'end_date' => $productEdit['end_date'],
                 'slug' => $productEdit['slug'],
@@ -204,7 +207,7 @@ class ProductController extends Controller {
                 $newProduct = new Product();
             }
 
-            if (Product::insertOne($newProduct, $values)) {
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 $updateResponse = 1;
             } else {
                 $updateResponse = 0;
@@ -1183,6 +1186,16 @@ class ProductController extends Controller {
 
         return $responseMessage;
     }
+    public function behaviors() {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+        ];
+    }
 
     public function actions() {
         return ArrayHelper::merge(parent::actions(), [
@@ -1197,6 +1210,19 @@ class ProductController extends Controller {
                 // 'ajaxOnly' => true,
                 //'findModel' => function($id, $action) {},
                 // 'checkAccess' => function($action, $model) {}
+            ],
+            'avatar-upload' => [
+                'class' => UploadAction::class,
+                'deleteRoute' => 'avatar-delete',
+                'on afterSave' => function ($event) {
+                    /* @var $file \League\Flysystem\File */
+                    $file = $event->file;
+                    $img = ImageManagerStatic::make($file->read());
+                    $file->put($img->encode());
+                }
+            ],
+            'avatar-delete' => [
+                'class' => DeleteAction::class
             ]
         ]);
     }

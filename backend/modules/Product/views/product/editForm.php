@@ -76,7 +76,11 @@
                 <?= $form->field($model, 'category')->textInput(['maxlenght' => 60]) ?>
                 <?= $form->field($model, 'capacity')->textInput(['maxlenght' => 60]) ?>
                 <?= $form->field($model, 'duration')->textInput(['maxlenght' => 60]) ?><?= '(in minutes)' ?>
-                <?= $form->field($model, 'thumbnail')->textInput(['maxlenght' => 255]) ?>
+                <?= $form->field($model, 'picture')->widget(\trntv\filekit\widget\Upload::class, [
+                    'url' => [
+                        'avatar-upload'
+                    ]
+                ])?>
 
                 <?= $form->field($model, 'images')->widget(
                     FileInput::classname(), [
