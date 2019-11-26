@@ -37,6 +37,13 @@ class ProductController extends Controller {
      *
      * @return string
      */
+
+    public function actionReviews(){
+
+        
+
+    }
+
     public function actionAdmin() {
         $searchModel = new ProductAdminSearchModel();
 

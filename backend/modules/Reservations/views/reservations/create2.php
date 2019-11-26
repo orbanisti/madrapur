@@ -441,20 +441,20 @@ use kartik\helpers\Html;
                                     <!-- /.box-body -->
                                 </div>
                                 <div class="col-lg-12">
-                                    <?= \insolita\adminlte3\LteInfoBox::widget([
+                                    <div class="small-box bg-info">
+                                                  <div class="inner">
+                                                      <?='Total Price' . ' <strong>(' . $paid_currency . ')</strong>'?>
 
-                                                                                   'bgColor' => 'white',
-                                                                                   'number' => "<h4><div id=\"total_price\">0</div></h4>",
-                                                                                   'text' => 'Total Price' . ' <strong>(' . $paid_currency . ')</strong>',
-                                                                                   //                        'description'=>'asd',
-                                                                                   'icon' => 'fa fa-cart-plus',
-                                                                                   'showProgress' => true,
-                                                                                   'progressNumber' => 100,
+                                                    <p><h4><div id="total_price">0</div></h4></p>
+                                                  </div>
+                                                  <div class="icon">
+                                                      <i class="fas fa-cart-plus  "></i>
+                                                  </div>
 
+                                                </div>
+                                  
 
-                                                                               ]);
-                                    ?>
-                                </div>'
+                                </div>
                             </div>
 
 

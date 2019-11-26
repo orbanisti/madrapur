@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fbcf8d74ec4e0b8ca4602eb98facfdf2",
+    "content-hash": "47462120007d64931ff214720449db72",
     "packages": [
         {
             "name": "2amigos/yii2-ckeditor-widget",
@@ -592,7 +592,7 @@
             "version": "3.3.11",
             "source": {
                 "type": "git",
-                "url": "git@github.com:RobinHerbots/Inputmask.git",
+                "url": "https://github.com/RobinHerbots/Inputmask.git",
                 "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
             },
             "dist": {
@@ -682,6 +682,24 @@
             "license": [
                 "MIT"
             ]
+        },
+        {
+            "name": "bower-asset/owl.carousel",
+            "version": "2.3.4",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:OwlFonk/OwlCarousel2.git",
+                "reference": "af851f9b567630d115930abd5480ffebccc72372"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/OwlFonk/OwlCarousel2/zipball/af851f9b567630d115930abd5480ffebccc72372",
+                "reference": "af851f9b567630d115930abd5480ffebccc72372"
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.8.3"
+            },
+            "type": "bower-asset"
         },
         {
             "name": "bower-asset/punycode",
@@ -4584,6 +4602,56 @@
             "time": "2018-10-09T17:40:19+00:00"
         },
         {
+            "name": "kv4nt/yii2-owl-carousel2",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kv4nt/yii2-owl-carousel2.git",
+                "reference": "63c45c0bfc7bf9a78972bdcf07fff193b4995553"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kv4nt/yii2-owl-carousel2/zipball/63c45c0bfc7bf9a78972bdcf07fff193b4995553",
+                "reference": "63c45c0bfc7bf9a78972bdcf07fff193b4995553",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/owl.carousel": "*",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "kv4nt\\owlcarousel\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Victor Shumeyko",
+                    "email": "kvant90@gmail.com"
+                }
+            ],
+            "description": "A Yii2 widget for owl carousel 2",
+            "keywords": [
+                "carousel",
+                "extension",
+                "owl",
+                "owlcarousel",
+                "owlcarousel2",
+                "yii2",
+                "yii2 carousel",
+                "yii2 owl",
+                "yii2 owl carousel",
+                "yii2 owlcarousel",
+                "yii2-owl-carousel"
+            ],
+            "time": "2017-09-15T11:16:39+00:00"
+        },
+        {
             "name": "lajax/yii2-language-picker",
             "version": "1.2.1",
             "source": {
@@ -7825,6 +7893,52 @@
                 "pdf"
             ],
             "time": "2017-05-11T14:25:49+00:00"
+        },
+        {
+            "name": "sjaakp/yii2-loadmore",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sjaakp/yii2-loadmore.git",
+                "reference": "6aab5e78fb66cf22b31cbe62bcdde29dc554b463"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sjaakp/yii2-loadmore/zipball/6aab5e78fb66cf22b31cbe62bcdde29dc554b463",
+                "reference": "6aab5e78fb66cf22b31cbe62bcdde29dc554b463",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "sjaakp\\loadmore\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sjaak Priester",
+                    "email": "sjaak@sjaakpriester.nl",
+                    "homepage": "https://sjaakpriester.nl"
+                }
+            ],
+            "description": "Load More button for Yii 2.0 GridView or ListView",
+            "keywords": [
+                "ListView",
+                "data",
+                "extension",
+                "gridview",
+                "pager",
+                "yii",
+                "yii2"
+            ],
+            "time": "2019-04-30T12:07:00+00:00"
         },
         {
             "name": "slavkovrn/yii2-chat",

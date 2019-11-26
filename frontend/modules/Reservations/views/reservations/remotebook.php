@@ -7,6 +7,9 @@
         content: '€ ';
 
     }
+    .btn-group{
+        display:block;
+    }
 
 </style>
 
@@ -21,7 +24,7 @@
                 </h3>
 
                 <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
                     </button>
 
                 </div>
@@ -38,6 +41,7 @@
                     use backend\modules\Product\models\Product;
                     use backend\modules\Product\models\ProductAddOn;
                     use backend\modules\Product\models\ProductPrice;
+                    use backend\modules\Product\models\ProductTime;
                     use backend\modules\Reservations\models\Reservations;
                     use kartik\date\DatePicker;
                     use kartik\form\ActiveForm;
@@ -45,6 +49,7 @@
                     use kartik\icons\Icon;
                     use kartik\widgets\DepDrop;
                     use kartik\widgets\TouchSpin;
+                    use yii\helpers\ArrayHelper;
                     use yii\helpers\Url;
 
                     $form = ActiveForm::begin(['id' => 'remote-form','options' => ['data-pjax' => true ]]);
@@ -222,18 +227,14 @@ class=\"form-check-input\" id=\"materialUnchecked\">
                         </div>
                         <div class="col-lg-3">
                             <?php
-                                echo $form->field($model, 'booking_start')->widget(DepDrop::classname(), [
-                                    'options'=>['id'=>'subcat-id'],
-                                    'pluginOptions'=>[
-                                        'depends'=>['cat-id'],
-                                        'placeholder'=>'Select...',
 
-                                        'url'=>Url::to(['gettimesarray']).'?id='.$currrentProductId,
 
-                                        'initialize' => true,
+                                $query = ProductTime::aSelect(ProductTime::class, '*', ProductTime::tableName(), 'product_id=' . Yii::$app->request->get('id'));
+                                $mytimes = $query->all();
+                                $allmytimes=ArrayHelper::map($mytimes,'name','name');
 
-                                    ]
-                                ])->label(false);
+                                echo $form->field($model,'booking_start')->radioButtonGroup($allmytimes)->label(false);
+
                             ?>
                         </div>
                     </div>
@@ -265,7 +266,7 @@ class=\"form-check-input\" id=\"materialUnchecked\">
                 <div class="col-lg-12">
                     <?php
 
-                        echo Html::submitButton('create',['class'=>'btn btn-info btn-large']);
+                        echo Html::submitButton('create',['class'=>'btn btn-info btn-large','style'=>"width:100%"]);
                         ActiveForm::end();
 
                     ?>

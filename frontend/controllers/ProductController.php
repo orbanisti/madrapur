@@ -55,7 +55,8 @@ class ProductController extends Controller {
         }
         $viewFile = 'view';
         return $this->render($viewFile, [
-            'model' => $model
+            'model' => $model,
+
         ]);
     }
 

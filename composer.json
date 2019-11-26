@@ -103,7 +103,9 @@
 		"slavkovrn/yii2-chat": "^1.0",
 		"kartik-v/yii2-number": "dev-master",
 		"kartik-v/yii2-widget-depdrop": "dev-master",
-		"2amigos/yii2-gallery-widget": "~1.0"
+		"2amigos/yii2-gallery-widget": "~1.0",
+		"kv4nt/yii2-owl-carousel2": "*",
+		"sjaakp/yii2-loadmore": "^1.0"
 
 	},
 	"minimum-stability": "dev",
