@@ -59,13 +59,26 @@ jarallax(document.querySelectorAll(\'.jarallax\'));',\yii\web\View::POS_READY
      $('#basicExampleModal').modal('show').find('.modal-body')
      .load($(this).attr('href'));
    });
+        $('#loadMore').click(function (e) {
+                   $('.loadedreviews').show();
+                   $('#loadMore').hide();
+                });
+                
+      
+   
+   
 });");
 
             ?>
+            <script>
+
+
+            </script>
 
 
             <!-- Card content -->
             <style>
+
                 img{
                     max-width:100%;
                 }
@@ -95,6 +108,11 @@ jarallax(document.querySelectorAll(\'.jarallax\'));',\yii\web\View::POS_READY
                     font-size: 55px;
                     color: lightgrey;
                 }
+                .loadedreviews{
+                    display:none;
+
+                }
+
 
 
 
@@ -160,7 +178,8 @@ purple-text">4.8</i> </h1>
                                         <div class="card-body ">
 
                                             <?php
-                                                $testimonials=\backend\modules\Product\models\Review::find()->all();
+                                                $testimonials=\backend\modules\Product\models\Review::find()
+                                                    ->andFilterWhere(['<','id',3])->all();
                                                 foreach($testimonials as $testimonial) {
 
                                                     $reviews[] = "   <div class=\"row \">
@@ -214,74 +233,28 @@ purple-text">4.8</i> </h1>
                                                                                            'pagination' => ['pageSize'=>1],
 
                                                                                        ]);
-                                               echo  \yii\grid\GridView::widget([
+                                                echo "   <button type=\"button\" style=\"width:100%\" id=\"loadMore\" class=\"btn btn-outline-deep-purple \"
+                                 >
+                                Load More
+                            </button>";
+                                               echo  '<div class="loadedreviews">'.\yii\widgets\ListView::widget([
 
                                                         'dataProvider' => $dataProvider,
                                                         'summary' => '',
-                                                        'columns' => [
-                                                            [
-                                                                'format' => 'raw',
-                                                                'value' => function($model,$key,$index,$widget){
-                                                                    return " <div class=\"row \">
-                                                <!--Image column-->
-                                                <div class=\"col-2 \">
-                                                    <i class=\"fas fa-user-circle fa-3x \"></i>
-                                                </div>
-                                                <!--/.Image column-->
+                                                        'itemView' => '_review',
 
-                                                <!--Content column-->
-                                                <div class=\"col-10\">
-                                                    <a>
-                                                        <h5 class=\"user-name font-weight-bold\">$model->author</h5>
-                                                    </a>
-                                                    <!-- Rating -->
-                                                    <ul class=\"rating\">
-                                                        <li>
-                                                            <i class=\"fas fa-star blue-text\"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class=\"fas fa-star blue-text\"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class=\"fas fa-star blue-text\"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class=\"fas fa-star blue-text\"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class=\"fas fa-star blue-text\"></i>
-                                                        </li>
-                                                    </ul>
-                                                    <div class=\"card-data\">
-                                                        <ul class=\"list-unstyled mb-1\">
-                                                            <li class=\"comment-date font-small grey-text\">
-                                                                <i class=\"far fa-clock-o\"></i> 2 days ago</li>
-                                                        </ul>
-                                                    </div>
-                                                    <p class=\"dark-grey-text article\">$model->content</p>
-                                                </div>
-                                                <!--/.Content column-->
-                                            </div>";
-
-                                                                }
-
-                                                            ],
-
-
-
-                                                        ],
 
                                                         'pager' => [
                                                                 'class'=>\sjaakp\loadmore\LoadMorePager::class,
-                                                                'id'=>'reviews',
+                                                                'id'=>'loadmorebutton',
                                                                 'options' => [
-                                                                        'class'=>'btn btn-outline-purple',
+                                                                        'class'=>'btn btn-outline-deep-purple',
                                                                         'style'=>'width:100%;'
 
                                                                 ]
 
                                                         ]
-                                                                                   ]);
+                                                                                   ]). '</div>';
 
 
 

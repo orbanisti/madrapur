@@ -32,10 +32,27 @@ use kartik\icons\Icon;
                 <?php
 
                     $gridColumns = [
-                        'id' ,
+                        [
+                            'label' => 'ID',
+                            'attribute' =>   'id',
+                            'visible'=>false
+
+                        ],  [
+                            'label' => 'ID',
+                            'attribute' =>    'capacity' ,
+                            'visible'=>false
+
+                        ],
                         'title' ,
-                        'capacity' ,
-                        'currency' ,
+
+
+
+                        [
+                            'label' => 'Currency',
+                            'attribute' =>    'currency',
+                            'visible'=>false
+
+                        ],
                         [
                             'class' => 'kartik\grid\ActionColumn' ,
                             'visible' => Yii::$app->user->can('administrator') ,

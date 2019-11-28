@@ -44,11 +44,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <div class="products-index">
 
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4></h4>
-                        </div>
-                        <div class="panel-body">
+                    <div class="border border-secondary rounded p-1 panel panel-default row">
+
+                        <div class="panel-body col-lg-3">
                             <?php
                                 $form = ActiveForm::begin([
                                                               'id' => 'product-edit',
@@ -56,7 +54,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                                               'options' => ['class' => 'product-edit', 'enctype' => 'multipart/form-data'],
 
                                                           ]);
-
                                 echo $form->field($model, 'date')->widget(DateTimePicker::class, [
                                     //'id' => 'products-blockoutsdates',
 
@@ -67,17 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     ]
                                 ]);
 
-                                if (isset($returnMessage)) {
-                                    Yii::$app->session->setFlash('info', $returnMessage);
-                                    echo \insolita\wgadminlte\FlashAlerts::widget([
-                                                                                      'errorIcon' => '<i class="fa fa-warning"></i>',
-                                                                                      'successIcon' => '<i class="fa fa-check"></i>',
-                                                                                      'successTitle' => 'Done!', //for non-titled type like 'success-first'
-                                                                                      'closable' => true,
-                                                                                      'encode' => false,
-                                                                                      'bold' => false,
-                                                                                  ]);
-                                }
+
 
                             ?>
 
@@ -89,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?php ActiveForm::end(); ?>
 
                         </div>
-                        <div class="panel panel-default">
+                        <div class="border border-secondary rounded p-1 panel panel-default col-lg-3">
                             <div class="panel-heading">
                                 <h4>Future Blockouts</h4>
                             </div>
@@ -97,8 +84,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?php
 
                                     $gridColumns = [
-                                        'id',
-                                        'product_id',
+
+                                        [
+                                                'attribute'=>'id',
+                                                'visible'=>false,
+                                        ],     [
+                                                'attribute'=>'product_id',
+                                                'visible'=>false,
+                                        ],
+                                     
                                         'date',
                                         [
                                             'class' => 'kartik\grid\ActionColumn',
@@ -115,7 +109,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     echo \kartik\grid\GridView::widget([
                                                                            'id' => 'kv-grid-demo',
                                                                            'dataProvider' => $dataProvider,
-                                                                           'filterModel' => $searchModel,
                                                                            'columns' => $gridColumns, // check the configuration for grid columns by clicking button above
                                                                            'containerOptions' => ['style' => 'overflow: auto'], // only set when $responsive = false
                                                                            'headerRowOptions' => ['class' => 'kartik-sheet-style'],
@@ -136,7 +129,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                            'persistResize' => false,
 
                                                                            'itemLabelSingle' => 'timeblock',
-                                                                           'itemLabelPlural' => 'timeblocks'
+                                                                           'itemLabelPlural' => 'timeblocks',
+
                                                                        ]);
 
                                 ?>

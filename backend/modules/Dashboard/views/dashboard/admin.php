@@ -42,16 +42,16 @@
 
                                         </div>
                                         <div class="col-lg-3">
-                                            <div class="small-box bg-gradient-cyan">
+                                            <div class="small-box bg-gradient-purple">
                                                 <div class="inner">
-                                                    <h3>Products</h3>
+                                                    <h3>Products v2</h3>
 
                                                     <p></p>
                                                 </div>
                                                 <div class="icon">
                                                     <i class="fas fa-boxes  "></i>
                                                 </div>
-                                                <a href="<?=\yii\helpers\Url::to('/Product/product/admin')?>"
+                                                <a href="<?=\yii\helpers\Url::to('/Product/product/select')?>"
                                                    class="small-box-footer">More info
                                                     <i class="fas
                                         fa-arrow-circle-right"></i></a>
@@ -59,25 +59,43 @@
 
                                         </div>
                                         <div class="col-lg-3">
-                                               <div class="small-box bg-gradient-primary">
-                                                                                               <div class="inner">
-                                                                                                   <h3>Ez a title</h3>
+                                            <div class="small-box bg-gradient-indigo">
+                                                <div class="inner">
+                                                    <h3>Blocking</h3>
 
-                                                                                                   <p>ez a desc</p>
-                                                                                               </div>
-                                                                                               <div class="icon">
-                                                                                                   <i class="fas fa-joint fa-lg "></i>
-                                                                                               </div>
-                                                                                               <a href="#"
-                                                                                                  class="small-box-footer">More info
-                                                                                                   <i class="fas
-                                                                                       fa-arrow-circle-right"></i></a>
-                                                                                           </div>
-                                        </div>
-
-                                        <div class="col-lg-12">
+                                                    <p></p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="fas fa-hand-spock  "></i>
+                                                </div>
+                                                <a href="<?=\yii\helpers\Url::to('/Product/product/uiblock')?>"
+                                                   class="small-box-footer">More info
+                                                    <i class="fas
+                                        fa-arrow-circle-right"></i></a>
+                                            </div>
 
                                         </div>
+
+                                        <div class="col-lg-3">
+                                            <div class="small-box bg-gradient-gray-dark">
+                                                <div class="inner">
+                                                    <h3>TimeTable</h3>
+
+                                                    <p></p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="fas fa-clock  "></i>
+                                                </div>
+                                                <a href="<?=\yii\helpers\Url::to('/Product/product/accesstimetable')?>"
+                                                   class="small-box-footer">More info
+                                                    <i class="fas
+                                        fa-arrow-circle-right"></i></a>
+                                            </div>
+
+                                        </div>
+
+
+
 
                                     </div>
                                 </div>

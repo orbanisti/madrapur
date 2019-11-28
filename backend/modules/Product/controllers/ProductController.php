@@ -1062,23 +1062,25 @@ class ProductController extends Controller {
 
                     $myurl = $source['url'];
                     $myprodid = $source['prodIds'];
-                    if ($myurl == 'https://budapestrivercruise.eu') {
+
 
                         $this->unblockDateTime($blockoutToDelete['date'], $myurl, $myprodid);
                         $returnMessage = 'Successful Timeunblock!';
 // todo : sleep
 
                         $blockoutToDelete->delete();
-                    }
+
                 }
             } else {
                 $returnMessage = 'Already deleted or non-existent.';
+
             }
         }
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $currentProductId);
 
         /*update sources*/
+        sessionSetFlashAlert('info', $returnMessage);
 
         return $this->render('blockedtimes', [
             'currentProduct' => $currentProduct,
@@ -1089,6 +1091,16 @@ class ProductController extends Controller {
 
         ]);
     }
+
+    public function actionSelect(){
+        $allProducts=Product::find()->all();
+
+
+        return $this->render('select',[
+            'allProducts'=>$allProducts
+        ]);
+    }
+
 
     public function blockDateTime($date, $url, $product_id) {
 
@@ -1103,6 +1115,8 @@ class ProductController extends Controller {
         curl_setopt($curlAsk, CURLOPT_VERBOSE, 0);
         curl_setopt($curlAsk, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curlAsk);
+        Yii::error($askURL,'Availibility asking url');
+        Yii::error($response,'Availability response');
         $alreadyblocked = json_decode($response)[0];
         $alreadyBlockedArray = [];
 
@@ -1159,6 +1173,9 @@ class ProductController extends Controller {
         $response = curl_exec($curlAsk);
         $alreadyblocked = json_decode($response)[0];
 
+        Yii::error($askURL,'Availibility asking url');
+        Yii::error($response,'Availability response');
+
         foreach ($alreadyblocked as $blockedDate) {
             if ($blockedDate->bookable == 'no' && $blockedDate->from == date('H:i', strtotime($date))) {
                 if (isset($blockedDate->from_date) && isset($blockedDate->to_date)) {
@@ -1178,6 +1195,7 @@ class ProductController extends Controller {
         if ($shouldIcurL) {
             Yii::error('date:' . $date);
             $curlUrl = $myurl . '/wp-json/unblocktime/v1/date/' . date('Y-m-d', strtotime($date)) . '/time/' . date('H:i', strtotime($date)) . '/id/' . $myprodid;
+
             Yii::error('unblockUrl:' . $curlUrl);
             $curl = curl_init($curlUrl);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);

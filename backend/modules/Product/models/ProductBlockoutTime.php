@@ -53,11 +53,20 @@ class ProductBlockoutTime extends MadActiveRecord {
         $dataProvider = new ActiveDataProvider([
             'query' => $rows,
             'pagination' => [
-                'pageSize' => 15,
+                'pageSize' => 5,
             ],
         ]);
 
+
         $this->load($params);
+        $dataProvider->setSort(
+            [
+
+                'defaultOrder' => [
+                    'id' => SORT_DESC
+                ]
+            ]
+        );
 
         return $dataProvider;
     }
