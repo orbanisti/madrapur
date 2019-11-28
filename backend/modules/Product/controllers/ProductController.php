@@ -1149,7 +1149,7 @@ class ProductController extends Controller {
 
             $response = curl_exec($curl);
             $responseMessage = 'Succesful timeblock<br/>';
-            $responseMessage .= $response . $curlUrl;
+           # $responseMessage .= $response . $curlUrl;
         } else {
 
             $responseMessage = 'Operation Succesful';
