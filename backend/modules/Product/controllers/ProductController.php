@@ -1093,7 +1093,7 @@ class ProductController extends Controller {
     }
 
     public function actionSelect(){
-        $allProducts=Product::find()->all();
+        $allProducts=Product::find()->andFilterWhere(['!=','isDeleted','yes'])->all();
 
 
         return $this->render('select',[
