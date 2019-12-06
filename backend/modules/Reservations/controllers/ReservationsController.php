@@ -1615,7 +1615,7 @@
                 ]
             )
                 ->all();
-            $data=new \stdClass();
+            $data=[];
             foreach($reservations as $reservation){
                 if($reservation->billing_first_name || $reservation->billing_last_name){
 
@@ -1628,7 +1628,7 @@
                 }
 
             }
-            Yii::warning($data);
+            var_dump($data);
 
 
 
