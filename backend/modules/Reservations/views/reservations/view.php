@@ -64,23 +64,18 @@
                                                     ['attribute'=>'invoiceDate',
                                                     ],
                                                     ['attribute'=>'productId',
-                                                          'value'=> function($model){
+                                                     'format'=>'html',
 
-                                                            $productName=(Product::findOne
-                                                            ($model->productId))
-                                                                ->title;
-                                                            if($model->productId=='0'){
-                                                                $productName.=' for'.Html::a($model->ticketId, [
-                                                                        'view',
-                                                                        'id' => $model->bookingId,
-                                                                    ]);
+                                                          'value'=> $model->productId=='0'? (Product::findOne
+                                                          ($model->productId))
+                                                              ->title.' for '.Html::a($model->bookingId, [
+                                                                  'view',
+                                                                  'id' => $model->bookingId,
+                                                              ]) : (Product::findOne
+                                                          ($model->productId))
+                                                              ->title
 
-                                                            }
-
-
-                                                            return ;
-
-                                                          },
+                                                       ,
                                                           'label'=>'Product'
                                                          ],
 
