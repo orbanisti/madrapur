@@ -1638,7 +1638,11 @@
             ]);
         }
         public function actionUpgrade(){
-
+            $ticketBlock=TicketBlock::userActiveTicketBlock();
+            if (!$ticketBlock) {
+                sessionSetFlashAlert('danger', 'Oops, you\'ll need a Ticket Block first ');
+                return $this->redirect('/Dashboard/dashboard/admin');
+            }
                 $model = new Reservations();
                 $reservationId=Yii::$app->request->get('id');
                 $reservation=Reservations::findOne($reservationId);
