@@ -20,7 +20,7 @@
                             <img style="width:200px" src="<?=Yii::$app->fileStorage->baseUrl
                             .$product->thumbnail?>">
                             <?php
-                                Yii::error($product)
+                                Yii::error($product->thumbnail)
                             ?>
 
                         </span>
