@@ -64,7 +64,23 @@
                                                     ['attribute'=>'invoiceDate',
                                                     ],
                                                     ['attribute'=>'productId',
-                                                          'value'=> (Product::findOne($model->productId))->title,
+                                                          'value'=> function($model){
+
+                                                            $productName=(Product::findOne
+                                                            ($model->productId))
+                                                                ->title;
+                                                            if($model->productId=='0'){
+                                                                $productName.=' for'.Html::a($model->ticketId, [
+                                                                        'view',
+                                                                        'id' => $model->bookingId,
+                                                                    ]);
+
+                                                            }
+
+
+                                                            return ;
+
+                                                          },
                                                           'label'=>'Product'
                                                          ],
 
