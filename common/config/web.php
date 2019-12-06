@@ -58,7 +58,6 @@ if (YII_DEBUG) {
     $config['modules']['debug'] = [
         'class' => yii\debug\Module::class,
         'allowedIPs' => [
-            '178.21.50.183',
             '127.0.0.1',
             '::1',
             '192.168.33.1',
