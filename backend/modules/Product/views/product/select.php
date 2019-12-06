@@ -5,6 +5,10 @@
     use kartik\helpers\Html;
     use kartik\icons\Icon;
 
+\frontend\assets\MdbButtonsAsset::register($this);
+
+
+
     foreach ($allProducts as $product){
 
         ?>
@@ -16,8 +20,7 @@
                             <img style="width:200px" src="<?=Yii::$app->fileStorage->baseUrl
                             .$product->thumbnail?>">
                             <?php
-\frontend\assets\MdbButtonsAsset::register($this);
-
+                                Yii::error($product)
                             ?>
 
                         </span>
