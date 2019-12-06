@@ -1615,7 +1615,7 @@
                 ]
             )
                 ->all();
-            $data=[];
+            $data=new \stdClass();
             foreach($reservations as $reservation){
                 if($reservation->billing_first_name || $reservation->billing_last_name){
 
