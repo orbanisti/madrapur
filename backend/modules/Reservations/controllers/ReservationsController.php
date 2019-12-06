@@ -1615,11 +1615,12 @@
                 ]
             )
                 ->all();
-
+            $data=[];
             foreach($reservations as $reservation){
                 if($reservation->billing_first_name || $reservation->billing_last_name){
-                    Yii::warning($reservation);
+
                     $data[$reservation->ticketId]=$reservation->billing_first_name.' '.$reservation->billing_last_name.' '.$reservation->booking_start;
+                    Yii::warning($data);
 
                 }
                 else{
