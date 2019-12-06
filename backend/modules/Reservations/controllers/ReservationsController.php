@@ -1620,7 +1620,7 @@
                 if($reservation->billing_first_name || $reservation->billing_last_name){
 
                     $data["$reservation->ticketId"]=$reservation->billing_first_name.' '.$reservation->billing_last_name.' '.$reservation->booking_start;
-
+                    Yii::error($data);
 
                 }
                 else{
@@ -1628,6 +1628,7 @@
                 }
 
             }
+            Yii::warning($data);
 
 
 
