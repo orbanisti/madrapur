@@ -1619,7 +1619,7 @@
             foreach($reservations as $reservation){
                 if($reservation->billing_first_name || $reservation->billing_last_name){
 
-                    $data[$reservation->ticketId]=$reservation->billing_first_name.' '.$reservation->billing_last_name.' '.$reservation->booking_start;
+                    $data["$reservation->ticketId"]=$reservation->billing_first_name.' '.$reservation->billing_last_name.' '.$reservation->booking_start;
 
 
                 }
@@ -1628,7 +1628,7 @@
                 }
 
             }
-            var_dump($data);
+
 
 
 
