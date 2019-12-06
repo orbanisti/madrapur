@@ -26,6 +26,14 @@ use kartik\widgets\ActiveForm;
 
                 </div>
             </div>
+            <script>
+                $().ready(() => {
+                    $("#product-id").change(function () {
+                    $("#product-edit").submit();
+                });
+                });
+
+            </script>
             <div class="card-body">
 
 

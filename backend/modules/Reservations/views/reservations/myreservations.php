@@ -87,7 +87,7 @@ use backend\components\extra;
                 'format' => 'html',
                 'value' => function ($model) {
 
-                    if ($model->orderCurrency == 'EUR') {
+                    if ($model->order_currency == 'EUR') {
                         $currencySymbol = '<i class="fas fa-euro-sign  "></i>';
                     } else {
                         $currencySymbol = 'Ft';
@@ -95,7 +95,7 @@ use backend\components\extra;
                     if ($model->status == 'unpaid') {
                         $currencySymbol .= '<span class="badge badge-pill badge-warning">unpaid</span>';
                     }
-                    return $model->bookingCost . ' ' . $currencySymbol;
+                    return $model->booking_cost . ' ' . $currencySymbol;
                 },
 
 

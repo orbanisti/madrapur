@@ -16,12 +16,27 @@
             </div>
             <div class="card-body">
 
+                <div class="card">
+                    <div class="card-body container">
+                        <?php
+                            use backend\modules\Product\models\Product;
+                            use kartik\detail\DetailView;
+                            use kartik\helpers\Html;
+
+                            echo Html::a('<i class="fa fa-arrow-circle-o-up" aria-hidden="true"></i>Upgrade Booking(EUR)',
+                                         'upgrade?id='.$model->id.'&currency=EUR', ['class' => 'btn btn-info btn-large col-lg-6',
+                                                                                   ]);
+                            echo Html::a('<i class="fa fa-arrow-circle-o-up" aria-hidden="true"></i>Upgrade Booking(HUF)',
+                                         'upgrade?id='.$model->id.'&currency=HUF', ['class' => 'btn btn-info btn-large col-lg-6',
+                                         ]);
+                        ?>
+                    </div>
+                </div>
 
                 <?php
 
-                    use backend\modules\Product\models\Product;
-                                 use kartik\detail\DetailView;
-                    use kartik\helpers\Html;
+
+
 
                    $settings=[
                                                 'model'=>$model,
@@ -38,10 +53,13 @@
 
                                                 'attributes'=>[
                                                     ['attribute'=>'sellerName'],
-                                                    ['attribute'=>'billing_last_name',
-                                                     'label'=>'Last Name'],
-                                                    ['attribute'=>'billing_first_name',
-                                                     'label'=>'First Name',
+                                                    [
+                                                        'attribute' => 'billing_first_name',
+                                                        'label' => 'Name',
+
+                                                        'value'=> $model->billing_first_name.' '
+                                                            .$model->billing_last_name
+
                                                     ],
                                                     ['attribute'=>'invoiceDate',
                                                     ],
@@ -66,7 +84,7 @@
                                                          ['attribute'=>'booking_cost',
                                                           'format'=>'html',
                                                           'type'=>DetailView::INPUT_TEXTAREA,
-                                                          'value'=>$model->booking_cost.' '.'<span class="badge  badge-info">EUR</span>'.'<span class="badge  badge-warning">
+                                                          'value'=>$model->booking_cost.' '.'<span class="badge  badge-info">'.$model->order_currency.'</span>'.'<span class="badge  badge-warning">
 '.$model->status.'</span>'
 
                                                          ],

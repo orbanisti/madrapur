@@ -134,9 +134,10 @@ $this->params['breadcrumbs'][] = $this->title;
                              },
 
                             ],
-                            ['class' => EditableColumn::class,
+                            [
+                                    'class' => EditableColumn::class,
                              'attribute' => 'bookedChairsCount',
-                             'label'=>'Number of tickets',
+                             'label'=>'Personcount',
                              'pageSummary' => true,
                              'refreshGrid' => true,
                              'editableOptions' => function ($model, $key, $index) {
@@ -156,10 +157,38 @@ $this->params['breadcrumbs'][] = $this->title;
                                      ],
                                      'asPopover'=>false,
                                      'inputType'=>\kartik\editable\Editable::INPUT_TEXT,
+
                                  ];
                              },
 
 
+                            ],
+                            [
+                                    'label'=>'',
+                                    'value'=>function($model){
+                                            $data=json_decode($model->data);
+                                            if(isset($data->addons)){
+                                                $returned='';
+                                                foreach($data->addons as $addonId)
+                                                {
+                                                    $addon=\backend\modules\Product\models\AddOn::findOne($addonId);
+                                                    $returned.=' '.$addon->icon;
+
+                                                }
+
+
+
+                                                return $returned;
+
+                                            }
+                                            else{
+                                                return '';
+
+                                            }
+
+
+
+                                    }
                             ],
 //
 //                            /*   'productId',*/
@@ -185,6 +214,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                      'inputType'=>\kartik\editable\Editable::INPUT_TEXT,
                                  ];
                              },
+                             'visible' => false
+                            ],
+                            [
+                             'attribute' => 'ticketId',
+                             'label'=>'Ticket Id',
+
+
                             ],
                             [
                                 'attribute' => 'sellerName',

@@ -451,19 +451,18 @@ use kartik\helpers\Html;
                                     <!-- /.box-body -->
                                 </div>
                                 <div class="col-lg-12">
-                                    <?= \insolita\adminlte3\LteInfoBox::widget([
+                                    <div class="info-box">
+                                        <span class="info-box-icon bg-info"><i class="fas fa-cart-plus  "></i></span>
+                                                    
+                                                  <div class="info-box-content">
+                                                    <span class="info-box-text"><?='Total Price' . ' <strong>(' . $paid_currency . ')</strong>'?></span>
+                                                    <span class="info-box-number"><h4><div id="total_price">0</div></h4></span>
+                                                  </div>
+                                                  <!-- /.info-box-content -->
+                                                </div>
+                                    
+                                    
 
-                                                                                   'bgColor' => 'white',
-                                                                                   'number' => "<h4><div id=\"total_price\">0</div></h4>",
-                                                                                   'text' => 'Total Price' . ' <strong>(' . $paid_currency . ')</strong>',
-                                                                                   //                        'description'=>'asd',
-                                                                                   'icon' => 'fa fa-cart-plus',
-                                                                                   'showProgress' => true,
-                                                                                   'progressNumber' => 100,
-
-
-                                                                               ]);
-                                    ?>
                                 </div>'
                             </div>
 

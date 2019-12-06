@@ -13,6 +13,7 @@ class ProductPrice extends MadActiveRecord {
     public static function tableName() {
         return 'modulusProductPrice';
     }
+    public $Addons;
 
     public function rules() {
         return [

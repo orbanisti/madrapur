@@ -292,11 +292,11 @@ class DashboardController extends Controller {
 
         $userDataHuf = $reservationmodel->searchReservations(Yii::$app->request->queryParams, $user->id, $today, 'HUF');
         $userDataEur = $reservationmodel->searchReservations(Yii::$app->request->queryParams, $user->id, $today, 'EUR');
-        $hufToday = Reservations::sumDataProvider($userDataHuf->models, 'bookingCost');
-        $hufCashToday = Reservations::sumDataProviderCash($userDataHuf->models, 'bookingCost');
-        $hufCardToday = Reservations::sumDataProviderCard($userDataHuf->models, 'bookingCost');
-        $eurCashToday = Reservations::sumDataProviderCash($userDataEur->models, 'bookingCost');
-        $eurCardToday = Reservations::sumDataProviderCard($userDataEur->models, 'bookingCost');
+        $hufToday = Reservations::sumDataProvider($userDataHuf->models, 'booking_cost');
+        $hufCashToday = Reservations::sumDataProviderCash($userDataHuf->models, 'booking_cost');
+        $hufCardToday = Reservations::sumDataProviderCard($userDataHuf->models, 'booking_cost');
+        $eurCashToday = Reservations::sumDataProviderCash($userDataEur->models, 'booking_cost');
+        $eurCardToday = Reservations::sumDataProviderCard($userDataEur->models, 'booking_cost');
 
 
         return $this->render(

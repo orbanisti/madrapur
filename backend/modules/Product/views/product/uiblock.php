@@ -118,10 +118,12 @@ SCRIPT;
 
                             ?>
 
+
                             <?php ActiveForm::end(); ?>
 
 
                             <?php
+
 
                                 // $prodInfo=Product::getProdById(43); //With this method you get every information about a product with $id
 

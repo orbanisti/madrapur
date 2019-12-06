@@ -37,7 +37,8 @@
                                                 <a href="<?=\yii\helpers\Url::to('/Product/product/admin')?>"
                                                    class="small-box-footer">More info
                                                     <i class="fas
-                                        fa-arrow-circle-right"></i></a>
+                                        fa-arrow-circle-right"></i>
+                                                </a>
                                             </div>
 
                                         </div>

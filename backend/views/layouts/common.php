@@ -558,7 +558,7 @@ $bundle = BackendAsset::register($this);
                         'icon' => '<i class="fa nav-icon fa-list-alt"></i>',
                         'active' => (Yii::$app->controller->id == 'reservations') &&
                             Yii::$app->controller->action->id === 'admin',
-                        'visible' => !Yii::$app->user->can('streetSeller'),
+                        'visible' => !Yii::$app->user->can('streetSeller'),``
                     ],
 
                     [
@@ -569,6 +569,18 @@ $bundle = BackendAsset::register($this);
                         'icon' =>  Icon::show('check-square', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
                         'active' => (Yii::$app->controller->id == 'reservations' &&
                             Yii::$app->controller->action->id === 'create2'),
+
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Upgrade Booking'),
+                        'url' => [
+                            '/Reservations/reservations/upgradebooking'
+                        ],
+                        'icon' =>  '<i class="fa nav-icon fa-arrow-circle-up" aria-hidden="true"></i>
+                    ',
+                        'active' => (Yii::$app->controller->id == 'reservations' &&
+                            Yii::$app->controller->action->id === 'upgrade'),
+
 
                     ],
                     [
@@ -806,7 +818,7 @@ $bundle = BackendAsset::register($this);
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
-    <aside class="main-sidebar  sidebar-dark-primary elevation-4 ">
+    <aside class="main-sidebar  sidebar-dark-info   elevation-4 ">
         <!-- Brand Logo -->
         <a href="/" class="brand-link">
             <!--img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"

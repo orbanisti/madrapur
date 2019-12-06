@@ -89,7 +89,8 @@ class ProductController extends Controller {
         $images = [];
         foreach ($allproducts as $product) {
             $data[$product->id] = $product->title;
-            $images[$product->id] = $product->thumbnail;
+            $images[$product->id] = Yii::$app->fileStorage->baseUrl
+                .$product->thumbnail;
         }
 
         return $this->render('uiblock', ['data' => $data, 'searchModel' => $searchModel, 'model' => $model, 'images' => $images]);
@@ -118,7 +119,8 @@ class ProductController extends Controller {
         $images = [];
         foreach ($allproducts as $product) {
             $data[$product->id] = $product->title;
-            $images[$product->id] = $product->thumbnail;
+            $images[$product->id] = Yii::$app->fileStorage->baseUrl
+                .$product->thumbnail;
         }
 
         return $this->render('accesstimetable', ['data' => $data, 'searchModel' => $searchModel, 'model' => $model, 'images' => $images]);

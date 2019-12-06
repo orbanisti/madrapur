@@ -56,8 +56,23 @@ class Modevent extends MadActiveRecord{
         Yii::warning($next);
         return $next;
     }
+
+
+    public static function userWorkedWorkshiftToday($username){
+        $date=date('Y-m-d',strtotime('today'));
+
+        $today=Modevent::find()->andFilterWhere(['=','user',$username])->andFilterWhere(['=','startDate',$date])
+            ->andFilterWhere(['=','status','worked'])->one();
+
+        return $today;
+
+
+    }
+
     public static function userNextWorkSpecific($username){
         $date=date('Y-m-d',strtotime('today'));
+
+
 
         $next = Modevent::find()->andFilterWhere(['=','user',$username])->andFilterWhere
         (['>=','startDate',$date])->andWhere('`title`=\'arranged\'')->andWhere('not `status`<=>\'worked\'')->orderBy

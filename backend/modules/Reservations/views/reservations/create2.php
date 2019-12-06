@@ -46,7 +46,7 @@ use kartik\helpers\Html;
 <div class="row">
     <div class="col-12">
         <!-- interactive chart -->
-        <?=$oldTicketId ? '<div class="card card-danger ">' : '<div class="card card-primary ">' ?>
+        <?=$oldTicketId ? '<div class="card card-danger ">' : '<div class="card card-info ">' ?>
             <div class="card-header">
                 <i class="fas fa-ticket-alt  "></i>
                 <?= $oldTicketId ? $oldTicketId : $a=TicketSearchModel::userNextTicketId(); ?>
@@ -83,7 +83,7 @@ use kartik\helpers\Html;
                                 'type' => DatePicker::TYPE_COMPONENT_PREPEND
                                 , 'options' => [
                                 'value' => date('Y-m-d', time()),
-                                'class' => 'bg-gradient-primary '
+                                'class' => 'bg-gradient-info '
 
                                 ],
                                 'pluginOptions' => [
@@ -184,7 +184,7 @@ use kartik\helpers\Html;
 
                             <div id="myTimes"></div>
                             <div id="myPrices"></div>
-                            <?= Html::submitButton('Create Reservation', ['class' => 'create btn btn-block bg-aqua btn-lg btn-primary prodUpdateBtn', 'disabled' => true]) ?>
+                            <?= Html::submitButton('Create Reservation', ['class' => 'create btn btn-block bg-aqua btn-lg btn-info prodUpdateBtn', 'disabled' => true]) ?>
 
 
                             <?php ActiveForm::end();
@@ -279,7 +279,7 @@ use kartik\helpers\Html;
 
 
                             <!-- interactive chart -->
-                            <div class="card bg-primary  card-outline ">
+                            <div class="card bg-info  card-outline ">
                                 <div class="card-header "    data-card-widget="collapse">
                                     <h3 class="card-title">
                                         Seller Tools
@@ -335,7 +335,7 @@ use kartik\helpers\Html;
                                 <!-- /.card-body-->
                             </div>
 
-                            <div class="card bg-primary  card-outline collapsed-card">
+                            <div class="card bg-info  card-outline collapsed-card">
                                 <div class="card-header "    data-card-widget="collapse">
                                     <h3 class="card-title">
                                         <i class="fas fa-user-friends  "></i>
@@ -372,7 +372,7 @@ use kartik\helpers\Html;
                             </div>
                             <!-- /.card -->
 
-                            <div class="card bg-primary  card-outline ">
+                            <div class="card bg-info  card-outline ">
                                 <div class="card-header "    data-card-widget="collapse">
                                     <h3 class="card-title">
                                         Add-ons
@@ -403,7 +403,7 @@ use kartik\helpers\Html;
                                                     }
 
                                                     echo $form->field(
-                                                        $model, "[{$i}]id")->checkbox([
+                                                        $model, "Addons[{$addOn->id}]")->checkbox([
                                                         'value' => $addOnPrice,
                                                         'checked' => false,
                                                         'data-id' => $addOnLink->addOnId,
@@ -452,7 +452,7 @@ use kartik\helpers\Html;
                                                   </div>
 
                                                 </div>
-                                  
+
 
                                 </div>
                             </div>
@@ -461,7 +461,7 @@ use kartik\helpers\Html;
 
                             <?php
                             echo'<div class="col-lg-12">';
-                            echo Html::submitButton('Create Reservation', ['class' => 'btn btn-block bg-aqua btn-lg btn-primary prodUpdateBtn']);
+                            echo Html::submitButton('Create Reservation', ['class' => 'btn btn-block bg-aqua btn-lg btn-info prodUpdateBtn']);
                             echo'</div>';
                             ActiveForm::end();
                         }
