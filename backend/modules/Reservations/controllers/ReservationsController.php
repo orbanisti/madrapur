@@ -1619,16 +1619,15 @@
             foreach($reservations as $reservation){
                 if($reservation->billing_first_name || $reservation->billing_last_name){
 
-                    $data["$reservation->ticketId"]=$reservation->billing_first_name.' '.$reservation->billing_last_name.' '.$reservation->booking_start;
-                    Yii::error($data);
+                    $data["$reservation->id"]=$reservation->billing_first_name.' '.$reservation->billing_last_name.' '
+                        .$reservation->booking_start;
+
 
                 }
-                else{
-                    $data=[];
-                }
+
 
             }
-            Yii::warning($data);
+
 
 
 

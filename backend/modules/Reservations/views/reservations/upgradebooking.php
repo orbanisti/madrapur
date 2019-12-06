@@ -45,13 +45,17 @@
                     $reservationId=Yii::$app->request->get('id');
                     $ticketId=Yii::$app->request->post('Reservations')['ticketId'];
                     $billing_first_name=Yii::$app->request->post('Reservations')['billing_first_name'];
-                    if(!$ticketId){
-                        $ticketId=$billing_first_name;
-                    }
 
-                    if($ticketId) {
 
-                        $model=Reservations::find()->andFilterWhere(['=','ticketId',$ticketId])->one();
+                    if($ticketId || $billing_first_name) {
+                        if($ticketId){
+                            $model=Reservations::find()->andFilterWhere(['=','ticketId',$ticketId])->one();
+
+                        }
+                        elseif($billing_first_name){
+                            $model=Reservations::find()->andFilterWhere(['=','id',$billing_first_name])->one();
+
+                        }
 
                         echo Html::a('<i class="fa fa-arrow-circle-o-up" aria-hidden="true"></i>Upgrade Booking(EUR)',
                                      'upgrade?id='.$model->id.'&currency=EUR', ['class' => 'btn btn-info btn-large',
