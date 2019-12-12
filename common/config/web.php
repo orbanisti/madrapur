@@ -22,6 +22,7 @@ $config = [
             ],
         ]
     ],
+
     'modules' => [
         'datecontrol' =>  [
             'class' => 'kartik\datecontrol\Module',

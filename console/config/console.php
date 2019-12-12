@@ -7,6 +7,9 @@ return [
         'command-bus' => [
             'class' => trntv\bus\console\BackgroundBusController::class,
         ],
+        'migration' => [
+            'class' => 'bizley\migration\controllers\MigrationController',
+        ],
         'message' => [
             'class' => console\controllers\ExtendedMessageController::class
         ],

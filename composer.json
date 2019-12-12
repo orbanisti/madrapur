@@ -105,7 +105,8 @@
 		"kartik-v/yii2-widget-depdrop": "dev-master",
 		"2amigos/yii2-gallery-widget": "~1.0",
 		"kv4nt/yii2-owl-carousel2": "*",
-		"sjaakp/yii2-loadmore": "^1.0"
+		"sjaakp/yii2-loadmore": "^1.0",
+		"bizley/migration": "^3.6"
 
 	},
 	"minimum-stability": "dev",
