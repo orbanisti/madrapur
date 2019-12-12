@@ -30,6 +30,7 @@ class Workshift extends \backend\modules\MadActiveRecord\models\MadActiveRecord
     {
         return [
             [['place', 'role'], 'string'],
+            [['place', 'role'], 'required'],
             [['startTime', 'endTime'], 'safe'],
         ];
     }
