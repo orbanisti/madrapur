@@ -269,7 +269,7 @@
                                                                         break;
 
                                                                     case !(null):
-                                                                        if (isset($lastWork->place)) {
+
 
                                                                             $workShift = Workshift::findOne($lastWork->place);
 
@@ -303,7 +303,7 @@
 
                                                                                 ]
                                                                             );
-                                                                        }
+
                                                                         ActiveForm::end();
                                                                 }
 
