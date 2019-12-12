@@ -154,8 +154,8 @@
                                                                         break;
 
                                                                     case !(null):
-
-
+                                                                        sessionSetFlashAlert('warning',
+                                                                                             $nextWork->place);
                                                                         $workShift = Workshift::findOne($nextWork->place);
                                                                         if($workShift){
 
