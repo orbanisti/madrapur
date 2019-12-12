@@ -138,6 +138,11 @@
 
                                                             <?php
 
+                                                                $workShift = Workshift::findOne($nextWork->place);
+                                                                if(!$workShift){
+                                                                    $nextWork=null;
+                                                                }
+
                                                                 switch ($nextWork) {
 
                                                                     case null:
@@ -154,11 +159,7 @@
                                                                         break;
 
                                                                     case !(null):
-                                                                        sessionSetFlashAlert('warning',
-                                                                                             $nextWork->place);  sessionSetFlashAlert('warning',
-                                                                                             $nextWork->id);
                                                                         $workShift = Workshift::findOne($nextWork->place);
-                                                                        if($workShift){
 
                                                                             echo '<h3>' . $workShift->place
                                                                                 . '</h3>';
@@ -224,7 +225,7 @@
                                                                             }
 
                                                                             ActiveForm::end();
-                                                                        }
+
 
 
                                                                 }
