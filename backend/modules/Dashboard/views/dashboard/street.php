@@ -157,72 +157,75 @@
 
 
                                                                         $workShift = Workshift::findOne($nextWork->place);
-                                                                        Yii::error($workShift);
+                                                                        if($workShift){
 
-                                                                        echo '<h3>' . $workShift->place
-                                                                            . '</h3>';
-                                                                        echo '<p><span class="badge-pill badge-primary">' . $workShift->role . '</span><span class="badge-pill badge-primary">'
-                                                                            . $nextWork->startDate . ' ' . date(
-                                                                                'H:i',
-                                                                                strtotime
+                                                                            echo '<h3>' . $workShift->place
+                                                                                . '</h3>';
+                                                                            echo '<p><span class="badge-pill badge-primary">' . $workShift->role . '</span><span class="badge-pill badge-primary">'
+                                                                                . $nextWork->startDate . ' ' . date(
+                                                                                    'H:i',
+                                                                                    strtotime
+                                                                                    (
+                                                                                        $workShift->startTime
+                                                                                    )
+                                                                                ) . ' - ' . date
                                                                                 (
-                                                                                    $workShift->startTime
-                                                                                )
-                                                                            ) . ' - ' . date
-                                                                            (
-                                                                                'H:i', strtotime($workShift->endTime)
-                                                                            ) . '</span></p>';
+                                                                                    'H:i', strtotime($workShift->endTime)
+                                                                                ) . '</span></p>';
 
-                                                                        $form = ActiveForm::begin(
-                                                                            [
-                                                                                'action' =>
-                                                                                    ['/Modevent/modevent/mywork']
-                                                                            ]
-                                                                        );
-
-                                                                        if ($nextWork->title == 'arranged' and $nextWork->status == 'notyet') {
-                                                                            echo Html::submitButton(
-                                                                                Yii::t('backend', 'Start working' . '<i class="fas fa-running fa-fw "></i>'),
+                                                                            $form = ActiveForm::begin(
                                                                                 [
-                                                                                    'class' => 'btn btn-outline-light',
-                                                                                    'name' => 'work',
-                                                                                    'value' => $nextWork->id,
-
+                                                                                    'action' =>
+                                                                                        ['/Modevent/modevent/mywork']
                                                                                 ]
                                                                             );
-                                                                            echo Html::a(
-                                                                                'Subscribe for Work <i class="fas fa-pen-fancy  
+
+                                                                            if ($nextWork->title == 'arranged' and $nextWork->status == 'notyet') {
+                                                                                echo Html::submitButton(
+                                                                                    Yii::t('backend', 'Start working' . '<i class="fas fa-running fa-fw "></i>'),
+                                                                                    [
+                                                                                        'class' => 'btn btn-outline-light',
+                                                                                        'name' => 'work',
+                                                                                        'value' => $nextWork->id,
+
+                                                                                    ]
+                                                                                );
+                                                                                echo Html::a(
+                                                                                    'Subscribe for Work <i class="fas fa-pen-fancy  
                                                     "></i>',
-                                                                                '/Modevent/modevent/subscribe',
-                                                                                [
-                                                                                    'title' => Yii::t('backend', 'Subscribe for work'),
-                                                                                    'class' => 'btn btn-outline-light'
-                                                                                ]
-                                                                            );
-                                                                        } elseif ($nextWork->status == 'working') {
-                                                                            echo Html::submitButton(
-                                                                                Yii::t(
-                                                                                    'backend', 'Let\'s finish working' . '<i class="fas fa-running fa-fw
+                                                                                    '/Modevent/modevent/subscribe',
+                                                                                    [
+                                                                                        'title' => Yii::t('backend', 'Subscribe for work'),
+                                                                                        'class' => 'btn btn-outline-light'
+                                                                                    ]
+                                                                                );
+                                                                            } elseif ($nextWork->status == 'working') {
+                                                                                echo Html::submitButton(
+                                                                                    Yii::t(
+                                                                                        'backend', 'Let\'s finish working' . '<i class="fas fa-running fa-fw
                                             "></i>'
-                                                                                ),
-                                                                                [
-                                                                                    'class' => 'btn btn-success btn-flat',
-                                                                                    'name' => 'work-end',
-                                                                                    'value' => $nextWork->id
-                                                                                ]
-                                                                            );
-                                                                        } elseif ($nextWork->status == 'worked') {
-                                                                            echo Html::submitButton(
-                                                                                Yii::t('backend', 'Job Done, Good work!' . '<i class="fas fa-thumbs-up fa-fw "></i>'),
-                                                                                [
-                                                                                    'class' => 'disabled btn btn-success btn-flat',
-                                                                                    'name' => 'dayover',
-                                                                                    'value' => 'dayover'
-                                                                                ]
-                                                                            );
+                                                                                    ),
+                                                                                    [
+                                                                                        'class' => 'btn btn-success btn-flat',
+                                                                                        'name' => 'work-end',
+                                                                                        'value' => $nextWork->id
+                                                                                    ]
+                                                                                );
+                                                                            } elseif ($nextWork->status == 'worked') {
+                                                                                echo Html::submitButton(
+                                                                                    Yii::t('backend', 'Job Done, Good work!' . '<i class="fas fa-thumbs-up fa-fw "></i>'),
+                                                                                    [
+                                                                                        'class' => 'disabled btn btn-success btn-flat',
+                                                                                        'name' => 'dayover',
+                                                                                        'value' => 'dayover'
+                                                                                    ]
+                                                                                );
+                                                                            }
+
+                                                                            ActiveForm::end();
                                                                         }
 
-                                                                        ActiveForm::end();
+
                                                                 }
 
                                                             ?>
