@@ -138,10 +138,7 @@
 
                                                             <?php
 
-                                                                $workShift = Workshift::findOne($nextWork->place);
-                                                                if(!$workShift){
-                                                                    $nextWork=null;
-                                                                }
+
 
                                                                 switch ($nextWork) {
 

@@ -49,12 +49,17 @@ class Modevent extends MadActiveRecord{
     public static function userNextWork(){
         $date=date('Y-m-d',strtotime('today'));
 
-        $next = Modevent::find()->andFilterWhere(['=','user',Yii::$app->user->getIdentity()->username])->andFilterWhere
+        $nexts = Modevent::find()->andFilterWhere(['=','user',Yii::$app->user->getIdentity()->username])->andFilterWhere
         (['>=','startDate',$date])->andWhere('`title`=\'arranged\'')->andWhere('not `status`<=>\'worked\'')->orderBy
-        (['startDate'=>SORT_ASC])->one();
+        (['startDate'=>SORT_ASC])->all();
 
-        Yii::warning($next);
-        return $next;
+        foreach($nexts as $next){
+            if(Workshift::findOne($next->place)){
+                return $next;
+
+            }
+
+        }
     }
 
 
