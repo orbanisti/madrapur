@@ -157,7 +157,7 @@
 
 
                                                                         $workShift = Workshift::findOne($nextWork->place);
-                                                                        Yii::error($nextWork);
+                                                                        Yii::error($workShift);
 
                                                                         echo '<h3>' . $workShift->place
                                                                             . '</h3>';
