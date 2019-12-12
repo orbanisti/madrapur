@@ -155,7 +155,9 @@
 
                                                                     case !(null):
 
+
                                                                         $workShift = Workshift::findOne($nextWork->place);
+                                                                        Yii::error($nextWork);
 
                                                                         echo '<h3>' . $workShift->place
                                                                             . '</h3>';
