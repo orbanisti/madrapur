@@ -118,17 +118,15 @@
                                             $lastWork = Modevent::userLastWork();
                                             $nextWork = Modevent::userNextWork();
 
-                                            if(isset($lastWork->startDate)){
-
+                                            if (isset($lastWork->startDate)) {
 
                                                 if ($lastWork->startDate == date('Y-m-d', strtotime('today'))) {
                                                     $activeLast = 'active';
                                                 } else {
                                                     $activeNext = 'active';
                                                 }
-                                            }
-                                            else{
-                                                $activeNext='active';
+                                            } else {
+                                                $activeNext = 'active';
                                             }
                                         ?>
                                         <div class=" tab-pane <?= $activeNext ?>" id="nextwork">
@@ -190,14 +188,15 @@
 
                                                                                 ]
                                                                             );
-                                                                                    echo Html::a('Subscribe for Work <i class="fas fa-pen-fancy  
+                                                                            echo Html::a(
+                                                                                'Subscribe for Work <i class="fas fa-pen-fancy  
                                                     "></i>',
-                                                                                    '/Modevent/modevent/subscribe',
-                                                                                    [
-                                                                                        'title' => Yii::t('backend', 'Subscribe for work'),
-                                                                                        'class' => 'btn btn-outline-light'
-                                                                                    ]
-                                                                                );
+                                                                                '/Modevent/modevent/subscribe',
+                                                                                [
+                                                                                    'title' => Yii::t('backend', 'Subscribe for work'),
+                                                                                    'class' => 'btn btn-outline-light'
+                                                                                ]
+                                                                            );
                                                                         } elseif ($nextWork->status == 'working') {
                                                                             echo Html::submitButton(
                                                                                 Yii::t(
@@ -266,40 +265,41 @@
                                                                         break;
 
                                                                     case !(null):
+                                                                        if (isset($lastWork->place)) {
 
-                                                                        $workShift = Workshift::findOne($lastWork->place);
+                                                                            $workShift = Workshift::findOne($lastWork->place);
 
-                                                                        echo '<h3>' . $workShift->place
-                                                                            . '</h3>';
-                                                                        echo '<p><span class="badge-pill badge-primary">' . $workShift->role . '</span><span class="badge-pill badge-primary">'
-                                                                            . $lastWork->startDate . ' ' . date(
-                                                                                'H:i',
-                                                                                strtotime
+                                                                            echo '<h3>' . $workShift->place
+                                                                                . '</h3>';
+                                                                            echo '<p><span class="badge-pill badge-primary">' . $workShift->role . '</span><span class="badge-pill badge-primary">'
+                                                                                . $lastWork->startDate . ' ' . date(
+                                                                                    'H:i',
+                                                                                    strtotime
+                                                                                    (
+                                                                                        $workShift->startTime
+                                                                                    )
+                                                                                ) . ' - ' . date
                                                                                 (
-                                                                                    $workShift->startTime
-                                                                                )
-                                                                            ) . ' - ' . date
-                                                                            (
-                                                                                'H:i', strtotime($workShift->endTime)
-                                                                            ) . '</span></p>';
+                                                                                    'H:i', strtotime($workShift->endTime)
+                                                                                ) . '</span></p>';
 
-                                                                        $form = ActiveForm::begin(
-                                                                            [
-                                                                                'action' =>
-                                                                                    ['/Modevent/modevent/mywork']
-                                                                            ]
-                                                                        );
+                                                                            $form = ActiveForm::begin(
+                                                                                [
+                                                                                    'action' =>
+                                                                                        ['/Modevent/modevent/mywork']
+                                                                                ]
+                                                                            );
 
-                                                                        echo Html::submitButton(
-                                                                            Yii::t('backend', 'Job Done, Good work!' . '<i class="fas fa-thumbs-up fa-fw "></i>'),
-                                                                            [
-                                                                                'class' => 'disabled btn btn-success btn-flat',
-                                                                                'name' => 'dayover',
-                                                                                'value' => 'dayover'
+                                                                            echo Html::submitButton(
+                                                                                Yii::t('backend', 'Job Done, Good work!' . '<i class="fas fa-thumbs-up fa-fw "></i>'),
+                                                                                [
+                                                                                    'class' => 'disabled btn btn-success btn-flat',
+                                                                                    'name' => 'dayover',
+                                                                                    'value' => 'dayover'
 
-                                                                            ]
-                                                                        );
-
+                                                                                ]
+                                                                            );
+                                                                        }
                                                                         ActiveForm::end();
                                                                 }
 
