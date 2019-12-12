@@ -115,10 +115,16 @@ class Modevent extends MadActiveRecord{
     public static function userLastWork(){
         $date=date('Y-m-d',strtotime('today'));
 
-        $next = Modevent::find()->andFilterWhere(['=','user',Yii::$app->user->getIdentity()->username])->andFilterWhere
+        $lasts = Modevent::find()->andFilterWhere(['=','user',Yii::$app->user->getIdentity()->username])->andFilterWhere
         (['<=','startDate',$date])->andWhere('`title`=\'arranged\'')->andWhere('`status`=\'worked\'')->orderBy
-        ('startDate')->one();
-        return $next;
+        ('startDate')->all();
+        foreach ($lasts as $last){
+            if(Workshift::findOne($last->place)){
+                return $last;
+            }
+
+        }
+
     }
 
     public function search($params) {
