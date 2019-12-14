@@ -74,6 +74,7 @@
 
         </div>
 
+
         <div class="btn-group mr-3" role="group">
             <button class="btn btn-light" title="Export (Ctrl + E)" id="save-btn" data-vvveb-action="saveAjax"
                     data-vvveb-shortcut="ctrl+e">
@@ -970,7 +971,7 @@
 <script src="/VvvebJs/js/bootstrap.min.js"></script>
 
 <!-- builder code-->
-<script src="/VvvebJs/libs/builder/builder.js"></script>
+<script src="/VvvebJs/libs/builder/builder.js?v=<?=rand()?>"></script>
 <!-- undo manager-->
 <script src="/VvvebJs/libs/builder/undo.js"></script>
 <!-- inputs-->
@@ -1007,7 +1008,7 @@
 
 <?php
 $slug = Yii::$app->request->get('slug');
-$curlUrl = "https://api.budapestrivercruise.co.uk/v1/rester/get-page-html-by-slug?slug=" . $slug;
+$curlUrl = Yii::getAlias('@apiUrl')."/v1/rester/get-page-html-by-slug?slug=" . $slug;
 $ch = curl_init($curlUrl);
 
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1016,6 +1017,7 @@ curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
 $content = curl_exec($ch);
 
 curl_close($ch);
+
 $dependencies = '<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet"><script src="http://code.jquery.com/jquery-3.3.1.min.js"></script><script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>';
 $tempPath = "VvvebJs/tmp-" . $slug . ".html";
 

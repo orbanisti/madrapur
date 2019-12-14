@@ -106,7 +106,8 @@
 		"2amigos/yii2-gallery-widget": "~1.0",
 		"kv4nt/yii2-owl-carousel2": "*",
 		"sjaakp/yii2-loadmore": "^1.0",
-		"bizley/migration": "^3.6"
+		"bizley/migration": "^3.6",
+		"aksafan/yii2-fcm-both-api": "^0.9.3"
 
 	},
 	"minimum-stability": "dev",

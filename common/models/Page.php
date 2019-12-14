@@ -71,6 +71,9 @@ class Page extends MadActiveRecord {
      *
      * @inheritdoc
      */
+
+
+
     public function rules() {
         return [
             [
@@ -83,27 +86,6 @@ class Page extends MadActiveRecord {
                 [
                     'body',
 
-                    'meta:name:description',
-                    'meta:name:keywords',
-                    'meta:name:alternate',
-                    'meta:name:canonical',
-                    'meta:name:author',
-                    'meta:name:news_keywords',
-
-                    'meta:property:fb:pages',
-                    'meta:property:og:type',
-                    'meta:property:og:url',
-                    'meta:property:og:title',
-                    'meta:property:og:site_name',
-                    'meta:property:og:locale',
-                    'meta:property:og:updated_time',
-                    'meta:property:og:description',
-                    'meta:property:og:image:alt',
-                    'meta:property:og:image',
-                    'meta:property:article:publisher',
-
-                    'meta:property:m:publication_local',
-                    'meta:property:m:publication',
                 ],
                 'string'
             ],

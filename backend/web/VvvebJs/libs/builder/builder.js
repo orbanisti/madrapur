@@ -1363,13 +1363,14 @@ Vvveb.Builder = {
 		data["slug"]=slug;
 		data["content"]=content;
 
+
 		$.ajax({
 			type: "POST",
 			url: '/VvvebJs/save.php',//set your server side save script url
 			data: data,
 			cache: false,
 			success: function (data) {
-				
+				console.log(data);
 				if (callback) callback(data);
 				
 			},
@@ -1505,7 +1506,6 @@ Vvveb.Gui = {
 
     //post html content through ajax to save to filesystem/db
     saveAjax : function () {
-
 
         var url = Vvveb.FileManager.getCurrentUrl();
 

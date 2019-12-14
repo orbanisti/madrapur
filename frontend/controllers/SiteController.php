@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use cheatsheet\Time;
+use common\models\Page;
 use common\sitemap\UrlsIterator;
 use frontend\models\ContactForm;
 use Sitemaped\Element\Urlset\Urlset;
@@ -58,7 +59,8 @@ class SiteController extends Controller {
      * @return string
      */
     public function actionIndex() {
-        return $this->render('index');
+        $homepage=Page::find()->andFilterWhere(['=','isHome',1])->one();
+        return $this->render('index',['page'=>$homepage]);
     }
 
     /**
