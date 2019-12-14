@@ -505,7 +505,7 @@ $bundle = BackendAsset::register($this);
                 'icon' =>  Icon::show('hand-spock', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
                 'active' => (Yii::$app->controller->id == 'product') &&
                     Yii::$app->controller->action->id === 'uiblock',
-                'visible' => Yii::$app->user->can('streetAdmin') && Yii::$app->user->can('administrator'),
+                'visible' => Yii::$app->user->can('streetAdmin') || Yii::$app->user->can('administrator'),
             ],
             [
                 'label' => Yii::t('backend', 'Time table'),
