@@ -14,6 +14,7 @@ use backend\modules\Product\models\ProductAddOn;
 use backend\modules\Product\models\ProductPrice;
     use backend\modules\Reservations\models\Reservations;
     use backend\modules\Tickets\models\TicketSearchModel;
+    use common\models\User;
     use kartik\date\DatePicker;
 use kartik\form\ActiveForm;
 use kartik\helpers\Html;
@@ -34,8 +35,7 @@ use kartik\helpers\Html;
     //$this->params['breadcrumbs'][] = $this->title;
 
     $huf = Yii::$app->keyStorage->get('currency.huf-value') ? Yii::$app->keyStorage->get('currency.huf-value') : null;
-    $oldTicketId=Yii::$app->request->get('ticketId');
-    $oldTicketId=Yii::$app->request->post('oldTicket');
+
 ?>
 
 <!--suppress ALL -->
@@ -48,10 +48,10 @@ use kartik\helpers\Html;
 <div class="row">
     <div class="col-12">
         <!-- interactive chart -->
-        <?=$oldTicketId ? '<div class="card card-danger ">' : '<div class="card card-info ">' ?>
+      <div class="card card-info ">
             <div class="card-header">
                 <i class="fas fa-ticket-alt  "></i>
-                <?= $oldTicketId ? $oldTicketId : $a=TicketSearchModel::userNextTicketId(); ?>
+
             </div>
 
             <div class="card-body">
@@ -72,9 +72,8 @@ use kartik\helpers\Html;
                             <?php
 
                             echo $form->field($model, 'title')
-                                ->dropDownList(ArrayHelper::map($allMyProducts, 'id', 'title'),
+                                ->radioButtonGroup(ArrayHelper::map($allMyProducts, 'id', 'shortName'),
                                                ['prompt' => 'Please select a product'])->label(false);
-
 
                             ?>
                             <!-- Compiled and minified JavaScript -->
@@ -113,8 +112,6 @@ use kartik\helpers\Html;
 
                             ?>
 
-
-
                             <div class="panel">
                                 <?=Toggle::widget(
                                     [
@@ -127,9 +124,8 @@ use kartik\helpers\Html;
                                         'options' => [
                                             'data-on'=>'Paid',
                                             'data-off'=>'Unpaid',
-                                            'data-width'=>'80px',
-                                            'data-onstyle'=>'info',
-
+                                            'data-width'=>'100px',
+                                            'data-onstyle'=>'info'
                                         ],
 
                                         // checkbox options. More data html options [see here](http://www.bootstraptoggle.com)
@@ -145,7 +141,7 @@ use kartik\helpers\Html;
                                         'options' => [
                                             'data-on'=>'EUR',
                                             'data-off'=>'HUF',
-                                            'data-width'=>'80px',
+                                            'data-width'=>'100px',
                                             'data-onstyle'=>'info'
                                         ],
                                         // checkbox options. More data html options [see here](http://www.bootstraptoggle.com)
@@ -159,20 +155,18 @@ use kartik\helpers\Html;
                                         'options' => [
                                             'data-on'=>'Card',
                                             'data-off'=>'Cash',
-                                            'data-width'=>'80px',
+                                            'data-width'=>'100px',
                                             'data-onstyle'=>'info'
                                         ],
                                         // checkbox options. More data html options [see here](http://www.bootstraptoggle.com)
                                     ]
                                 );?>
-                                <?=
-                                    Html::input('text','oldTicket','', $options=['class'=>'form-control ','style'=>'display:none',
-                                                                                 'maxlength'=>10,'placeholder'=>'Voucher code'])
+
+                                <?php
+
 
 
                                 ?>
-
-
 
 
                                 <div class="container">
@@ -183,7 +177,7 @@ use kartik\helpers\Html;
 
                                     </div>
                                 </div>
-                                <?=Html::hiddenInput('ticketId', $oldTicketId);?>
+
 
 
                             </div>
@@ -225,13 +219,6 @@ use kartik\helpers\Html;
                                 $oldTicketId=null;
 
                             }
-                            if(isset($_POST['oldTicket'])){
-                                $oldTicketId=$_POST['oldTicket'];
-
-                            }
-
-
-
 
                             $form = ActiveForm::begin(['id' => 'product-form']);
                             $model = new ProductPrice();
@@ -260,6 +247,7 @@ use kartik\helpers\Html;
                                 }else{
                                     $currencySymbol='€';
                                 }
+
 
 
                                 echo $price->name."($price->price $currencySymbol/person)" ;
@@ -339,43 +327,41 @@ use kartik\helpers\Html;
 
                                     </div>
 
+                                    <div class="col-lg-8">
+                                        Selling for Somebody else?
+                                        <?php
 
-                                        <div class="col-lg-8">
-                                            Selling for Somebody else?
-                                            <?php
+                                            echo Select2::widget( [
+                                                                      'name' => 'anotherSeller',
+                                                                      'data' => User::getAllSellers(),
+                                                                      'id' => rand(),
+                                                                      'options' => ['placeholder' => 'Select a seller...'],
+                                                                      'pluginOptions' => [
 
-                                                echo Select2::widget( [
-                                                                          'name' => 'anotherSeller',
-                                                                          'data' => \common\models\User::getAllSellers(),
-                                                                          'id' => rand(),
-                                                                          'options' => ['placeholder' => 'Select a seller...'],
-                                                                          'pluginOptions' => [
-
-                                                                              'allowClear' => true
-                                                                          ],
-                                                                      ]);
-
+                                                                          'allowClear' => true
+                                                                      ],
+                                                                  ]);
 
 
-                                            ?>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            For somebody in the past?
-                                            <?php
 
-                                                echo DatePicker::widget([
-                                                                            'name' => 'sellerCustomDate',
-                                                                            'type' => DatePicker::TYPE_BUTTON,
-                                                                            'value' => date('Y-m-d', time()),
+                                        ?>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        For somebody in the past?
+                                        <?php
 
-                                                                            'pluginOptions' => [
-                                                                                'format' => 'yyyy-mm-dd',
-                                                                                'autoclose'=>true
-                                                                            ]
-                                                                        ]);
-                                            ?>
+                                            echo DatePicker::widget([
+                                                                        'name' => 'sellerCustomDate',
+                                                                        'type' => DatePicker::TYPE_BUTTON,
+                                                                        'value' => date('Y-m-d', time()),
 
-                                     </div>
+                                                                        'pluginOptions' => [
+                                                                            'format' => 'yyyy-mm-dd',
+                                                                            'autoclose'=>true
+                                                                        ]
+                                                                    ]);
+                                        ?>
+                                    </div>
 
                                 </div>
                                 <!-- /.card-body-->
@@ -608,6 +594,8 @@ SCRIPT;
 
 
         $('#product-title').change(function () {
+            $('#product-title').val($('[type="radio"]:checked').val())
+
         $.ajax({
             url: '<?php echo Yii::$app->request->baseUrl . '/Reservations/reservations/gettimes' ?>',
             type: 'post',

@@ -12,7 +12,9 @@ use yii\widgets\Pjax;
 
 
 ?>
-
+<style>
+    .fc-widget-header:first-of-type, .fc-widget-content:first-of-type{border-bottom: 0px !important;}
+</style>
 <div class="row">
     <div class="col-12">
         <!-- interactive chart -->
@@ -52,8 +54,11 @@ use yii\widgets\Pjax;
                                 $Event->id = $newEvent->id.'###'.$dt->format('Y-m-d');
                                 $Event->title = $newEvent->user;
                                 $Event->start = $dt->format('Y-m-d');
-                                if($newEvent->title=='subscribe'){
-                                    $Event->resourceId = 'att';
+                                if($newEvent->title=='subscribe' &&$newEvent->status=='PM'){
+                                    $Event->resourceId = 'attPM';
+                                }
+                                if($newEvent->title=='subscribe' &&$newEvent->status=='AM'){
+                                    $Event->resourceId = 'attAM';
                                 }
 
                                 $Event->nonstandard = [
@@ -78,11 +83,21 @@ use yii\widgets\Pjax;
                             $events[] = $Event;
                         }
 
-
-
-
-
                     }
+                    $streetSellers=\common\models\User::getStreetSellers();
+                    foreach ($streetSellers as $index=>$seller){
+                        $Event = new \yii2fullcalendar\models\Event();
+                        $Event->id = $newEvent->id.'###'.$dt->format('Y-m-d');
+                        $Event->title =$seller->username;
+                        $Event->start = $dt->format('Y-m-d');
+                        $Event->resourceId='attEB';
+                        $events[]=$Event;
+                    }
+
+
+
+
+
                     //Testing
 
                     if(Yii::$app->user->can('streetAdmin') || Yii::$app->user->can('administrator')){
@@ -112,22 +127,26 @@ EOF;
                 ?>
                     <script>
                         function doSave(user,date,place){
+                            if(place!='attAM' && place!='attPM' && place!='attEB'){
+                                $.ajax({
+                                    url: '<?php echo Yii::$app->request->baseUrl. 'save' ?>',
+                                    type: 'post',
+                                    data: {
+                                        user: user,
+                                        date:date,
+                                        place:place,
+                                        title:'arranged',
+                                        status:'notyet',
+                                        _csrf : '<?=Yii::$app->request->getCsrfToken()?>'
+                                    },
+                                    success: function (data) {
+                                        console.log(data.search);
+                                    }
+                                });
 
-                            $.ajax({
-                                url: '<?php echo Yii::$app->request->baseUrl. 'save' ?>',
-                                type: 'post',
-                                data: {
-                                    user: user,
-                                    date:date,
-                                    place:place,
-                                    title:'arranged',
-                                    status:'notyet',
-                                    _csrf : '<?=Yii::$app->request->getCsrfToken()?>'
-                                },
-                                success: function (data) {
-                                    console.log(data.search);
-                                }
-                            });
+                            }
+
+
 
                         }
 

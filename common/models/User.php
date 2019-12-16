@@ -162,6 +162,9 @@
             }
             return $streetSellers;
         }
+
+
+
         public static function getHotelSellers(){
             $userModel = new \common\models\User();
             $allUsers = $userModel->find()->all();
@@ -177,6 +180,39 @@
                 };
             }
             return $hotelSellers;
+
+        }
+
+        public static function getAllSellers(){
+            $allUsers=User::find()->all();
+            $streetSellers=[];
+            $hotelSellers=[];
+            foreach ($allUsers as $user) {
+                $authManager = \Yii::$app->getAuthManager();
+                $hasStreetBool = $authManager->getAssignment('streetSeller', $user->id) ? true : false;
+                $hasHotelBool = $authManager->getAssignment('hotelSeller', $user->id) ? true : false;
+
+                if ($hasStreetBool) {
+                    $streetSellers[] = $user;
+
+                };
+                if ($hasHotelBool) {
+                    $hotelSellers[]  = $user;
+
+                };
+            }
+            $data=[];
+
+
+            foreach($streetSellers as $user){
+                $data[$user->id]=$user->username;
+            }
+            foreach($hotelSellers as $user){
+                $data[$user->id]=$user->username;
+            }
+            return $data;
+
+
 
         }
 

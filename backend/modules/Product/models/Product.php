@@ -188,7 +188,7 @@ class Product extends MadActiveRecord {
             [['id'], 'integer'],
             [['currency'], 'string', 'max' => 255],
             [['status'], 'string', 'max' => 255],
-            [['title'], 'string', 'max' => 255],
+            [['title','shortName','cCode'], 'string', 'max' => 255],
             [['description'], 'string', 'max' => 20000],
             [['short_description'], 'string', 'max' => 5000],
             [['thumbnail'], 'string', 'max' => 255],

@@ -5,6 +5,7 @@ namespace backend\modules\Modevent\controllers;
 use backend\modules\Modevent\models\Modevent;
 use backend\modules\Modevent\models\Workshift;
 use backend\modules\Reservations\models\Reservations;
+use common\models\User;
 use edofre\fullcalendarscheduler\models\Resource;
 use Yii;
 use backend\controllers\Controller;
@@ -43,9 +44,6 @@ class ModeventController extends ModeventCrudController {
 
 
     public function actionMywork(){
-
-
-
 
         if($workstart=Yii::$app->request->post('work'))
         {
@@ -157,8 +155,15 @@ class ModeventController extends ModeventCrudController {
             $newResource = new Resource(['id'=>$workshift->id,'title' => $workshift->place,'eventBackgroundColor' => '#17a2b8','eventClassName'=>$duration,'eventBorderColor' => $workshift->role]);
             $allResources[]=$newResource;
         }
-        $allResources[]=  new Resource(['id' => 'att', 'title' =>
-                    'Attendees']);
+
+
+
+        $allResources[]=  new Resource(['id' => 'attAM', 'title' =>
+                    'Attendees','eventClassName'=>'Attendees','eventBorderColor' => 'AM']);
+        $allResources[]=  new Resource(['id' => 'attPM', 'title' =>
+                    'Attendees','eventClassName'=>'Attendees','eventBorderColor' => 'PM']);
+        $allResources[]=  new Resource(['id' => 'attEB', 'title' =>
+                    'Everybody','eventClassName'=>'Every','eventBorderColor' => 'Body']);
 
         return $allResources;
 

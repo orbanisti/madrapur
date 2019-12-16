@@ -90,7 +90,8 @@ class TicketBlockSearchModel extends TicketBlock {
      * @return string
      */
     public function returnCurrentId() {
-        return is_string($ticket = $this->returnCurrentTicket()) ? $ticket : $ticket->ticketId;
+        return is_string($ticket = $this->returnCurrentTicket()) ? $ticket : (isset($ticket->ticketId)?
+            $ticket->ticketId : 'Ticketbook full');
     }
 
     public function returnCurrentTicket() {

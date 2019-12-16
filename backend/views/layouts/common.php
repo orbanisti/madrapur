@@ -292,7 +292,7 @@ $bundle = BackendAsset::register($this);
                 'options' => [
                  'class' => 'nav-item has-treeview'
                 ],
-                'active' => Yii::$app->controller->module->id === 'widget',
+                'active' => Yii::$app->controller->id === 'modevent',
                 'items' => [
                     [
                         'label' => Yii::t('backend', 'Overview'),
@@ -318,7 +318,7 @@ $bundle = BackendAsset::register($this);
                             '/Modevent/modevent/subscribe'
                         ],
                         'icon' => '<i class="fas fa-pen-fancy nav-icon "></i>',
-                        'active' => Yii::$app->controller->id === 'text',
+                        'active' => Yii::$app->controller->action->id=== 'subscribe',
                     ],
                     [
                         'label' => Yii::t('backend', 'Workshift'),
@@ -558,7 +558,7 @@ $bundle = BackendAsset::register($this);
                         'icon' => '<i class="fa nav-icon fa-list-alt"></i>',
                         'active' => (Yii::$app->controller->id == 'reservations') &&
                             Yii::$app->controller->action->id === 'admin',
-                        'visible' => !Yii::$app->user->can('streetSeller'),``
+                        'visible' => !Yii::$app->user->can('streetSeller'),
                     ],
 
                     [
@@ -566,33 +566,33 @@ $bundle = BackendAsset::register($this);
                         'url' => [
                             '/Reservations/reservations/create2'
                         ],
-                        'icon' =>  Icon::show('check-square', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
+                        'icon' =>  '<i class="fas fa-check-square nav-icon "></i>',
                         'active' => (Yii::$app->controller->id == 'reservations' &&
                             Yii::$app->controller->action->id === 'create2'),
 
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Register Booking'),
+                        'url' => [
+                            '/Reservations/reservations/register'
+                        ],
+                        'icon' =>  '<i class="fas fa-check-circle nav-icon "></i>',
+                        'active' => (Yii::$app->controller->id == 'reservations' &&
+                            Yii::$app->controller->action->id === 'register'),
+                        'visible'=>Yii::$app->user->can('streetAdmin')||Yii::$app->user->can('administrator')
                     ],
                     [
                         'label' => Yii::t('backend', 'Upgrade Booking'),
                         'url' => [
                             '/Reservations/reservations/upgradebooking'
                         ],
-                        'icon' =>  '<i class="fa nav-icon fa-arrow-circle-up" aria-hidden="true"></i>
+                        'icon' =>  '<i class="fas nav-icon fa-arrow-circle-up" aria-hidden="true"></i>
                     ',
                         'active' => (Yii::$app->controller->id == 'reservations' &&
                             Yii::$app->controller->action->id === 'upgrade'),
 
 
-                    ],
-                    [
-                        'label' => Yii::t('backend', 'Create (new)'),
-                        'url' => [
-                            '/Reservations/reservations/create-react'
-                        ],
-                        'icon' => '<i class="fa nav-icon fa-database"></i>',
-                        'active' => (Yii::$app->controller->id == 'reservations' &&
-                            Yii::$app->controller->action->id === 'create-react'),
 
-                        'visible' => !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller') && !Yii::$app->user->can('hotline'),
                     ],
                     [
                         'label' => Yii::t('backend', 'My Bookings'),

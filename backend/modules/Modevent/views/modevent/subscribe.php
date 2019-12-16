@@ -62,6 +62,9 @@ use yii\widgets\Pjax;
                         echo $form->field($model, 'title')->hiddeninput(['value' => 'subscribe'])
                             ->label
                         (false);
+                        echo $form->field($model,'status')->dropDownList(['AM'=>'AM','PM'=>'PM','All day'=>'All Day'])
+                            ->label
+                        (false);
 
                         echo Html::submitButton(Yii::t('backend', 'Subscribe for work'),
                                                 [
@@ -104,6 +107,9 @@ use yii\widgets\Pjax;
                                                ],
                                                [
                                                    'attribute' => 'endDate',
+                                               ],
+                                               [
+                                                   'attribute' => 'status',
                                                ],
 
                                                [

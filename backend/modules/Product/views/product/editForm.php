@@ -41,18 +41,94 @@
                     <?= Html::submitButton('Update Product', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
                 </h4>
             </div>
-            <div class="card-body">
-                <?= $form->field($model, 'isStreet')
-                    ->dropDownList(['yes' => 'yes', 'no' => 'no']);
+            <div class="card-body form-group">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- interactive chart -->
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                Basic Settings
+                                </h3>
 
-                ?>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                    </button>
+
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="container-fluid">
+                                    <form>
+                                        <div class="form-group row">
+                                            <label for="inputName" class="col-sm-1-12 col-form-label"></label>
+                                            <div class="col-lg-3">     <?= $form->field($model, 'title')->textInput(['maxlength' => true,]) ?></div>
+                                            <div class="col-lg-3">
+                                                <?= $form->field($model, 'isStreet')
+                                                    ->dropDownList(['yes' => 'yes', 'no' => 'no']);
+                                                ?>
+                                            </div>
+                                            <div class="col-lg-3"> <?= $form->field($model, 'currency')->dropDownList(array('HUF' => 'HUF', 'EUR' => 'EUR',), array('options' => array('HUF' => array('selected' => true)))); ?></div>
+                                            <div class="col-lg-3">     <?= $form->field($model, 'status')->dropDownList(array('active' => 'active', 'inactive' => 'inactive',), array('options' => array('active' => array('selected' => true)))); ?></div>
+
+                                            <div class="col-lg-3">  <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?></div>
+                                            <div class="col-lg-3"> <?= $form->field($model, 'category')->textInput(['maxlenght' => 60]) ?>
+                                            </div>
+                                            <div class="col-lg-3">  <?= $form->field($model, 'capacity')->textInput(['maxlenght' => 60]) ?>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <?= $form->field($model, 'duration')->textInput
+                                                (['maxlenght' => 60])->label('Duration (in minutes)') ?>
+
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <?= $form->field($model, 'shortName')->textInput
+                                                (['maxlenght' => 60])->label('Short Name') ?>
+                                            </div>
+
+                                            <div class="col-lg-3">
+                                                <?= $form->field($model, 'cCode')->textInput
+                                                (['maxlenght' => 60])->label('cCode') ?>
+                                            </div>
+
+                                        </div>
 
 
-                <?= $form->field($model, 'currency')->dropDownList(array('HUF' => 'HUF', 'EUR' => 'EUR',), array('options' => array('HUF' => array('selected' => true)))); ?>
-                <?= $form->field($model, 'status')->dropDownList(array('active' => 'active', 'inactive' => 'inactive',), array('options' => array('active' => array('selected' => true)))); ?>
-                <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+                                    </form>
+                                </div>
 
-                <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
+
+                            </div>
+                            <!-- /.card-body-->
+
+
+
+
+
+
+
+
+
+
+
+
+                        </div>
+
+
+                        <!-- /.card -->
+
+                    </div>
+
+                    <!-- /.col -->
+                </div>
+
+
+
+
+
+
+
+
                 <?= $form->field($model, 'description')->widget(
                     froala\froalaeditor\FroalaEditorWidget::className(), [
                     'clientOptions' => [
@@ -64,6 +140,7 @@
                     ]
                 ]
                 ) ?>
+
                 <?= $form->field($model, 'short_description')->widget(
                     froala\froalaeditor\FroalaEditorWidget::className(), [
                     'clientOptions' => [
@@ -73,14 +150,13 @@
                     ]
                 ]
                 ) ?>
-                <?= $form->field($model, 'category')->textInput(['maxlenght' => 60]) ?>
-                <?= $form->field($model, 'capacity')->textInput(['maxlenght' => 60]) ?>
-                <?= $form->field($model, 'duration')->textInput(['maxlenght' => 60]) ?><?= '(in minutes)' ?>
+
                 <?= $form->field($model, 'picture')->widget(\trntv\filekit\widget\Upload::class, [
                     'url' => [
                         'avatar-upload'
                     ]
                 ])?>
+
 
                 <?= $form->field($model, 'images')->widget(
                     FileInput::classname(), [
