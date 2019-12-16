@@ -13,6 +13,15 @@ use yii\widgets\Pjax;
 
 ?>
 <style>
+    @media print {
+        th,thead{height:150px!important;}
+        td{min-height:80px!important;}
+        [data-resource-id="attAM"],[data-resource-id="attPM"],[data-resource-id="attEB"] {
+               display:none;
+           }
+    }
+
+
     .fc-widget-header:first-of-type, .fc-widget-content:first-of-type{border-bottom: 0px !important;}
 </style>
 <div class="row">
@@ -57,9 +66,17 @@ use yii\widgets\Pjax;
                                 if($newEvent->title=='subscribe' &&$newEvent->status=='PM'){
                                     $Event->resourceId = 'attPM';
                                 }
+
                                 if($newEvent->title=='subscribe' &&$newEvent->status=='AM'){
                                     $Event->resourceId = 'attAM';
                                 }
+
+                                if($newEvent->title=='subscribe' &&$newEvent->status=='All day'){
+                                    $Event->resourceId = 'attAM';
+                                    $events[] = $Event;
+                                    $Event->resourceId = 'attPM';
+                                }
+
 
                                 $Event->nonstandard = [
                                     'field1' => 'Something I want to be included in object #1',
@@ -85,14 +102,30 @@ use yii\widgets\Pjax;
 
                     }
                     $streetSellers=\common\models\User::getStreetSellers();
-                    foreach ($streetSellers as $index=>$seller){
-                        $Event = new \yii2fullcalendar\models\Event();
-                        $Event->id = $newEvent->id.'###'.$dt->format('Y-m-d');
-                        $Event->title =$seller->username;
-                        $Event->start = $dt->format('Y-m-d');
-                        $Event->resourceId='attEB';
-                        $events[]=$Event;
+
+
+                    $begin = new DateTime(date('Y-m-d',strtotime('today')));
+
+                    $end = new DateTime(date('Y-m-d',strtotime('+7 days')));
+
+                    $interval = DateInterval::createFromDateString('1 day');
+
+                    $period = new DatePeriod($begin, $interval, $end);
+
+                    foreach ($period as $dt){
+                        foreach ($streetSellers as $index=>$seller){
+                            $Event = new \yii2fullcalendar\models\Event();
+                            $Event->id = rand().'###'.$dt->format('Y-m-d');
+                            $Event->title =$seller->username;
+                            $Event->start = $dt->format('Y-m-d');
+                            $Event->resourceId='attEB';
+                            $events[]=$Event;
+                        }
                     }
+
+
+
+
 
 
 
@@ -151,6 +184,18 @@ EOF;
                         }
 
                     </script>
+                <?php
+
+
+                    $monday=date('Y-m-d',strtotime('monday'));
+
+
+
+
+
+
+
+                ?>
                 <?= \edofre\fullcalendarscheduler\FullcalendarScheduler::widget([
                                                                                     'header'        => [
                                                                                         'left'   => 'today prev,next',
@@ -159,9 +204,9 @@ EOF;
                                                                                     ],
 
                                                                                     'clientOptions' => [
-                                                                                        'now'               => date('Y-m-d',time()),
+                                                                                        'now'               => $monday,
                                                                                         'editable'          => true, // enable draggable events
-                                                                                        'aspectRatio'       => 1.8,
+                                                                                        'aspectRatio'       => 1,
                                                                                          'plugins'=>[   'resourceDayGridPlugin' ],
                                                                                         'scrollTime'        => '00:00', // undo default 6am scrollTime
                                                                                         'defaultView'       => 'timelineThreeDays',

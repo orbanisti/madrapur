@@ -171,6 +171,7 @@ use yii\widgets\Pjax;
 
                                                                            [
                                                                                'class' => 'kartik\grid\ActionColumn',
+                                                                               'template' => '{update}{delete}',
                                                                                'buttons' => [
                                                                                    'delete' => function ($url, $model) {
                                                                                        return Html::a('<i class="fas fa-trash-alt  "></i>',
@@ -179,9 +180,7 @@ use yii\widgets\Pjax;
                                                                                                            Yii::t('yii', 'Delete'),]
                                                                                        );
                                                                                    },
-                                                                                   'update'=> function($url,$model){
-                                                                                        return null;
-                                                                                   },
+
                                                                                    'view'=> function($url,$model){
                                                                                         return null;
                                                                                    }
