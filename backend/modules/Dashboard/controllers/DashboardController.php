@@ -28,11 +28,25 @@ class DashboardController extends Controller {
 
     public function actionManager(){
         $searchmodel = new TicketBlockSearchModel();
-        $allTicketBlocks=$searchmodel->find()->andFilterWhere([
-                                                                  '=',
-                                                                  'assignedTo',
-                                                                  Yii::$app->user->id
-                                                              ])->all();
+
+        $myTicketBlocks=$searchmodel->find()->andFilterWhere([
+                                                                 '=',
+                                                                 'assignedTo',
+                                                                 Yii::$app->user->id
+                                                             ])->all();
+        $allTicketBlocks=[];
+//        if(Yii::$app->user->can('streetAdmin')){
+            $allTicketBlocks=$searchmodel->find()->all();
+//        }
+
+        $allTicketHolders=[];
+        foreach ($allTicketBlocks as $ticketBlock){
+            if(!in_array($ticketBlock->assignedTo,$allTicketHolders)){
+                $allTicketHolders[]=$ticketBlock->assignedTo;
+            }
+        }
+
+
 
 
         if ($changeTo = Yii::$app->request->get('changeTo')) {
@@ -65,7 +79,9 @@ class DashboardController extends Controller {
 
 
         return $this->render('manager',[
-            'allTicketBlocks'=>$allTicketBlocks
+            'allTicketBlocks'=>$allTicketBlocks,
+            'myTicketBlocks'=>$myTicketBlocks,
+            'allTicketHolders'=>$allTicketHolders,
 
         ]);
     }

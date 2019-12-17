@@ -732,7 +732,22 @@ $bundle = BackendAsset::register($this);
             <!-- Messages Dropdown Menu -->
 
             <!-- Notifications Dropdown Menu -->
-            <li class="nav-item dropdown">
+            <li class="nav-item">
+                <?php
+                    echo \yii\helpers\Html::a( '<i class="fa fa-arrow-left nav-link"  aria-hidden="true"></i>',
+                                               Yii::$app->request->referrer);
+                ?>
+            </li>
+            <li class="nav-item">
+
+                <?php
+                    echo Html::a('<i
+                            class="fas fa-columns"></i>','/Dashboard/dashboard/admin', [
+                                                               'class'=>'nav-link']);
+
+                ?>
+            </li>
+            <li class="nav-item dropdown" style="display: none">
                 <a class="nav-link" data-toggle="dropdown" href="#">
                     <i class="far fa-bell"></i>
                     <span class="badge badge-warning navbar-badge">15</span>
@@ -767,7 +782,7 @@ $bundle = BackendAsset::register($this);
 
                 ?>
             </li>
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown ">
                 <a class="nav-link" data-toggle="dropdown" href="#">
                     <i class="fas fa-user-cog"></i>
                     <span class="badge badge-info navbar-badge"><?=Icon::show('level-down-alt')?></span>

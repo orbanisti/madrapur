@@ -24,7 +24,7 @@
                         <!-- /.col -->
                         <section class="col-sm-4 connectedSortable ui-sortable">
 
-                            <div id="TicketWidget" class="card card-info bg-info">
+                            <div id="TicketWidget" class="card card-info bg-gradient-cyan">
                                 <div class="card-header ui-sortable-handle" style="cursor: move;">
                                     <h3 class="card-title">
                                         <i class="fas fa-chart-pie mr-1"></i>
@@ -42,31 +42,23 @@
                                         <div class=" tab-pane active">
                                             <div class="col-lg-12 ">
                                                 <div class="description-block">
-                                                    <div class="small-box bg-info ">
+                                                    <div class="small-box  ">
 
                                                         <div class="inner">
                                                             <h3><?= TicketBlock::userNextTicketId() ?>
                                                             </h3>
 
                                                             <p>Next Ticket ID</p>
-                                                            <?= Html::a(
-                                                                'Change Ticket Block <i class="fas fa-book  "></i>',
-                                                                '/Dashboard/dashboard/manager',
-                                                                [
-                                                                    'title' => Yii::t('backend', 'Login'),
-                                                                    'class' => 'btn btn-outline-light'
-                                                                ]
-                                                            )
-                                                            ?>
-                                                            <?= Html::a(
-                                                                'Skip Ticket <i class="fas fa-arrow-circle-right "></i>',
-                                                                '/Dashboard/dashboard/admin?skip-ticket=' . TicketBlock::userNextTicketId(),
-                                                                [
-                                                                    'title' => Yii::t('backend', 'Login'),
-                                                                    'class' => 'btn btn-outline-light'
-                                                                ]
-                                                            )
-                                                            ?>
+                                                            <a href="/Dashboard/dashboard/manager" class="btn
+                                                            btn-indigo text-white
+                                                             ">Manage <i class="fas fa-book  "></i></a>
+
+                                                            <a href="<?='/Dashboard/dashboard/admin?skip-ticket=' . TicketBlock::userNextTicketId()?>" class="btn
+                                                            btn-indigo text-white
+                                                             ">Skip <i class="fas fa-arrow-circle-right "></i></a>
+
+
+
                                                         </div>
 
 
@@ -89,7 +81,7 @@
                             <!-- /.description-block -->
                         </section>
                         <!-- /.col -->
-                        <div class="col-sm-4 connectedSortable ui-sortable">
+                        <div class="col-sm-4 connectedSortable ui-sortable" style="display:none">
                             <div id="reportingwidget" class="card card-info bg-info">
                                 <div class="card-header ui-sortable-handle" style="cursor: move;">
                                     <h3 class="card-title">
@@ -241,11 +233,11 @@
 
                         <div class="col-sm-4 connectedSortable ui-sortable">
 
-                            <div id="MyTransactions" class="card card-info bg-info">
+                            <div id="MyTransactions" class="card card-info bg-gradient-cyan">
                                 <div class="card-header ui-sortable-handle" style="cursor: move;">
                                     <h3 class="card-title">
                                         <i class="fas fa-chart-pie mr-1"></i>
-                                        Bookings
+                                        My Bookings - today
                                     </h3>
                                     <div class="card-tools">
 
@@ -327,7 +319,7 @@
                 </div>
             </div>
 
-            <div class="card card-primary card-outline">
+            <div class="card card-info">
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fas fa-tree  "></i>

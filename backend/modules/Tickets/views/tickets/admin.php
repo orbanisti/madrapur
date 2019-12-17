@@ -17,9 +17,6 @@
         </div>
     </div>
     <div class="card-body">
-
-
-
         <div class="tickets-admin">
             <?php
                 echo \kartik\grid\GridView::widget([

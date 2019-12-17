@@ -26,6 +26,8 @@
                 use backend\modules\Tickets\models\TicketBlock;
                 use yii\bootstrap4\Html;
 
+
+
                 foreach ($allTicketBlocks as $ticketblock):
             ?>
             <li class="item">
@@ -64,6 +66,16 @@
             <?php
                 endforeach;
             ?>
+
+            <?php
+
+
+
+            ?>
+
+
+
+
             <!-- /.item -->
 
             <!-- /.item -->
@@ -73,6 +85,7 @@
 
     <!-- /.card-footer -->
 </div>
+
 
 
 

@@ -5,11 +5,11 @@ use kartik\helpers\Html;
 use kartik\select2\Select2;
 use yii\web\JsExpression;
 use yii\web\View;
-
+\frontend\assets\MdbButtonsAsset::register($this);
 ?>
 
 
-<div class="card card-primary card-outline">
+<div class="card card-info">
     <div class="card-header">
         <h3 class="card-title">
             <i class="far fa-chart-bar"></i>
@@ -27,6 +27,10 @@ use yii\web\View;
         <div class="panel">
             <div class="panel-body">
                 <?php
+                    $defaultUser=null;
+                    if($getuser=Yii::$app->request->get('user')){
+                        $defaultUser=$getuser;
+                    }
 
                     $form = ActiveForm::begin([
                         'id' => 'add-ticket-block',
@@ -77,7 +81,9 @@ SCRIPT
                     <?= $form->field($model, 'assignedTo')->widget(Select2::class, [
                         'name' => 'assignedTo',
                         'data' => $users,
+
                         'options' => [
+                            'value' => $defaultUser,
                             'placeholder' => 'Select a user.',
                             'required' => true
                         ],
@@ -93,7 +99,7 @@ SCRIPT
                 <?= Html::submitButton(
                     Yii::t('backend', 'Add ticket block'),
                     [
-                        'class' => 'btn btn-primary btn-flat btn-block',
+                        'class' => 'btn btn-info btn-flat btn-block',
                         'name' => 'add-ticket-block-button'
                     ]
                 );
