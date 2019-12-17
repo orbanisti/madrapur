@@ -2,6 +2,7 @@
 
 namespace backend\modules\Modevent\controllers;
 
+use backend\modules\Modevent\models\Workshift;
 use Yii;
 use backend\modules\Modevent\models\Modevent;
 use backend\modules\Modevent\models\ModeventSearch;
@@ -91,7 +92,8 @@ class ModeventCrudController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            sessionSetFlashAlert('success','Successfully updated Workshift #'.$model->id.' '.$model->place);
+            return $this->redirect(['workshift', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -124,7 +126,7 @@ class ModeventCrudController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Modevent::findOne($id)) !== null) {
+        if (($model = Workshift::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

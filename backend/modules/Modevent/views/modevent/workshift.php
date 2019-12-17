@@ -21,7 +21,7 @@ use yii\widgets\Pjax;
 ?>
 
 <div class="row">
-    <div class="col-4">
+    <div class="col-lg-4 col-sm-12">
         <!-- interactive chart -->
         <div class="card card-primary card-outline">
             <div class="card-header">
@@ -139,7 +139,7 @@ use yii\widgets\Pjax;
         <!-- /.card -->
 
     </div>
-    <div class="col-8">
+    <div class="col-lg-8 col-sm-12">
         <!-- interactive chart -->
         <div class="row">
             <div class="col-12">
@@ -160,10 +160,9 @@ use yii\widgets\Pjax;
                     <div class="card-body">
                         <?php Pjax::begin(); echo GridView::widget([
                                                                        'dataProvider' => $dataProvider,
-                                                                       'filterModel' => $searchModel,
                                                                        'columns' => [
 
-                                                                           'id',
+
                                                                           'place',
                                                                           'startTime',
                                                                           'endTime',

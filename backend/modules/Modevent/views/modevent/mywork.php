@@ -27,6 +27,7 @@ use yii\widgets\Pjax;
 
                 foreach($toprint as $work) {
                     $workshift = Workshift::findOne($work->place);
+
                     if(!isset($lastDate) || $lastDate!=$work->startDate){
                         ?>
                         <div class="time-label">
