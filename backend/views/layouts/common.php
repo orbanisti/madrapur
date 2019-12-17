@@ -759,8 +759,13 @@ $bundle = BackendAsset::register($this);
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
-                            class="fas fa-th-large"></i></a>
+
+                <?php
+                    echo Html::a('<i
+                            class="fas fa-recycle"></i>','#', ['onClick'=>'window.location="'.Yii::$app->request->url.'"',
+                                                  'class'=>'nav-link']);
+
+                ?>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
