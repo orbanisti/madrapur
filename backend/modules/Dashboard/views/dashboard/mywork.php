@@ -31,7 +31,7 @@
 
                 foreach($toprint as $work) {
                     $workshift = Workshift::findOne($work->place);
-                    if(!$workshift)$workshift=new Workshift();
+                    if(!$workshift)continue;
                     if(!isset($lastDate) || $lastDate!=$work->startDate){
                         ?>
                         <div class="time-label">
