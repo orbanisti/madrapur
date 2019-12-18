@@ -367,6 +367,7 @@ HTML;
                                                           'dataProvider' => $dataProvider,
                                                           'columns' => $gridColumns,
                                                           'layout' => $layout,
+                                                          'responsiveWrap' => false,
                                                           //                        'pjax' => true,
                                                           //                        'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-all']],
                                                           'toolbar' => [

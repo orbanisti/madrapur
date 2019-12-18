@@ -731,6 +731,7 @@ $bundle = BackendAsset::register($this);
         <ul class="navbar-nav ml-auto">
             <!-- Messages Dropdown Menu -->
 
+
             <!-- Notifications Dropdown Menu -->
             <li class="nav-item">
                 <?php

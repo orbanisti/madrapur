@@ -3,7 +3,7 @@
 ?>
 
 
-<div class="card card-primary card-outline">
+<div class="card card-info ">
     <div class="card-header">
         <h3 class="card-title">
             <i class="far fa-chart-bar"></i>
@@ -34,6 +34,7 @@
                                                        'export' => [
                                                            'fontAwesome' => true,
                                                        ],
+                                                       'responsiveWrap' => false,
                                                        'bordered' => true,
                                                        'striped' => true,
                                                        'panel' => [

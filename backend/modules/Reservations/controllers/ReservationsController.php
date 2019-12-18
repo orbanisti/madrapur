@@ -44,6 +44,14 @@
          * @throws ForbiddenHttpException
          */
 
+
+        public static $bans = [
+            "admin" => [
+                "streetSeller",
+            ],
+        ];
+
+
         public function actionCreateReact($id = false) {
             if (!Yii::$app->user->can(Reservations::CREATE_BOOKING)) {
                 throw new ForbiddenHttpException('userCan\'t');
@@ -222,39 +230,15 @@
                     ],
 
                 ];
+
                 $userGrid = \kartik\grid\GridView::widget(
                     [
                         'dataProvider' => $userDataProvider,
                         'columns' => $gridColumns,
                         'pjax' => false,
                         'layout' => '{items}',
-                        'toolbar' => [
-                            [
+                        'responsiveWrap' => false,
 
-                                'options' => ['class' => 'btn-group mr-2']
-                            ],
-                            '{export}',
-                            '{toggleData}',
-                        ],
-                        'panel' => [
-                            'heading' => $today,
-
-                        ],
-                        'toggleDataContainer' => ['class' => 'btn-group mr-2'],
-                        // set export properties
-                        'export' => [
-                            'fontAwesome' => true,
-
-                        ],
-
-                    ]
-                );
-                $userGrid = \kartik\grid\GridView::widget(
-                    [
-                        'dataProvider' => $userDataProvider,
-                        'columns' => $gridColumns,
-                        'pjax' => false,
-                        'layout' => '{items}',
                         'toolbar' => [
                             [
 
@@ -277,7 +261,7 @@
                     ]
                 );
 
-                if ($user->hasRole('streetSeller')) {
+                if ($user->id=Yii::$app->user->id) {
 
                     $userList[] = '
                             <!-- interactive chart -->
@@ -692,6 +676,7 @@
             if (!Yii::$app->user->can(Reservations::ACCESS_BOOKINGS_ADMIN)) {
                 throw new ForbiddenHttpException('userCan\'t');
             }
+
 
             $searchModel = new Reservations();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -2739,11 +2724,11 @@
                                         'options'=>['id'=>'dynagrid-1']
                     ]);
 
-                if ($user->hasRole('streetSeller') && $userDataProvider->getCount()) {
+                if (($user->hasRole('streetSeller')|| $user->hasRole('streetAdmin')) && $userDataProvider->getCount()) {
 
                     $userList[] = '
                             <!-- interactive chart -->
-                            <div class="card card-info card-outline collapsed-card"  >
+                            <div class="card card-info collapsed-card"  >
                                 <div class="card-header" data-card-widget="collapse" style="cursor:pointer">
                                     <h3 class="card-title">
                                         <i class="fas fa-user  "></i>
@@ -2818,34 +2803,35 @@
 
             $passignedId = (Yii::$app->request->post('User'))['id'];
             $preservatinId = Yii::$app->request->post('reservation');
-            if ($passignedId && $preservatinId) {
-                $foundReservation = Reservations::find()->where(['id' => $preservatinId])->one();
-
-                $assignedUser = User::find()->where(['id' => $preservatinId])->one();
-                $assigneduser = User::findIdentity($passignedId);
-
-                $assignData = [];
-                $assignData['time'] = date('Y-m-d H:i:s', time());
-                $assignData['by'] = Yii::$app->getUser()->identity->username;
-                $assignData['from'] = $foundReservation->sellerName;
-                $assignData['to'] = $assigneduser->username;
-
-                if ($foundReservation) {
-                    $Reservationobject = json_decode($foundReservation->data);
-                    if (isset($Reservationobject->assignments) && is_array($Reservationobject->assignments)) {
-
-                        array_unshift($Reservationobject->assignments, $assignData);
-                    } else {
-                        $Reservationobject->assignments[] = $assignData;
-                    }
-
-                    $foundReservation->data = json_encode($Reservationobject);
-                    $foundReservation->sellerName = $assigneduser->username;
-                    $foundReservation->save(false);
-//                echo \GuzzleHttp\json_encode($foundReservation->data);
-                    Yii::$app->session->setFlash('success', Yii::t('app', 'Successful assignment<u>' . $preservatinId . '</u> reservation to ' . $foundReservation->sellerName));
-                }
-            }
+//            if ($passignedId && $preservatinId) {
+//                $foundReservation = Reservations::find()->where(['id' => $preservatinId])->one();
+//
+//                $assignedUser = User::find()->where(['id' => $preservatinId])->one();
+//                $assigneduser = User::findIdentity($passignedId);
+//
+//                $assignData = [];
+//                $assignData['time'] = date('Y-m-d H:i:s', time());
+//                $assignData['by'] = Yii::$app->getUser()->identity->username;
+//                $assignData['from'] = $foundReservation->sellerName;
+//                $assignData['to'] = $assigneduser->username;
+//
+//                if ($foundReservation) {
+//                    $Reservationobject = json_decode($foundReservation->data);
+//                    if (isset($Reservationobject->assignments) && is_array($Reservationobject->assignments)) {
+//
+//                        array_unshift($Reservationobject->assignments, $assignData);
+//                    } else {
+//                        $Reservationobject->assignments[] = $assignData;
+//                    }
+//
+//                    $foundReservation->data = json_encode($Reservationobject);
+//                    $foundReservation->sellerName = $assigneduser->username;
+//                    $foundReservation->save(false);
+////                echo \GuzzleHttp\json_encode($foundReservation->data);
+//
+//                    sessionSetFlashAlert('success',Yii::t('app', 'Successful assignment<u>' . $preservatinId . '</u> reservation to ' . $foundReservation->sellerName));
+//                }
+//            }
 
             $timingbutton = Yii::$app->request->post('timing-button') ? Yii::$app->request->post('timing-button') : null;
 

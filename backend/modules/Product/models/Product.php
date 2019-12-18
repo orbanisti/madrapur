@@ -134,6 +134,9 @@ class Product extends MadActiveRecord {
         return $prodInfo;
     }
 
+
+
+
     public static function createMultiple($modelClass, $multipleModels = []) {
         $model = new $modelClass;
         $formName = $model->formName();

@@ -30,7 +30,6 @@ class TicketsController extends Controller {
     public static $bans = [
         "admin" => [
             "streetSeller",
-            "streetAdmin"
         ],
     ];
 

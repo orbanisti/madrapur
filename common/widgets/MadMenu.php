@@ -18,6 +18,7 @@ use backend\controllers\SiteController;
 use backend\widgets\Menu;
 use Closure;
 use yii\helpers\Html;
+use yii\web\ForbiddenHttpException;
 
 class MadMenu extends Menu {
 
@@ -49,6 +50,7 @@ class MadMenu extends Menu {
 
                         if (!$visible) {
                             unset($items[$i]);
+                            
                             continue;
                         }
                     }

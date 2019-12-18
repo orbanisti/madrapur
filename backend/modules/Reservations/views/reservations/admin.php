@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
 <div class="row">
     <div class="col-12">
         <!-- interactive chart -->
-        <div class="card card-primary card-outline">
+        <div class="card card-info ">
             <div class="card-header">
                 <h3 class="card-title">
                     <i class="fas fa-chair fa-lg "></i>
@@ -130,7 +130,7 @@ use yii\widgets\ActiveForm;
 
                         #echo(json_encode($series2));
 
-                        if (Yii::$app->user->getIdentity()->username !== "manager") {
+                        if (Yii::$app->user->can('administrator')) {
 
                             echo \onmotion\apexcharts\ApexchartsWidget::widget([
 
@@ -254,6 +254,7 @@ use yii\widgets\ActiveForm;
                                                                'dataProvider' => $dataProvider,
                                                                'filterModel' => new \backend\modules\Reservations\models\Reservations(),
                                                                'columns' => $gridColumns,
+                                                               'responsiveWrap' => false,
                                                                'toolbar' => [
                                                                    [
                                                                        'options' => ['class' => 'btn-group mr-2']
@@ -275,79 +276,95 @@ use yii\widgets\ActiveForm;
 
                     </div>
 
+
                     <?php
-
-                        $form = ActiveForm::begin([
-                                                      'id' => 'date-import',
-                                                      'action' => 'admin',
-                                                      'options' => ['class' => 'modImp'],
-                                                  ]) ?>
-
-                    <style>
-                        .dateImportWidget {
-                            background-color: #eee;
-                            padding: 10px;
-                        }
-
-                        .dateImportWidget input {
-                            width: 20%;
-
-                        }
-
-
-                    </style>
-
-                    <div class="box">
-                        <div class="box-title"><h2>Importálás</h2></div>
-
-                        <?php
-
-                            # foreach ($response as $booking){
-                            if (isset($importResponse)) {
-                                // echo 'Import Státusza: ' . $importResponse . '<br/>';
-                                if (YII_ENV_DEV) {
-                                    echo($importResponse);
-                                }
-                            }
-
-                            #}
-
-                        ?>
-
-
-                        <div class="dateImportWidget">
-                            <?php
-
+                        if(Yii::$app->user->can('administrator')) {
                             ?>
-                            <?= $form->field($dateImportModel, 'dateFrom')->widget(\yii\jui\DatePicker::class, [         //'language' => 'ru',
-                                                                                                                         //'dateFormat' => 'yyyy-MM-dd',
-                            ]) ?>
-                            <?= $form->field($dateImportModel, 'dateTo')->widget(\yii\jui\DatePicker::class, [         //'language' => 'ru',
-                                                                                                                       //'dateFormat' => 'yyyy-MM-dd',
-                            ]) ?>
-                            <?= $form->field($dateImportModel, 'source')->dropDownList(array('https://budapestrivercruise.eu' => 'https://budapestrivercruise.eu', 'https://silver-line.hu' => 'https://silver-line.hu'), array('options' => array('https://budapestrivercruise.eu' => array('selected' => true)))); ?>
-
-                            <?php
-                                echo Html::submitButton(Yii::t('backend', 'Importálás'),
-                                                        [
-                                                            'class' => 'btn btn-primary btn-flat btn-block',
-                                                            'name' => 'import-button'
-                                                        ])
-
-                            ?>
+                            <div class="box">
 
 
-                            <?php ActiveForm::end() ?>
-                        </div>
-                        <div class="dateImportStatus">
-                            <strong>Log</strong>
-                            <span id="currLog">
+                                <?php
+
+                                    $form = ActiveForm::begin(
+                                        [
+                                            'id' => 'date-import',
+                                            'action' => 'admin',
+                                            'options' => ['class' => 'modImp'],
+                                        ]
+                                    ) ?>
+
+                                <style>
+                                    .dateImportWidget {
+                                        background-color: #eee;
+                                        padding: 10px;
+                                    }
+
+                                    .dateImportWidget input {
+                                        width: 20%;
+
+                                    }
+
+
+                                </style>
+                                <div class="box-title"><h2>Importálás</h2></div>
+
+                                <?php
+
+                                    # foreach ($response as $booking){
+                                    if (isset($importResponse)) {
+                                        // echo 'Import Státusza: ' . $importResponse . '<br/>';
+                                        if (YII_ENV_DEV) {
+                                            echo($importResponse);
+                                        }
+                                    }
+
+                                    #}
+
+                                ?>
+
+
+                                <div class="dateImportWidget">
+                                    <?php
+
+                                    ?>
+                                    <?= $form->field($dateImportModel, 'dateFrom')->widget(
+                                        \yii\jui\DatePicker::class, [         //'language' => 'ru',
+                                                                              //'dateFormat' => 'yyyy-MM-dd',
+                                    ]
+                                    ) ?>
+                                    <?= $form->field($dateImportModel, 'dateTo')->widget(
+                                        \yii\jui\DatePicker::class, [         //'language' => 'ru',
+                                                                              //'dateFormat' => 'yyyy-MM-dd',
+                                    ]
+                                    ) ?>
+                                    <?= $form->field($dateImportModel, 'source')->dropDownList(array('https://budapestrivercruise.eu' => 'https://budapestrivercruise.eu', 'https://silver-line.hu' => 'https://silver-line.hu'), array('options' => array('https://budapestrivercruise.eu' => array('selected' => true)))); ?>
+
+                                    <?php
+                                        echo Html::submitButton(
+                                            Yii::t('backend', 'Importálás'),
+                                            [
+                                                'class' => 'btn btn-primary btn-flat btn-block',
+                                                'name' => 'import-button'
+                                            ]
+                                        )
+
+                                    ?>
+
+
+                                    <?php ActiveForm::end() ?>
+                                </div>
+                                <div class="dateImportStatus">
+                                    <strong>Log</strong>
+                                    <span id="currLog">
 
             </span>
-                        </div>
+                                </div>
 
 
-                    </div>
+                            </div>
+                            <?php
+                        }
+                    ?>
 
 
                     <script>

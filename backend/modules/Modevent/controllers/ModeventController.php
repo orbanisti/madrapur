@@ -157,13 +157,15 @@ class ModeventController extends ModeventCrudController {
         }
 
 
+        if(!Yii::$app->user->can('streetSeller')){
+            $allResources[]=  new Resource(['id' => 'attAM', 'title' =>
+                'Attendees','eventClassName'=>'Attendees','eventBorderColor' => 'AM']);
+            $allResources[]=  new Resource(['id' => 'attPM', 'title' =>
+                'Attendees','eventClassName'=>'Attendees','eventBorderColor' => 'PM']);
+            $allResources[]=  new Resource(['id' => 'attEB', 'title' =>
+                'Everybody','eventClassName'=>'Every','eventBorderColor' => 'Body']);
+        }
 
-        $allResources[]=  new Resource(['id' => 'attAM', 'title' =>
-                    'Attendees','eventClassName'=>'Attendees','eventBorderColor' => 'AM']);
-        $allResources[]=  new Resource(['id' => 'attPM', 'title' =>
-                    'Attendees','eventClassName'=>'Attendees','eventBorderColor' => 'PM']);
-        $allResources[]=  new Resource(['id' => 'attEB', 'title' =>
-                    'Everybody','eventClassName'=>'Every','eventBorderColor' => 'Body']);
 
         return $allResources;
 

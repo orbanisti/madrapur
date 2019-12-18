@@ -4,6 +4,12 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
 
+
+    $monday=date('Y-m-d',strtotime('last monday'));
+    if(date('Y-m-d',strtotime('today'))==date('Y-m-d',strtotime('monday'))){
+        $monday=date('Y-m-d',strtotime('monday'));
+    }
+
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
@@ -104,7 +110,7 @@ use yii\widgets\Pjax;
                     $streetSellers=\common\models\User::getStreetSellers();
 
 
-                    $begin = new DateTime(date('Y-m-d',strtotime('today')));
+                    $begin = new DateTime(date('Y-m-d',strtotime($monday)));
 
                     $end = new DateTime(date('Y-m-d',strtotime('+7 days')));
 
@@ -187,7 +193,6 @@ EOF;
                 <?php
 
 
-                    $monday=date('Y-m-d',strtotime('monday'));
 
 
 
