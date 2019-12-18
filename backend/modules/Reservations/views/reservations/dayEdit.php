@@ -166,9 +166,17 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                     'label'=>'',
                                     'value'=>function($model){
+                                            $returned='';
+
+                                            $prodId=Yii::$app->request->get('prodId');
+                                            $product=\backend\modules\Product\models\Product::findOne($prodId);
+                                            if(isset($product->cCode)){
+                                                $returned.=$product->cCode.' ';
+                                            }
+
+
                                             $data=json_decode($model->data);
                                             if(isset($data->addons)){
-                                                $returned='';
                                                 foreach($data->addons as $addonId)
                                                 {
                                                     $addon=\backend\modules\Product\models\AddOn::findOne($addonId);
@@ -176,15 +184,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                                 }
 
-
-
-                                                return $returned;
-
                                             }
-                                            else{
-                                                return '';
+                                            return $returned;
 
-                                            }
+
 
 
 
