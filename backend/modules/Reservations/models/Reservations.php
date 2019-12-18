@@ -388,6 +388,9 @@ class Reservations extends MadActiveRecord {
         return $dataProvider;
 
     }
+
+
+
     public function searchMytransactions($params, $searchdate=NULL, $currency=NULL) {
         $currentUserId = \Yii::$app->user->getId();
 

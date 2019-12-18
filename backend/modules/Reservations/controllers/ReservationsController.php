@@ -2854,6 +2854,33 @@
             );
         }
 
+        public function actionFreshcheck(){
+            if(Yii::$app->request->isAjax){
+                \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                $response=[];
+                $data=Yii::$app->request->post();
+                $searchModel=new Reservations();
+                $currentProductId=$data['prodId'];
+                $sourcesRows = ProductSource::getProductSourceIds($currentProductId);
+
+                $dpData=$data['dpdata'];
+
+                foreach($dpData as $time=>$counter){
+                    $tmpdataProvider = $searchModel->searchDayTime(Yii::$app->request->queryParams, $data['bookingDate'],
+                                                                   $sourcesRows,
+                                                                   $currentProductId, $time);
+                    $response[$time]="$tmpdataProvider->count";
+                }
+
+
+
+
+
+
+                return $response;
+            }
+        }
+
         /**
          * @return array
          */

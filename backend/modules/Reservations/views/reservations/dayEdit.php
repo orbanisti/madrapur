@@ -38,8 +38,85 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                 ]);
     yii\bootstrap4\Modal::end();
-    Pjax::begin();
+//    $this->registerJs('
+//    setInterval(function(){
+//         $.pjax.reload({container:"#everything"});
+//    }, 2000);', \yii\web\VIEW::POS_HEAD);
+
+    $allHours=[];
+    foreach($allDataProviders as $index=>$dataProvider){
+        $allHours[]=$index;
+    }
+
+
 ?>
+
+
+<script>
+    var allHours =<?=json_encode($allHours)?>;
+    var currentDate=<?=json_encode($currentDay)?>;
+
+    function gatherDataproviderData(){
+        var dpData=new Object();
+
+
+        allHours.forEach(function (item,index) {
+            var hourname=item.replace(/:/gi,'');
+            dpData[item]=$('#d'+hourname).val();
+        });
+
+        return dpData;
+
+
+    }
+
+
+
+    setInterval(function () {
+
+        $.ajax({
+            url: '<?php echo Yii::$app->request->baseUrl . '/Reservations/reservations/freshcheck' ?>',
+            type: 'post',
+            data: {
+                dpdata: gatherDataproviderData(),
+                prodId:<?=Yii::$app->request->get('prodId')?>,
+                bookingDate:currentDate
+            },
+            success: function (data) {
+                // console.log('response',data);
+                var oldDataprovider=gatherDataproviderData();
+                // oldDataprovider.forEach(function (item,index) {
+                //     console.log('item',item)
+                // });
+                var keys=Object.keys(oldDataprovider)
+                keys.forEach(function (item,index) {
+
+                    if(oldDataprovider[item]!=data[item]){
+
+                        var refreshablecontainer="#c"+item.replace(/:/gi,'');
+
+                        $.pjax.reload({container:refreshablecontainer});
+                    }
+                });
+
+
+
+
+
+
+
+
+
+            }
+        });
+    }, 2000);
+
+
+
+
+</script>
+
+
 
 
 
@@ -328,33 +405,6 @@ HTML;
                                     }
                                 }
 
-                                $form = ActiveForm::begin(['id' => 'day-widget','options' => ['data-pjax' => true ]]);
-                                $buttonsHTML='';
-                                ?>
-
-
-                    <?php
-
-                                foreach ($timesHours as $time) {
-
-                                   $buttonsHTML.=Html::submitButton(Yii::t('backend', $time),
-                                                              [
-                                                                  'class' => 'btn '.($timingbutton==$time ? 'bg-teal' :
-                                                                          'bg-info'),
-                                                                  'name' => 'timing-button',
-                                                                  'value' => $time
-                                                              ]);
-
-
-
-                                }
-                                    $buttonsHTML.=Html::submitButton(Yii::t('backend', 'All Day'),
-                                                            [
-                                                                'class' => 'btn bg-teal btn-flat',
-                                                                'name' => 'timing-button',
-                                                                'value' => 'allday'
-                                                            ]);
-
 
                     ?>
 
@@ -364,43 +414,72 @@ HTML;
                             <!--h4>Total places bought for this day: $takenChairsCount</br></h4-->
                             <h5>Total capacity for this product: $currentProduct->capacity</br></h5>";
                                 $prodId=Yii::$app->request->get('prodId');
+                                    Pjax::begin(['id' => 'everything']);
+                                    $form = ActiveForm::begin(['id' => 'day-widget','options' => ['data-pjax' => true ]]);
+                                    $buttonsHTML='';
 
-                                echo GridView::widget([
-                                                          'id' => 'wholeday',
-                                                          'dataProvider' => $dataProvider,
-                                                          'columns' => $gridColumns,
-                                                          'layout' => $layout,
-                                                          'responsiveWrap' => false,
-                                                          //                        'pjax' => true,
-                                                          //                        'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-all']],
-                                                          'toolbar' => [
-                                                              [
-                                                                  'content' =>
-                                                                      Html::a(Yii::t('app', ' {modelClass}', [
-                                                                          'modelClass' => '<i class="fa fa-pencil-alt"></i>',
-                                                                      ]), ['/Reservations/reservations/createfortime?prodId='.$prodId.'&date='.Yii::$app->request->get('date').'&time='.$timingbutton,
-                                                                          ], ['class' => 'btn btn-info',
+                                    foreach ($timesHours as $time) {
+
+                                        $buttonsHTML.=Html::submitButton(Yii::t('backend', $time),
+                                                                         [
+                                                                             'class' => 'btn '.($timingbutton==$time ? 'bg-teal' :
+                                                                                     'bg-info'),
+                                                                             'name' => 'timing-button',
+                                                                             'value' => $time
+                                                                         ]);
+
+
+
+                                    }
+                                    $buttonsHTML.=Html::submitButton(Yii::t('backend', 'All Day'),
+                                                                     [
+                                                                         'class' => 'btn bg-teal btn-flat',
+                                                                         'name' => 'timing-button',
+                                                                         'value' => 'allday'
+                                                                     ]);
+
+                                    ActiveForm::end();
+
+
+                                foreach ($allDataProviders as $hour=>$dataProvider){
+
+                                    $griView= GridView::widget([
+                                                                   'id' => 'wholeday',
+                                                                   'dataProvider' => $dataProvider,
+                                                                   'columns' => $gridColumns,
+                                                                   'layout' => $layout,
+                                                                   'responsiveWrap' => false,
+                                                                                           'pjax' => true,
+                                                                                           'pjaxSettings' => ['options' => ['id' => 'c'.str_replace(':','',$hour)]],
+                                                                   'toolbar' => [
+                                                                       [
+                                                                           'content' =>
+                                                                               Html::a(Yii::t('app', ' {modelClass}', [
+                                                                                   'modelClass' => '<i class="fa fa-pencil-alt"></i>',
+                                                                               ]), ['/Reservations/reservations/createfortime?prodId='.$prodId.'&date='.Yii::$app->request->get('date').'&time='.$timingbutton,
+                                                                                       ], ['class' => 'btn btn-info',
                                                                                            'id' => 'popupModal']),
 
-                                                                  'options' => ['class' => 'btn-group mr-2']
-                                                              ],
-                                                              '{export}',
-                                                          ],
-                                                          // set export properties
+                                                                           'options' => ['class' => 'btn-group mr-2']
+                                                                       ],
+                                                                       '{export}',
+                                                                   ],
+                                                                   // set export properties
 
-                                                          'bordered' => true,
-                                                          'striped' => true,
-                                                          'panel' => [
-                                                              'heading' => "
+                                                                   'bordered' => true,
+                                                                   'striped' => true,
+                                                                   'panel' => [
+                                                                       'heading' => "$hour"."<input type='hidden' id='d".str_replace(':','',$hour)."' value='$dataProvider->count'>",
 
-                                <div class=\"card-tools float-left\">".$buttonsHTML."</div></div>",
+                                                                       'footer' =>  $timingbutton&&($timingbutton!='allday') ?
+                                                                           $gridFooter : null,
+                                                                   ],
 
-                                                              'footer' =>  $timingbutton&&($timingbutton!='allday') ?
-                                                              $gridFooter : null,
-                                                          ],
+                                                               ]);
+                                    echo $griView;
+                                }
 
-                                                      ]);
-                                ActiveForm::end();
+
 
                                 Pjax::end();
 
