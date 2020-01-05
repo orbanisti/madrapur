@@ -33,31 +33,6 @@
     <!-- /.col -->
 </div>
 <!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-messaging.js"></script>
-
-
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
-<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-analytics.js"></script>
-
-<script>
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-        apiKey: "AIzaSyB-94v6fBOnYn5N9uwKRIpRpM-QOMulfTY",
-        authDomain: "madapp-261810.firebaseapp.com",
-        databaseURL: "https://madapp-261810.firebaseio.com",
-        projectId: "madapp-261810",
-        storageBucket: "madapp-261810.appspot.com",
-        messagingSenderId: "166074247690",
-        appId: "1:166074247690:web:d17ac61d41c9577ce98df3",
-        measurementId: "G-NELQFX961G"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
-</script>
-<script src="/js/firebase-messaging-sw.js?ver=<?=rand()?>"></script>
 
 <?php
 
