@@ -14,16 +14,16 @@ $icons = [
 <div class="row">
 	<div class="col-md-12">
         <?php if ($dataProvider->count > 0): ?>
-            <ul class="timeline">
+        <div class="timeline">
                 <?php foreach($dataProvider->getModels() as $model): ?>
                     <?php if(!isset($date) || $date != Yii::$app->formatter->asDate($model->created_at)): ?>
                         <!-- timeline time label -->
-			<li class="time-label"><span class="bg-blue">
+			<div class="time-label"><span class="bg-blue">
                                 <?php echo Yii::$app->formatter->asDate($model->created_at) ?>
-                            </span></li>
+                            </span></div>
                         <?php $date = Yii::$app->formatter->asDate($model->created_at) ?>
                     <?php endif; ?>
-                    <li>
+                    <div>
                         <?php
                 try {
                     $viewFile = sprintf('%s/%s', $model->category, $model->event);
@@ -36,10 +36,10 @@ $icons = [
                     ]);
                 }
                 ?>
-                    </li>
+                    </div>
                 <?php endforeach; ?>
                 <li><i class="fa fa-clock-o"> </i></li>
-		</ul>
+		</div>
         <?php else: ?>
             <?php echo Yii::t('backend', 'No events found') ?>
         <?php endif; ?>
@@ -47,7 +47,7 @@ $icons = [
 	<div class="col-md-12 text-center">
         <?php
 
-echo \yii\widgets\LinkPager::widget([
+echo \yii\bootstrap4\LinkPager::widget([
             'pagination' => $dataProvider->pagination,
             'options' => [
                 'class' => 'pagination'

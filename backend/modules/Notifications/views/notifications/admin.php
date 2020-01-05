@@ -58,3 +58,7 @@
     firebase.analytics();
 </script>
 <script src="/js/firebase-messaging-sw.js?ver=<?=rand()?>"></script>
+
+<?php
+
+?>

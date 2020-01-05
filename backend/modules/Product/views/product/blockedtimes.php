@@ -44,102 +44,109 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <div class="products-index">
 
-                    <div class="border border-secondary rounded p-1 panel panel-default row">
+                    <div class=" rounded p-1 panel panel-default ">
 
-                        <div class="panel-body col-lg-3">
-                            <?php
-                                $form = ActiveForm::begin([
-                                                              'id' => 'product-edit',
-                                                              'action' => 'blockedtimes?prodId=' . $currentProduct->id,
-                                                              'options' => ['class' => 'product-edit', 'enctype' => 'multipart/form-data'],
+                        <div class="panel-body row ">
 
-                                                          ]);
-                                echo $form->field($model, 'date')->widget(DateTimePicker::class, [
-                                    //'id' => 'products-blockoutsdates',
-
-                                    'type' => DateTimePicker::TYPE_INLINE,
-                                    'pluginOptions' => [
-                                        'format' => 'yyyy-mm-dd hh:ii',
-                                        'autoclose' => true,
-                                    ]
-                                ]);
-
-
-
-                            ?>
-
-
-                            <div class="form-group">
-                                <br/>
-                                <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => 'btn btn-info']) ?>
-                            </div>
-                            <?php ActiveForm::end(); ?>
-
-                        </div>
-                        <div class="border border-secondary rounded p-1 panel panel-default col-lg-3">
-                            <div class="panel-heading">
-                                <h4>Future Blockouts</h4>
-                            </div>
-                            <div class="panel-body">
+                            <div class="col-lg-3">
                                 <?php
+                                    $form = ActiveForm::begin([
+                                                                  'id' => 'product-edit',
+                                                                  'action' => 'blockedtimes?prodId=' . $currentProduct->id,
+                                                                  'options' => ['class' => 'product-edit', 'enctype' => 'multipart/form-data'],
 
-                                    $gridColumns = [
+                                                              ]);
+                                    echo $form->field($model, 'date')->widget(DateTimePicker::class, [
+                                        //'id' => 'products-blockoutsdates',
 
-                                        [
-                                                'attribute'=>'id',
-                                                'visible'=>false,
-                                        ],     [
-                                                'attribute'=>'product_id',
-                                                'visible'=>false,
-                                        ],
-                                     
-                                        'date',
-                                        [
-                                            'class' => 'kartik\grid\ActionColumn',
-                                            'template' => '{delete}',
+                                        'type' => DateTimePicker::TYPE_INLINE,
+                                        'pluginOptions' => [
+                                            'format' => 'yyyy-mm-dd hh:ii',
+                                            'autoclose' => true,
+                                        ]
+                                    ]);
 
-                                            'urlCreator' => function ($action, $model, $key, $index) { return '?' . $action . '=' . $model->id . '&prodId=' . $model->product_id; },
-                                            'viewOptions' => ['title' => 'This will launch the book details page. Disabled for this demo!', 'data-toggle' => 'tooltip'],
-                                            'deleteOptions' => ['title' => 'This will launch the book delete action. Disabled for this demo!', 'data-toggle' => 'tooltip'],
 
-                                        ],
-
-                                    ];
-
-                                    echo \kartik\grid\GridView::widget([
-                                                                           'id' => 'kv-grid-demo',
-                                                                           'dataProvider' => $dataProvider,
-                                                                           'columns' => $gridColumns, // check the configuration for grid columns by clicking button above
-                                                                           'containerOptions' => ['style' => 'overflow: auto'], // only set when $responsive = false
-                                                                           'headerRowOptions' => ['class' => 'kartik-sheet-style'],
-                                                                           'filterRowOptions' => ['class' => 'kartik-sheet-style'],
-                                                                           'pjax' => true, // pjax is set to always true for this demo
-                                                                           // set your toolbar
-                                                                           // set export properties
-                                                                           'export' => [
-                                                                               'fontAwesome' => true
-                                                                           ],
-                                                                           // parameters from the demo form
-                                                                           'bordered' => true,
-                                                                           'striped' => true,
-                                                                           'condensed' => true,
-                                                                           'responsive' => true,
-                                                                           'showPageSummary' => true,
-
-                                                                           'persistResize' => false,
-
-                                                                           'itemLabelSingle' => 'timeblock',
-                                                                           'itemLabelPlural' => 'timeblocks',
-
-                                                                       ]);
 
                                 ?>
-
+                                <div class="form-group">
+                                    <br/>
+                                    <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => 'btn btn-info']) ?>
+                                </div>
+                                <?php ActiveForm::end(); ?>
                             </div>
+                            <div class="col-lg-6">
+                                <div class="border border-secondary rounded p-1 panel-body panel-default ">
+                                    <div class="panel-heading">
+                                        <h4>Future Blockouts</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <?php
+
+                                            $gridColumns = [
+
+                                                [
+                                                    'attribute'=>'id',
+                                                    'visible'=>false,
+                                                ],     [
+                                                    'attribute'=>'product_id',
+                                                    'visible'=>false,
+                                                ],
+
+                                                'date',
+                                                [
+                                                    'class' => 'kartik\grid\ActionColumn',
+                                                    'template' => '{delete}',
+
+                                                    'urlCreator' => function ($action, $model, $key, $index) { return '?' . $action . '=' . $model->id . '&prodId=' . $model->product_id; },
+                                                    'viewOptions' => ['title' => 'This will launch the book details page. Disabled for this demo!', 'data-toggle' => 'tooltip'],
+                                                    'deleteOptions' => ['title' => 'This will launch the book delete action. Disabled for this demo!', 'data-toggle' => 'tooltip'],
+
+                                                ],
+
+                                            ];
+
+                                            echo \kartik\grid\GridView::widget([
+                                                                                   'id' => 'kv-grid-demo',
+                                                                                   'dataProvider' => $dataProvider,
+                                                                                   'columns' => $gridColumns, // check the configuration for grid columns by clicking button above
+                                                                                   'containerOptions' => ['style' => 'overflow: auto'], // only set when $responsive = false
+                                                                                   'headerRowOptions' => ['class' => 'kartik-sheet-style'],
+                                                                                   'filterRowOptions' => ['class' => 'kartik-sheet-style'],
+                                                                                   'pjax' => true, // pjax is set to always true for this demo
+                                                                                   // set your toolbar
+                                                                                   // set export properties
+                                                                                   'export' => [
+                                                                                       'fontAwesome' => true
+                                                                                   ],
+                                                                                   // parameters from the demo form
+                                                                                   'bordered' => true,
+                                                                                   'striped' => true,
+                                                                                   'condensed' => true,
+                                                                                   'responsive' => true,
+                                                                                   'showPageSummary' => true,
+
+                                                                                   'persistResize' => false,
+
+                                                                                   'itemLabelSingle' => 'timeblock',
+                                                                                   'itemLabelPlural' => 'timeblocks',
+
+                                                                               ]);
+
+                                        ?>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
 
                         </div>
 
                     </div>
+
+
                 </div>
 
                

@@ -1543,6 +1543,10 @@
 //                            ]
 //                        )
 //                    );
+
+
+
+
                 } else {
                     $updateResponse = '<span style="color:red">Reservation Failed</span>';
                     //show an error message
