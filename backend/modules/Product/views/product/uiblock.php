@@ -26,7 +26,7 @@ use yii\widgets\ActiveForm;
                 console.log('The user subscription state is now:', isSubscribed);
                 OneSignal.sendTags({
                     "page_url": window.location.href,
-                    "user": "<?=Yii::$app->user->username?>",
+                    "user": "<?=Yii::$app->user->getIdentity()->username?>",
                     "page": "blocking",
                 }).then(function(tagsSent) {
                     // Callback called when tags have finished sending
