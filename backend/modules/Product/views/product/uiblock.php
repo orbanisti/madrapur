@@ -8,7 +8,34 @@ use yii\web\View;
 use yii\widgets\ActiveForm;
 
 ?>
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+<script>
+    var OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+        OneSignal.init({
+            appId: "a8ec6648-23b1-4707-8d5c-77f99eeb0a18",
+            notifyButton: {
+                enable: true,
+            },
+        });
+    });
 
+    OneSignal.push(function() {
+        OneSignal.on('subscriptionChange', function(isSubscribed) {
+            if (isSubscribed === true) {
+                console.log('The user subscription state is now:', isSubscribed);
+                OneSignal.sendTags({
+                    "page_url": window.location.href,
+                    "user": "<?=Yii::$app->user->username?>",
+                    "page": "blocking",
+                }).then(function(tagsSent) {
+                    // Callback called when tags have finished sending
+                    console.log(tagsSent);
+                });
+            }
+        });
+    });
+</script>
     <div class="row">
         <div class="col-lg-12">
 

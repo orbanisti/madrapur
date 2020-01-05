@@ -159,6 +159,30 @@ $bundle = BackendAsset::register($this);
                 'active' => Yii::$app->controller->id === 'tickets',
             ],
 
+            [
+                'label' => Yii::t('backend', 'Settings'),
+                'url' => [
+                    '/'
+                ],
+                'options' => [
+                 'class' => 'nav-item has-treeview'
+                ],
+                'icon' =>'<i class="fas fa-cogs nav-icon "></i>',
+                'items' => [
+                    [
+                        'label' => Yii::t('backend', 'Notifications'),
+                        'url' => [
+                            '/Notifications/notifications/admin'
+                        ],
+                        'icon' => '<i class="fa fa-bell nav-icon" aria-hidden="true"></i>',
+                        'active' => Yii::$app->controller->id === 'notifications' &&
+                            Yii::$app->controller->action->id === 'admin',
+                    ],
+                ],
+                'active' => Yii::$app->controller->id === 'notifications',
+                'visible'=>Yii::$app->user->can('administrator')
+            ],
+
             // CONTENT
             [
                 'label' => Yii::t('backend', 'Content'),

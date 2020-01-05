@@ -24,6 +24,9 @@ $config = [
         ],
     ],
     'modules' => [
+        'Notifications' => [
+            'class' => backend\modules\Notifications\Module::class,
+        ],
         'dynagrid'=> [
             'class'=>'\kartik\dynagrid\Module',
             // other module settings
