@@ -3,48 +3,26 @@ namespace common\commands;
 
 use backend\modules\Modmail\models\Modmail;
 use trntv\bus\interfaces\SelfHandlingCommand;
+use Yii;
 use yii\base\BaseObject;
 use yii\swiftmailer\Message;
 
-/**
- *
- * @author Eugene Terentev <eugene@terentev.net>
- */
 class SendBlockingNotification extends BaseObject implements SelfHandlingCommand {
 
-    /**
-     *
-     * @var mixed
-     */
-    public $from;
 
-    /**
-     *
-     * @var mixed
-     */
-    public $to;
+    public $productName;
 
-    /**
-     *
-     * @var string
-     */
-    public $subject;
 
-    /**
-     *
-     * @var string
-     */
-    public $type;
+    public $timeBlockDate;
 
-    /**
-     *
-     *
-     * @param \common\commands\SendEmailCommand $command
-     * @return bool
-     */
     public function handle($command) {
+        $appId= Yii::$app->keyStorage->get('onesignal.appId');
+        $apiKey= Yii::$app->keyStorage->get('onesignal.apiKey');
 
-
+        if(!$appId || !$apiKey){
+            sessionSetFlashAlert('warning','Notification Api not set, please contact the webmaster');
+            return 0;
+        }
         $username=\Yii::$app->user->getIdentity()->username;
 
         $content = array(
@@ -52,7 +30,7 @@ class SendBlockingNotification extends BaseObject implements SelfHandlingCommand
         );
 
         $fields = array(
-            'app_id' => "a8ec6648-23b1-4707-8d5c-77f99eeb0a18",
+            'app_id' => $apiKey,
             'included_segments' => ['blocking'],
             'data' => array("foo" => "bar"),
             'contents' => $content
@@ -62,10 +40,12 @@ class SendBlockingNotification extends BaseObject implements SelfHandlingCommand
         print("\nJSON sent:\n");
         print($fields);
 
+
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://onesignal.com/api/v1/notifications");
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json; charset=utf-8',
-                                                   'Authorization: Basic ZDAwMzM5NGItMjdmYy00YTA4LWI2NDItNTdlNWJhY2Q4OGQ2'));
+                                                   'Authorization: Basic '.$apiKey));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
         curl_setopt($ch, CURLOPT_POST, TRUE);

@@ -63,6 +63,14 @@
                          'label' => Yii::t('backend', 'This is the Id of EUR Simplepay merchant'),
 
                      ],
+                     'onesignal.appId' => [
+                         'label' => Yii::t('backend', 'This is the oneSignal appId'),
+
+                     ],
+                     'onesignal.apiKey' => [
+                         'label' => Yii::t('backend', 'This is the oneSignal apiKey'),
+
+                     ],
                     ];
                 $allOptions;
                 foreach ($adminOptions as $key => $option) {
