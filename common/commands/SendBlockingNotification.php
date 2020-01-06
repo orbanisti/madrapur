@@ -30,15 +30,14 @@ class SendBlockingNotification extends BaseObject implements SelfHandlingCommand
         );
 
         $fields = array(
-            'app_id' => $apiKey,
+            'app_id' => $appId,
             'included_segments' => ['blocking'],
             'data' => array("foo" => "bar"),
             'contents' => $content
         );
 
         $fields = json_encode($fields);
-        print("\nJSON sent:\n");
-        print($fields);
+
 
 
 
