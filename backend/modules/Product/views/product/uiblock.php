@@ -19,6 +19,7 @@ use yii\widgets\ActiveForm;
             },
         });
     });
+    OneSignal.showNativePrompt();
 
     OneSignal.push(function() {
         OneSignal.on('subscriptionChange', function(isSubscribed) {
