@@ -17,6 +17,7 @@ use backend\modules\Product\models\ProductSource;
 use backend\modules\Product\models\ProductTime;
 use backend\modules\Product\models\ProductUpdate;
 use backend\modules\Reservations\models\Reservations;
+use common\commands\SendBlockingNotification;
 use common\models\User;
 use Intervention\Image\ImageManagerStatic;
 use kartik\grid\EditableColumnAction;
@@ -1031,7 +1032,7 @@ class ProductController extends Controller {
 
                 $values2 = [
                     'from' => 'info@budapestrivercruise.co.uk',
-                    'to' => 'web@silver-line.hu',
+                    'to' => 'orbanisti94@gmail.com',
                     'subject' => 'New timeBlock on ' . $_SERVER['HTTP_HOST'] . ' ' . $blockedOn . ' by ' . $currentUser,
                     'date' => date('Y-m-d H:i'),
                     'type' => 'new timeBlock',
@@ -1039,7 +1040,15 @@ class ProductController extends Controller {
                     'body' => $txt
 
                 ];
+                Yii::$app->commandBus->handle(
+                    new SendBlockingNotification(
+                        [
+                            'productName' => $productName,
+                            'timeBlockDate' => $timeBlockDate
 
+                        ]
+                    )
+                );
                 //the 2 above go together
 
                 $headers = "From: " . $values2['from'] . "\r\n";
