@@ -68,7 +68,11 @@ class LoginForm extends Model {
         if (! $this->hasErrors()) {
             $user = $this->getUser();
             if (! $user || ! $user->validatePassword($this->password)) {
-                $this->addError('password', Yii::t('backend', 'Incorrect username or password.'));
+               return false;
+
+            }
+            else{
+                return true;
             }
         }
     }
@@ -101,6 +105,9 @@ class LoginForm extends Model {
      * @throws ForbiddenHttpException
      */
     public function login() {
+        if(!$this->validatePassword()){
+            return false;
+        }
 
         $duration = $this->rememberMe ? Time::SECONDS_IN_A_MONTH : 0;
         if($this->getUser()===null){
@@ -108,6 +115,9 @@ class LoginForm extends Model {
             return false;
 
         }
+
+
+
         if (Yii::$app->user->login($this->getUser(), $duration)) {
             if (! Yii::$app->user->can('loginToBackend')) {
                 Yii::$app->user->logout();

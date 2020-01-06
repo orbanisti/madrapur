@@ -1032,7 +1032,7 @@ class ProductController extends Controller {
 
                 $values2 = [
                     'from' => 'info@budapestrivercruise.co.uk',
-                    'to' => 'orbanisti94@gmail.com',
+                    'to' => 'web@silver-line.hu',
                     'subject' => 'New timeBlock on ' . $_SERVER['HTTP_HOST'] . ' ' . $blockedOn . ' by ' . $currentUser,
                     'date' => date('Y-m-d H:i'),
                     'type' => 'new timeBlock',
