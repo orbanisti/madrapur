@@ -49,8 +49,8 @@ use yii\widgets\Pjax;
         popupWin.document.write(toPrint.innerHTML);
         popupWin.document.write('</html>');
         popupWin.document.close();
+        setTimeout(function(){popupWin.print() }, 1000);
 
-        setTimeout(popupWin.print(), 20000);
     }
 </script>
 <style>
@@ -103,7 +103,7 @@ use yii\widgets\Pjax;
             </div>
             <div class="card-body">
                 <button type="button" class="btn btn-info"
-                        data-card-widget="collapse"><i
+                      ><i
                             class="fas fa-print" onClick="printPreview()"></i></button>
                 <?php
                     $events = array();
