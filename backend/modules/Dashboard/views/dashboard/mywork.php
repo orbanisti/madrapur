@@ -15,7 +15,7 @@
  */
 
     $toprint=Modevent::find()->andFilterWhere(['=','user',Yii::$app->user->getIdentity()->username])->andFilterWhere
-    (['=','startDate',$date])->andWhere('`title`=\'arranged\'')->orderBy('startDate');
+    (['>=','startDate',$date])->andWhere('`title`=\'arranged\'')->orderBy('startDate');
 
 
 

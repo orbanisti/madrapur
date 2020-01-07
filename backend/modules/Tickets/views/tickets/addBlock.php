@@ -5,7 +5,7 @@ use kartik\helpers\Html;
 use kartik\select2\Select2;
 use yii\web\JsExpression;
 use yii\web\View;
-\frontend\assets\MdbButtonsAsset::register($this);
+//\frontend\assets\MdbButtonsAsset::register($this);
 ?>
 
 
