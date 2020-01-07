@@ -19,7 +19,7 @@ use yii\widgets\Pjax;
 <div class="row">
     <div class="col-12">
         <!-- interactive chart -->
-        <div class="card card-primary card-outline">
+        <div class="card card-info">
             <div class="card-header">
                 <h3 class="card-title">
                     <i class="fas fa-calendar-alt fa-fw "></i>
@@ -68,7 +68,7 @@ use yii\widgets\Pjax;
 
                         echo Html::submitButton(Yii::t('backend', 'Subscribe for work'),
                                                 [
-                                                    'class' => 'btn btn-primary btn-flat',
+                                                    'class' => 'btn btn-info btn-flat',
                                                     'name' => 'blocking-button',
                                                     'value' => 'dayBlocking'
                                                 ]);
@@ -79,7 +79,7 @@ use yii\widgets\Pjax;
                <div class="row">
                    <div class="col-12">
                        <!-- interactive chart -->
-                       <div class="card card-primary card-outline">
+                       <div class="card card-info ">
                            <div class="card-header">
                                <h3 class="card-title">
                                    My Subscriptions for Work

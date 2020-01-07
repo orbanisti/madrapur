@@ -147,7 +147,7 @@ $bundle = BackendAsset::register($this);
                         'visible' => Yii::$app->user->can('administrator')  || Yii::$app->user->can('streetAdmin'),
                     ],
                     [
-                        'label' => Yii::t('backend', 'View assigned blocks'),
+                        'label' => Yii::t('backend', 'My Tickets'),
                         'url' => [
                             '/Dashboard/dashboard/manager'
                         ],

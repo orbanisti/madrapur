@@ -18,10 +18,64 @@ use yii\widgets\Pjax;
 
 
 ?>
+<script>
+    function printPreview() {
+        var headerElements = document.getElementsByClassName('fc-header');//.style.display = 'none';
+        for(var i = 0, length = headerElements.length; i < length; i++) {
+            headerElements[i].style.display = 'none';
+        }
+        var toPrint = document.getElementById('calendar').cloneNode(true);
+
+        for(var i = 0, length = headerElements.length; i < length; i++) {
+            headerElements[i].style.display = '';
+        }
+
+        var linkElements = document.getElementsByTagName('link');
+        var link = '';
+        for(var i = 0, length = linkElements.length; i < length; i++) {
+            link = link + linkElements[i].outerHTML;
+        }
+
+        var styleElements = document.getElementsByTagName('style');
+        var styles = '';
+        for(var i = 0, length = styleElements.length; i < length; i++) {
+            styles = styles + styleElements[i].innerHTML;
+        }
+
+        var popupWin = window.open('', '_blank');
+        popupWin.document.open();
+        popupWin.document.write('<html><title>Schedule Preview</title>'+link
+            +'<style>'+styles+'</style></head><body">')
+        popupWin.document.write(toPrint.innerHTML);
+        popupWin.document.write('</html>');
+        popupWin.document.close();
+
+        setTimeout(popupWin.print(), 20000);
+    }
+</script>
 <style>
+    .fc-license-message{
+        display: none !important;
+    }
+
     @media print {
+
+        div.fc-license-message{
+            display: none !important;
+        }
+        .fc-content {
+            border-top: 1px solid lightgray !important;
+        }
+
+
         th,thead{height:150px!important;}
-        td{min-height:80px!important;}
+
+        body, html, #wrapper {
+            width: 100%;
+        }
+        div {
+            overflow: visible !important;
+        }
         [data-resource-id="attAM"],[data-resource-id="attPM"],[data-resource-id="attEB"] {
                display:none;
            }
@@ -33,7 +87,7 @@ use yii\widgets\Pjax;
 <div class="row">
     <div class="col-12">
         <!-- interactive chart -->
-        <div class="card card-primary card-outline">
+        <div class="card card-info">
             <div class="card-header">
                 <h3 class="card-title">
                     <i class="fas fa-calendar-alt fa-fw "></i>
@@ -48,7 +102,9 @@ use yii\widgets\Pjax;
                 </div>
             </div>
             <div class="card-body">
-
+                <button type="button" class="btn btn-info"
+                        data-card-widget="collapse"><i
+                            class="fas fa-print" onClick="printPreview()"></i></button>
                 <?php
                     $events = array();
                     foreach ($allEvents as $newEvent){
@@ -58,7 +114,7 @@ use yii\widgets\Pjax;
                         $endTimifyed=date('Y-m-d',strtotime($newEvent->endDate.' +1 day'));
 
                         $end = new DateTime($endTimifyed);
-                        Yii::error($newEvent->endDate);
+
 
                         $interval = DateInterval::createFromDateString('1 day');
 
@@ -245,7 +301,7 @@ EOF;
 
                                                                                             ],
                                                                                         ],
-                                                                                        'resourceLabelText' => 'Rooms',
+                                                                                        'resourceLabelText' => 'Workshifts',
                                                                                         'resources'         =>
                                                                                             \yii\helpers\Url::to
                                                                                             (['modevent/resources','id'=>1]),
