@@ -7,6 +7,7 @@ use backend\modules\Modmail\models\Modmail;
 use backend\modules\Product\models\AddOn;
 use backend\modules\Product\models\Product;
 use backend\modules\Product\models\ProductAddOn;
+use backend\modules\Product\models\ProductAddonBlockout;
 use backend\modules\Product\models\ProductAdminSearchModel;
 use backend\modules\Product\models\ProductBlockout;
 use backend\modules\Product\models\ProductBlockoutTime;
@@ -26,6 +27,7 @@ use PhpParser\Node\Expr\Yield_;
 use trntv\filekit\actions\DeleteAction;
 use trntv\filekit\actions\UploadAction;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 
@@ -81,6 +83,11 @@ class ProductController extends Controller {
             if ($postedAction == 'timeTable') {
                 $this->redirect('/Product/product/timetable?prodId=' . $postedID);
             }
+
+            if ($postedAction == 'addonBlocking') {
+                $this->redirect('/Product/product/addon-day-block?prodId=' . $postedID);
+            }
+
         }
 
         $searchModel = new ProductAdminSearchModel();
@@ -977,6 +984,70 @@ class ProductController extends Controller {
         ]);
     }
 
+    public function actionAddonDayBlock(){
+        $model=new ProductAddonBlockout();
+        $prodId= Yii::$app->request->get('prodId');
+        $query=ProductAddonBlockout::find();
+        $dataProvider = new ActiveDataProvider([
+                                                   'query' => $query,
+                                                   'pagination' => [
+                                                       'pageSize' => 5,
+                                                   ],
+                                               ]);
+        $dataProvider->setSort(
+            [
+                'defaultOrder' => [
+                    'id' => SORT_DESC
+                ]
+            ]
+        );
+
+        $sources = ProductSource::getProductSources($prodId);
+        $sourceUrls=[];
+
+
+        if($model->load(Yii::$app->request->post())){
+            $addon=AddOn::findOne($model->addonId);
+            $model->productId=$prodId;
+            $model->save();
+            sessionSetFlashAlert('success','got here');
+            echo $this->blockAddon($prodId,$sources,$addon->price,$model->startDate);
+        }
+        $delete= Yii::$app->request->get('delete');
+        if($delete){
+            $blockout=ProductAddonBlockout::findOne($delete);
+            $blockout->delete();
+            sessionSetFlashAlert('success','Delete Successful');
+            return $this->redirect('addon-day-block?prodId='.$prodId);
+        }
+
+
+
+        foreach($sources as $source){
+            $sourceUrls[]=$source['url'];
+        }
+
+
+
+
+
+
+
+        return $this->render(
+            'addondayblock',
+            [
+              'prodId' => $prodId,
+             'dataProvider'=>$dataProvider,
+              'sources'=>$sourceUrls
+
+            ]
+
+        );
+
+
+
+}
+
     public function actionBlockedtimes() {
         $returnMessage = 'Currently no modification initiated';
         $currentProductId = Yii::$app->request->get('prodId');
@@ -1111,7 +1182,22 @@ class ProductController extends Controller {
             'allProducts'=>$allProducts
         ]);
     }
+    public function blockAddon($prodId,$sources,$addonPrice,$date){
 
+
+        foreach($sources as $source){
+            $askURL=$source['url'].'/wp-json/addonblock/v1/id/'.$source['prodIds']."/p/$addonPrice/date/$date";
+            $curlAsk = curl_init($askURL);
+            $curl = curl_init($askURL);
+            curl_setopt($curlAsk, CURLOPT_HEADER, 0);
+            curl_setopt($curlAsk, CURLOPT_VERBOSE, 0);
+            curl_setopt($curlAsk, CURLOPT_RETURNTRANSFER, true);
+            $response = curl_exec($curlAsk);
+        }
+
+        return $response;
+
+    }
 
     public function blockDateTime($date, $url, $product_id) {
 

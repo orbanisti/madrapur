@@ -1594,17 +1594,7 @@
 
         public function actionRegister() {
 
-            $ticketBlock = TicketBlockSearchModel::aSelect(TicketBlockSearchModel::class, '*', TicketBlockSearchModel::tableName(), 'assignedTo = ' . Yii::$app->user->id . ' AND isActive IS TRUE')->one();
 
-
-            $block = TicketBlockSearchModel::find()
-                ->andFilterWhere(['=', 'assignedTo', Yii::$app->user->id])
-                ->andWhere('isActive IS TRUE')
-                ->one();
-            if (!$block && !Yii::$app->user->can('administrator')) {
-
-                throw new ForbiddenHttpException('Sorry you dont have an active Ticket Block');
-            }
 
             $allProduct = Product::getAllProducts();
 

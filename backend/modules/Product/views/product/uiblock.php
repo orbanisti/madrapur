@@ -144,6 +144,12 @@ SCRIPT;
                                         'name' => 'blocking-button',
                                         'value' => 'timeTable'
                                     ]);
+                                echo Html::submitButton(Yii::t('backend', 'Addon Block &nbsp;'.'<i class="fas fa-window-maximize  "></i>'),
+                                                        [
+                                                            'class' => 'btn  btn-flat bg-purple',
+                                                            'name' => 'blocking-button',
+                                                            'value' => 'addonBlocking'
+                                                        ]);
 
                             ?>
 

@@ -65,7 +65,6 @@
                                                     ],
                                                     ['attribute'=>'productId',
                                                      'format'=>'html',
-
                                                           'value'=> $model->productId=='0'? (Product::findOne
                                                           ($model->productId))
                                                               ->title.' for '.Html::a($model->bookingId, [

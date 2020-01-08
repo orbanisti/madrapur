@@ -36,6 +36,22 @@ class Product extends MadActiveRecord {
             ]
         ];
     }
+    public static function getAddons($id){
+        $productAddons=[];
+
+        $addOnLinks = ProductAddOn::find()
+            ->andFilterWhere(['=', 'prodId', $id])
+            ->all();
+        foreach ($addOnLinks as $i => $addOnLink) {
+            $addOn = AddOn::findOne(['id' => $addOnLink->addOnId, 'type' => 'simple']);
+            if ($addOn) {
+                $productAddons[$addOn->id]=$addOn->name;
+
+
+            }
+        }
+        return $productAddons;
+    }
 
 
 
@@ -91,6 +107,14 @@ class Product extends MadActiveRecord {
 
     public static function tableName() {
         return 'modulusProducts';
+    }
+
+
+    public static function getProductName(){
+
+
+
+
     }
 
 //TODO
