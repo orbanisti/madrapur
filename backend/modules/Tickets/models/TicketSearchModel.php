@@ -34,9 +34,16 @@ class TicketSearchModel extends MadActiveRecord {
     public static function findTicketBlockOf($ticketId){
         $userTicketBlocks=TicketBlockSearchModel::userTicketBlocks();
         foreach($userTicketBlocks as $ticketBlock){
-            if($ticketId-50<$ticketBlock->startId){
-                return $ticketBlock;
+            if(!is_numeric($ticketId)){
+                $ticketId=substr($ticketId,1);
+                $ticketBlock->startId=substr($ticketBlock->startId,1);
+            }else{
+                if($ticketId-50<$ticketBlock->startId){
+                    return $ticketBlock;
+                }
+
             }
+
 
         }
 

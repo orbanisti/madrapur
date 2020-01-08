@@ -35,7 +35,6 @@ use kartik\helpers\Html;
 
     $huf = Yii::$app->keyStorage->get('currency.huf-value') ? Yii::$app->keyStorage->get('currency.huf-value') : null;
     $oldTicketId=Yii::$app->request->get('ticketId');
-    $oldTicketId=Yii::$app->request->post('oldTicket');
 ?>
 
 <!--suppress ALL -->
@@ -218,17 +217,16 @@ use kartik\helpers\Html;
                             } else {
                                 $paid_currency = 'HUF';
                             }
+                            Yii::error($oldTicketId);
                             if(isset($_POST['ticketId'])){
                                 $oldTicketId=$_POST['ticketId'];
+
 
                             }else{
                                 $oldTicketId=null;
 
                             }
-                            if(isset($_POST['oldTicket'])){
-                                $oldTicketId=$_POST['oldTicket'];
 
-                            }
 
 
 
@@ -237,7 +235,7 @@ use kartik\helpers\Html;
                             $model = new ProductPrice();
                             # var_dump($myPrices);
                             echo '</br>';
-
+                            Yii::error($oldTicketId);
                             // TODO fix this nonsense másmodelenátpushingolni egy Reservation
                             ?>
                             <?=Html::hiddenInput('paid_currency', $paid_currency);?>

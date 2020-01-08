@@ -14,7 +14,7 @@
 <div class="row">
     <div class="col-12">
         <!-- interactive chart -->
-        <div class="card card-primary card-outline">
+        <div class="card card-info ">
             <div class="card-header">
                 <h3 class="card-title">
                     <i class="fas fa-hand-holding-usd  "></i>
@@ -48,10 +48,10 @@
                 <div class="card-tools">
                     <!-- button with a dropdown -->
 
-                    <button type="button" class="btn btn-success btn-sm" data-card-widget="collapse">
+                    <button type="button" class="btn btn-sm" data-card-widget="collapse">
                         <i class="fas fa-minus"></i>
                     </button>
-                    <button type="button" class="btn btn-success btn-sm" data-card-widget="remove">
+                    <button type="button" class="btn btn-danger btn-sm" data-card-widget="remove">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
