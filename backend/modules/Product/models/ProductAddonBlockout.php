@@ -21,7 +21,7 @@ class ProductAddonBlockout extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'modulusaddonblockouts';
+        return 'modulusAddonBlockouts';
     }
 
     /**
