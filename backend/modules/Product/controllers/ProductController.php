@@ -1009,16 +1009,29 @@ class ProductController extends Controller {
         if($model->load(Yii::$app->request->post())){
             $addon=AddOn::findOne($model->addonId);
             $model->productId=$prodId;
-            $model->save();
-            sessionSetFlashAlert('success','got here');
-            echo $this->blockAddon($prodId,$sources,$addon->price,$model->startDate);
+
+
+            if($this->blockAddon($prodId,$sources,$addon->price,$model->startDate)){
+                $model->save();
+                sessionSetFlashAlert('success','Block Successful');
+
+            }
         }
         $delete= Yii::$app->request->get('delete');
         if($delete){
             $blockout=ProductAddonBlockout::findOne($delete);
-            $blockout->delete();
-            sessionSetFlashAlert('success','Delete Successful');
-            return $this->redirect('addon-day-block?prodId='.$prodId);
+            $addon=AddOn::findOne($blockout->addonId);
+            if($this->unblockAddon($prodId,$sources,$addon->price,$blockout->startDate)){
+
+                $blockout->delete();
+                sessionSetFlashAlert('success','Delete Successful');
+                return $this->redirect('addon-day-block?prodId='.$prodId);
+
+            }
+            else{
+                sessionSetFlashAlert('danger','Error, please contact the webmaster');
+            }
+
         }
 
 
@@ -1187,6 +1200,22 @@ class ProductController extends Controller {
 
         foreach($sources as $source){
             $askURL=$source['url'].'/wp-json/addonblock/v1/id/'.$source['prodIds']."/p/$addonPrice/date/$date";
+            $curlAsk = curl_init($askURL);
+            $curl = curl_init($askURL);
+            curl_setopt($curlAsk, CURLOPT_HEADER, 0);
+            curl_setopt($curlAsk, CURLOPT_VERBOSE, 0);
+            curl_setopt($curlAsk, CURLOPT_RETURNTRANSFER, true);
+            $response = curl_exec($curlAsk);
+        }
+
+        return $response;
+
+    }
+    public function unblockAddon($prodId,$sources,$addonPrice,$date){
+
+
+        foreach($sources as $source){
+            $askURL=$source['url'].'/wp-json/addonunblock/v1/id/'.$source['prodIds']."/p/$addonPrice/date/$date";
             $curlAsk = curl_init($askURL);
             $curl = curl_init($askURL);
             curl_setopt($curlAsk, CURLOPT_HEADER, 0);

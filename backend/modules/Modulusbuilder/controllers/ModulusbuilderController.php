@@ -39,7 +39,7 @@ class ModulusbuilderController extends Controller {
      * @return string
      */
     public function actionAdmin() {
-        return $this->renderPartial('admin');
+        return $this->render('admin');
     }
 
     public function actionUpdate() {
