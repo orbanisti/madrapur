@@ -340,8 +340,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute' => 'notes',
                                 'format' => 'html',
                                 'value' => function ($model) {
-                                    return '<a class="badge bg-success ">'
-                                        .$model->notes.'</a>';
+                                    return $model->notes;
                                 }
                             ],
                         ];
