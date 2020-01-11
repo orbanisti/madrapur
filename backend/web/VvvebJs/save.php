@@ -1,5 +1,5 @@
 <?php
-define('MAX_FILE_LIMIT', 1024 * 1024 * 2);//2 Megabytes max html file size
+define('MAX_FILE_LIMIT', 1024 * 1024 * 20);//2 Megabytes max html file size
 require (__DIR__ . '/../../../vendor/yiisoft/yii2/Yii.php');
 require (__DIR__ . '/../../../common/config/bootstrap.php');
 
@@ -60,13 +60,14 @@ foreach($stripfromStartArray as $i=>$rule){
     $html2=str_replace($rule,"",$html2);
 }
 
+$apiUrl=$_POST['apiUrl'];
 
 $ch = curl_init();
 
-curl_setopt($ch, CURLOPT_URL,Yii::getAlias('@apiUrl')."/v1/rester/update-page-html-slug");
+curl_setopt($ch, CURLOPT_URL,$apiUrl."/v1/rester/update-page-html-slug");
 curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS,
-    "slug=".$_POST['slug']."&content=".$html);
+    "slug=".$_POST['slug']."&content=".$html2);
 
 $exec=curl_exec($ch);
 

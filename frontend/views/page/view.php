@@ -4,8 +4,8 @@
  * @var $model \common\models\Page
  */
 $this->title = $model->title;
+\frontend\assets\MdbAsset::register($this);
 ?>
 <div class="content">
-	<h1><?php echo $model->title ?></h1>
     <?php echo $model->body ?>
 </div>

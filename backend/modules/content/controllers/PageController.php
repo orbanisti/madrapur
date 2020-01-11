@@ -19,7 +19,7 @@ class PageController extends Controller {
         return $query->one();
     }
 
-    public static function setContent($slug, $content) {
+    public static function  setContent($slug, $content) {
         $query = Page::aSelect(Page::class, '*', Page::tableName(), "`slug` LIKE '$slug'");
 
         $row = $query->one();

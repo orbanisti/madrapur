@@ -1362,12 +1362,14 @@ Vvveb.Builder = {
 
 		data["slug"]=slug;
 		data["content"]=content;
+		data["apiUrl"]=apiUrl;
 
 		console.log(data);
 		$.ajax({
 			type: "POST",
 			url: '/VvvebJs/save.php',//set your server side save script url
 			data: data,
+
 			cache: false,
 			success: function (data) {
 				console.log(data);

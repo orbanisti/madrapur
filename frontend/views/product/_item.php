@@ -14,30 +14,25 @@ use yii\helpers\Html;
         </h2>
 		<div class="article-meta">
 			<span class="article-date">
-                <?php echo Yii::$app->formatter->asDatetime($model->created_at) ?>
+                <?php echo $model->category; ?>
             </span>, <span class="article-category">
-                <?php
 
-echo Html::a($model->category->title, [
-                    'index',
-                    'ArticleSearch[category_id]' => $model->category_id
-                ])?>
             </span>
 		</div>
 		<div class="article-content">
-            <?php if ($model->thumbnail_path): ?>
+            <?php if ($model->thumbnail): ?>
                 <?php
 
 echo Html::img(Yii::$app->glide->createSignedUrl([
                     'glide/index',
-                    'path' => $model->thumbnail_path,
+                    'path' => Yii::$app->fileStorage->baseUrl.$model->thumbnail,
                     'w' => 100
                 ], true), [
                     'class' => 'article-thumb img-rounded pull-left'
                 ])?>
             <?php endif; ?>
             <div class="article-text">
-                <?php echo \yii\helpers\StringHelper::truncate($model->body, 150, '...', null, true) ?>
+                <?php echo \yii\helpers\StringHelper::truncate($model->short_description, 150, '...', null, true) ?>
             </div>
 		</div>
 	</div>

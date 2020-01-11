@@ -16,6 +16,10 @@
 
     <link href="/VvvebJs/css/editor.css" rel="stylesheet">
     <link href="/VvvebJs/css/line-awesome.css" rel="stylesheet">
+    <script>
+        var apiUrl="<?=Yii::getAlias('@apiUrl')?>";
+
+    </script>
 </head>
 <body>
 
@@ -76,7 +80,8 @@
 
 
         <div class="btn-group mr-3" role="group">
-            <button class="btn btn-light" title="Export (Ctrl + E)" id="save-btn" data-vvveb-action="saveAjax"
+            <button class="btn btn-light" title="Export (Ctrl + E)" id="save-btn"
+                    data-vvveb-action="saveAjax"
                     data-vvveb-shortcut="ctrl+e">
                 <i class="la la-save"></i>
             </button>
@@ -1018,7 +1023,9 @@ $content = curl_exec($ch);
 
 curl_close($ch);
 
-$dependencies = '<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet"><script src="http://code.jquery.com/jquery-3.3.1.min.js"></script><script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>';
+$dependencies = '<html><head><link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" 
+rel="stylesheet"><script 
+src="http://code.jquery.com/jquery-3.3.1.min.js"></script><script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>';
 $tempPath = "VvvebJs/tmp-" . $slug . ".html";
 
 if ($content == '') {
@@ -1031,15 +1038,16 @@ if ($content == '') {
       </div>
     </div>';
 }
+$aftercontent='</head></html>';
 
 if (!is_file($tempPath)) {
     // Some simple example content.
-    file_put_contents($tempPath, $dependencies . $content);     // Save our content to the file.
+    file_put_contents($tempPath, $dependencies . $content.$aftercontent);     // Save our content to the file.
 } else {
     unlink($tempPath);
     if (!is_file($tempPath)) {
         // Some simple example content.
-        file_put_contents($tempPath, $dependencies . $content);     // Save our content to the file.
+        file_put_contents($tempPath, $dependencies . $content.$aftercontent);     // Save our content to the file.
     }
 }
 #$tempContent = file_get_contents($tempPath);

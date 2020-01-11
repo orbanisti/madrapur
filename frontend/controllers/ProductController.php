@@ -9,6 +9,7 @@ use Intervention\Image\ImageManagerStatic;
 use trntv\filekit\actions\DeleteAction;
 use trntv\filekit\actions\UploadAction;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -24,11 +25,18 @@ class ProductController extends Controller {
      * @return string
      */
     public function actionIndex() {
-        $searchModel = new ArticleSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+
+        $searchModel=new Product();
+        $query = Product::find();
+
+
+        $dataProvider = new ActiveDataProvider([
+                                                   'query' => $query,
+                                               ]);
         $dataProvider->sort = [
             'defaultOrder' => [
-                'created_at' => SORT_DESC
+                'id' => SORT_DESC
             ]
         ];
         return $this->render('index', [
