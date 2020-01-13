@@ -109,10 +109,16 @@ class ModeventCrudController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-        sessionSetFlashAlert('warning', '<i class="fas fa-check-circle fa-fw "></i>Successfuly deleted! Doesn\'t apply to arranged work!');
 
-        return $this->redirect(['subscribe']);
+        $model=Modevent::findOne($id);
+        if($model){
+            $model->delete();
+
+            sessionSetFlashAlert('warning', '<i class="fas fa-check-circle fa-fw "></i>Successfuly deleted! Doesn\'t apply to arranged work!');
+
+            return $this->redirect(Yii::$app->request->referrer);
+
+        }
 
 
     }

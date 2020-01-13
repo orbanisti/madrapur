@@ -12,7 +12,7 @@ use yii\bootstrap4\ActiveForm;
 <div class="row">
     <div class="col-12">
         <!-- interactive chart -->
-        <div class="card card-primary card-outline">
+        <div class="card card-info">
             <div class="card-header">
                 <h3 class="card-title">
                     <i class="fas fa-user-circle  "></i>
@@ -41,7 +41,7 @@ use yii\bootstrap4\ActiveForm;
 
                     <?php echo $form->field($model, 'firstname')->textInput(['maxlength' => 255]) ?>
 
-                    <?php echo $form->field($model, 'middlename')->textInput(['maxlength' => 255]) ?>
+<!--                    --><?php //echo $form->field($model, 'middlename')->textInput(['maxlength' => 255]) ?>
 
                     <?php echo $form->field($model, 'lastname')->textInput(['maxlength' => 255]) ?>
 

@@ -108,7 +108,7 @@ use kartik\helpers\Html;
 
 
                             <?= $form->field($model, 'times')
-                                ->dropDownList(['prompt' => 'Please select a time']);
+                                ->radioButtonGroup(['prompt' => 'Please select a time']);
 
                             ?>
 
@@ -556,11 +556,11 @@ SCRIPT;
 
     function myFunction(item, index) {
 
-
-        $('#product-times').html($('#product-times').html() + '<option>' + item['name'] + '</option>');
+        $('#product-times').html($('#product-times').html() + '<label class="btn btn-outline-secondary "><input' +
+            ' type="radio" id="product-times--0" name="Product[times]" value="'+item["name"]+'" data-index="0" ' +
+            'autocomplete="off"> '+item["name"]+'</label>');
         $('#product-times option:eq(2)').attr('selected', 'selected');
         $('#product-times option:eq(1)').attr('selected', 'selected');
-
 
     }
 
@@ -581,9 +581,10 @@ SCRIPT;
     $().ready(() => {
 
         $('#product-times').change(function () {
+        $('#product-times').val($('[name="Product[times]"]:checked').val())
             var timeVal = $('#product-times').val();
 
-            if (timeVal != 'Please select a time') {
+            if (timeVal!='') {
                 $('.create').prop("disabled", false);
             }
             else {
@@ -595,6 +596,8 @@ SCRIPT;
 
         $('#product-title').change(function () {
             $('#product-title').val($('[type="radio"]:checked').val())
+            $('#product-times').val('');
+
 
         $.ajax({
             url: '<?php echo Yii::$app->request->baseUrl . '/Reservations/reservations/gettimes' ?>',
@@ -608,7 +611,7 @@ SCRIPT;
 
                 mytimes = data.search
                 $('#myTimes').html('');
-                $('#product-times').html('<option>Please select a time</option>')
+                $('#product-times').html('')
                 mytimes.forEach(myFunction)
 
 
@@ -636,12 +639,7 @@ SCRIPT;
     })
     ;
 
-    function myFunction(item, index) {
 
-
-        $('#product-times').html($('#product-times').html() + '<option>' + item['name'] + '</option>');
-
-    }
     <?php
 
     $currentProdId = (Yii::$app->request->post('Product'))['title'];
@@ -726,6 +724,9 @@ SCRIPT;
 </script>
 
 <style>
+    .btn-group{
+        display:block !important;
+    }
     #product-form {
         -webkit-touch-callout: none; /* iOS Safari */
         -webkit-user-select: none; /* Safari */

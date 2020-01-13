@@ -18,7 +18,7 @@ use yii\helpers\Html;
         <div class="col-lg-3">
 
 
-            <div class="card card-primary card-outline">
+            <div class="card card-info">
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="far fa-chart-bar"></i>  <?php echo Yii::t('backend', 'Create {modelClass}', ['modelClass' => 'New Template']) ?>
@@ -55,7 +55,7 @@ use yii\helpers\Html;
 
 
 
-            <div class="card card-primary card-outline">
+            <div class="card card-info">
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="far fa-chart-bar"></i>

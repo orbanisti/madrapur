@@ -1,5 +1,6 @@
 <?php
 
+    use backend\modules\Product\models\Product;
     use yii\web\View;
 
     $config = [
@@ -19,7 +20,20 @@
             'class' => frontend\modules\Reservations\Module::class,
         ],
     ],
+
     'components' => [
+        'cart' => [
+            'class' => 'devanych\cart\Cart',
+            'storageClass' => 'devanych\cart\storage\SessionStorage',
+            'calculatorClass' => 'devanych\cart\calculators\SimpleCalculator',
+            'params' => [
+                'key' => 'cart',
+                'expire' => 604800,
+                'productClass' => Product::class,
+                'productFieldId' => 'id',
+                'productFieldPrice' => 'price',
+            ],
+        ],
         'thumbnailer' => [
             'class' => 'daxslab\thumbnailer\Thumbnailer',
             'defaultWidth' => 500,

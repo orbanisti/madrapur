@@ -94,8 +94,10 @@ class Modevent extends MadActiveRecord{
 
         $currentWs=Modevent::find()->andFilterWhere(['=','user',$username])->andFilterWhere(['=','status','working'])
             ->one();
-
-        return $currentWs;
+        if($currentWs)return $currentWs;
+        else{
+            return false;
+        }
 
 
     }

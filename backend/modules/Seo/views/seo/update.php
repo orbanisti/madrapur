@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-12">
         <!-- interactive chart -->
-        <div class="card card-primary card-outline">
+        <div class="card card-info">
             <div class="card-header">
                 <h3 class="card-title">
                     <i class="far fa-chart-bar"></i>
@@ -27,7 +27,7 @@
                 <div class="row">
                     <div class="col-12">
                         <!-- interactive chart -->
-                        <div class="card card-primary card-outline  collapsed-card">
+                        <div class="card card-info  collapsed-card">
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <i class="fas fa-pen  "></i>
@@ -56,7 +56,7 @@
                         </div>
 
 
-                        <div class="card card-primary card-outline">
+                        <div class="card card-info">
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <i class="fab fa-yoast fa-lg "></i>

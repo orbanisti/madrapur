@@ -13,7 +13,7 @@
 <div class="row">
     <div class="col-12">
         <!-- interactive chart -->
-        <div class="card card-primary card-outline">
+        <div class="card card-info">
             <div class="card-header">
 
                 <ul class="nav nav-pills nav-fill">

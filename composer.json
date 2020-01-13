@@ -107,7 +107,8 @@
 		"kv4nt/yii2-owl-carousel2": "*",
 		"sjaakp/yii2-loadmore": "^1.0",
 		"bizley/migration": "^3.6",
-		"aksafan/yii2-fcm-both-api": "^0.9.3"
+		"aksafan/yii2-fcm-both-api": "^0.9.3",
+		"devanych/yii2-cart": "*"
 
 	},
 	"minimum-stability": "dev",

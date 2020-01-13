@@ -4,6 +4,7 @@ namespace frontend\controllers;
 use backend\modules\Product\models\Product;
 use common\models\Article;
 use common\models\ArticleAttachment;
+use frontend\models\Modorder;
 use frontend\models\search\ArticleSearch;
 use Intervention\Image\ImageManagerStatic;
 use trntv\filekit\actions\DeleteAction;
@@ -28,7 +29,7 @@ class ProductController extends Controller {
 
 
         $searchModel=new Product();
-        $query = Product::find();
+        $query = Product::find()->andFilterWhere(['=','type','simple']);
 
 
         $dataProvider = new ActiveDataProvider([
@@ -53,15 +54,47 @@ class ProductController extends Controller {
      * @throws NotFoundHttpException
      */
     public function actionView($slug) {
+
+        if($slug=='cart'){
+            $viewFile='cart';
+            return $this->render($viewFile);
+
+        }
+
         $model = Product::find()
             ->andWhere([
-            'slug' => $slug
+            'slug' => '/product/'.$slug
         ])
             ->one();
+
         if (! $model) {
             throw new NotFoundHttpException();
         }
         $viewFile = 'view';
+        if($model->type=='simple'){
+            $viewFile='simpleview';
+            $cart=Yii::$app->cart;
+            $tocart=new Modorder();
+            if($tocart->load(Yii::$app->request->post() )&& $tocart->validate())
+            {
+                $product=Product::findOne($tocart->productId);
+                $cart->add($product,1,$tocart->priceId);
+
+
+                sessionSetFlashAlert('danger','Added to cart nigga');
+                return $this->render($viewFile, [
+                    'model' => $model,
+                    'cart'=>$cart
+
+                ]);
+
+            }
+
+
+
+
+
+        }
         return $this->render($viewFile, [
             'model' => $model,
 

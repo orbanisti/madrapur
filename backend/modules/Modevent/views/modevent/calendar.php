@@ -133,11 +133,19 @@ use yii\widgets\Pjax;
                                     $Event->resourceId = 'attAM';
                                 }
 
-                                if($newEvent->title=='subscribe' &&$newEvent->status=='All day'){
+                                if($newEvent->title=='subscribe' && $newEvent->status=='All day'){
                                     $Event->resourceId = 'attAM';
+                                    $Event->id.=$Event->resourceId;
                                     $events[] = $Event;
+                                    $Event = new \yii2fullcalendar\models\Event();
+                                    $Event->id = $newEvent->id.'###'.$dt->format('Y-m-d');
+                                    $Event->title = $newEvent->user;
+                                    $Event->start = $dt->format('Y-m-d');
                                     $Event->resourceId = 'attPM';
+                                    $Event->id.=$Event->resourceId;
+
                                 }
+
 
 
                                 $Event->nonstandard = [
@@ -178,7 +186,7 @@ use yii\widgets\Pjax;
                         foreach ($streetSellers as $index=>$seller){
                             $Event = new \yii2fullcalendar\models\Event();
                             $Event->id = rand().'###'.$dt->format('Y-m-d');
-                            $Event->title =$seller->username;
+                            $Event->title =$seller->getPublicIdentity();
                             $Event->start = $dt->format('Y-m-d');
                             $Event->resourceId='attEB';
                             $events[]=$Event;
@@ -208,7 +216,7 @@ function(calEvent, jsEvent, view) {
     if(Day<10)Day='0'+Day;
     dateString = Year+'-'+Month+'-'+Day;
   console.log('drop the bass'+dateString+calEvent.resourceId);
- doSave(calEvent.title,dateString,calEvent.resourceId);
+ doSave(calEvent.title,dateString,calEvent.resourceId,calEvent.id);
   
 }
 EOF;
@@ -221,7 +229,7 @@ EOF;
 
                 ?>
                     <script>
-                        function doSave(user,date,place){
+                        function doSave(user,date,place,id){
                             if(place!='attAM' && place!='attPM' && place!='attEB'){
                                 $.ajax({
                                     url: '<?php echo Yii::$app->request->baseUrl. 'save' ?>',
@@ -238,6 +246,26 @@ EOF;
                                         console.log(data.search);
                                     }
                                 });
+
+                            }
+                            else{
+                                var eventId=id.split("###")[0];
+                                console.log(eventId);
+                                $.ajax({
+                                    url: '<?php echo Yii::$app->request->baseUrl. 'delete?id=' ?>'+eventId,
+                                    type: 'post',
+                                    id:eventId,
+                                    data: {
+                                        id: eventId,
+                                        _csrf : '<?=Yii::$app->request->getCsrfToken()?>'
+                                    },
+                                    success: function (data) {
+                                        console.log(data.search);
+                                    }
+                                });
+
+
+
 
                             }
 
@@ -302,9 +330,7 @@ EOF;
                                                                                             ],
                                                                                         ],
                                                                                         'resourceLabelText' => 'Workshifts',
-                                                                                        'resources'         =>
-                                                                                            \yii\helpers\Url::to
-                                                                                            (['modevent/resources','id'=>1]),
+                                                                                        'resources'         =>$resources,
                                                                                         'resourceRender'    => new \yii\web\JsExpression("
 			function(resource, leftCells, rightCells) {
 				if (resource.id != 'att') {

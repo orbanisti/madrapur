@@ -3,16 +3,22 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m200111_170540_add extends Migration {
+class m200113_114241_extendProductsTimestamp extends Migration {
     public $tableName = "modulusProducts";
-    public $columnName = "type";
+    public $columnName = "createdAt";
+    public $columnName2 = "updatedAt";
 
 
     public function safeUp() {
         $this->addColumn(
             $this->tableName,
             $this->columnName,
-            $this->text()
+            $this->bigInteger(20)
+        );
+        $this->addColumn(
+            $this->tableName,
+            $this->columnName2,
+            $this->bigInteger(20)
         );
 
     }

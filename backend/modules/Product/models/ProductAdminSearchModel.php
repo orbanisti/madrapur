@@ -62,11 +62,32 @@ class ProductAdminSearchModel extends Product {
         $from = self::tableName();
         $where = self::andWhereFilter([
             ['id', '!=', '0'],
+            ['isDeleted', '!=', 'yes'],
+        ]);
+        $rows = self::aSelect(Product::class, $what, $from, $where);
+        $rows->orderBy([
+        'updatedAt' => SORT_DESC
         ]);
 
+        return $rows->all();
+    }
+
+    public function searchBookableProducts($params) {
+        #  $invoiceDate = '2016-02-05';
+        # $bookingDate = '2020-08-20';
+
+        $what = ['*'];
+        $from = self::tableName();
+        $where = self::andWhereFilter([
+            ['id', '!=', '0'],
+            ['isDeleted', '!=', 'yes'],
+            ['type', '=', 'bookable'],
+        ]);
         $rows = self::aSelect(Product::class, $what, $from, $where);
         return $rows->all();
     }
+
+
 
     public function returnProductId() {
         return $this['id'];

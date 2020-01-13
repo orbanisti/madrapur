@@ -24,7 +24,7 @@ DynamicFormWidget::begin([
 <div class="row">
     <div class="col-12">
         <!-- interactive chart -->
-        <div class="card card-primary card-outline">
+        <div class="card card-info">
             <div class="card-header">
                 <h3 class="card-title">
                     <button type="button" class="add-item-sources btn btn-info btn-sm pull-right"><i

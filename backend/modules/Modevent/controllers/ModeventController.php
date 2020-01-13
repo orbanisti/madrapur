@@ -22,9 +22,10 @@ class ModeventController extends ModeventCrudController {
     {
         $query=Modevent::find();
         $allEvents=$query->all();
-
+        $resources=$this->actionResources();
 
         return $this->render('calendar', [
+            'resources'=>$resources,
             'allEvents'=>$allEvents
         ]);
     }
@@ -138,15 +139,10 @@ class ModeventController extends ModeventCrudController {
             $model->save();
             return 1;
 
-
-
-
-
     }
 
-    public function actionResources($id)
+    public function actionResources()
     {
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $workshifts=Workshift::find()->all();
         $allResources=[];
         foreach($workshifts as $workshift){

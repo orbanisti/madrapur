@@ -35,7 +35,7 @@
 
 <div class="tab-content">
     <div class="tab-pane active" id="content">
-        <div class="card card-primary card-outline">
+        <div class="card card-info">
             <div class="card-header">
                 <h4><i class="glyphicon glyphicon-time"></i> <?= Yii::t('app', 'Product Details') ?>
                     <?= Html::submitButton('Update Product', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
@@ -45,7 +45,7 @@
                 <div class="row">
                     <div class="col-12">
                         <!-- interactive chart -->
-                        <div class="card card-primary card-outline">
+                        <div class="card card-info">
                             <div class="card-header">
                                 <h3 class="card-title">
                                 Basic Settings
@@ -89,6 +89,10 @@
                                             <div class="col-lg-3">
                                                 <?= $form->field($model, 'cCode')->textInput
                                                 (['maxlenght' => 60])->label('cCode') ?>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <?= $form->field($model, 'type')->dropDownList(['simple'=>'simple','bookable'=>'bookable'])
+                                                ?>
                                             </div>
 
                                         </div>
@@ -230,7 +234,7 @@
             ]
         ); ?>
 
-        <div class="card card-primary card-outline">
+        <div class="card card-info">
             <div class="card-header">
                 <h4>
                     <i class="fas fa-euro-sign  "></i> <?= Yii::t('app', 'Product $Prices') ?>
@@ -361,7 +365,7 @@
             );
         ?>
 
-        <div class="card card-primary card-outline ">
+        <div class="card card-info ">
 
             <div class="card-header">
                 <h4><i class="fas fa-clock"></i> <?= Yii::t('app', 'Product Times') ?>
@@ -551,7 +555,7 @@
             );
         ?>
 
-        <div class="card card-primary card-outline">
+        <div class="card card-info">
 
             <div class="card-header">
                 <h4><i class="glyphicon glyphicon-file"></i> <?= Yii::t('app', 'Product Sources') ?>
@@ -698,7 +702,7 @@
         ?>
 
 
-        <div class="card card-primary card-outline">
+        <div class="card card-info">
             <div class="card-header">
                 <h4>
                     <i class="glyphicon glyphicon-euro"></i> <?= Yii::t('app', 'TimeTable') ?>    <?= Html::submitButton('Termék Frissítése', ['class' => 'btn btn-primary prodUpdateBtn']) ?>
@@ -788,7 +792,7 @@ EOF;
                     class="col-12">
                 <!-- interactive chart -->
                 <div
-                        class="card card-primary card-outline">
+                        class="card card-info">
                     <div
                             class="card-header">
                         <h4>

@@ -12,12 +12,12 @@
 <div class="row">
     <div class="col-12">
         <!-- interactive chart -->
-        <div class="card card-primary card-outline">
+        <div class="card card-info">
             <div class="card-header">
 
                 <ul class="nav nav-pills nav-fill">
                     <li class="nav-item">
-                        <a class="nav-link active"
+                        <a class="nav-link active btn bg-info"
                            href="#content"
                            data-toggle="tab"><?= Yii::t('app', 'Details') ?></a>
                     </li>
@@ -27,21 +27,21 @@
                     <!--           data-toggle="tab">--><? //= Yii::t('app', 'Meta') ?><!--</a>-->
                     <!--    </li>-->
                     <li lass="nav-item">
-                        <a class="nav-link"
+                        <a class="nav-link btn bg-info"
                            href="#prices"
                            data-toggle="tab"><?= Yii::t('app', '$Prices') ?></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link"
+                        <a class="nav-link btn bg-info"
                            href="#sources"
                            data-toggle="tab"><?= Yii::t('app', 'Sources') ?></a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item btn bg-info">
                         <a class="nav-link"
                            href="#times"
                            data-toggle="tab"><?= Yii::t('app', 'Times') ?></a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item btn bg-info">
                         <a class="nav-link"
                            href="#add-ons"
                            data-toggle="tab"><?= Yii::t('app', 'Add-ons') ?></a>

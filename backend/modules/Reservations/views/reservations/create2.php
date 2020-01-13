@@ -35,6 +35,7 @@ use kartik\helpers\Html;
 
     $huf = Yii::$app->keyStorage->get('currency.huf-value') ? Yii::$app->keyStorage->get('currency.huf-value') : null;
     $oldTicketId=Yii::$app->request->get('ticketId');
+    Pjax::begin(['id'=>'grid-pjax']);
 ?>
 
 <!--suppress ALL -->
@@ -57,7 +58,7 @@ use kartik\helpers\Html;
                 <div class="products-index">
 
                     <?php
-                        Pjax::begin(['id'=>'grid-pjax']);
+
                         if ($disableForm != 1) {
                             if ($newReservation) {
 
@@ -71,7 +72,7 @@ use kartik\helpers\Html;
                             <?php
 
                             echo $form->field($model, 'title')
-                                ->dropDownList(ArrayHelper::map($allMyProducts, 'id', 'title'),
+                                ->radioButtonGroup(ArrayHelper::map($allMyProducts, 'id', 'shortName'),
                                                ['prompt' => 'Please select a product'])->label(false);
 
 
@@ -108,7 +109,7 @@ use kartik\helpers\Html;
 
 
                             <?= $form->field($model, 'times')
-                                ->dropDownList(['prompt' => 'Please select a time']);
+                                ->radioButtonGroup(['prompt' => 'Please select a time']);
 
                             ?>
 
@@ -569,7 +570,9 @@ SCRIPT;
     function myFunction(item, index) {
 
 
-        $('#product-times').html($('#product-times').html() + '<option>' + item['name'] + '</option>');
+        $('#product-times').html($('#product-times').html() + '<label class="btn btn-outline-secondary "><input' +
+            ' type="radio" id="product-times--0" name="Product[times]" value="'+item["name"]+'" data-index="0" ' +
+            'autocomplete="off"> '+item["name"]+'</label>');
         $('#product-times option:eq(2)').attr('selected', 'selected');
         $('#product-times option:eq(1)').attr('selected', 'selected');
 
@@ -593,6 +596,7 @@ SCRIPT;
     $().ready(() => {
 
         $('#product-times').change(function () {
+            $('#product-times').val($('[name="Product[times]"]:checked').val())
             var timeVal = $('#product-times').val();
 
             if (timeVal != 'Please select a time') {
@@ -606,6 +610,7 @@ SCRIPT;
 
 
         $('#product-title').change(function () {
+            $('#product-title').val($('[name="Product[title]"]:checked').val())
         $.ajax({
             url: '<?php echo Yii::$app->request->baseUrl . '/Reservations/reservations/gettimes' ?>',
             type: 'post',
@@ -618,7 +623,7 @@ SCRIPT;
 
                 mytimes = data.search
                 $('#myTimes').html('');
-                $('#product-times').html('<option>Please select a time</option>')
+                $('#product-times').html('')
                 mytimes.forEach(myFunction)
 
 
@@ -646,12 +651,7 @@ SCRIPT;
     })
     ;
 
-    function myFunction(item, index) {
 
-
-        $('#product-times').html($('#product-times').html() + '<option>' + item['name'] + '</option>');
-
-    }
     <?php
 
     $currentProdId = (Yii::$app->request->post('Product'))['title'];
@@ -745,6 +745,9 @@ SCRIPT;
         user-select: none;
         /* Non-prefixed version, currently
                                          supported by Chrome and Opera */
+    }
+    .btn-group{
+        display:block !important;
     }
 </style>
 

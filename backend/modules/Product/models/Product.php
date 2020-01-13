@@ -8,6 +8,7 @@ use trntv\filekit\actions\DeleteAction;
 use trntv\filekit\actions\UploadAction;
 use trntv\filekit\behaviors\UploadBehavior;
 use Yii;
+use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
@@ -33,7 +34,12 @@ class Product extends MadActiveRecord {
                 'attribute' => 'picture',
                 'pathAttribute' => 'thumbnail',
                 'baseUrlAttribute' => 'thumbnailBase'
-            ]
+            ],
+            [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'createdAt',
+                'updatedAtAttribute' => 'updatedAt',
+            ],
         ];
     }
     public static function getAddons($id){
@@ -51,6 +57,16 @@ class Product extends MadActiveRecord {
             }
         }
         return $productAddons;
+    }
+
+    public  function getPrices(){
+
+        $productPrices=ProductPrice::find()->andFilterWhere(['=','product_id',$this->id])->all();
+
+        $priceNameArray=ArrayHelper::map($productPrices,'id','name');
+        return $priceNameArray;
+
+
     }
 
 
@@ -228,6 +244,7 @@ class Product extends MadActiveRecord {
             [['slug'], 'string', 'max' => 255],
             [['isDeleted'], 'string', 'max' => 10],
             [['isStreet'], 'string', 'max' => 10],
+            [['type'],'safe'],
             [
                 'picture',
                 'safe'

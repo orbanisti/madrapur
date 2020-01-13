@@ -1286,6 +1286,11 @@
                 sessionSetFlashAlert('danger', 'Oops, you\'ll need a Ticket Block first ');
                 return $this->redirect('/Dashboard/dashboard/admin');
             }
+            if(!Modevent::userCurrentWorkshift()){
+                sessionSetFlashAlert('danger', 'Oops, you don\'t have an active Workshift');
+                return $this->redirect('/Dashboard/dashboard/admin');
+
+               }
 
             $block = TicketBlockSearchModel::find()
                 ->andFilterWhere(['=', 'assignedTo', Yii::$app->user->id])

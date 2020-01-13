@@ -16,7 +16,7 @@ use yii\widgets\Pjax;
 <div class="row">
     <div class="col-12">
         <!-- interactive chart -->
-        <div class="card card-primary card-outline">
+        <div class="card card-info">
             <div class="card-header">
                 <h3 class="card-title">
                     <i class="fas fa-calendar-alt fa-fw "></i>
