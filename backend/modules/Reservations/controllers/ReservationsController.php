@@ -2580,7 +2580,7 @@
                 foreach($todayAllReservations as $reservation){
                     if(!in_array($reservation->workshiftId,$workShiftsToday)){
                         $workShiftsToday[]=$reservation->workshiftId;
-                        $workshiftname=isset(Workshift::findOne(Modevent::findOne($reservation->workshiftId)->place)
+                        $workshiftname=isset((Modevent::findOne($reservation->workshiftId)->place)
                                 ->place) ? Workshift::findOne(Modevent::findOne($reservation->workshiftId)->place)
                             ->place : '';
                         $userHeading.="<span class='badge badge-pill badge-light'>$workshiftname</span>";
