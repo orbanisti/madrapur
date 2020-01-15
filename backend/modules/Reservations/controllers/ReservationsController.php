@@ -2707,7 +2707,14 @@
                         'label' => 'Workshift',
                         'format' => 'html',
                         'value' => function ($model) {
-                            return Workshift::findOne(Modevent::findOne($model->workshiftId)->place)->place;
+                    if( isset(Modevent::findOne($model->workshiftId)->place) ){
+                        return Workshift::findOne(Modevent::findOne($model->workshiftId)->place)->place;
+
+                    }else{
+                        return '';
+                    }
+
+
                         }
                     ],
                     [
