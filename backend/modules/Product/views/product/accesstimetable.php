@@ -74,9 +74,8 @@ use kartik\widgets\ActiveForm;
 
                         <?php
 
-                           
+
                             $escape = new JsExpression("function(m) { return m; }");
-                            $this->registerJs($format, View::POS_HEAD);
 
                             $form = ActiveForm::begin([
                                                           'id' => 'product-edit',
