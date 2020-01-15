@@ -37,9 +37,7 @@ class ModmailController extends Controller {
                 $model->password='testsilver';
                 $model->status=1;
                 $model->roles[0]='hotelSeller';
-                $model->save();
-
-
+                $model->save(false);
 
             }
 
