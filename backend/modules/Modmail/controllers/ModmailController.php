@@ -24,11 +24,12 @@ class ModmailController extends Controller {
 
         $model = new UserForm();
         set_time_limit(90000);
-
-        if($postedJson=Yii::$app->request->post('json')){
+        $postedJson=Yii::$app->request->post('json')
+        if($postedJson){
 
 
             $allHotels=explode('#',$postedJson);
+            Yii::error($allHotels);
             foreach ($allHotels as $hotel){
                 $model = new UserForm();
                 $model->username=$hotel;
