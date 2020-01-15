@@ -9,25 +9,20 @@
 
     use backend\assets\MaterializeWidgetsAsset;
 use backend\modules\Product\models\AddOn;
-use backend\modules\Product\models\Product;
 use backend\modules\Product\models\ProductAddOn;
 use backend\modules\Product\models\ProductPrice;
-    use backend\modules\Reservations\models\Reservations;
     use backend\modules\Tickets\models\TicketSearchModel;
     use kartik\date\DatePicker;
 use kartik\form\ActiveForm;
 use kartik\helpers\Html;
     use kartik\icons\Icon;
     use kartik\select2\Select2;
-    use kartik\switchinput\SwitchInput;
     use kartik\touchspin\TouchSpin;
     use lo\widgets\Toggle;
     use yii\helpers\ArrayHelper;
-    use yii\web\JsExpression;
     use yii\web\View;
 
     use yii\widgets\Pjax;
-    MaterializeWidgetsAsset::register($this);
 
 
 
