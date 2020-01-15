@@ -24,7 +24,7 @@ class ModmailController extends Controller {
 
         $model = new UserForm();
         set_time_limit(90000);
-        $postedJson=Yii::$app->request->post('json')
+        $postedJson=Yii::$app->request->post('json');
         if($postedJson){
 
 
