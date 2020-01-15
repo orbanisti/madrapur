@@ -7,6 +7,8 @@
      */
 
     use backend\components\extra;
+    use backend\modules\Product\models\Product;
+    use backend\modules\Product\models\ProductSource;
     use backend\modules\Reservations\models\Reservations;
     use kartik\date\DatePicker;
     use kartik\dynagrid\DynaGrid;
@@ -198,9 +200,23 @@
                                 'attribute'=>'productId',
                                 'format'=>'html',
                                 'filter'=>\yii\helpers\ArrayHelper::map
-                                (\backend\modules\Product\models\Product::getAllProducts(),'id','title'),
-                                'value'=>function($model){return \backend\modules\Product\models\Product::findOne
-                                    ($model->productId)->shortName;}
+                                (
+                                    Product::getAllProducts(), 'id', 'title'),
+                                'value'=>function($model){
+                                $product= Product::findOne($model->productId);
+                                    if($product){
+                                        return $product->shortName;
+                                    }
+                                    if(!in_array($model->source, Product::LOCAL_SOURCES)){
+                                        $source=ProductSource::find()->andFilterWhere(['=','url',$model->source])
+                                            ->andFilterWhere(['=','prodIds',$model->productId])->one();
+                                        if($source){
+                                            return $source->product_id;
+
+                                        }
+
+                                    }
+                                }
 
                             ],
                             [

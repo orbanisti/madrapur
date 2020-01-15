@@ -25,6 +25,8 @@ class Product extends MadActiveRecord {
     const BLOCK_DAYS = 'blockDays';
     const BLOCK_TIMES = 'blockTimes';
 
+    const LOCAL_SOURCES=['Hotel','Street'];
+
     public $picture;
 
     public function behaviors() {
@@ -293,6 +295,9 @@ class Product extends MadActiveRecord {
     }
 
     public function afterFind() {
+        if(!isset($this->shortName)){
+            $this->shortName=$this->title;
+        }
 
         if (!isset($this->isDeleted)) {
             $this->isDeleted = 'no';

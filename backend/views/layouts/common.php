@@ -53,6 +53,7 @@ $bundle = BackendAsset::register($this);
                 'options' => [
                     'class' => 'nav-item',
                 ],
+                'visible'=>!Yii::$app->user->can('streetAdmin')
 
             ],
             [

@@ -29,7 +29,7 @@ class ModmailController extends Controller {
 
 
             $allHotels=explode('#',$postedJson);
-            Yii::error($allHotels);
+
             foreach ($allHotels as $hotel){
                 $model = new UserForm();
                 $model->username=$hotel;
