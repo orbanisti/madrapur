@@ -2708,7 +2708,14 @@
                         'format' => 'html',
                         'value' => function ($model) {
                     if( isset(Modevent::findOne($model->workshiftId)->place) ){
-                        return Workshift::findOne(Modevent::findOne($model->workshiftId)->place)->place;
+                        if(isset(Workshift::findOne(Modevent::findOne($model->workshiftId)->place)->place)){
+
+                            return Workshift::findOne(Modevent::findOne($model->workshiftId)->place)->place;
+                        }
+                        else{
+                            return '';
+                        }
+
 
                     }else{
                         return '';

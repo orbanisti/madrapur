@@ -32,7 +32,7 @@ class ModmailController extends Controller {
             foreach ($allHotels as $hotel){
                 $model = new UserForm();
                 $model->username=$hotel;
-                $model->email='silverline'.(rand()%10000).'@test.com';
+                $model->email='silverline'.(rand()%10000000).'@test'.(rand()%10000000).'.com';
                 $model->password='testsilver';
                 $model->status=1;
                 $model->roles[0]='hotelSeller';
