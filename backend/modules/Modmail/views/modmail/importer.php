@@ -33,7 +33,8 @@
                         );
                     ?>
                     <div class="form-group row">
-                        <legend class="col-form-legend col-sm-1-12">Paste your json below</legend>
+                        <legend class="col-form-legend col-sm-1-12">Please write in a name to create new
+                            partner, separate with # in case of multiple records</legend>
 
                         <div class="col-sm-1-12">
                             <input type="text" class="form-control" name="json" id="inputName" placeholder="">
