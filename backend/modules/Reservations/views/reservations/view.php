@@ -54,11 +54,10 @@
                                                 'attributes'=>[
                                                     ['attribute'=>'sellerName'],
                                                     [
-                                                        'attribute' => 'billing_first_name',
+                                                        'attribute' => 'customerName',
                                                         'label' => 'Name',
 
-                                                        'value'=> $model->billing_first_name.' '
-                                                            .$model->billing_last_name
+                                                        'value'=> $model->customerName
 
                                                     ],
                                                     ['attribute'=>'invoiceDate',

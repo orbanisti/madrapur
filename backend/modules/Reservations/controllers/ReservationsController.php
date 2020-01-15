@@ -1235,6 +1235,7 @@
                              'model' => new Product(),
                              'disableForm' => $disableForm,
                              'myPrices' => $myPrices,
+
                              'countPrices' => $countPrices,
                              'newReservation' => $updateResponse,
                              'allMyProducts' => Product::getStreetProducts(),
@@ -1388,15 +1389,12 @@
                 $ticketBlock = TicketBlockSearchModel::aSelect(TicketBlockSearchModel::class, '*', TicketBlockSearchModel::tableName(), 'assignedTo = ' . Yii::$app->user->id . ' AND isActive IS TRUE')->one();
                 $ticket = TicketSearchModel::useTable('modulus_tb_' . $ticketBlock->returnStartId())::findOne(['reservationId' => null, 'status' => 'open']);
 
-                $firstName = '';
-                $lastName = '';
+                $customerName='';
                 $orderNote = '';
-                if (Yii::$app->request->post('firstName')) {
-                    $firstName = Yii::$app->request->post('firstName');
+                if (Yii::$app->request->post('customerName')) {
+                    $customerName = Yii::$app->request->post('customerName');
                 }
-                if (Yii::$app->request->post('lastName')) {
-                    $lastName = Yii::$app->request->post('lastName');
-                }
+
                 if (Yii::$app->request->post('orderNote')) {
                     $orderNote = Yii::$app->request->post('orderNote');
                 }
@@ -1439,8 +1437,7 @@
                     'status' => $paid_status,
                     'paidMethod' => $paid_status == 'paid' ? $paid_method : null,
                     'order_currency' => $paid_currency,
-                    'billing_first_name' => $firstName,
-                    'billing_last_name' => $lastName,
+                    'customerName' => $customerName,
                     'notes' => $orderNote,
                     'workshiftId' => $workshiftId
 
@@ -1450,7 +1447,7 @@
                 if ($_POST['anotherSeller']) {
                     //selling for somebody else
                     $originSellerId = $_POST['anotherSeller'];
-                    $originIdentity = User::findIdentity($originSellerId);
+                    $originIdentity = User::findOne($originSellerId);
                     Yii::error($originIdentity);
 
                     $originSellerName = $originIdentity->username;
@@ -1574,6 +1571,7 @@
                                  'allMyProducts' => Product::getStreetProducts(),
                                  'disableForm' => $disableForm,
                                  'myPrices' => $myPrices,
+                                 'allSellers'=>User::getAllSellers(),
                                  'countPrices' => $countPrices,
                                  'newReservation' => $updateResponse,
                                  'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
@@ -1589,6 +1587,7 @@
                              'model' => new Product(),
                              'disableForm' => $disableForm,
                              'myPrices' => $myPrices,
+                             'allSellers'=>User::getAllSellers(),
                              'countPrices' => $countPrices,
                              'newReservation' => $updateResponse,
                              'allMyProducts' => Product::getStreetProducts(),
@@ -1687,15 +1686,12 @@
 
 
 
-                $firstName = '';
-                $lastName = '';
+                $customerName = '';
                 $orderNote = '';
-                if (Yii::$app->request->post('firstName')) {
-                    $firstName = Yii::$app->request->post('firstName');
+                if (Yii::$app->request->post('customerName')) {
+                    $customerName = Yii::$app->request->post('customerName');
                 }
-                if (Yii::$app->request->post('lastName')) {
-                    $lastName = Yii::$app->request->post('lastName');
-                }
+
                 if (Yii::$app->request->post('orderNote')) {
                     $orderNote = Yii::$app->request->post('orderNote');
                 }
@@ -1733,8 +1729,7 @@
                     'status' => $paid_status,
                     'paidMethod' => $paid_status == 'paid' ? $paid_method : null,
                     'order_currency' => $paid_currency,
-                    'billing_first_name' => $firstName,
-                    'billing_last_name' => $lastName,
+                    'customerName' => $customerName,
                     'notes' => $orderNote,
                     'workshiftId' => $workshiftId
 
@@ -1744,7 +1739,7 @@
                 if ($_POST['anotherSeller']) {
                     //selling for somebody else
                     $originSellerId = $_POST['anotherSeller'];
-                    $originIdentity = User::findIdentity($originSellerId);
+                    $originIdentity = User::findOne($originSellerId);
                     Yii::error($originIdentity);
 
                     $originSellerName = $originIdentity->username;
@@ -2533,10 +2528,20 @@
                 $data = Yii::$app->request->post();
                 $id = $data['id'];
                 $query = ProductTime::aSelect(ProductTime::class, '*', ProductTime::tableName(), 'product_id=' . $id);
+                $chosenDate=$data['date'];
                 $mytimes = $query->all();
+                $goodTimes=[];
+                foreach($mytimes as $time){
+                    if(strtotime($chosenDate)>=strtotime($time->start_date) && strtotime($chosenDate)<=strtotime
+                        ($time->end_date)){
+
+                        $goodTimes[]=$time;
+                    }
+                }
+
                 \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
                 return [
-                    'search' => $mytimes,
+                    'search' => $goodTimes,
                 ];
             }
             return [];
@@ -2565,7 +2570,26 @@
                     }
                 }
 
+                $todayAllReservations=Reservations::find()->andFilterWhere(['or',
+                                                    ['=','sellerId', strval($user->id)],
+                                                    ['=','iSellerId', strval($user->id)]])->andFilterWhere(['=','invoiceDate', $today])->all();
+
+                $workShiftsToday=[];
+                $userHeading='';
+
+                foreach($todayAllReservations as $reservation){
+                    if(!in_array($reservation->workshiftId,$workShiftsToday)){
+                        $workShiftsToday[]=$reservation->workshiftId;
+                        $workshiftname=Workshift::findOne(Modevent::findOne($reservation->workshiftId)->place)->place;
+                        $userHeading.="<span class='badge badge-pill badge-light'>$workshiftname</span>";
+
+                    }
+
+                }
+
+
                 $userDataProvider = $reservationmodel->searchReservations(Yii::$app->request->queryParams, $user->id, $today);
+                $userWorkshiftname=json_encode($workShiftsToday);
                 $userDataHuf = $reservationmodel->searchReservations(Yii::$app->request->queryParams, $user->id, $today, 'HUF');
                 $userDataEur = $reservationmodel->searchReservations(Yii::$app->request->queryParams, $user->id, $today, 'EUR');
                 $hufToday = Reservations::sumDataProvider($userDataHuf->models, 'booking_cost');
@@ -2678,6 +2702,13 @@
                         }
                     ],
                     [
+                        'label' => 'Workshift',
+                        'format' => 'html',
+                        'value' => function ($model) {
+                            return Workshift::findOne(Modevent::findOne($model->workshiftId)->place)->place;
+                        }
+                    ],
+                    [
                         'class' => 'kartik\grid\ActionColumn',
                         'template' => '{view}',
                         'buttons' => [
@@ -2700,8 +2731,7 @@
                     [
                         'columns' => $gridColumns,
                         'theme'=>'panel-info',
-                        'showPersonalize'=>true,
-                        'storage' => 'session',
+                        'showPersonalize'=>false,
                         'gridOptions'=>[
                             'dataProvider'=>$userDataProvider,
                             'filterModel'=>new \backend\modules\Reservations\models\Reservations(),
@@ -2710,12 +2740,13 @@
                             'pjax'=>false,
                             'responsiveWrap'=>false,
                             'panel'=>[
+                                'heading'=>$userHeading,
 
                                 'after' => false
                             ],
                             'toolbar' =>  [
 
-                                ['content'=>'{dynagridFilter}{dynagridSort}{dynagrid}'],
+                                ['content'=>'{dynagrid}'],
                                 '{export}',
                                 '{toggleData}',
                             ]
@@ -3062,7 +3093,7 @@
             $reservationTemp = $reservation;
 
             $workshiftMatch = false;
-            if (Yii::$app->user->can('streetAdmin')) {
+            if (Yii::$app->user->can('streetAdmin') ||  Yii::$app->user->can('administrator')) {
                 $workshiftMatch = true;
             }
             if ($reservation->load(Yii::$app->request->post())) {
@@ -3074,7 +3105,6 @@
                 if (isset(Modevent::userCurrentWorkshift()->id) && Modevent::userCurrentWorkshift()->id == $reservation->workshiftId) {
                     $workshiftMatch = true;
                 }
-
                 if ($workshiftMatch) {
                     $reservation->save();
                     foreach ($changed_attributes as $attribute => $value) {

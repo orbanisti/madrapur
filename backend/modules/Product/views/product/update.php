@@ -36,13 +36,13 @@
                            href="#sources"
                            data-toggle="tab"><?= Yii::t('app', 'Sources') ?></a>
                     </li>
-                    <li class="nav-item btn bg-info">
-                        <a class="nav-link"
+                    <li class="nav-item ">
+                        <a class="nav-link btn bg-info"
                            href="#times"
                            data-toggle="tab"><?= Yii::t('app', 'Times') ?></a>
                     </li>
-                    <li class="nav-item btn bg-info">
-                        <a class="nav-link"
+                    <li class="nav-item  ">
+                        <a class="nav-link btn bg-info"
                            href="#add-ons"
                            data-toggle="tab"><?= Yii::t('app', 'Add-ons') ?></a>
                     </li>

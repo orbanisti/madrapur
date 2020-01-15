@@ -196,22 +196,21 @@
 
                 if ($hasStreetBool) {
                     $streetSellers[] = $user;
-
+                    $streetsellernames[$user->id]=$user->username;
                 };
                 if ($hasHotelBool) {
                     $hotelSellers[]  = $user;
+                    $hotelnames[$user->id]=$user->username;
 
                 };
             }
-            $data=[];
 
 
-            foreach($streetSellers as $user){
-                $data[$user->id]=$user->username;
-            }
-            foreach($hotelSellers as $user){
-                $data[$user->id]=$user->username;
-            }
+
+
+
+            $data=['Street Sellers'=>$streetsellernames,'Hotels'=>$hotelnames];
+
             return $data;
 
 

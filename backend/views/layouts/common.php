@@ -87,9 +87,17 @@ $bundle = BackendAsset::register($this);
                     ],
                     [
                         'label' => Yii::t('backend', 'modMail'),
-                        'icon' => '<i class="fa fa-lg nav-icon fa-envelope-o"></i>',
+                        'icon' => '<i class="fas fa-envelope nav-icon "></i>',
                         'url' => [
                             '/Modmail/modmail/admin'
+                        ],
+
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'importer'),
+                        'icon' => '<i class="fab fa-fantasy-flight-games nav-icon "></i>',
+                        'url' => [
+                            '/Modmail/modmail/importer'
                         ],
 
                     ],
@@ -223,7 +231,7 @@ $bundle = BackendAsset::register($this);
                 ],
                 'icon' => Icon::show('newspaper', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
                 'options' => [
-                 'class' => 'nav-item has-treeview'
+                 'class' => 'nav-item '
                 ],
                 'active' => 'content' === Yii::$app->controller->module->id &&
                     ('article' === Yii::$app->controller->id || 'category' === Yii::$app->controller->id),
@@ -518,7 +526,7 @@ $bundle = BackendAsset::register($this);
                     ],
                 ],
 //                                'visible' => Yii::$app->user->can('accessProducts'),
-                'visible' => !Yii::$app->user->can('streetAdmin') && !Yii::$app->user->can('streetSeller') && !Yii::$app->user->can('hotline'),
+                'visible' => Yii::$app->user->can('administrator'),
             ],
             [
                 'label' => Yii::t('backend', 'Blocking'),

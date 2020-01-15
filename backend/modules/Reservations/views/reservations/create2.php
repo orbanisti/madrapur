@@ -345,7 +345,7 @@ use kartik\helpers\Html;
 
                                                 echo Select2::widget( [
                                                                           'name' => 'anotherSeller',
-                                                                          'data' => \common\models\User::getAllSellers(),
+                                                                          'data' => $allSellers,
                                                                           'id' => rand(),
                                                                           'options' => ['placeholder' => 'Select a seller...'],
                                                                           'pluginOptions' => [
@@ -397,11 +397,8 @@ use kartik\helpers\Html;
                                 <div class="card-body bg-gradient-white">
                                     <div class="col-lg-12">
 
-                                                <input type="text" name="firstName" id="" class="form-control"
-                                                       placeholder="First Name"
-                                                       aria-describedby="helpId">
-                                                <input type="text" name="lastName" id="" class="form-control"
-                                                       placeholder="Last Name"
+                                                <input type="text" name="customerName" id="" class="form-control"
+                                                       placeholder="Customer Name"
                                                        aria-describedby="helpId">
                                                 <textarea name="orderNote" id="orderNote" class="form-control"
                                                        placeholder="orderNote"
@@ -506,7 +503,7 @@ use kartik\helpers\Html;
 
                             <?php
                             echo'<div class="col-lg-12">';
-                            echo Html::submitButton('Create Reservation', ['class' => 'btn btn-block bg-aqua btn-lg btn-info prodUpdateBtn']);
+                            echo Html::submitButton('Create Reservation', ['class' => 'create btn btn-block bg-aqua btn-lg btn-info prodUpdateBtn']);
                             echo'</div>';
                             ActiveForm::end();
                         }
@@ -592,8 +589,38 @@ SCRIPT;
 
     }
 
+    function countallPrices(){
+        var counter = 0;
+        var i = 0;
+        while(i<countPrices){
+
+            var howmany = $('#productprice-description-' + i).val()
+            if(howmany){
+                counter+=parseInt(howmany)  ;
+            }
+            i+=1;
+
+        }
+        return counter;
+
+    }
+    function validCheck(){
+
+        if(countallPrices()==0){
+            $('.create').prop("disabled", true);
+        }
+        else{
+            $('.create').prop("disabled", false);
+        }
+
+
+    }
+
 
     $().ready(() => {
+        if(countPrices){
+            validCheck();
+        }
 
         $('#product-times').change(function () {
             $('#product-times').val($('[name="Product[times]"]:checked').val())
@@ -607,47 +634,53 @@ SCRIPT;
             }
         });
 
+        function getTimes(){
+            $('#product-title').val($('[name="Product[title]"]:checked').val())
+            $.ajax({
+                url: '<?php echo Yii::$app->request->baseUrl . '/Reservations/reservations/gettimes' ?>',
+                type: 'post',
+                data: {
+                    id:   $('#product-title').val(),
+                    date: $('#product-start_date').val(),
+                },
+                success: function (data) {
+                    console.log(data.search);
+
+                    mytimes = data.search
+                    $('#myTimes').html('');
+                    $('#product-times').html('')
+                    mytimes.forEach(myFunction)
+                }
+
+
+            });
+            $.ajax({
+                url: '<?php echo Yii::$app->request->baseUrl . '/Reservations/reservations/getprices' ?>',
+                type: 'post',
+                data: {
+                    id:  $('#product-title').val(),
+
+                },
+                success: function (data) {
+                    console.log(data.search);
+                    mytimes = data.search
+                    $('#myPrices').html(mytimes);
+
+
+                }
+            });
+        }
+
 
 
         $('#product-title').change(function () {
-            $('#product-title').val($('[name="Product[title]"]:checked').val())
-        $.ajax({
-            url: '<?php echo Yii::$app->request->baseUrl . '/Reservations/reservations/gettimes' ?>',
-            type: 'post',
-            data: {
-                id: $(this).val(),
-
-            },
-            success: function (data) {
-                console.log(data.search);
-
-                mytimes = data.search
-                $('#myTimes').html('');
-                $('#product-times').html('')
-                mytimes.forEach(myFunction)
-
-
-
-            }
-
+            getTimes();
 
         });
-        $.ajax({
-            url: '<?php echo Yii::$app->request->baseUrl . '/Reservations/reservations/getprices' ?>',
-            type: 'post',
-            data: {
-                id: $(this).val(),
+        $('#product-start_date').change(function () {
+            getTimes();
 
-            },
-            success: function (data) {
-                console.log(data.search);
-                mytimes = data.search
-                $('#myPrices').html(mytimes);
-
-
-            }
         });
-    });
     })
     ;
 
@@ -689,6 +722,10 @@ SCRIPT;
 
     var Total = 0;
     $('#product-form').change(function () {
+        if(countPrices){
+            validCheck();
+        }
+
         $.ajax({
             url: '<?php echo Yii::$app->request->baseUrl . '/Reservations/reservations/calcprice' ?>',
             type: 'post',

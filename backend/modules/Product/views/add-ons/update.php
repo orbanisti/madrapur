@@ -71,9 +71,11 @@ use kartik\form\ActiveForm;
                         ]);
                     echo $form->field($model, 'hufPrice')
                         ->textInput();
+                    echo $form->field($model, 'shortName')
+                        ->textInput();
 
                     echo \kartik\helpers\Html::submitButton("Update add-on", [
-                        'class' => 'btn btn-primary',
+                        'class' => 'btn btn-info',
                         'name' => 'create-add-on',
                         'value' => 'save'
                     ]);

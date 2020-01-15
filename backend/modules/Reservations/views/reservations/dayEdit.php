@@ -160,9 +160,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             ,
 
                             ['class' => EditableColumn::class,
-                             'attribute' => 'firstName',
+                             'attribute' => 'customerName',
                              
-                             'label' => 'First Name',
+                             'label' => 'Name',
                              'refreshGrid' => true,
 
                              'editableOptions' => function ($model, $key, $index) {
@@ -185,32 +185,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                  ];
                              },
                             ],
-                            ['class' => EditableColumn::class,
-                             'attribute' => 'lastName',
-                             'label' => 'Last Name',
-                             'refreshGrid' => true,
 
-
-                             'editableOptions' => function ($model, $key, $index) {
-                                 $currentdate = Yii::$app->request->get('date');
-                                 $ctime = $model->booking_start;
-                                 $firstpart = str_replace(':', '_', $ctime);
-                                 $secondpart = str_replace(' ', '_', $firstpart);
-
-                                 return [
-                                     'formOptions' => [
-                                         'id' => 'gv1_' . $model->id . '_form_name',
-                                         'action' => \yii\helpers\Url::to(['/Product/product/editbook'])
-                                     ],
-                                     'options' => [
-                                         'id' => 'gv1_' . $secondpart . '_' . $model->id . rand() % 10000,
-                                     ],
-                                     'asPopover'=>false,
-                                     'inputType'=>\kartik\editable\Editable::INPUT_TEXT,
-                                 ];
-                             },
-
-                            ],
                             [
                                     'class' => EditableColumn::class,
                              'attribute' => 'bookedChairsCount',
@@ -339,8 +314,36 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'attribute' => 'notes',
                                 'format' => 'html',
+                                'contentOptions' => ['style' => ['max-width' => '100px;', 'height' => '100px']],
                                 'value' => function ($model) {
+
                                     return $model->notes;
+                                }
+                            ],
+                            [
+
+                                'format' => 'html',
+                                'contentOptions' => ['style' => ['max-width' => '100px;', 'height' => '100px']],
+                                'value' => function ($model) {
+                                    $returned='';
+
+                                    $prodId=Yii::$app->request->get('prodId');
+                                    $product=\backend\modules\Product\models\Product::findOne($prodId);
+
+
+
+                                    $data=json_decode($model->data);
+                                    if(isset($data->addons)){
+                                        foreach($data->addons as $addonId)
+                                        {
+                                            $addon=\backend\modules\Product\models\AddOn::findOne($addonId);
+                                            $returned.=$addon->shortName.',';
+
+                                        }
+
+                                    }
+                                    return $returned;
+
                                 }
                             ],
                         ];

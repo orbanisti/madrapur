@@ -1,15 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ROG
- * Date: 2019. 02. 05.
- * Time: 20:38
- */
+    /**
+     * Created by PhpStorm.
+     * User: ROG
+     * Date: 2019. 02. 05.
+     * Time: 20:38
+     */
 
-use backend\components\extra;
-use kartik\date\DatePicker;
-use kartik\helpers\Html;
-use yii\widgets\ActiveForm;
+    use backend\components\extra;
+    use backend\modules\Reservations\models\Reservations;
+    use kartik\date\DatePicker;
+    use kartik\dynagrid\DynaGrid;
+    use kartik\helpers\Html;
+    use yii\widgets\ActiveForm;
 
 ?>
 
@@ -21,7 +23,7 @@ use yii\widgets\ActiveForm;
             <div class="card-header">
                 <h3 class="card-title">
                     <i class="fas fa-chair fa-lg "></i>
-                    <?=Yii::t('app', 'Reservations')?>
+                    <?= Yii::t('app', 'Reservations') ?>
                 </h3>
 
                 <div class="card-tools">
@@ -132,54 +134,56 @@ use yii\widgets\ActiveForm;
 
                         if (Yii::$app->user->can('administrator')) {
 
-                            echo \onmotion\apexcharts\ApexchartsWidget::widget([
-
-                                                                                   'type' => 'bar', // default area
-
-                                                                                   'height' => '450', // default 350
-
-                                                                                   'chartOptions' => [
-
-                                                                                       'chart' => [
-
-                                                                                           'toolbar' => [
-                                                                                               'show' => true,
-                                                                                               'autoSelected' => 'zoom'
-                                                                                           ],
-                                                                                       ],
-
-                                                                                       'xaxis' => [
-                                                                                           'type' => 'datetime',
-                                                                                           // 'categories' => $categories,
-                                                                                       ],
-                                                                                       /*   'markers'=>[
-                                                                                              'markers'=> [
-                                                                                                  'size'=> '0',
-                                                                                                  'strokeColor'=> "#fff",
-                                                                                                  'strokeWidth'=> '3',
-                                                                                                  'strokeOpacity'=> '1',
-                                                                                                  'fillOpacity'=> '1',
-                                                                                                  'hover'=> [
-                                                                                                      'size'=> '6',
-                                                                                                  ],
-                                                                                              ],
-                                                                                          ],*/
-
-                                                                                       'dataLabels' => [
-                                                                                           'enabled' => false,
-                                                                                       ],
-                                                                                       'stroke' => [
-                                                                                           'show' => true,
-
-                                                                                           'curve' => 'smooth',
-                                                                                       ],
-                                                                                       'legend' => [
-                                                                                           'verticalAlign' => 'top',
-                                                                                           'horizontalAlign' => 'left',
-                                                                                       ],
-                                                                                   ],
-                                                                                   'series' => $finalSeries
-                                                                               ]);
+//                            echo \onmotion\apexcharts\ApexchartsWidget::widget(
+//                                [
+//
+//                                    'type' => 'bar', // default area
+//
+//                                    'height' => '450', // default 350
+//
+//                                    'chartOptions' => [
+//
+//                                        'chart' => [
+//
+//                                            'toolbar' => [
+//                                                'show' => true,
+//                                                'autoSelected' => 'zoom'
+//                                            ],
+//                                        ],
+//
+//                                        'xaxis' => [
+//                                            'type' => 'datetime',
+//                                            // 'categories' => $categories,
+//                                        ],
+//                                        /*   'markers'=>[
+//                                               'markers'=> [
+//                                                   'size'=> '0',
+//                                                   'strokeColor'=> "#fff",
+//                                                   'strokeWidth'=> '3',
+//                                                   'strokeOpacity'=> '1',
+//                                                   'fillOpacity'=> '1',
+//                                                   'hover'=> [
+//                                                       'size'=> '6',
+//                                                   ],
+//                                               ],
+//                                           ],*/
+//
+//                                        'dataLabels' => [
+//                                            'enabled' => false,
+//                                        ],
+//                                        'stroke' => [
+//                                            'show' => true,
+//
+//                                            'curve' => 'smooth',
+//                                        ],
+//                                        'legend' => [
+//                                            'verticalAlign' => 'top',
+//                                            'horizontalAlign' => 'left',
+//                                        ],
+//                                    ],
+//                                    'series' => $finalSeries
+//                                ]
+//                            );
                         }
 
                     ?>
@@ -189,54 +193,82 @@ use yii\widgets\ActiveForm;
                         $gridColumns = [
                             'id',
                             'bookingId',
-                            'productId',
+
+                            [
+                                'attribute'=>'productId',
+                                'format'=>'html',
+                                'filter'=>\yii\helpers\ArrayHelper::map
+                                (\backend\modules\Product\models\Product::getAllProducts(),'id','title'),
+                                'value'=>function($model){return \backend\modules\Product\models\Product::findOne
+                                    ($model->productId)->shortName;}
+
+                            ],
                             [
                                 'attribute' => 'source',
                                 'filter' => array("https://silver-line.hu" => "https://silver-line.hu", "https://budapestrivercruise.eu" => "https://budapestrivercruise.eu", 'Street' => 'Street', 'Hotel' => 'Hotel'),
                             ],
 
-                            'invoiceDate',
+
+                            [
+                                'attribute' => 'invoiceDate',
+                                'filter' => DatePicker::widget(
+                                    [
+                                        'model' => $searchModel,
+                                        'attribute' => 'invoiceDate',
+                                        'name' => 'dp_2',
+                                        'type' => DatePicker::TYPE_COMPONENT_PREPEND,
+                                        'pluginOptions' => [
+                                            'autoclose' => true,
+                                            'format' => 'yyyy-mm-dd'
+
+                                        ]
+                                    ]
+                                ),
+                            ],
                             [
                                 'attribute' => 'bookingDate',
-                                'filter' => DatePicker::widget([
-                                                                   'model' => $searchModel,
-                                                                   'attribute' => 'bookingDate',
-                                                                   'name' => 'dp_2',
-                                                                   'type' => DatePicker::TYPE_COMPONENT_PREPEND,
-                                                                   'pluginOptions' => [
-                                                                       'autoclose' => true,
-                                                                       'format' => 'yyyy-mm-dd'
+                                'filter' => DatePicker::widget(
+                                    [
+                                        'model' => $searchModel,
+                                        'attribute' => 'bookingDate',
+                                        'name' => 'dp_2',
+                                        'type' => DatePicker::TYPE_COMPONENT_PREPEND,
+                                        'pluginOptions' => [
+                                            'autoclose' => true,
+                                            'format' => 'yyyy-mm-dd'
 
-                                                                   ]
-                                                               ]),
-                            ],  [
-                                'attribute' => 'sellerName',
-
+                                        ]
+                                    ]
+                                ),
                             ],
+
                             [
-                                'label' => 'Edit Booking',
-                                'format' => 'html',
-                                'value' => function ($model) {
-                                    return '<a href="/Reservations/reservations/bookingedit?id=' . $model->returnId() . '">Edit' . '</a>';
-                                }
+                                'attribute' => 'sellerName',
+                                'filter'=>\common\models\User::getAllSellers()
+
                             ],
+
                             [
                                 'class' => 'kartik\grid\ActionColumn',
-                                'template' => '{view}{bookingedit}',
+                                'template' => '{view}',
                                 'buttons' => [
                                     'view' => function ($url) {
-                                        return Html::a('<i class="fas fa-eye fa-lg "></i>',
-                                                       $url,
-                                                       [
-                                                           'title' => Yii::t('backend', 'Login')
-                                                       ]);
+                                        return Html::a(
+                                            '<i class="fas fa-eye fa-lg "></i>',
+                                            $url,
+                                            [
+                                                'title' => Yii::t('backend', 'Login')
+                                            ]
+                                        );
                                     },
                                     'bookingedit' => function ($url) {
-                                        return Html::a('<i class="fas fa-pencil-alt fa-lg "></i>',
-                                                       $url,
-                                                       [
-                                                           'title' => Yii::t('backend', 'Login')
-                                                       ]);
+                                        return Html::a(
+                                            '<i class="fas fa-pencil-alt fa-lg "></i>',
+                                            $url,
+                                            [
+                                                'title' => Yii::t('backend', 'Login')
+                                            ]
+                                        );
                                     },
                                 ],
                                 'visibleButtons' => [
@@ -246,28 +278,33 @@ use yii\widgets\ActiveForm;
 
                         ];
 
-                        echo \kartik\grid\GridView::widget([
-                                                               'pager' => [
-                                                                   'firstPageLabel' => Yii::t('app', 'Első oldal'),
-                                                                   'lastPageLabel' => Yii::t('app', 'Utolsó oldal'),
-                                                               ],
-                                                               'dataProvider' => $dataProvider,
-                                                               'filterModel' => new \backend\modules\Reservations\models\Reservations(),
-                                                               'columns' => $gridColumns,
-                                                               'responsiveWrap' => false,
-                                                               'toolbar' => [
-                                                                   [
-                                                                       'options' => ['class' => 'btn-group mr-2']
-                                                                   ],
-                                                                   '{export}',
-                                                                   '{toggleData}',
-                                                               ],
-                                                               'toggleDataContainer' => ['class' => 'btn-group mr-2'],
+                       echo  Dynagrid::widget(
+                            [
+                                'columns' => $gridColumns,
+                                'theme'=>'panel-info',
+                                'showPersonalize'=>true,
+                                'storage' => 'cookie',
+                                'gridOptions'=>[
+                                    'dataProvider'=>$dataProvider,
+                                    'filterModel'=>new Reservations(),
+                                    'showPageSummary'=>true,
 
-                                                               'panel' => [
-                                                                   'heading' => '<i class="fa fa-summary-alt"></i>',
-                                                               ],
-                                                           ]);
+                                    'floatHeader'=>false,
+                                    'pjax'=>false,
+                                    'responsiveWrap'=>false,
+                                    'panel'=>[
+
+                                        'after' => false
+                                    ],
+                                    'toolbar' =>  [
+
+                                        ['content'=>'{dynagrid}'],
+                                        '{export}',
+                                        '{toggleData}',
+                                    ]
+                                ],
+                                'options'=>['id'=>'dynagrid-1']
+                            ]);
 
                     ?>
 
@@ -278,7 +315,7 @@ use yii\widgets\ActiveForm;
 
 
                     <?php
-                        if(Yii::$app->user->can('administrator')) {
+                        if (Yii::$app->user->can('administrator')) {
                             ?>
                             <div class="box">
 
@@ -330,12 +367,12 @@ use yii\widgets\ActiveForm;
                                     <?= $form->field($dateImportModel, 'dateFrom')->widget(
                                         \yii\jui\DatePicker::class, [         //'language' => 'ru',
                                                                               //'dateFormat' => 'yyyy-MM-dd',
-                                    ]
+                                                                  ]
                                     ) ?>
                                     <?= $form->field($dateImportModel, 'dateTo')->widget(
                                         \yii\jui\DatePicker::class, [         //'language' => 'ru',
                                                                               //'dateFormat' => 'yyyy-MM-dd',
-                                    ]
+                                                                  ]
                                     ) ?>
                                     <?= $form->field($dateImportModel, 'source')->dropDownList(array('https://budapestrivercruise.eu' => 'https://budapestrivercruise.eu', 'https://silver-line.hu' => 'https://silver-line.hu'), array('options' => array('https://budapestrivercruise.eu' => array('selected' => true)))); ?>
 

@@ -169,6 +169,8 @@ $gridColumns = [
                                             'name' => 'price',
                                             'id' => 'price',
                                         ]);
+                                    echo $form->field($searchModel, 'shortName')
+                                        ->textInput();
 
                                     echo Html::submitButton("Create add-on", [
                                         'class' => 'btn btn-primary',

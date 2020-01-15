@@ -245,6 +245,7 @@ class Product extends MadActiveRecord {
             [['isDeleted'], 'string', 'max' => 10],
             [['isStreet'], 'string', 'max' => 10],
             [['type'],'safe'],
+            [['start_date','times','title'],'required'],
             [
                 'picture',
                 'safe'

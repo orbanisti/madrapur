@@ -7,6 +7,7 @@ use backend\modules\Product\models\Product;
 use backend\modules\Product\models\ProductTime;
 use backend\modules\Reservations\controllers\ReservationsController;
 use backend\modules\Tickets\models\TicketBlock;
+use common\models\User;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
@@ -101,6 +102,7 @@ class Reservations extends MadActiveRecord {
             [['iSellerId'], 'string'],
             [['iSellerName'], 'string'],
             [['notes'], 'string'],
+            [['customerName'], 'string'],
         ];
     }
 
@@ -351,17 +353,26 @@ class Reservations extends MadActiveRecord {
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 15,
+                'pageSize' => 40,
             ],
         ]);
 
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
+        if($this->sellerName){
+
+            $user=User::findOne($this->sellerName)->username;
+
+            $query->andFilterWhere((['=', 'sellerName', $user]));
+
+        }
 
         $query->andFilterWhere((['=', 'ticketId', $this->ticketId]));
+        $query->andFilterWhere((['=', 'productId', $this->productId]));
         $query->andFilterWhere((['like', 'source', $this->source]));
         $query->andFilterWhere((['=', 'bookingDate', $this->bookingDate]));
+        $query->andFilterWhere((['=', 'invoiceDate', $this->invoiceDate]));
 
         return $dataProvider;
     }
@@ -450,7 +461,7 @@ class Reservations extends MadActiveRecord {
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 15,
+                'pageSize' => 10000,
             ],
         ]);
 

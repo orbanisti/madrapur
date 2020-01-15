@@ -3,8 +3,11 @@
 namespace backend\modules\Modmail\controllers;
 
 use backend\controllers\Controller;
+use backend\models\UserForm;
 use backend\modules\Modmail\models\Mailtemplate;
 use backend\modules\Modmail\models\Modmail;
+use backend\modules\Reservations\controllers\ReservationsController;
+use backend\modules\Reservations\models\Reservations;
 use Yii;
 
 /**
@@ -16,6 +19,42 @@ class ModmailController extends Controller {
      *
      * @return string
      */
+
+    public function actionImporter(){
+
+        $model = new UserForm();
+        set_time_limit(90000);
+
+        if($postedJson=Yii::$app->request->post('json')){
+
+
+            $allHotels=explode('#',$postedJson);
+            foreach ($allHotels as $hotel){
+                $model = new UserForm();
+                $model->username=$hotel;
+                $model->email='silverline'.(rand()%10000).'@test.com';
+                $model->password='testsilver';
+                $model->status=1;
+                $model->roles[0]='hotelSeller';
+                $model->save();
+
+
+
+            }
+
+        }
+
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect([
+                                       'index'
+                                   ]);
+        }
+
+
+        return $this->render('importer');
+    }
+
     public function actionAdmin() {
         $model = new Modmail();
         $newUsername = Yii::$app->user->getIdentity()->username;

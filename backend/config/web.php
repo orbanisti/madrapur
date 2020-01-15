@@ -23,6 +23,14 @@ $config = [
             'as afterLogin' => common\behaviors\LoginTimestampBehavior::class,
         ],
     ],
+    /*'on beforeRequest' => function ($event) {
+        if(!Yii::$app->request->isSecureConnection){
+            $url = Yii::$app->request->getAbsoluteUrl();
+            $url = str_replace('http:', 'https:', $url);
+            Yii::$app->getResponse()->redirect($url);
+            Yii::$app->end();
+        }
+    },*/
     'modules' => [
         'Notifications' => [
             'class' => backend\modules\Notifications\Module::class,

@@ -76,6 +76,13 @@ use kartik\form\ActiveForm;
                             'id' => 'price',
                         ]);
 
+                    echo $form->field($model, 'shortName')
+                        ->textInput([
+                            'name' => 'price',
+                            'id' => 'price',
+                        ]);
+
+
                     echo \kartik\helpers\Html::submitButton("Create add-on", [
                         'class' => 'btn btn-primary',
                         'name' => 'create-add-on',
@@ -89,6 +96,7 @@ use kartik\form\ActiveForm;
 
                 ?>
             </div>
+
             <!-- /.card-body-->
         </div>
         <!-- /.card -->

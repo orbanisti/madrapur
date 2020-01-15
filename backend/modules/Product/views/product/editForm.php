@@ -352,7 +352,7 @@
                     'widgetContainer' => 'dynamicform_wrapper_times', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
                     'widgetBody' => '.container-items-times', // required: css class selector
                     'widgetItem' => '.item-times', // required: css class
-                    'limit' => 10, // the maximum times, an element can be cloned (default 999)
+                    'limit' => 999, // the maximum times, an element can be cloned (default 999)
                     'min' => 0, // 0 or 1 (default 1)
                     'insertButton' => '.add-item-times', // css class
                     'deleteButton' => '.remove-item-times', // css class
@@ -388,12 +388,13 @@
             <div class="card-body">
                 <div class="container-items-times"><!-- widgetContainer -->
                     <?php foreach ($modelTimes as $i => $modelTime): ?>
-                        <div class="item-times card card-default card-primary"><!-- widgetBody -->
-                            <div class="card-header">
+                        <div class="item-times card card-default collapsed-card  card-info"><!-- widgetBody -->
+                            <div class="card-header" data-card-widget="collapse">
 
-                                <h3 class="card-title pull-left"><?= Yii::t('app', 'Time') ?></h3>
+                                <h3 class="card-title pull-left"><?= $modelTime->name ? $modelTime->name:Yii::t('app',
+                                                                                                               'Time') ?></h3>
                                 <div class="float-right">
-                                    <button type="button" class="add-item-times btn btn-primary btn-xs"><i
+                                    <button type="button" class="add-item-times btn btn-info btn-xs"><i
                                                 class="fas fa-plus-circle fa-2x"></i></button>
                                     <button type="button" class="remove-item-times btn btn-danger btn-xs"><i
                                                 class="fas fa-minus fa-2x"></i></button>
@@ -418,31 +419,23 @@
                                     <div class="col-sm-6">
 
                                         <?= $form->field($modelTime, "[{$i}]start_date")->widget(
-                                            DateControl::class, [
-                                            'type' => DateControl::FORMAT_DATE,
-                                            'ajaxConversion' => false,
-                                            'autoWidget' => true,
-                                            'displayFormat' => 'php:Y-m-d',
-                                            'options' => [
-                                                'pluginOptions' => [
-                                                    'autoclose' => true
-                                                ]
-                                            ]
-                                        ]
-                                        ); ?>
+                                            \kartik\widgets\DatePicker::classname(), [
+                                                                                       'type' => \kartik\date\DatePicker::TYPE_COMPONENT_PREPEND,
+                                                                                       'pluginOptions' => [
+                                                                                           'format' => 'yyyy-mm-dd',
+                                                                                           'autoclose' => true,
+                                                                                       ]
+                                                                                   ]
+                                        );?>
                                     </div>
                                     <div class="col-sm-6">
                                         <?= $form->field($modelTime, "[{$i}]end_date")->widget(
-                                            DateControl::classname(), [
-                                            'type' => DateControl::FORMAT_DATE,
-                                            'ajaxConversion' => false,
-                                            'autoWidget' => true,
-                                            'displayFormat' => 'php:Y-m-d',
-                                            'options' => [
-                                                'pluginOptions' => [
-                                                    'autoclose' => true
-                                                ]
-                                            ]
+                                            \kartik\widgets\DatePicker::classname(), [
+                                                                                       'type' => \kartik\date\DatePicker::TYPE_COMPONENT_PREPEND,
+                                                                                       'pluginOptions' => [
+                                                                                           'format' => 'yyyy-mm-dd',
+                                                                                           'autoclose' => true,
+                                                                                       ]
                                         ]
                                         ); ?>
                                     </div>

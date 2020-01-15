@@ -50,6 +50,7 @@ class AddOn extends MadActiveRecord {
                     'name',
                     'icon',
                     'type',
+                    'shortName'
                 ],
                 'string',
                 'max' => 255

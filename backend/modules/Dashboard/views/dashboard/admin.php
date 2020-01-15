@@ -94,6 +94,23 @@
                                             </div>
 
                                         </div>
+                                        <div class="col-lg-3">
+                                            <div class="small-box bg-gradient-gray-dark">
+                                                <div class="inner">
+                                                    <h3>Addons</h3>
+
+                                                    <p></p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="fas fa-water  "></i>
+                                                </div>
+                                                <a href="<?=\yii\helpers\Url::to('/Product/add-ons/admin')?>"
+                                                   class="small-box-footer">More info
+                                                    <i class="fas
+                                        fa-arrow-circle-right"></i></a>
+                                            </div>
+
+                                        </div>
 
 
 
