@@ -4,7 +4,7 @@ use yii\db\Schema;
 use yii\db\Migration;
 
 class m200114_131746_addonShortname extends Migration {
-    public $tableName = "modulusProductAddons";
+    public $tableName = "modulusProductAddOns";
     public $columnName = "shortName";
 
 
