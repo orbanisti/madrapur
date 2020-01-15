@@ -204,12 +204,21 @@
 
                 };
             }
+            if(isset($hotelnames)){
+                $data=['Street Sellers'=>$streetsellernames,'Hotels'=>$hotelnames];
+
+
+            }
+            else{
+                $data=['Street Sellers'=>$streetsellernames];
+
+
+            }
 
 
 
 
 
-            $data=['Street Sellers'=>$streetsellernames,'Hotels'=>$hotelnames];
 
             return $data;
 
