@@ -74,16 +74,7 @@ use kartik\widgets\ActiveForm;
 
                         <?php
 
-                            $format = <<< SCRIPT
-
-function format(state) {
-    if (!state.id) return state.text; // optgroup
-    src =productimages[state.id.toLowerCase()]
-    return '<img class="flag" style="width:20px;height:20px;" src="' + src + '"/>' + state.text;
-}
-
-SCRIPT;
-
+                           
                             $escape = new JsExpression("function(m) { return m; }");
                             $this->registerJs($format, View::POS_HEAD);
 
@@ -98,8 +89,7 @@ SCRIPT;
                                 'data' => $data,
                                 'options' => ['placeholder' => 'Select a product ...'],
                                 'pluginOptions' => [
-                                    'templateResult' => new JsExpression('format'),
-                                    'templateSelection' => new JsExpression('format'),
+
                                     'escapeMarkup' => $escape,
                                     'allowClear' => true
                                 ],
