@@ -573,6 +573,15 @@ $bundle = BackendAsset::register($this);
                 'active' => (Yii::$app->controller->id == 'reservations'),
                 'items' => [
                     [
+                        'label' => Yii::t('backend', 'importer'),
+                        'icon' => '<i class="fab fa-fantasy-flight-games nav-icon "></i>',
+                        'url' => [
+                            '/Modmail/modmail/importer'
+                        ],
+                        'visible'=>Yii::$app->user->can('streetAdmin') || Yii::$app->user->can('administrator')
+
+                    ],
+                    [
                         'label' => Yii::t('backend', 'Reporting'),
                         'icon' => '<i class="fas fa-table nav-icon "></i>',
                         'url' => [
