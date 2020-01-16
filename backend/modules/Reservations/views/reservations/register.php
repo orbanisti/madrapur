@@ -14,7 +14,6 @@ use backend\modules\Product\models\ProductPrice;
     use kartik\date\DatePicker;
 use kartik\form\ActiveForm;
 use kartik\helpers\Html;
-    use kartik\icons\Icon;
     use kartik\select2\Select2;
     use kartik\touchspin\TouchSpin;
     use lo\widgets\Toggle;
@@ -255,12 +254,8 @@ use kartik\helpers\Html;
                                                                                               'type'   => 'number'
                                                                                           ],
                                                                                       'pluginOptions' => [
-                                                                                          'buttonup_txt'=>Icon::show('caret-square-up', ['class'=>'fa-lg
-                                                    bg-info','framework'
-                                                                                          =>Icon::FAS]),
-                                                                                          'buttondown_txt'=>Icon::show('caret-square-down',
-                                                                                                                       ['class'=>'fa-lg  bg-info','framework'
-                                                                                                                       =>Icon::FAS]) ,
+                                                                                          'buttonup_txt'=>'<i class="fas fa-lg bg-info fa-caret-square-up  "></i>',
+                                                                                          'buttondown_txt'=>'<i class="fas fa-lg bg-info fa-caret-square-down  "></i>',
 
                                                                                           'max'=>'9999999'
                                                                                       ]
@@ -305,12 +300,8 @@ use kartik\helpers\Html;
 
                                                     ],
                                                 'pluginOptions' => [
-                                                    'buttonup_txt'=>Icon::show('caret-square-up', ['class'=>'fa-lg 
-                                                    bg-info','framework'
-                                                    =>Icon::FAS]),
-                                                    'buttondown_txt'=>Icon::show('caret-square-down',
-                                                                                 ['class'=>'fa-lg fa-lg bg-info','framework'
-                                                    =>Icon::FAS]) ,
+                                                    'buttonup_txt'=>'<i class="fas fa-lg bg-info fa-caret-square-up  "></i>',
+                                                    'buttondown_txt'=>'<i class="fas fa-lg bg-info fa-caret-square-down  "></i>',
 
                                                     'max'=>'9999999'
                                                 ]
@@ -452,9 +443,8 @@ use kartik\helpers\Html;
                                         <h3 class="box-title"></h3>
                                         <div class="box-tools float-right">
                                             <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                                <?=Icon::show('plus-circle', ['class'=>'fa-lg','framework'=>Icon::FA
-                                                                              ,'style'=>'color:white'
-                                                ])?>
+
+                                                <i class="fas fa-plus-circle fa-lg text-white"></i>
                                             </button>
                                         </div>
                                         <!-- /.box-tools -->
