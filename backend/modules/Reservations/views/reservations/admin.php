@@ -209,7 +209,7 @@
                                         $source=ProductSource::find()->andFilterWhere(['=','url',$model->source])
                                             ->andFilterWhere(['=','prodIds',$model->productId])->one();
                                         if($source){
-                                            $model->product_id;
+                                            $model->productId=$source->product_id;
                                         }
 
                                     }

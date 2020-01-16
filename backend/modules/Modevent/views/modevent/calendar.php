@@ -167,6 +167,7 @@ use yii\widgets\Pjax;
                             }
                             $Event->start = $newEvent->startDate;
                             $Event->resourceId=$newEvent->place;
+
                             $events[] = $Event;
                         }
 
@@ -189,6 +190,10 @@ use yii\widgets\Pjax;
                             $Event->title =$seller->getPublicIdentity();
                             $Event->start = $dt->format('Y-m-d');
                             $Event->resourceId='attEB';
+                            $Event->nonstandard = [
+                                'username' => $seller->username,
+
+                            ];
                             $events[]=$Event;
                         }
                     }
@@ -215,8 +220,8 @@ function(calEvent, jsEvent, view) {
     if(Month<10)Month='0'+Month;
     if(Day<10)Day='0'+Day;
     dateString = Year+'-'+Month+'-'+Day;
-  console.log('drop the bass'+dateString+calEvent.resourceId);
- doSave(calEvent.title,dateString,calEvent.resourceId,calEvent.id);
+
+ doSave(calEvent.nonstandard["username"],dateString,calEvent.resourceId,calEvent.id);
   
 }
 EOF;
