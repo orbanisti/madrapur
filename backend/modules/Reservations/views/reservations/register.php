@@ -330,7 +330,7 @@
                                                                       'id' => rand()%10,
                                                                       'options' => ['placeholder' => 'Select a seller...'],
 
-                                                                  ]);git
+                                                                  ]);
 
 
 
