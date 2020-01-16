@@ -7,12 +7,12 @@
      * Time: 20:38
      */
 
-use backend\modules\Product\models\AddOn;
-use backend\modules\Product\models\ProductAddOn;
-use backend\modules\Product\models\ProductPrice;
+    use backend\modules\Product\models\AddOn;
+    use backend\modules\Product\models\ProductAddOn;
+    use backend\modules\Product\models\ProductPrice;
     use common\models\User;
     use kartik\date\DatePicker;
-
+    use kartik\form\ActiveForm;
     use kartik\helpers\Html;
     use kartik\icons\Icon;
     use kartik\select2\Select2;
@@ -20,7 +20,7 @@ use backend\modules\Product\models\ProductPrice;
     use lo\widgets\Toggle;
     use yii\helpers\ArrayHelper;
     use yii\web\View;
-    use kartik\widgets\ActiveForm;
+
     use yii\widgets\Pjax;
 
 
@@ -212,8 +212,8 @@ use backend\modules\Product\models\ProductPrice;
                                 $oldTicketId=null;
 
                             }
-
-                            $form = ActiveForm::begin(['id' => 'product-form']);
+                            Pjax::begin(['id'=>'grid-pjax']);
+                            $form = ActiveForm::begin(['id' => 'product-form','options' => ['data-pjax' => true ]]);
                             $model = new ProductPrice();
                             # var_dump($myPrices);
                             echo '</br>';
@@ -243,9 +243,36 @@ use backend\modules\Product\models\ProductPrice;
 
 
 
+                                echo $price->name."($price->price $currencySymbol/person)" ;
+
+                                $currentProdId = (Yii::$app->request->post('Product'))['title'];
+                                echo $form->field($model, "description[$i]")->widget(TouchSpin::class,
+                                                                                     ['options' =>
+                                                                                          [
+
+                                                                                              'placeholder' => 'Adjust ...',
+                                                                                              'data-priceid' => $price->id,
+                                                                                              'autocomplete' => 'off',
+                                                                                              'type'   => 'number'
+                                                                                          ],
+                                                                                      'pluginOptions' => [
+                                                                                          'buttonup_txt'=>Icon::show('caret-square-up', ['class'=>'fa-lg
+                                                    bg-info','framework'
+                                                                                          =>Icon::FAS]),
+                                                                                          'buttondown_txt'=>Icon::show('caret-square-down',
+                                                                                                                       ['class'=>'fa-lg  bg-info','framework'
+                                                                                                                       =>Icon::FAS]) ,
+
+                                                                                          'max'=>'9999999'
+                                                                                      ]
+                                                                                     ]   )->label(false);
 
                             }
+                            echo $form->field($model, 'product_id')->hiddeninput(['value' => $currentProdId])->label(false);
+                            echo $form->field($model, 'booking_date')->hiddeninput(['autocomplete' => 'off', 'autocapitalize' => 'off', 'autocorrect' => 'off', 'value' => (Yii::$app->request->post('Product'))['start_date']])->label(false);
+                            echo $form->field($model, 'time_name')->hiddeninput(['value' => (Yii::$app->request->post('Product'))['times']])->label(false);
 
+                            echo $form->field($model, 'discount')->hiddeninput()->label(false);
                             ?>
 
 
@@ -267,7 +294,29 @@ use backend\modules\Product\models\ProductPrice;
                                 <div class="card-body bg-gradient-white row">
                                     <div class="col-lg-12">
                                         Custom Price
+                                        <?= TouchSpin::widget(
+                                            [   'name'=>'customPrice',
+                                                'options' =>
+                                                    [
 
+                                                        'placeholder' => 'Adjust ...',
+                                                        'data-priceid' => $price->id,
+                                                        'autocomplete' => 'off',
+                                                        'type'   => 'number',
+
+                                                    ],
+                                                'pluginOptions' => [
+                                                    'buttonup_txt'=>Icon::show('caret-square-up', ['class'=>'fa-lg 
+                                                    bg-info','framework'
+                                                    =>Icon::FAS]),
+                                                    'buttondown_txt'=>Icon::show('caret-square-down',
+                                                                                 ['class'=>'fa-lg fa-lg bg-info','framework'
+                                                    =>Icon::FAS]) ,
+
+                                                    'max'=>'9999999'
+                                                ]
+                                            ]   );
+                                        ?>
 
                                     </div>
 
@@ -275,6 +324,16 @@ use backend\modules\Product\models\ProductPrice;
                                         Selling for Somebody else?
                                         <?php
 
+                                            echo Select2::widget( [
+                                                                      'name' => 'anotherSeller',
+                                                                      'data' => User::getAllSellers(),
+                                                                      'id' => rand(),
+                                                                      'options' => ['placeholder' => 'Select a seller...'],
+                                                                      'pluginOptions' => [
+
+                                                                          'allowClear' => true
+                                                                      ],
+                                                                  ]);
 
 
 
@@ -284,7 +343,16 @@ use backend\modules\Product\models\ProductPrice;
                                         For somebody in the past?
                                         <?php
 
+                                            echo DatePicker::widget([
+                                                                        'name' => 'sellerCustomDate',
+                                                                        'type' => DatePicker::TYPE_BUTTON,
+                                                                        'value' => date('Y-m-d', time()),
 
+                                                                        'pluginOptions' => [
+                                                                            'format' => 'yyyy-mm-dd',
+                                                                            'autoclose'=>true
+                                                                        ]
+                                                                    ]);
                                         ?>
                                     </div>
 
@@ -342,7 +410,31 @@ use backend\modules\Product\models\ProductPrice;
                                 </div>
                                 <div class="card-body bg-gradient-white">
                                     <div class="col-lg-12">
+                                        <?php
+                                            $addOnLinks = ProductAddOn::find()
+                                                ->andFilterWhere(['=', 'prodId', $currentProdId])
+                                                ->all();
+                                            foreach ($addOnLinks as $i => $addOnLink) {
+                                                $addOn = AddOn::findOne(['id' => $addOnLink->addOnId, 'type' => 'simple']);
+                                                if ($addOn) {
+                                                    $addOnPrice = $addOn->price;
 
+                                                    if ($paid_currency == 'HUF') {
+                                                        $addOnPrice = $addOn->hufPrice ? $addOn->hufPrice :
+                                                            ProductPrice::eurtohufValue
+                                                        ($addOnPrice);
+                                                    }
+
+                                                    echo $form->field(
+                                                        $model, "Addons[{$addOn->id}]")->checkbox([
+                                                        'value' => $addOnPrice,
+                                                        'checked' => false,
+                                                        'data-id' => $addOnLink->addOnId,
+                                                        'data-add-on' => true,
+                                                    ])->label("$addOn->name ($addOnPrice $paid_currency)");
+                                                }
+                                            }
+                                        ?>
 
                                     </div>
 
@@ -395,6 +487,7 @@ use backend\modules\Product\models\ProductPrice;
                             echo Html::submitButton('Create Reservation', ['class' => 'create btn btn-block bg-aqua btn-lg btn-info prodUpdateBtn']);
                             echo'</div>';
                             ActiveForm::end();
+                            Pjax::end();
                         }
 
                         //
