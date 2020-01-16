@@ -17,17 +17,30 @@
                     YII_ENV_DEV ? 'css/bootstrap.min.css' : 'css/bootstrap.min.css',
 
                 ],
+                'js' => [
+
+                    YII_ENV_DEV ? 'js/bootstrap.bundle.js' : 'js/bootstrap.bundle.js',
+                    'js/bootstrap.js'
+
+                ],
+                'jsOptions' => [
+                    'position' => View::POS_HEAD
+                ]
 
             ],
 
             'yii\bootstrap\BootstrapPluginAsset' => [
                 'sourcePath'=>'@npm/bootstrap/dist',
+
+
                 'js' => [
 
+                    YII_ENV_DEV ? 'js/bootstrap.bundle.js' : 'js/bootstrap.bundle.js',
+                    'js/bootstrap.js'
 
                 ],
                 'jsOptions' => [
-                    'position' => View::POS_END
+                    'position' => View::POS_HEAD
                 ]
 
             ],
