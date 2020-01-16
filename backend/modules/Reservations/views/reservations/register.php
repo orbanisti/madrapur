@@ -15,7 +15,7 @@ use backend\modules\Product\models\ProductPrice;
 use kartik\form\ActiveForm;
 use kartik\helpers\Html;
     use kartik\select2\Select2;
-    use kartik\touchspin\TouchSpin;
+
     use lo\widgets\Toggle;
     use yii\helpers\ArrayHelper;
     use yii\web\View;
@@ -288,25 +288,25 @@ use kartik\helpers\Html;
                                 <div class="card-body bg-gradient-white row">
                                     <div class="col-lg-12">
                                         Custom Price
-                                        <?= TouchSpin::widget(
-                                            [   'name'=>'customPrice',
-                                                'options' =>
-                                                    [
-
-                                                        'placeholder' => 'Adjust ...',
-                                                        'data-priceid' => $price->id,
-                                                        'autocomplete' => 'off',
-                                                        'type'   => 'number',
-
-                                                    ],
-                                                'pluginOptions' => [
-                                                    'buttonup_txt'=>'<i class="fas fa-lg bg-info fa-caret-square-up  "></i>',
-                                                    'buttondown_txt'=>'<i class="fas fa-lg bg-info fa-caret-square-down  "></i>',
-
-                                                    'max'=>'9999999'
-                                                ]
-                                            ]   );
-                                        ?>
+<!--                                        --><?//= TouchSpin::widget(
+//                                            [   'name'=>'customPrice',
+//                                                'options' =>
+//                                                    [
+//
+//                                                        'placeholder' => 'Adjust ...',
+//                                                        'data-priceid' => $price->id,
+//                                                        'autocomplete' => 'off',
+//                                                        'type'   => 'number',
+//
+//                                                    ],
+//                                                'pluginOptions' => [
+//                                                    'buttonup_txt'=>'<i class="fas fa-lg bg-info fa-caret-square-up  "></i>',
+//                                                    'buttondown_txt'=>'<i class="fas fa-lg bg-info fa-caret-square-down  "></i>',
+//
+//                                                    'max'=>'9999999'
+//                                                ]
+//                                            ]   );
+//                                        ?>
 
                                     </div>
 
