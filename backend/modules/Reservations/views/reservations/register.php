@@ -14,13 +14,15 @@ use backend\modules\Product\models\ProductPrice;
     use kartik\date\DatePicker;
 use kartik\form\ActiveForm;
 use kartik\helpers\Html;
+    use kartik\icons\Icon;
     use kartik\select2\Select2;
-
+    use kartik\touchspin\TouchSpin;
     use lo\widgets\Toggle;
     use yii\helpers\ArrayHelper;
     use yii\web\View;
 
     use yii\widgets\Pjax;
+
 
 
     //$this->params['breadcrumbs'][] = $this->title;
@@ -244,22 +246,26 @@ use kartik\helpers\Html;
                                 echo $price->name."($price->price $currencySymbol/person)" ;
 
                                 $currentProdId = (Yii::$app->request->post('Product'))['title'];
-//                                echo $form->field($model, "description[$i]")->widget(TouchSpin::class,
-//                                                                                     ['options' =>
-//                                                                                          [
-//
-//                                                                                              'placeholder' => 'Adjust ...',
-//                                                                                              'data-priceid' => $price->id,
-//                                                                                              'autocomplete' => 'off',
-//                                                                                              'type'   => 'number'
-//                                                                                          ],
-//                                                                                      'pluginOptions' => [
-//                                                                                          'buttonup_txt'=>'<i class="fas fa-lg bg-info fa-caret-square-up  "></i>',
-//                                                                                          'buttondown_txt'=>'<i class="fas fa-lg bg-info fa-caret-square-down  "></i>',
-//
-//                                                                                          'max'=>'9999999'
-//                                                                                      ]
-//                                                                                     ]   )->label(false);
+                                echo $form->field($model, "description[$i]")->widget(TouchSpin::class,
+                                                                                     ['options' =>
+                                                                                          [
+
+                                                                                              'placeholder' => 'Adjust ...',
+                                                                                              'data-priceid' => $price->id,
+                                                                                              'autocomplete' => 'off',
+                                                                                              'type'   => 'number'
+                                                                                          ],
+                                                                                      'pluginOptions' => [
+                                                                                          'buttonup_txt'=>Icon::show('caret-square-up', ['class'=>'fa-lg
+                                                    bg-info','framework'
+                                                                                          =>Icon::FAS]),
+                                                                                          'buttondown_txt'=>Icon::show('caret-square-down',
+                                                                                                                       ['class'=>'fa-lg  bg-info','framework'
+                                                                                                                       =>Icon::FAS]) ,
+
+                                                                                          'max'=>'9999999'
+                                                                                      ]
+                                                                                     ]   )->label(false);
 
                             }
                             echo $form->field($model, 'product_id')->hiddeninput(['value' => $currentProdId])->label(false);
@@ -288,25 +294,29 @@ use kartik\helpers\Html;
                                 <div class="card-body bg-gradient-white row">
                                     <div class="col-lg-12">
                                         Custom Price
-<!--                                        --><?//= TouchSpin::widget(
-//                                            [   'name'=>'customPrice',
-//                                                'options' =>
-//                                                    [
-//
-//                                                        'placeholder' => 'Adjust ...',
-//                                                        'data-priceid' => $price->id,
-//                                                        'autocomplete' => 'off',
-//                                                        'type'   => 'number',
-//
-//                                                    ],
-//                                                'pluginOptions' => [
-//                                                    'buttonup_txt'=>'<i class="fas fa-lg bg-info fa-caret-square-up  "></i>',
-//                                                    'buttondown_txt'=>'<i class="fas fa-lg bg-info fa-caret-square-down  "></i>',
-//
-//                                                    'max'=>'9999999'
-//                                                ]
-//                                            ]   );
-//                                        ?>
+                                        <?= TouchSpin::widget(
+                                            [   'name'=>'customPrice',
+                                                'options' =>
+                                                    [
+
+                                                        'placeholder' => 'Adjust ...',
+                                                        'data-priceid' => $price->id,
+                                                        'autocomplete' => 'off',
+                                                        'type'   => 'number',
+
+                                                    ],
+                                                'pluginOptions' => [
+                                                    'buttonup_txt'=>Icon::show('caret-square-up', ['class'=>'fa-lg 
+                                                    bg-info','framework'
+                                                    =>Icon::FAS]),
+                                                    'buttondown_txt'=>Icon::show('caret-square-down',
+                                                                                 ['class'=>'fa-lg fa-lg bg-info','framework'
+                                                    =>Icon::FAS]) ,
+
+                                                    'max'=>'9999999'
+                                                ]
+                                            ]   );
+                                        ?>
 
                                     </div>
 
@@ -314,16 +324,16 @@ use kartik\helpers\Html;
                                         Selling for Somebody else?
                                         <?php
 
-//                                            echo Select2::widget( [
-//                                                                      'name' => 'anotherSeller',
-//                                                                      'data' => User::getAllSellers(),
-//                                                                      'id' => rand(),
-//                                                                      'options' => ['placeholder' => 'Select a seller...'],
-//                                                                      'pluginOptions' => [
-//
-//                                                                          'allowClear' => true
-//                                                                      ],
-//                                                                  ]);
+                                            echo Select2::widget( [
+                                                                      'name' => 'anotherSeller',
+                                                                      'data' => User::getAllSellers(),
+                                                                      'id' => rand(),
+                                                                      'options' => ['placeholder' => 'Select a seller...'],
+                                                                      'pluginOptions' => [
+
+                                                                          'allowClear' => true
+                                                                      ],
+                                                                  ]);
 
 
 
@@ -443,8 +453,9 @@ use kartik\helpers\Html;
                                         <h3 class="box-title"></h3>
                                         <div class="box-tools float-right">
                                             <button type="button" class="btn btn-box-tool" data-widget="collapse">
-
-                                                <i class="fas fa-plus-circle fa-lg text-white"></i>
+                                                <?=Icon::show('plus-circle', ['class'=>'fa-lg','framework'=>Icon::FA
+                                                                              ,'style'=>'color:white'
+                                                ])?>
                                             </button>
                                         </div>
                                         <!-- /.box-tools -->
