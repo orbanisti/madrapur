@@ -324,7 +324,7 @@
                                         Selling for Somebody else?
                                         <?php
 
-                                            echo Select2::widget( [
+                                            echo \dosamigos\select2\Select2Bootstrap::widget( [
                                                                       'name' => 'anotherSeller',
                                                                       'items' => $allSellers,
                                                                       'id' => rand()%10,
@@ -336,16 +336,7 @@
 
 
                                         ?>
-                                        <label for="myBrowser">Choose a browser from this list:</label>
-                                        <input list="browsers" id="myBrowser" name="myBrowser" />
-                                        <datalist id="browsers">
-                                            <option value="Chrome">
-                                            <option value="Firefox">
-                                            <option value="Internet Explorer">
-                                            <option value="Opera">
-                                            <option value="Safari">
-                                            <option value="Microsoft Edge">
-                                        </datalist>
+
                                     </div>
                                     <div class="col-lg-4">
                                         For somebody in the past?
