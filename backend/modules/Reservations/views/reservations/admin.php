@@ -15,6 +15,7 @@
     use kartik\helpers\Html;
     use yii\widgets\ActiveForm;
 
+
 ?>
 
 <!--suppress ALL -->
@@ -203,18 +204,18 @@
                                 (
                                     Product::getAllProducts(), 'id', 'title'),
                                 'value'=>function($model){
-                                $product= Product::findOne($model->productId);
-                                    if($product){
-                                        return $product->shortName;
-                                    }
+
                                     if(!in_array($model->source, Product::LOCAL_SOURCES)){
                                         $source=ProductSource::find()->andFilterWhere(['=','url',$model->source])
                                             ->andFilterWhere(['=','prodIds',$model->productId])->one();
                                         if($source){
-                                            return $source->product_id;
-
+                                            $model->product_id;
                                         }
 
+                                    }
+                                    $product= Product::findOne($model->productId);
+                                    if($product){
+                                        return $product->shortName;
                                     }
                                 }
 

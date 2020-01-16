@@ -356,6 +356,13 @@ class Reservations extends MadActiveRecord {
                 'pageSize' => 40,
             ],
         ]);
+        $dataProvider->setSort(
+            [
+                'defaultOrder' => [
+                    'id' => SORT_DESC
+                ]
+            ]
+        );
 
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;

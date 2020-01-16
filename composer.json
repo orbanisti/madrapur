@@ -108,7 +108,8 @@
 		"sjaakp/yii2-loadmore": "^1.0",
 		"bizley/migration": "^3.6",
 		"aksafan/yii2-fcm-both-api": "^0.9.3",
-		"devanych/yii2-cart": "*"
+		"devanych/yii2-cart": "*",
+		"2amigos/yii2-select2-widget": "^0.1.2"
 
 	},
 	"minimum-stability": "dev",
