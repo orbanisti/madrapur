@@ -372,16 +372,16 @@ use kartik\helpers\Html;
                                         Selling for Somebody else?
                                         <?php
 
-                                            echo Select2::widget( [
-                                                                      'name' => 'anotherSeller',
-                                                                      'data' => User::getAllSellers(),
-                                                                      'id' => rand(),
-                                                                      'options' => ['placeholder' => 'Select a seller...'],
-                                                                      'pluginOptions' => [
-
-                                                                          'allowClear' => true
-                                                                      ],
-                                                                  ]);
+//                                            echo Select2::widget( [
+//                                                                      'name' => 'anotherSeller',
+//                                                                      'data' => User::getAllSellers(),
+//                                                                      'id' => rand(),
+//                                                                      'options' => ['placeholder' => 'Select a seller...'],
+//                                                                      'pluginOptions' => [
+//
+//                                                                          'allowClear' => true
+//                                                                      ],
+//                                                                  ]);
 
 
 
