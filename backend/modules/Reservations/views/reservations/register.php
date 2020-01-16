@@ -28,7 +28,6 @@ use kartik\helpers\Html;
     //$this->params['breadcrumbs'][] = $this->title;
 
     $huf = Yii::$app->keyStorage->get('currency.huf-value') ? Yii::$app->keyStorage->get('currency.huf-value') : null;
-    Pjax::begin(['id'=>'grid-pjax']);
 
 ?>
 
@@ -183,7 +182,6 @@ use kartik\helpers\Html;
 
                             <?php ActiveForm::end();
 
-                            Pjax::end();
 
 
 
