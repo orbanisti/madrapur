@@ -12,12 +12,13 @@ use backend\modules\Product\models\ProductAddOn;
 use backend\modules\Product\models\ProductPrice;
     use common\models\User;
     use kartik\date\DatePicker;
-use kartik\form\ActiveForm;
-use kartik\helpers\Html;
+
+    use kartik\helpers\Html;
     use kartik\icons\Icon;
     use kartik\select2\Select2;
     use kartik\touchspin\TouchSpin;
     use lo\widgets\Toggle;
+    use yii\bootstrap4\ActiveForm;
     use yii\helpers\ArrayHelper;
     use yii\web\View;
 
@@ -57,7 +58,7 @@ use kartik\helpers\Html;
 
                                 echo $newReservation;
                             }
-                            $form = ActiveForm::begin(['id' => 'product-form','options' => ['data-pjax' => false ]]);
+                            $form = ActiveForm::begin(['id' => 'product-form','options' => ['data-pjax' => true ]]);
 
                             ?>
 
