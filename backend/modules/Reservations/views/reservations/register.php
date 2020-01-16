@@ -29,7 +29,6 @@
 
     $huf = Yii::$app->keyStorage->get('currency.huf-value') ? Yii::$app->keyStorage->get('currency.huf-value') : null;
     Pjax::begin(['id'=>'grid-pjax']);
-    \backend\assets\BackendAsset::register($this);
 
 ?>
 
