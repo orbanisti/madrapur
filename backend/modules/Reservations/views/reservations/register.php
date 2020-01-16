@@ -212,8 +212,8 @@
                                 $oldTicketId=null;
 
                             }
-                            Pjax::begin(['id'=>'grid-pjax']);
-                            $form = ActiveForm::begin(['id' => 'product-form','options' => ['data-pjax' => true ]]);
+
+                            $form = ActiveForm::begin(['id' => 'product-form']);
                             $model = new ProductPrice();
                             # var_dump($myPrices);
                             echo '</br>';
@@ -487,7 +487,6 @@
                             echo Html::submitButton('Create Reservation', ['class' => 'create btn btn-block bg-aqua btn-lg btn-info prodUpdateBtn']);
                             echo'</div>';
                             ActiveForm::end();
-                            Pjax::end();
                         }
 
                         //
