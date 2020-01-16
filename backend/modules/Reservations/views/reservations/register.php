@@ -18,7 +18,7 @@ use backend\modules\Product\models\ProductPrice;
     use kartik\select2\Select2;
     use kartik\touchspin\TouchSpin;
     use lo\widgets\Toggle;
-    use yii\bootstrap4\ActiveForm;
+    use \yii\widgets\ActiveForm;
     use yii\helpers\ArrayHelper;
     use yii\web\View;
 
