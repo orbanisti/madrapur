@@ -11,11 +11,11 @@
     use backend\modules\Product\models\ProductAddOn;
     use backend\modules\Product\models\ProductPrice;
     use common\models\User;
+    use dosamigos\select2\Select2;
     use kartik\date\DatePicker;
     use kartik\form\ActiveForm;
     use kartik\helpers\Html;
     use kartik\icons\Icon;
-    use kartik\select2\Select2;
     use kartik\touchspin\TouchSpin;
     use lo\widgets\Toggle;
     use yii\helpers\ArrayHelper;
@@ -326,15 +326,11 @@
 
                                             echo Select2::widget( [
                                                                       'name' => 'anotherSeller',
-                                                                      'data' => $allSellers,
+                                                                      'items' => $allSellers,
                                                                       'id' => rand()%10,
-                                                                      'theme' => Select2::THEME_KRAJEE, // this is the default if theme is not set
                                                                       'options' => ['placeholder' => 'Select a seller...'],
-                                                                      'pluginOptions' => [
 
-                                                                          'allowClear' => true
-                                                                      ],
-                                                                  ]);
+                                                                  ]);git
 
 
 
