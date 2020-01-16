@@ -24,8 +24,6 @@
                 'sourcePath'=>'@npm/bootstrap/dist',
                 'js' => [
 
-                    YII_ENV_DEV ? 'js/bootstrap.bundle.js' : 'js/bootstrap.bundle.js',
-                    'js/bootstrap.js'
 
                 ],
                 'jsOptions' => [
