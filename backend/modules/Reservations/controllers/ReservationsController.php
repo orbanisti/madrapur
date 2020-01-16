@@ -1830,7 +1830,7 @@
                 }
 
                 $model = new Product();
-
+                $allSellers=User::getAllSellers();
                 return $this->renderAjax(
                     'register', [
                                  'model' => $model,
@@ -1839,7 +1839,8 @@
                                  'myPrices' => $myPrices,
                                  'countPrices' => $countPrices,
                                  'newReservation' => $updateResponse,
-                                 'subView' => $this->renderPartial('assingui', ['model' => new Reservations()])
+                                 'subView' => $this->renderPartial('assingui', ['model' => new Reservations()]),
+                                 'allSellers'=>$allSellers
                              ]
                 );
             }

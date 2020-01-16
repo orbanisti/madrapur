@@ -326,8 +326,9 @@
 
                                             echo Select2::widget( [
                                                                       'name' => 'anotherSeller',
-                                                                      'data' => User::getAllSellers(),
-                                                                      'id' => rand(),
+                                                                      'data' => $allSellers,
+                                                                      'id' => rand()%10,
+                                                                      'theme' => Select2::THEME_KRAJEE, // this is the default if theme is not set
                                                                       'options' => ['placeholder' => 'Select a seller...'],
                                                                       'pluginOptions' => [
 
