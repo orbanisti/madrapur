@@ -244,22 +244,22 @@ use kartik\helpers\Html;
                                 echo $price->name."($price->price $currencySymbol/person)" ;
 
                                 $currentProdId = (Yii::$app->request->post('Product'))['title'];
-                                echo $form->field($model, "description[$i]")->widget(TouchSpin::class,
-                                                                                     ['options' =>
-                                                                                          [
-
-                                                                                              'placeholder' => 'Adjust ...',
-                                                                                              'data-priceid' => $price->id,
-                                                                                              'autocomplete' => 'off',
-                                                                                              'type'   => 'number'
-                                                                                          ],
-                                                                                      'pluginOptions' => [
-                                                                                          'buttonup_txt'=>'<i class="fas fa-lg bg-info fa-caret-square-up  "></i>',
-                                                                                          'buttondown_txt'=>'<i class="fas fa-lg bg-info fa-caret-square-down  "></i>',
-
-                                                                                          'max'=>'9999999'
-                                                                                      ]
-                                                                                     ]   )->label(false);
+//                                echo $form->field($model, "description[$i]")->widget(TouchSpin::class,
+//                                                                                     ['options' =>
+//                                                                                          [
+//
+//                                                                                              'placeholder' => 'Adjust ...',
+//                                                                                              'data-priceid' => $price->id,
+//                                                                                              'autocomplete' => 'off',
+//                                                                                              'type'   => 'number'
+//                                                                                          ],
+//                                                                                      'pluginOptions' => [
+//                                                                                          'buttonup_txt'=>'<i class="fas fa-lg bg-info fa-caret-square-up  "></i>',
+//                                                                                          'buttondown_txt'=>'<i class="fas fa-lg bg-info fa-caret-square-down  "></i>',
+//
+//                                                                                          'max'=>'9999999'
+//                                                                                      ]
+//                                                                                     ]   )->label(false);
 
                             }
                             echo $form->field($model, 'product_id')->hiddeninput(['value' => $currentProdId])->label(false);
