@@ -22,7 +22,6 @@ use kartik\helpers\Html;
     use yii\web\View;
 
     use yii\widgets\Pjax;
-    \yii\web\JqueryAsset::register($this);
 
 
     //$this->params['breadcrumbs'][] = $this->title;
