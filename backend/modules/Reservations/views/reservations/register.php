@@ -7,15 +7,15 @@
      * Time: 20:38
      */
 
-    use backend\modules\Product\models\AddOn;
-    use backend\modules\Product\models\ProductAddOn;
-    use backend\modules\Product\models\ProductPrice;
+use backend\modules\Product\models\AddOn;
+use backend\modules\Product\models\ProductAddOn;
+use backend\modules\Product\models\ProductPrice;
     use common\models\User;
-    use dosamigos\select2\Select2;
     use kartik\date\DatePicker;
-    use kartik\form\ActiveForm;
-    use kartik\helpers\Html;
+use kartik\form\ActiveForm;
+use kartik\helpers\Html;
     use kartik\icons\Icon;
+    use kartik\select2\Select2;
     use kartik\touchspin\TouchSpin;
     use lo\widgets\Toggle;
     use yii\helpers\ArrayHelper;
@@ -324,19 +324,20 @@
                                         Selling for Somebody else?
                                         <?php
 
-                                            echo \dosamigos\select2\Select2Bootstrap::widget( [
+                                            echo Select2::widget( [
                                                                       'name' => 'anotherSeller',
-                                                                      'items' => $allSellers,
-                                                                      'id' => rand()%10,
+                                                                      'data' => User::getAllSellers(),
+                                                                      'id' => rand(),
                                                                       'options' => ['placeholder' => 'Select a seller...'],
+                                                                      'pluginOptions' => [
 
+                                                                          'allowClear' => true
+                                                                      ],
                                                                   ]);
 
 
 
-
                                         ?>
-
                                     </div>
                                     <div class="col-lg-4">
                                         For somebody in the past?
