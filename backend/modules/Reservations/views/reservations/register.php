@@ -28,6 +28,7 @@ use kartik\helpers\Html;
     //$this->params['breadcrumbs'][] = $this->title;
 
     $huf = Yii::$app->keyStorage->get('currency.huf-value') ? Yii::$app->keyStorage->get('currency.huf-value') : null;
+    Pjax::begin(['id'=>'grid-pjax']);
 
 ?>
 
@@ -56,7 +57,7 @@ use kartik\helpers\Html;
 
                                 echo $newReservation;
                             }
-                            $form = ActiveForm::begin(['id' => 'product-form','options' => ['data-pjax' => true ]]);
+                            $form = ActiveForm::begin(['id' => 'product-form','options' => ['data-pjax' => false ]]);
 
                             ?>
 
@@ -182,6 +183,7 @@ use kartik\helpers\Html;
 
                             <?php ActiveForm::end();
 
+                            Pjax::end();
 
 
 
