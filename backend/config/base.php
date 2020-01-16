@@ -22,8 +22,6 @@
 
             'yii\bootstrap\BootstrapPluginAsset' => [
                 'sourcePath'=>'@npm/bootstrap/dist',
-
-
                 'js' => [
 
                     YII_ENV_DEV ? 'js/bootstrap.bundle.js' : 'js/bootstrap.bundle.js',
@@ -31,7 +29,7 @@
 
                 ],
                 'jsOptions' => [
-                    'position' => View::POS_HEAD
+                    'position' => View::POS_END
                 ]
 
             ],
