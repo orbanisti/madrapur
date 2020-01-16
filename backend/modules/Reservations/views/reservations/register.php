@@ -66,7 +66,7 @@ use backend\modules\Product\models\ProductPrice;
                             <?php
 
                             echo $form->field($model, 'title')
-                                ->radioButtonGroup(ArrayHelper::map($allMyProducts, 'id', 'shortName'),
+                                ->radioList(ArrayHelper::map($allMyProducts, 'id', 'shortName'),
                                                ['prompt' => 'Please select a product'])->label(false);
 
                             ?>
@@ -102,7 +102,7 @@ use backend\modules\Product\models\ProductPrice;
 
 
                             <?= $form->field($model, 'times')
-                                ->radioButtonGroup(['prompt' => 'Please select a time']);
+                                ->radioList(['prompt' => 'Please select a time']);
 
                             ?>
 
