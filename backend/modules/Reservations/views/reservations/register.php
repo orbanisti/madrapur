@@ -608,7 +608,6 @@ SCRIPT;
                 date: $('#product-start_date').val(),
             },
             success: function (data) {
-                console.log(data.search);
 
                 mytimes = data.search
                 $('#myTimes').html('');
@@ -626,7 +625,6 @@ SCRIPT;
 
             },
             success: function (data) {
-                console.log(data.search);
                 mytimes = data.search
                 $('#myPrices').html(mytimes);
             }
@@ -690,7 +688,6 @@ SCRIPT;
             }
         });
 
-        console.log(addOnsObj);
 
         return addOnsObj;
     }
