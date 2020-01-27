@@ -400,7 +400,14 @@ class Reservations extends MadActiveRecord {
         }
 
         $query->andFilterWhere((['=', 'ticketId', $this->ticketId]));
-        $query->andFilterWhere((['=', 'productId', $this->productId]));
+
+        $sources=ProductSource::getProductSourcesIds($this->productId);
+        $sources[]=$this->productId;
+
+        $query->andFilterWhere((['IN', 'productId', $sources]));
+
+
+
         $query->andFilterWhere((['like', 'source', $this->source]));
         $query->andFilterWhere((['=', 'bookingDate', $this->bookingDate]));
         $query->andFilterWhere((['=', 'invoiceDate', $this->invoiceDate]));

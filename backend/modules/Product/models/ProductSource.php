@@ -19,6 +19,21 @@ class ProductSource extends MadActiveRecord {
         } catch (Exception $e) {
         }
     }
+    public static function getProductSourcesIds($prodId) {
+
+        $queryGetSources = ProductSource::aSelect(ProductSource::class, '*', ProductSource::tableName(), 'product_id=' . $prodId);
+        try {
+            $sourceRows = $queryGetSources->all();
+            $ids=[];
+            foreach ($sourceRows as $source){
+                $ids[]=$source->prodIds;
+
+            }
+
+            return $ids;
+        } catch (Exception $e) {
+        }
+    }
 
     public static function tableName() {
         return 'modulusProdSources';
