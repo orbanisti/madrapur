@@ -712,11 +712,7 @@ class ProductController extends Controller {
                     $event->id = $reservation->id;
                     $reservationData = $reservation->data;
                     $reservationJsondata = json_decode($reservationData);
-                    if (isset($reservationJsondata->orderDetails->billing_first_name)) {
-                        $reservationName = $reservationJsondata->orderDetails->billing_first_name . ' ' . $reservationJsondata->orderDetails->billing_last_name;
-                    } else {
-                        $reservationName = $reservation->sellerName;
-                    }
+                    $reservationName=$reservation->customerName;
 
                     $event->title = $reservationName;
                     $event->start = $reservation->bookingDate;
