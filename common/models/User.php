@@ -53,6 +53,9 @@
         const ROLE_HOTEL_SELLER = 'hotelSeller';
         const ASSIGN_HOTEL_SELLER = 'assign_hotelSeller';
 
+        const ROLE_ONLINE_PARTNER = 'onlinePartner';
+        const ASSIGN_ONLINE_PARTNER = 'assign_onlinePartner';
+
         const ROLE_OFFICE_VISITOR = 'officeVisitor';
         const ASSIGN_OFFICE_VISITOR = 'assign_officeVisitor';
 
@@ -189,10 +192,13 @@
             $allUsers=User::find()->all();
             $streetSellers=[];
             $hotelSellers=[];
+            $onlinePartners=[];
             foreach ($allUsers as $user) {
                 $authManager = \Yii::$app->getAuthManager();
                 $hasStreetBool = $authManager->getAssignment('streetSeller', $user->id) ? true : false;
                 $hasHotelBool = $authManager->getAssignment('hotelSeller', $user->id) ? true : false;
+                $hasOnlinePartnerBool = $authManager->getAssignment('onlinePartner', $user->id) ? true : false;
+
 
                 if ($hasStreetBool) {
                     $streetSellers[] = $user;
@@ -203,12 +209,23 @@
                     $hotelnames[$user->id]=$user->username;
 
                 };
+                if ($hasOnlinePartnerBool) {
+                    $onlinePartners[]  = $user;
+                    $onlinePartnerNames[$user->id]=$user->username;
+
+                };
             }
             if(isset($hotelnames)){
-                $data=['Street Sellers'=>$streetsellernames,'Hotels'=>$hotelnames];
-
+                $data['Hotels']=$hotelnames;
+            }
+            if(isset($onlinePartnerNames)){
+                $data['Online Partners']=$onlinePartnerNames;
 
             }
+            if(isset($streetsellernames)){
+                $data['Street Sellers']=$streetsellernames;
+            }
+
             else{
                 $data=['Street Sellers'=>$streetsellernames];
 

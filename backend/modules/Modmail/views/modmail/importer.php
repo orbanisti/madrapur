@@ -32,14 +32,52 @@
                             ]
                         );
                     ?>
-                    <div class="form-group row">
-                        <legend class="col-form-legend col-sm-1-12">Please write in a name to create new
-                            partner, separate with # in case of multiple records</legend>
 
-                        <div class="col-sm-1-12">
+                        <h6>Mass hotel Importer</h6>
+                        <p class="col-form-legend col-sm-1-12">Please write in a name to create new
+                            hotel, separate with # in case of multiple records</p>
+
+
                             <input type="text" class="form-control" name="json" id="inputName" placeholder="">
+
+<hr>
+                    <?php
+
+                    ?>
+
+                    <div class="form-group row">
+                        <div class="offset-sm-2 col-sm-10">
+                            <button type="submit" class="btn btn-info">Submit</button>
                         </div>
                     </div>
+
+
+                    <?php
+                        ActiveForm::end();
+                    ?>
+
+                    <?php
+
+
+                        $form2 = ActiveForm::begin(
+                            [
+                                'id' => 'product-edit',
+                                'options' => ['class' => 'product-edit', 'enctype' => 'multipart/form-data'],
+
+
+                            ]
+                        );
+                    ?>
+
+                        <h6>Mass online partner importer</h6>
+
+                        <p>Please write in a name to create new online
+                            partner, separate with # in case of multiple records</p>
+
+
+                            <input type="text" class="form-control" name="jsonPartner" id="inputName" placeholder="">
+
+
                     <?php
 
                     ?>

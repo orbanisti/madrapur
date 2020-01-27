@@ -25,11 +25,10 @@ class ModmailController extends Controller {
         $model = new UserForm();
         set_time_limit(90000);
         $postedJson=Yii::$app->request->post('json');
+        $postedPartnerJson=Yii::$app->request->post('jsonPartner');
+
         if($postedJson){
-
-
             $allHotels=explode('#',$postedJson);
-
             foreach ($allHotels as $hotel){
                 $model = new UserForm();
                 $model->username=$hotel;
@@ -37,6 +36,20 @@ class ModmailController extends Controller {
                 $model->password='testsilver';
                 $model->status=1;
                 $model->roles[0]='hotelSeller';
+                $model->save(false);
+
+            }
+
+        }
+        if($postedPartnerJson){
+            $allHotels=explode('#',$postedPartnerJson);
+            foreach ($allHotels as $hotel){
+                $model = new UserForm();
+                $model->username=$hotel;
+                $model->email='silverline'.(rand()%1000).'@test'.(rand()%1000).'.com';
+                $model->password='testsilver';
+                $model->status=1;
+                $model->roles[0]='onlinePartner';
                 $model->save(false);
 
             }

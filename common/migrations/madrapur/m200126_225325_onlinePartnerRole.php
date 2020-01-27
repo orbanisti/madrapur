@@ -2,25 +2,27 @@
 
 use yii\db\Schema;
 use yii\db\Migration;
+    use backend\modules\Reservations\models\Reservations;
+    use backend\modules\Tickets\models\Tickets;
 
-class m190525_002546_streetroles extends Migration {
+    use common\models\User;
 
+class m200126_225325_onlinePartnerRole extends Migration {
 
 
     private $_roles = [
-        User::ROLE_HOTEL_SELLER=> 'Hotel seller role'
+        User::ROLE_ONLINE_PARTNER=> 'Online Partner role'
 
     ];
 
     private $_permissions = [
-        User::ASSIGN_HOTEL_SELLER=> 'Assign Hotel seller role',
+        User::ASSIGN_ONLINE_PARTNER=> 'Assign Online partner role',
 
 
     ];
 
     private $hotelSellerPermissions = [
         'loginToBackend',
-
         Reservations::CREATE_BOOKING,
         Reservations::EDIT_OWN_BOOKING,
         Reservations::VIEW_OWN_BOOKINGS,
@@ -50,7 +52,7 @@ class m190525_002546_streetroles extends Migration {
     }
 
     protected function assignNewRolePermissions() {
-        $this->assignPermissionsToRole(User::ROLE_HOTEL_SELLER, $this->hotelSellerPermissions);
+        $this->assignPermissionsToRole(User::ROLE_ONLINE_PARTNER, $this->hotelSellerPermissions);
     }
 
 
@@ -119,6 +121,6 @@ class m190525_002546_streetroles extends Migration {
     }
 
     public function safeDown() {
-        $this->deleteRoles();
+        return true;
     }
 }

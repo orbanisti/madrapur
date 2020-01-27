@@ -148,9 +148,9 @@ use yii\widgets\Pjax;
 
 
 
-                                $Event->nonstandard = [
-                                    'field1' => 'Something I want to be included in object #1',
 
+                                $Event->nonstandard = [
+                                    'username' => $newEvent->user,
                                 ];
                                 $events[] = $Event;
 
@@ -220,6 +220,7 @@ function(calEvent, jsEvent, view) {
     if(Month<10)Month='0'+Month;
     if(Day<10)Day='0'+Day;
     dateString = Year+'-'+Month+'-'+Day;
+    console.log(calEvent);
 
  doSave(calEvent.nonstandard["username"],dateString,calEvent.resourceId,calEvent.id);
   

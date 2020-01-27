@@ -37,6 +37,7 @@ class MdbAsset extends AssetBundle {
      *
      * @var array
      */
+
     public $js = [
         'js/mdb.min.js',
     ];
