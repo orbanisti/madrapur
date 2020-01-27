@@ -4,6 +4,7 @@ namespace backend\modules\Reservations\models;
 
 use backend\modules\MadActiveRecord\models\MadActiveRecord;
 use backend\modules\Product\models\Product;
+use backend\modules\Product\models\ProductSource;
 use backend\modules\Product\models\ProductTime;
 use backend\modules\Reservations\controllers\ReservationsController;
 use backend\modules\Tickets\models\TicketBlock;
@@ -105,6 +106,29 @@ class Reservations extends MadActiveRecord {
             [['customerName'], 'string'],
         ];
     }
+
+    public function getProdname(){
+        $foundname=Product::findOne($this->productId);
+        if($foundname){
+            return $foundname->title;
+        }else{
+            $foundInSources=ProductSource::find()->andFilterWhere(['=','prodIds',$this->productId])->andFilterWhere
+            (['=','url',
+                                                                                                     $this->source])
+                ->one();
+            if($foundInSources){
+                $prodname=Product::findOne($foundInSources->product_id)->title;
+                return $prodname;
+            }else{
+
+                return 'Unknown';
+            }
+
+        }
+
+
+    }
+
 
     public function getFields() {
         return [

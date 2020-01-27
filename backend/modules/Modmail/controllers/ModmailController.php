@@ -8,6 +8,7 @@ use backend\modules\Modmail\models\Mailtemplate;
 use backend\modules\Modmail\models\Modmail;
 use backend\modules\Reservations\controllers\ReservationsController;
 use backend\modules\Reservations\models\Reservations;
+use League\Uri\PublicSuffix\CurlHttpClient;
 use Yii;
 
 /**
@@ -66,6 +67,75 @@ class ModmailController extends Controller {
 
         return $this->render('importer');
     }
+
+    public function getBookings($source,$date){
+        $curlUrl = $source . "/wp-json/bookingsbydate/v1/start/$date";
+        /*$curl=curl_init($curlUrl);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_VERBOSE, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);*/
+        $curl = new CurlHttpClient();
+        $response = $curl->getContent($curlUrl);
+        if ($response != 0) {
+            $response = $curl->getContent($curlUrl);
+        }
+
+        return $response;
+
+
+    }
+
+
+
+
+
+    public function actionAimporter(){
+
+
+        $model = new Reservations();
+        $response='';
+        if($model->load(Yii::$app->request->post())){
+            sessionSetFlashAlert('success',$model->invoiceDate);
+            $response=$this->getBookings($model->source,$model->invoiceDate);
+
+            $newBookings=[];
+            $json=json_decode($response);
+
+            $newReservation=new Reservations();
+            $newCounter=0;
+            $oldCounter=0;
+            foreach($json as $index=>$one){
+                $newBookings[]=(array)$one;
+
+            }
+
+
+            foreach($newBookings as $booking){
+                $newReservation=new Reservations();
+                $foundReservation=Reservations::find()->andFilterWhere(['=','source',$model->source])->andFilterWhere(['=','bookingId',$booking['bookingId']])->one();
+                if($foundReservation){
+                    $oldCounter+=1;
+                }else{
+
+                    Reservations::insertOne($newReservation,$booking);
+                    $newCounter+=1;
+
+                }
+
+            }
+
+
+            sessionSetFlashAlert('success',"$newCounter new bookings $oldCounter already in the system");
+
+
+        }
+
+
+
+        return $this->render('aimporter',['response'=>$response]);
+    }
+
+
 
     public function actionAdmin() {
         $model = new Modmail();

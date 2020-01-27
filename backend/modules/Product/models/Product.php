@@ -71,6 +71,11 @@ class Product extends MadActiveRecord {
 
     }
 
+    public function getName(){
+
+
+    }
+
 
 
 

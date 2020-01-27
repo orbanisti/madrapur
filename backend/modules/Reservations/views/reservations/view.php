@@ -60,8 +60,10 @@
                                                         'value'=> $model->customerName
 
                                                     ],
-                                                    ['attribute'=>'invoiceDate',
+                                                    [
+                                                            'attribute'=>'invoiceDate',
                                                     ],
+
                                                     ['attribute'=>'productId',
                                                      'format'=>'html',
                                                           'value'=> $model->productId=='0'? (Product::findOne
@@ -69,9 +71,7 @@
                                                               ->title.' for '.Html::a($model->bookingId, [
                                                                   'view',
                                                                   'id' => $model->bookingId,
-                                                              ]) : (Product::findOne
-                                                          ($model->productId))
-                                                              ->title
+                                                              ]) : $model->getProdName()
 
                                                        ,
                                                           'label'=>'Product'
