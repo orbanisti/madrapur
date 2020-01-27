@@ -188,7 +188,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             [
                                     'class' => EditableColumn::class,
-                             'attribute' => 'bookedChairsCount',
+                             'attribute' => 'allPersons',
                              'label'=>'Personcount',
                              'pageSummary' => true,
                              'refreshGrid' => true,
