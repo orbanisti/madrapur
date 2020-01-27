@@ -264,6 +264,11 @@
                                 'filter'=>\common\models\User::getAllSellers()
 
                             ],
+                            [
+                                'attribute' => 'customerName',
+
+
+                            ],
 
                             [
                                 'class' => 'kartik\grid\ActionColumn',
