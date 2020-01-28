@@ -32,6 +32,9 @@ $config = [
         }
     },*/
     'modules' => [
+        'Autoimport' => [
+            'class' => backend\modules\Autoimport\Module::class,
+        ],
         'Notifications' => [
             'class' => backend\modules\Notifications\Module::class,
         ],
