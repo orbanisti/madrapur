@@ -1,11 +1,11 @@
 <?php
 
-namespace backend\modules\AutoImport\models;
+namespace backend\modules\Autoimport\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\modules\AutoImport\models\Autoimport;
+use backend\modules\Autoimport\models\Autoimport;
 
 /**
  * AutoimportSearch represents the model behind the search form about `backend\modules\AutoImport\models\Autoimport`.
