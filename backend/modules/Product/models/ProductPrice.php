@@ -44,6 +44,25 @@ class ProductPrice extends MadActiveRecord {
         return true;
     }
 
+    public static function getAllPrices($id){
+        $prices= ProductPrice::find()->andFilterWhere(['=','product_id',$id])->all();
+
+        return $prices;
+    }
+
+    public static function priceExists($id,$price){
+
+        $prices= ProductPrice::find()->andFilterWhere(['=','product_id',$id])->andFilterWhere(['=','price',$price])
+            ->one();
+        if($prices){
+           return true;
+        }else{
+            return false;
+        }
+
+
+    }
+
     public function getProduct() {
         return $this->hasOne(Product::class, ['id' => 'product_id']);
     }

@@ -3,7 +3,10 @@
 namespace backend\modules\Reservations\models;
 
 use backend\modules\MadActiveRecord\models\MadActiveRecord;
+use backend\modules\Product\models\AddOn;
 use backend\modules\Product\models\Product;
+use backend\modules\Product\models\ProductAddOn;
+use backend\modules\Product\models\ProductPrice;
 use backend\modules\Product\models\ProductSource;
 use backend\modules\Product\models\ProductTime;
 use backend\modules\Reservations\controllers\ReservationsController;
@@ -401,10 +404,12 @@ class Reservations extends MadActiveRecord {
 
         $query->andFilterWhere((['=', 'ticketId', $this->ticketId]));
 
-        $sources=ProductSource::getProductSourcesIds($this->productId);
-        $sources[]=$this->productId;
 
-        $query->andFilterWhere((['IN', 'productId', $sources]));
+            $sources=ProductSource::getProductSourcesIds($this->productId);
+            $sources[]=$this->productId;
+
+            $query->andFilterWhere((['IN', 'productId', $sources]));
+
 
 
 
@@ -882,5 +887,112 @@ class Reservations extends MadActiveRecord {
     public function returnId() {
         return $this['id'];
     }
+
+
+    public function getexAddons($prodId){
+            $returned='';
+            $data=json_decode($this->data);
+
+            $guessablePrices=[];
+            $allPrices=ProductPrice::getAllPrices($prodId);
+            foreach ($data->exAddons as $price=>$amount)
+            {
+
+                $prodPrice=ProductPrice::priceExists($prodId,$price);
+                if(!$prodPrice){
+
+                    $guessablePrices[]=$price;
+                }
+            }
+
+            $addons=[];
+        $links=ProductAddOn::find()->andFilterWhere(['=','prodId',$prodId])->all();
+        $addons=[];
+
+        foreach($links as $link){
+            $addons[]=AddOn::find()->andFilterWhere(['=','id',$link->addOnId])->one();
+
+        }
+        $myAddons=[];
+
+
+
+        foreach ($addons as $addon){
+            foreach ($guessablePrices as $guessPrice){
+                foreach($allPrices as $prodPrice){
+
+                    if($guessPrice-$prodPrice->price==$addon->price){
+                        $returned.=$addon->icon.' ';
+                    }
+
+
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+        return $returned;
+
+    }
+    public function getexInfo($prodId){
+            $returned='';
+            $data=json_decode($this->data);
+
+            $guessablePrices=[];
+            $allPrices=ProductPrice::getAllPrices($prodId);
+            foreach ($data->exAddons as $price=>$amount)
+            {
+
+                $prodPrice=ProductPrice::priceExists($prodId,$price);
+                if(!$prodPrice){
+
+                    $guessablePrices[]=$price;
+                }
+            }
+
+            $addons=[];
+        $links=ProductAddOn::find()->andFilterWhere(['=','prodId',$prodId])->all();
+        $addons=[];
+
+        foreach($links as $link){
+            $addons[]=AddOn::find()->andFilterWhere(['=','id',$link->addOnId])->one();
+
+        }
+        $myAddons=[];
+
+
+
+        foreach ($addons as $addon){
+            foreach ($guessablePrices as $guessPrice){
+                foreach($allPrices as $prodPrice){
+
+                    if($guessPrice-$prodPrice->price==$addon->price){
+                        $returned.=$addon->icon.' ';
+                    }
+
+
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+        return $returned;
+
+    }
+
 
 }

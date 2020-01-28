@@ -215,13 +215,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                             ],
+
                             [
                                     'label'=>'',
                                     'value'=>function($model){
                                             $returned='';
-
                                             $prodId=Yii::$app->request->get('prodId');
                                             $product=\backend\modules\Product\models\Product::findOne($prodId);
+
                                             if(isset($product->cCode)){
                                                 $returned.=$product->cCode.' ';
                                             }
@@ -237,6 +238,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 }
 
                                             }
+                                            if(isset($data->exAddons)){
+                                                $returned.=$model->getexAddons( $prodId);
+                                            }
+
                                             return $returned;
 
 
@@ -341,6 +346,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                         }
 
+                                    }
+                                    if(isset($data->exAddons)){
+                                        $returned.=$model->getexInfo( $prodId);
                                     }
                                     return $returned;
 
