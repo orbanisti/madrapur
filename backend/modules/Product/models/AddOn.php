@@ -3,7 +3,7 @@
 namespace backend\modules\Product\models;
 
 use backend\modules\MadActiveRecord\models\MadActiveRecord;
-use Yii;``
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
