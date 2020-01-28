@@ -103,6 +103,14 @@ $bundle = BackendAsset::register($this);
 
                     ],
                     [
+                        'label' => Yii::t('backend', 'Autoimporter'),
+                        'icon' => '<i class="fas fa-arrow-circle-down nav-icon "></i>',
+                        'url' => [
+                            '/Autoimport/autoimport/'
+                        ],
+
+                    ],
+                    [
                         'label' => Yii::t('backend', 'Db editor'),
                         'icon' => '<i class="fa nav-icon fa-table"></i>',
                         'url' => [
