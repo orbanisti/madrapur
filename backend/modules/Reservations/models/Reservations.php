@@ -947,13 +947,14 @@ class Reservations extends MadActiveRecord {
 
             $guessablePrices=[];
             $allPrices=ProductPrice::getAllPrices($prodId);
+            $exAddons=[];
             foreach ($data->exAddons as $price=>$amount)
             {
 
                 $prodPrice=ProductPrice::priceExists($prodId,$price);
                 if(!$prodPrice){
-
                     $guessablePrices[]=$price;
+                    $exAddons[$price]=$amount;
                 }
             }
 
@@ -974,7 +975,7 @@ class Reservations extends MadActiveRecord {
                 foreach($allPrices as $prodPrice){
 
                     if($guessPrice-$prodPrice->price==$addon->price){
-                        $returned.=$addon->icon.' ';
+                        $returned.=$addon->shortName.'('.$exAddons[$guessPrice].') ';
                     }
 
 

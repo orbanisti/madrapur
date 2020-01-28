@@ -32,7 +32,6 @@ class ProductSource extends MadActiveRecord {
             $ids=[];
             foreach ($sourceRows as $source){
                 $ids[]=$source->prodIds;
-
             }
 
             return $ids;
