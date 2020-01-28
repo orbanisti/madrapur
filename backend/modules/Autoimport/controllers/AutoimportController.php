@@ -3,8 +3,8 @@
 namespace backend\modules\Autoimport\controllers;
 
 use Yii;
-use backend\modules\AutoImport\models\Autoimport;
-use backend\modules\AutoImport\models\AutoimportSearch;
+use backend\modules\Autoimport\models\Autoimport;
+use backend\modules\Autoimport\models\AutoimportSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
