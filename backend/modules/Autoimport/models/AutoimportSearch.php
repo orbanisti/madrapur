@@ -14,6 +14,7 @@ class AutoimportSearch extends Autoimport
 {
     public function rules()
     {
+
         return [
             [['id', 'active'], 'integer'],
             [['siteUrl', 'apiUrl', 'type'], 'safe'],
