@@ -52,7 +52,13 @@
                                                 ],
 
                                                 'attributes'=>[
-                                                    ['attribute'=>'sellerName'],
+                                                    [
+                                                            'attribute'=>'sellerName',
+                                                            'type'=>DetailView::INPUT_DROPDOWN_LIST,
+                                                            'items'=>\common\models\User::getAllSellers('names')
+
+                                                    ],
+
                                                     [
                                                         'attribute' => 'customerName',
                                                         'label' => 'Name',

@@ -38,15 +38,14 @@ $bundle = BackendAsset::register($this);
         'items' => [
             // MAIN
             [
-                'label' => Yii::t('backend', 'Main'),
+                'label' => Yii::t('backend', 'Seller Tools'),
                 'options' => [
                     'class' => 'nav-header'
                 ],
             ],
-
             [
                 'label' => Yii::t('backend', 'Dashboard'),
-                'icon' => Icon::show('columns', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
+                'icon' => '<i class="fas fa-columns nav-icon "></i>',
                 'url' => [
                     '/Dashboard/dashboard/admin'
                 ],
@@ -56,6 +55,220 @@ $bundle = BackendAsset::register($this);
                 'visible'=>!Yii::$app->user->can('streetAdmin')
 
             ],
+            [
+                'label' => Yii::t('backend', 'Tickets'),
+                'url' => [
+                    '/'
+                ],
+                'options' => [
+                    'class' => 'nav-item has-treeview'
+                ],
+                'icon' => '<i class="fas fa-ticket-alt nav-icon"></i>',
+                'items' => [
+                    [
+                        'label' => Yii::t('backend', 'Summary'),
+                        'url' => [
+                            '/Tickets/tickets/admin'
+                        ],
+                        'icon' => '<i class="fa nav-icon fa-list-alt"></i>',
+                        'active' => Yii::$app->controller->id === 'tickets' &&
+                            Yii::$app->controller->action->id === 'admin',
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Add ticket block'),
+                        'url' => [
+                            '/Tickets/tickets/add-block'
+                        ],
+                        'icon' => '<i class="fas fa-plus-square nav-icon "></i>',
+                        'active' => Yii::$app->controller->id === 'tickets' &&
+                            Yii::$app->controller->action->id === 'add-block',
+                        'visible' => Yii::$app->user->can('administrator')  || Yii::$app->user->can('streetAdmin'),
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'My Tickets'),
+                        'url' => [
+                            '/Dashboard/dashboard/manager'
+                        ],
+                        'icon' => '<i class="fas fa-ticket-alt nav-icon "></i>',
+                        'active' => Yii::$app->controller->id === 'tickets' &&
+                            Yii::$app->controller->action->id === 'view-assigned-blocks',
+                    ],
+                ],
+                'active' => Yii::$app->controller->id === 'tickets',
+            ],
+            [
+                'label' => Yii::t('backend', 'Bookings'),
+                'options' => [
+                    'class' => 'nav-item has-treeview'
+                ],
+                'url' => [
+                    '/'
+                ],
+                'options' => [
+                    'class' => 'nav-item has-treeview'
+                ],
+                'icon' => '<i class="fas fa-chair nav-icon "></i>' ,
+                'active' => (Yii::$app->controller->id == 'reservations'),
+                'items' => [
+                    [
+                        'label' => Yii::t('backend', 'importer'),
+                        'icon' => '<i class="fab fa-fantasy-flight-games nav-icon "></i>',
+                        'url' => [
+                            '/Modmail/modmail/importer'
+                        ],
+                        'visible'=>Yii::$app->user->can('streetAdmin') || Yii::$app->user->can('administrator')
+
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Reporting'),
+                        'icon' => '<i class="fas fa-table nav-icon "></i>',
+                        'url' => [
+                            '/Reservations/reservations/reporting'
+                        ],
+                        'badge' => TimelineEvent::find()->today()->count(),
+                        'badgeBgClass' => 'label-success',
+                        'visible'=>Yii::$app->user->can('administrator')or Yii::$app->user->can('streetAdmin')
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Overview'),
+                        'url' => [
+                            '/Reservations/reservations/admin'
+                        ],
+                        'icon' => '<i class="fa nav-icon fa-list-alt"></i>',
+                        'active' => (Yii::$app->controller->id == 'reservations') &&
+                            Yii::$app->controller->action->id === 'admin',
+                        'visible' => !Yii::$app->user->can('streetSeller'),
+                    ],
+
+                    [
+                        'label' => Yii::t('backend', 'Create Booking'),
+                        'url' => [
+                            '/Reservations/reservations/create2'
+                        ],
+                        'icon' =>  '<i class="fas fa-check-square nav-icon "></i>',
+                        'active' => (Yii::$app->controller->id == 'reservations' &&
+                            Yii::$app->controller->action->id === 'create2'),
+
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Register Booking'),
+                        'url' => [
+                            '/Reservations/reservations/register'
+                        ],
+                        'icon' =>  '<i class="fas fa-check-circle nav-icon "></i>',
+                        'active' => (Yii::$app->controller->id == 'reservations' &&
+                            Yii::$app->controller->action->id === 'register'),
+                        'visible'=>Yii::$app->user->can('streetAdmin')||Yii::$app->user->can('administrator')
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Upgrade Booking'),
+                        'url' => [
+                            '/Reservations/reservations/upgradebooking'
+                        ],
+                        'icon' =>  '<i class="fas nav-icon fa-arrow-circle-up" aria-hidden="true"></i>
+                    ',
+                        'active' => (Yii::$app->controller->id == 'reservations' &&
+                            Yii::$app->controller->action->id === 'upgrade'),
+
+
+
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'My Bookings'),
+                        'url' => [
+                            '/Reservations/reservations/myreservations'
+                        ],
+                        'icon' => '<i class="fa nav-icon fa-calendar"></i>',
+                        'active' => (Yii::$app->controller->id == 'reservations' &&
+                            Yii::$app->controller->action->id === 'myreservations'),
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'My Transactions'),
+                        'url' => [
+                            '/Reservations/reservations/mytransactions'
+                        ],
+                        'icon' => '<i class="fas fa-hand-holding-usd nav-icon "></i>',
+                        'active' => (Yii::$app->controller->id == 'reservations' &&
+                            Yii::$app->controller->action->id === 'mytransactions'),
+                    ],
+                ],
+                'visible' => Yii::$app->user->can('accessBookings'),
+            ],
+            [
+                'label' => Yii::t('backend', 'Products'),
+                'options' => [
+                    'class' => 'nav-item has-treeview'
+                ],
+                'url' => [
+                    '/'
+                ],
+                'icon' =>  Icon::show('boxes', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
+                'active' => in_array(Yii::$app->controller->id, ['product', 'add-ons']) &&
+                    !in_array(Yii::$app->controller->action->id, ['uiblock', 'accesstimetable']),
+                'items' => [
+                    [
+                        'label' => Yii::t('backend', 'Overview'),
+                        'url' => [
+                            '/Product/product/admin'
+                        ],
+                        'icon' => '<i class="fa nav-icon fa-list-alt"></i>',
+                        'active' => (Yii::$app->controller->id == 'product') &&
+                            Yii::$app->controller->action->id === 'admin',
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Create'),
+                        'url' => [
+                            '/Product/product/create'
+                        ],
+                        'icon' => '<i class="fa nav-icon fa-database"></i>',
+                        'active' => (Yii::$app->controller->id == 'product') &&
+                            Yii::$app->controller->action->id === 'create',
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Add-ons'),
+                        'url' => [
+                            '/Product/add-ons/admin'
+                        ],
+                        'icon' => '<i class="fa nav-icon fa-plug"></i>',
+                        'active' => Yii::$app->controller->id === 'add-ons',
+                    ],
+                ],
+                //                                'visible' => Yii::$app->user->can('accessProducts'),
+                'visible' => Yii::$app->user->can('administrator'),
+            ],
+
+            [
+                'label' => Yii::t('backend', 'Office Tools'),
+                'options' => [
+                    'class' => 'nav-header'
+                ],
+            ],
+            [
+                'label' => Yii::t('backend', 'Timetable'),
+                'url' => [
+                    '/Product/product/accesstimetable'
+                ],
+                'icon' =>  Icon::show('clipboard-list', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
+                'active' => (Yii::$app->controller->id == 'product') &&
+                    Yii::$app->controller->action->id === 'accesstimetable',
+                'visible' => !Yii::$app->user->can('streetSeller')
+            ],
+            [
+                'label' => Yii::t('backend', 'Blocking'),
+                'url' => [
+                    '/Product/product/uiblock'
+                ],
+
+                'icon' =>  Icon::show('hand-spock', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
+                'active' => (Yii::$app->controller->id == 'product') &&
+                    Yii::$app->controller->action->id === 'uiblock',
+                'visible' => Yii::$app->user->can('streetAdmin') || Yii::$app->user->can('administrator'),
+            ],
+
+
+
+
+
             [
                 'label' => Yii::t('backend', 'Timeline'),
                 'icon' => Icon::show('chart-bar', ['class'=>'nav-icon', 'framework'=> Icon::FAS]),
@@ -86,8 +299,9 @@ $bundle = BackendAsset::register($this);
                         ],
 
                     ],
+
                     [
-                        'label' => Yii::t('backend', 'modMail'),
+                        'label' => Yii::t('backend', 'Mod Mail'),
                         'icon' => '<i class="fas fa-envelope nav-icon "></i>',
                         'url' => [
                             '/Modmail/modmail/admin'
@@ -95,7 +309,15 @@ $bundle = BackendAsset::register($this);
 
                     ],
                     [
-                        'label' => Yii::t('backend', 'importer'),
+                        'label' => Yii::t('backend', 'Manual Importer'),
+                        'icon' => '<i class="fas fa-envelope nav-icon "></i>',
+                        'url' => [
+                            '/Modmail/modmail/aimporter'
+                        ],
+
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Mass Userimport'),
                         'icon' => '<i class="fab fa-fantasy-flight-games nav-icon "></i>',
                         'url' => [
                             '/Modmail/modmail/importer'
@@ -134,47 +356,6 @@ $bundle = BackendAsset::register($this);
                 'visible' => Yii::$app->user->can('accessUsers'),
             ],
 
-            [
-                'label' => Yii::t('backend', 'Tickets'),
-                'url' => [
-                    '/'
-                ],
-                'options' => [
-                 'class' => 'nav-item has-treeview'
-                ],
-                'icon' => Icon::show('ticket-alt', ['class'=>'nav-icon', 'framework'=> Icon::FAS]),
-                'items' => [
-                    [
-                        'label' => Yii::t('backend', 'Summary'),
-                        'url' => [
-                            '/Tickets/tickets/admin'
-                        ],
-                        'icon' => '<i class="fa nav-icon fa-list-alt"></i>',
-                        'active' => Yii::$app->controller->id === 'tickets' &&
-                            Yii::$app->controller->action->id === 'admin',
-                    ],
-                    [
-                        'label' => Yii::t('backend', 'Add ticket block'),
-                        'url' => [
-                            '/Tickets/tickets/add-block'
-                        ],
-                        'icon' => '<i class="fas fa-plus-square nav-icon "></i>',
-                        'active' => Yii::$app->controller->id === 'tickets' &&
-                            Yii::$app->controller->action->id === 'add-block',
-                        'visible' => Yii::$app->user->can('administrator')  || Yii::$app->user->can('streetAdmin'),
-                    ],
-                    [
-                        'label' => Yii::t('backend', 'My Tickets'),
-                        'url' => [
-                            '/Dashboard/dashboard/manager'
-                        ],
-                        'icon' => '<i class="fas fa-ticket-alt nav-icon "></i>',
-                        'active' => Yii::$app->controller->id === 'tickets' &&
-                            Yii::$app->controller->action->id === 'view-assigned-blocks',
-                    ],
-                ],
-                'active' => Yii::$app->controller->id === 'tickets',
-            ],
 
             [
                 'label' => Yii::t('backend', 'Settings'),
@@ -197,7 +378,7 @@ $bundle = BackendAsset::register($this);
                     ],
                 ],
                 'active' => Yii::$app->controller->id === 'notifications',
-                'visible'=>Yii::$app->user->can('administrator')
+                'visible'=>false,
             ],
 
             // CONTENT
@@ -495,69 +676,7 @@ $bundle = BackendAsset::register($this);
                 ],
                 'visible' => Yii::$app->user->can('accessFiles'),
             ],
-            [
-                'label' => Yii::t('backend', 'Products'),
-                'options' => [
-                    'class' => 'nav-item has-treeview'
-                ],
-                'url' => [
-                    '/'
-                ],
-                'icon' =>  Icon::show('boxes', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
-                'active' => in_array(Yii::$app->controller->id, ['product', 'add-ons']) &&
-                    !in_array(Yii::$app->controller->action->id, ['uiblock', 'accesstimetable']),
-                'items' => [
-                    [
-                        'label' => Yii::t('backend', 'Overview'),
-                        'url' => [
-                            '/Product/product/admin'
-                        ],
-                        'icon' => '<i class="fa nav-icon fa-list-alt"></i>',
-                        'active' => (Yii::$app->controller->id == 'product') &&
-                            Yii::$app->controller->action->id === 'admin',
-                    ],
-                    [
-                        'label' => Yii::t('backend', 'Create'),
-                        'url' => [
-                            '/Product/product/create'
-                        ],
-                        'icon' => '<i class="fa nav-icon fa-database"></i>',
-                        'active' => (Yii::$app->controller->id == 'product') &&
-                            Yii::$app->controller->action->id === 'create',
-                    ],
-                    [
-                        'label' => Yii::t('backend', 'Add-ons'),
-                        'url' => [
-                            '/Product/add-ons/admin'
-                        ],
-                        'icon' => '<i class="fa nav-icon fa-plug"></i>',
-                        'active' => Yii::$app->controller->id === 'add-ons',
-                    ],
-                ],
-//                                'visible' => Yii::$app->user->can('accessProducts'),
-                'visible' => Yii::$app->user->can('administrator'),
-            ],
-            [
-                'label' => Yii::t('backend', 'Blocking'),
-                'url' => [
-                    '/Product/product/uiblock'
-                ],
 
-                'icon' =>  Icon::show('hand-spock', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
-                'active' => (Yii::$app->controller->id == 'product') &&
-                    Yii::$app->controller->action->id === 'uiblock',
-                'visible' => Yii::$app->user->can('streetAdmin') || Yii::$app->user->can('administrator'),
-            ],
-            [
-                'label' => Yii::t('backend', 'Time table'),
-                'url' => [
-                    '/Product/product/accesstimetable'
-                ],
-                'icon' =>  Icon::show('clipboard-list', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
-                'active' => (Yii::$app->controller->id == 'product') &&
-                    Yii::$app->controller->action->id === 'accesstimetable',
-                'visible' => !Yii::$app->user->can('streetSeller')
-            ],
             [
                 'label' => Yii::t('backend', 'Payments'),
                 'url' => [
@@ -566,104 +685,6 @@ $bundle = BackendAsset::register($this);
                 'icon' =>  Icon::show('money-bill', [ 'class'=>'nav-icon','framework'=> Icon::FAS]),
                 'active' => (Yii::$app->controller->id == 'payment'),
                 'visible' => Yii::$app->user->can('accessPayments'),
-            ],
-            [
-                'label' => Yii::t('backend', 'Bookings'),
-                'options' => [
-                 'class' => 'nav-item has-treeview'
-                ],
-                'url' => [
-                    '/'
-                ],
-                'options' => [
-                 'class' => 'nav-item has-treeview'
-                ],
-                'icon' => '<i class="fas fa-chair nav-icon "></i>' ,
-                'active' => (Yii::$app->controller->id == 'reservations'),
-                'items' => [
-                    [
-                        'label' => Yii::t('backend', 'importer'),
-                        'icon' => '<i class="fab fa-fantasy-flight-games nav-icon "></i>',
-                        'url' => [
-                            '/Modmail/modmail/importer'
-                        ],
-                        'visible'=>Yii::$app->user->can('streetAdmin') || Yii::$app->user->can('administrator')
-
-                    ],
-                    [
-                        'label' => Yii::t('backend', 'Reporting'),
-                        'icon' => '<i class="fas fa-table nav-icon "></i>',
-                        'url' => [
-                            '/Reservations/reservations/reporting'
-                        ],
-                        'badge' => TimelineEvent::find()->today()->count(),
-                        'badgeBgClass' => 'label-success',
-                        'visible'=>Yii::$app->user->can('administrator')or Yii::$app->user->can('streetAdmin')
-                    ],
-                    [
-                        'label' => Yii::t('backend', 'Overview'),
-                        'url' => [
-                            '/Reservations/reservations/admin'
-                        ],
-                        'icon' => '<i class="fa nav-icon fa-list-alt"></i>',
-                        'active' => (Yii::$app->controller->id == 'reservations') &&
-                            Yii::$app->controller->action->id === 'admin',
-                        'visible' => !Yii::$app->user->can('streetSeller'),
-                    ],
-
-                    [
-                        'label' => Yii::t('backend', 'Create Booking'),
-                        'url' => [
-                            '/Reservations/reservations/create2'
-                        ],
-                        'icon' =>  '<i class="fas fa-check-square nav-icon "></i>',
-                        'active' => (Yii::$app->controller->id == 'reservations' &&
-                            Yii::$app->controller->action->id === 'create2'),
-
-                    ],
-                    [
-                        'label' => Yii::t('backend', 'Register Booking'),
-                        'url' => [
-                            '/Reservations/reservations/register'
-                        ],
-                        'icon' =>  '<i class="fas fa-check-circle nav-icon "></i>',
-                        'active' => (Yii::$app->controller->id == 'reservations' &&
-                            Yii::$app->controller->action->id === 'register'),
-                        'visible'=>Yii::$app->user->can('streetAdmin')||Yii::$app->user->can('administrator')
-                    ],
-                    [
-                        'label' => Yii::t('backend', 'Upgrade Booking'),
-                        'url' => [
-                            '/Reservations/reservations/upgradebooking'
-                        ],
-                        'icon' =>  '<i class="fas nav-icon fa-arrow-circle-up" aria-hidden="true"></i>
-                    ',
-                        'active' => (Yii::$app->controller->id == 'reservations' &&
-                            Yii::$app->controller->action->id === 'upgrade'),
-
-
-
-                    ],
-                    [
-                        'label' => Yii::t('backend', 'My Bookings'),
-                        'url' => [
-                            '/Reservations/reservations/myreservations'
-                        ],
-                        'icon' => '<i class="fa nav-icon fa-calendar"></i>',
-                        'active' => (Yii::$app->controller->id == 'reservations' &&
-                            Yii::$app->controller->action->id === 'myreservations'),
-                    ],
-                    [
-                        'label' => Yii::t('backend', 'My Transactions'),
-                        'url' => [
-                            '/Reservations/reservations/mytransactions'
-                        ],
-                        'icon' => '<i class="fas fa-hand-holding-usd nav-icon "></i>',
-                        'active' => (Yii::$app->controller->id == 'reservations' &&
-                            Yii::$app->controller->action->id === 'mytransactions'),
-                    ],
-                ],
-                'visible' => Yii::$app->user->can('accessBookings'),
             ],
             [
                 'label' => Yii::t('backend', 'Statistics'),

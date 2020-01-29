@@ -396,9 +396,7 @@ class Reservations extends MadActiveRecord {
         }
         if($this->sellerName){
 
-            $user=User::findOne($this->sellerName)->username;
-
-            $query->andFilterWhere((['=', 'sellerName', $user]));
+            $query->andFilterWhere((['=', 'sellerName', $this->sellerName]));
 
         }
 
@@ -969,7 +967,7 @@ class Reservations extends MadActiveRecord {
         $myAddons=[];
 
 
-
+        $addonShortNames=[];
         foreach ($addons as $addon){
             foreach ($guessablePrices as $guessPrice){
                 foreach($allPrices as $prodPrice){
@@ -981,7 +979,15 @@ class Reservations extends MadActiveRecord {
 
                 }
             }
+            $addonShortNames[$addon->price]=$addon->shortName;
         }
+
+        if($data->exResource){
+            foreach($data->exResource as $resourcePrice=>$resourceCount){
+                $returned.=$addonShortNames[$resourcePrice];
+            }
+        }
+
 
 
 

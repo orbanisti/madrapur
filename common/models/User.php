@@ -188,7 +188,7 @@
 
         }
 
-        public static function getAllSellers(){
+        public static function getAllSellers($index=null){
             $allUsers=User::find()->all();
             $streetSellers=[];
             $hotelSellers=[];
@@ -199,19 +199,27 @@
                 $hasHotelBool = $authManager->getAssignment('hotelSeller', $user->id) ? true : false;
                 $hasOnlinePartnerBool = $authManager->getAssignment('onlinePartner', $user->id) ? true : false;
 
+                if($index){
+                    $index=$user->username;
+                }
+                else{
+                    $index= $user->id;
+
+                }
+
 
                 if ($hasStreetBool) {
                     $streetSellers[] = $user;
-                    $streetsellernames[$user->id]=$user->username;
+                    $streetsellernames[$index]=$user->username;
                 };
                 if ($hasHotelBool) {
                     $hotelSellers[]  = $user;
-                    $hotelnames[$user->id]=$user->username;
+                    $hotelnames[$index]=$user->username;
 
                 };
                 if ($hasOnlinePartnerBool) {
                     $onlinePartners[]  = $user;
-                    $onlinePartnerNames[$user->id]=$user->username;
+                    $onlinePartnerNames[$index]=$user->username;
 
                 };
             }
@@ -332,6 +340,11 @@
                 self::STATUS_ACTIVE => Yii::t('common', 'Active'),
                 self::STATUS_DELETED => Yii::t('common', 'Deleted')
             ];
+        }
+
+        public static function checkAdmin(){
+
+
         }
 
         /**
